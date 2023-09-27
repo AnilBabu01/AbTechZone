@@ -3,8 +3,9 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 // import AwesomeIcon from 'react-native-vector-icons/FontAwesome5';
 import LoginScreen from '../Auth/Login';
 import SplashScreen from '../Splash/Splash';
-import CollegeOptionScreen from '../College/Options/Option'
-
+import CollegeOptionScreen from '../College/Options/Option';
+import HomeScreen from '../Owner/Home';
+import Header from '../Owner/Header';
 import {donationavtivebtn} from '../utils/Colors';
 
 const Stack = createNativeStackNavigator();
@@ -20,11 +21,18 @@ function StackNavigation() {
   }, []);
 
   return (
-    <Stack.Navigator screenOptions={{headerShown: false}}>
-      {showsplash && <Stack.Screen name="OnBoarding" component={SplashScreen} />}
-        <Stack.Screen name="Login" component={LoginScreen} />
-        <Stack.Screen name="CollegeOptions" component={CollegeOptionScreen} />
-     {/* 
+    <Stack.Navigator
+      headerMode={'screen'}
+      screenOptions={{
+        header: ({navigation}) => <Header navigation={navigation} />,
+      }}>
+      {showsplash && (
+        <Stack.Screen name="OnBoarding" component={SplashScreen} />
+      )}
+      <Stack.Screen name="home" component={HomeScreen} />
+      <Stack.Screen name="Login" component={LoginScreen} />
+      <Stack.Screen name="CollegeOptions" component={CollegeOptionScreen} />
+      {/* 
       <Stack.Screen
         name="Changepassword"
         component={ChangePasswordScreen}
