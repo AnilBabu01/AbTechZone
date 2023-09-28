@@ -1,4 +1,11 @@
-import {StyleSheet, Text, View, Image, TouchableOpacity,Dimensions} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  Dimensions,
+} from 'react-native';
 import React from 'react';
 import hamburger from '../assets/hamburger.png';
 import logoblue1 from '../assets/logoblue1.png';
@@ -6,11 +13,14 @@ import {primary, secondary} from '../utils/Colors';
 import {Height, Width} from '../utils/responsive';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
-const Header = () => {
+const Header = ({navigation}) => {
   return (
     <View>
       <View style={styles.mainheader}>
-        <Image source={hamburger} style={styles.menuimg} />
+        <TouchableOpacity onPress={()=>navigation.openDrawer()}>
+          <Image source={hamburger} style={styles.menuimg} />
+        </TouchableOpacity>
+
         {/* <Image source={logoblue1} style={styles.logoimg}/> */}
         <Text>AbTechZone</Text>
         <TouchableOpacity>
@@ -26,14 +36,14 @@ const Header = () => {
 export default Header;
 
 const styles = StyleSheet.create({
-    mainheader:{
-     width:windowWidth,
-     display:"flex",
-     justifyContent:"space-between",
-     alignItems:"center",
-     flexDirection:"row",
-     paddingHorizontal:10
-    },
+  mainheader: {
+    width: windowWidth,
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    flexDirection: 'row',
+    paddingHorizontal: 10,
+  },
   loginbtn: {
     width: Width(80),
     height: Height(35),
@@ -46,6 +56,6 @@ const styles = StyleSheet.create({
   logintextstyle: {
     color: 'white',
     // fontWeight: 700,
-    fontSize: 25,
+    fontSize: 22,
   },
 });

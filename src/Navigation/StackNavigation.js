@@ -6,6 +6,7 @@ import SplashScreen from '../Splash/Splash';
 import CollegeOptionScreen from '../College/Options/Option';
 import HomeScreen from '../Owner/Home';
 import Header from '../Owner/Header';
+import DrawerNavigation from '../Navigation/DrawerNavigation'
 import {donationavtivebtn} from '../utils/Colors';
 
 const Stack = createNativeStackNavigator();
@@ -31,6 +32,7 @@ function StackNavigation() {
       )}
       <Stack.Screen name="home" component={HomeScreen} />
       <Stack.Screen name="Login" component={LoginScreen} />
+      <Stack.Screen name="drawer" component={DrawerNavigation} />
       <Stack.Screen name="CollegeOptions" component={CollegeOptionScreen} />
       {/* 
       <Stack.Screen
