@@ -22,6 +22,7 @@ function StackNavigation() {
   return (
     <Stack.Navigator
       //  screenOptions={{headerShown: false}}
+
       headerMode={'screen'}
       screenOptions={{
         header: ({navigation}) => <Header navigation={navigation} />,

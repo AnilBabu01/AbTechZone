@@ -26,7 +26,7 @@ const Header = ({navigation}) => {
         <Text  style={{color:"white"}}>ABTECHZONE</Text>
         <TouchableOpacity>
           <View style={styles.loginbtn}>
-            <Text style={styles.logintextstyle}>Login</Text>
+            <Text style={styles.logintextstyle}>LogOut</Text>
           </View>
         </TouchableOpacity>
       </View>
