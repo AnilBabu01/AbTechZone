@@ -1,6 +1,7 @@
 import React from 'react';
 import AppNavigation from './src/Navigation/AppNavigation';
 import Toast, {BaseToast, ErrorToast} from 'react-native-toast-message';
+import {PaperProvider} from 'react-native-paper';
 export default function App() {
   const toastConfig = {
     /*
@@ -42,8 +43,10 @@ export default function App() {
       {/* <Provider store={store}>
         <AppNavigation />
       </Provider> */}
-         <AppNavigation />
-      <Toast config={toastConfig} />
+      <PaperProvider>
+        <AppNavigation />
+      </PaperProvider>
+     <Toast config={toastConfig} />
     </>
   );
 }

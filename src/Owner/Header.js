@@ -9,20 +9,21 @@ import {
 import React from 'react';
 import hamburger from '../assets/hamburger.png';
 import logoblue1 from '../assets/logoblue1.png';
-import {primary, secondary} from '../utils/Colors';
+import {primary, hightlight} from '../utils/Colors';
 import {Height, Width} from '../utils/responsive';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 const Header = ({navigation}) => {
   return (
     <View>
+      
       <View style={styles.mainheader}>
         <TouchableOpacity onPress={()=>navigation.openDrawer()}>
           <Image source={hamburger} style={styles.menuimg} />
         </TouchableOpacity>
 
         {/* <Image source={logoblue1} style={styles.logoimg}/> */}
-        <Text>AbTechZone</Text>
+        <Text  style={{color:"white"}}>ABTECHZONE</Text>
         <TouchableOpacity>
           <View style={styles.loginbtn}>
             <Text style={styles.logintextstyle}>Login</Text>
@@ -43,11 +44,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     paddingHorizontal: 10,
+    backgroundColor:primary
   },
   loginbtn: {
     width: Width(80),
     height: Height(35),
-    backgroundColor: primary,
+    backgroundColor:hightlight,
     borderRadius: 10,
     display: 'flex',
     justifyContent: 'center',
