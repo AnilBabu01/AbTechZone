@@ -10,7 +10,7 @@ import Linechart from './Chart/Linechart';
 const Dashboard = () => {
   return (
     <ScrollView>
-      {/* <View>
+      <View>
         <View style={styles.maintotalview}>
           <TotalCard img={dash1} value={'10'} name={'Batch'} />
           <TotalCard img={dash2} value={'20'} name={'Student'} />
@@ -18,14 +18,14 @@ const Dashboard = () => {
           <TotalCard img={dash4} value={'40'} name={'Present'} />
           <TotalCard img={dash1} value={'60'} name={'Staff'} />
         </View>
-      </View> */}
+      </View>
       <View style={styles.maintotalview}>
         <View style={styles.card}>
           <Piechart />
         </View>
-        <View style={styles.card}>
+        {/* <View style={styles.card}>
           <Linechart />
-        </View>
+        </View> */}
       </View>
     </ScrollView>
   );
