@@ -56,7 +56,7 @@ const CoachingDrawerItem = ({navigation}) => {
             </>
           )} */}
 
-          <Text style={{color: 'white'}}>Anil Babu</Text>
+          <Text style={{color: 'white'}}>Akash</Text>
         </View>
       </View>
 
@@ -74,7 +74,7 @@ const CoachingDrawerItem = ({navigation}) => {
         )}
         onPress={() => {
           navigation.closeDrawer();
-          navigation.navigate('Dashboard');
+          navigation.navigate('DashboardCoaching');
         }}
         labelStyle={{color: 'black'}}
       />
@@ -91,7 +91,7 @@ const CoachingDrawerItem = ({navigation}) => {
           />
         )}
         onPress={() => {
-          //   navigation.navigate('Home');
+            navigation.navigate('FrontOfficeCoaching');
           navigation.closeDrawer();
         }}
         labelStyle={{color: 'black'}}

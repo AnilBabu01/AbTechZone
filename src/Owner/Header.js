@@ -11,24 +11,46 @@ import hamburger from '../assets/hamburger.png';
 import logoblue1 from '../assets/logoblue1.png';
 import {primary, hightlight} from '../utils/Colors';
 import {Height, Width} from '../utils/responsive';
+import profileimg from '../assets/profileimg.jpg';
+import {useNavigation} from '@react-navigation/native';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
-const Header = ({navigation}) => {
+const Header = () => {
+  const navigation = useNavigation();
   return (
     <View>
-      
       <View style={styles.mainheader}>
-        <TouchableOpacity onPress={()=>navigation.openDrawer()}>
+        <TouchableOpacity onPress={() => navigation.openDrawer()}>
           <Image source={hamburger} style={styles.menuimg} />
         </TouchableOpacity>
 
         {/* <Image source={logoblue1} style={styles.logoimg}/> */}
-        <Text  style={{color:"white"}}>ABTECHZONE</Text>
-        <TouchableOpacity>
+        <Text style={{color: 'white'}}>ABTECHZONE</Text>
+
+        <View style={styles.profile}>
+          <TouchableOpacity onPress={() => navigation.openDrawer()}>
+            {/* {user?.profile_image ? (
+          <>
+            <Image
+              source={{
+                uri: `${backendUrl}uploads/images/${user?.profile_image}`,
+              }}
+              style={styles.avator}
+            />
+          </>
+        ) : (
+          <>
+            <Image source={profileimg} style={styles.avator} />
+          </>
+        )} */}
+            <Image source={profileimg} style={styles.avator} />
+          </TouchableOpacity>
+        </View>
+        {/* <TouchableOpacity>
           <View style={styles.loginbtn}>
             <Text style={styles.logintextstyle}>LogOut</Text>
           </View>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
     </View>
   );
@@ -44,12 +66,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     paddingHorizontal: 10,
-    backgroundColor:primary
+    backgroundColor: primary,
   },
   loginbtn: {
     width: Width(80),
     height: Height(35),
-    backgroundColor:hightlight,
+    backgroundColor: hightlight,
     borderRadius: 10,
     display: 'flex',
     justifyContent: 'center',
@@ -59,5 +81,14 @@ const styles = StyleSheet.create({
     color: 'white',
     // fontWeight: 700,
     fontSize: 22,
+  },
+  profile: {
+    backgroundColor: primary,
+    boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.1)',
+  },
+  avator: {
+    width: 40,
+    height: 40,
+    borderRadius: 50,
   },
 });
