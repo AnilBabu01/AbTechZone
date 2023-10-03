@@ -25,6 +25,7 @@ const FrontOffice = ({navigation}) => {
             <Text style={styles.canceltext} onPress={() => setopenModel(false)}>
               <Ionicons name="close-outline" size={40} />
             </Text>
+            
           </View>
           <AddEnquiry />
         </View>

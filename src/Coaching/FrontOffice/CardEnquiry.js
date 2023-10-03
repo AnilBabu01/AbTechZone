@@ -6,7 +6,7 @@ import {
   Dimensions,
   TouchableOpacity,
 } from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import {primary} from '../../utils/Colors';
 import moment from 'moment';
 import {useNavigation} from '@react-navigation/native';
@@ -14,51 +14,53 @@ import {useNavigation} from '@react-navigation/native';
 
 const CardEnquiry = ({item}) => {
   const navigation = useNavigation();
-  // const downloadre = async () => {
-  //   let options = {
-  //     html: '<h1>PDF TEST</h1>',
-  //     fileName: 'test',
-  //     directory: 'Documents',
-  //   };
+  const [showinfo, setshowinfo] = useState('');
 
-  //   let file = await RNHTMLtoPDF.convert(options);
-  //   // console.log(file.filePath);
-  //   console.log(file);
-  // };
   return (
     <ScrollView>
-      <View style={styles.connainer}>
-        <View style={styles.card10}>
-          <View style={styles.viewdel}>
-            <Text>Enquiry Date</Text>
-            <Text>2023-09-09</Text>
+      <TouchableOpacity onPress={() => setshowinfo(!showinfo)}>
+        <View style={styles.connainer}>
+          <View style={styles.card10}>
+            <View style={styles.viewdel}>
+              <Text>09-09-2023</Text>
+              <Text></Text>
+            </View>
+            <View style={styles.viewdel}>
+              <Text>Name : Anil Babu</Text>
+              <Text>Number : 7505786956</Text>
+            </View>
+
+            {showinfo && (
+              <>
+                <View style={styles.viewdel}>
+                  <Text>Student Number</Text>
+                  <Text>7505786956</Text>
+                </View>
+                <View style={styles.viewdel}>
+                  <Text>Student Email</Text>
+                  <Text>A2@gmail.com</Text>
+                </View>
+                <View style={styles.viewdel}>
+                  <Text>Address</Text>
+                  <Text>Pilibhit</Text>
+                </View>
+                <View style={styles.viewdel}>
+                  <Text>Course</Text>
+                  <Text>DCA</Text>
+                </View>
+                <View style={styles.viewdel}>
+                  <Text>Comment</Text>
+                  <Text></Text>
+                </View>
+                <Text>
+                  Premium designed icons for use in web, iOS, Android, and
+                  desktop apps. Support for SVG. Completely open source,
+                </Text>
+              </>
+            )}
           </View>
-         <View style={styles.viewdel}>
-            <Text>Student Number</Text>
-            <Text>7505786956</Text>
-          </View>
-          <View style={styles.viewdel}>
-            <Text>Student Email</Text>
-            <Text>A2@gmail.com</Text>
-          </View>
-          <View style={styles.viewdel}>
-            <Text>Address</Text>
-            <Text>Pilibhit</Text>
-          </View>
-          <View style={styles.viewdel}>
-            <Text>Course</Text>
-            <Text>DCA</Text>
-          </View>
-          <View style={styles.viewdel}>
-            <Text>Comment</Text>
-            <Text></Text>
-          </View>
-          <Text>
-            Premium designed icons for use in web, iOS, Android, and desktop
-            apps. Support for SVG. Completely open source,
-          </Text>
         </View>
-      </View>
+      </TouchableOpacity>
     </ScrollView>
   );
 };

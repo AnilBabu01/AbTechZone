@@ -8,7 +8,10 @@ import DrawerNavigation from '../Navigation/DrawerNavigation';
 import DashboardCoaching from '../Coaching/Dashboard/Dashboard';
 import FrontOfficeCoaching from '../Coaching/FrontOffice/FrontOffice';
 import SearchEnquiryCoaching from '../Coaching/FrontOffice/SearchEnquiry';
-import { primary } from '../utils/Colors';
+import StudentTabCoaching from '../Coaching//Student/StudentTab';
+import SearchaddCoaching from '../Coaching/Student/Add/Search';
+import SearchadminssionCoaching from '../Coaching/Student/admission/Search';
+import {primary} from '../utils/Colors';
 const Stack = createNativeStackNavigator();
 
 function StackNavigation() {
@@ -23,14 +26,13 @@ function StackNavigation() {
 
   return (
     <Stack.Navigator
-       screenOptions={{headerShown: false}}
+      screenOptions={{headerShown: false}}
 
       // headerMode={'screen'}
       // screenOptions={{
       //   header: ({navigation}) => <Header navigation={navigation} />,
       // }}
-      
-      >
+    >
       {showsplash && (
         <Stack.Screen name="OnBoarding" component={SplashScreen} />
       )}
@@ -38,9 +40,20 @@ function StackNavigation() {
       <Stack.Screen name="drawer" component={DrawerNavigation} />
       <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="DashboardCoaching" component={DashboardCoaching} />
+      <Stack.Screen name="StudentTabCoaching" component={StudentTabCoaching} />
       <Stack.Screen
         name="FrontOfficeCoaching"
         component={FrontOfficeCoaching}
+      />
+
+         <Stack.Screen
+        name="SearchaddCoaching"
+        component={SearchaddCoaching}
+      />
+
+         <Stack.Screen
+        name="SearchadminssionCoaching"
+        component={SearchadminssionCoaching}
       />
       <Stack.Screen
         name="SearchEnquiryCoaching"

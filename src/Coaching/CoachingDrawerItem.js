@@ -110,7 +110,7 @@ const CoachingDrawerItem = ({navigation}) => {
           />
         )}
         onPress={() => {
-          //   navigation.navigate('login');
+            navigation.navigate('StudentTabCoaching');
           navigation.closeDrawer();
         }}
         labelStyle={{color: 'black'}}
@@ -183,7 +183,7 @@ const CoachingDrawerItem = ({navigation}) => {
       />
       <DrawerItem
         style={styles.menu}
-        label="Reparts"
+        label="Reports"
         icon={() => (
           <Image
             source={reports}
