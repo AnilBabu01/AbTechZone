@@ -14,6 +14,7 @@ import SearchadminssionCoaching from '../Coaching/Student/admission/Search';
 import TakeAdmissionCoaching from '../Coaching/Student/admission/TakeAdmission';
 import AddNewStudentCoaching from '../Coaching/Student/Add/AddNewStudent';
 import AttendanceTabCoaching from '../Coaching/Attendance/AttendanceTab';
+import AddEnquiryCoaching from '../Coaching/FrontOffice/AddEnquiry';
 import {primary} from '../utils/Colors';
 const Stack = createNativeStackNavigator();
 
@@ -90,6 +91,21 @@ function StackNavigation() {
         options={{
           headerShown: true,
           title: 'Search Enquiry',
+          headerStyle: {
+            backgroundColor: primary,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
+        <Stack.Screen
+        name="AddEnquiryCoaching"
+        component={AddEnquiryCoaching}
+        options={{
+          headerShown: true,
+          title: 'Add Enquiry',
           headerStyle: {
             backgroundColor: primary,
           },

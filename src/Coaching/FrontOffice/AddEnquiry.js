@@ -75,13 +75,13 @@ const AddEnquiry = () => {
             />
             <View
               style={{
-                width: Width(310),
-                height: Height(40),
+                width: Width(360),
+                height: Height(45),
                 alignSelf: 'center',
                 flexDirection: 'row',
                 alignItems: 'center',
                 borderWidth: 1.5,
-                borderRadius: Width(10),
+                borderRadius: Width(5),
                 borderColor: index === 3 ? primary : '#a9a9a9',
                 marginTop: Height(10),
               }}
@@ -106,13 +106,13 @@ const AddEnquiry = () => {
 
             <View
               style={{
-                width: Width(310),
-                height: Height(40),
+                width: Width(360),
+                height: Height(45),
                 alignSelf: 'center',
                 flexDirection: 'row',
                 alignItems: 'center',
                 borderWidth: 1.5,
-                borderRadius: Width(10),
+                borderRadius: Width(5),
                 borderColor: index === 4 ? primary : '#a9a9a9',
                 marginTop: Height(10),
               }}
@@ -137,13 +137,13 @@ const AddEnquiry = () => {
 
             <View
               style={{
-                width: Width(310),
-                height: Height(40),
+                width: Width(360),
+                height: Height(45),
                 alignSelf: 'center',
                 flexDirection: 'row',
                 alignItems: 'center',
                 borderWidth: 1.5,
-                borderRadius: Width(10),
+                borderRadius: Width(5),
                 borderColor: index === 5 ? primary : '#a9a9a9',
                 marginTop: Height(10),
               }}
@@ -168,13 +168,13 @@ const AddEnquiry = () => {
 
             <View
               style={{
-                width: Width(310),
-                height: Height(40),
+                width: Width(360),
+                height: Height(45),
                 alignSelf: 'center',
                 flexDirection: 'row',
                 alignItems: 'center',
                 borderWidth: 1.5,
-                borderRadius: Width(10),
+                borderRadius: Width(5),
                 borderColor: index === 6 ? primary : '#a9a9a9',
                 marginTop: Height(10),
               }}
@@ -199,11 +199,11 @@ const AddEnquiry = () => {
             <Dropdown
               style={{
                 alignSelf: 'center',
-                width: Width(310),
-                height: Height(40),
+                width: Width(360),
+                height: Height(45),
                 fontFamily: 'Gilroy-SemiBold',
                 borderWidth: 1.5,
-                borderRadius: Width(10),
+                borderRadius: Width(5),
                 paddingHorizontal: Width(20),
                 fontSize: Height(16),
                 marginTop: Height(10),
@@ -230,13 +230,13 @@ const AddEnquiry = () => {
             />
             <View
               style={{
-                width: Width(310),
-                height: Height(40),
+                width: Width(360),
+                height: Height(45),
                 alignSelf: 'center',
                 flexDirection: 'row',
                 alignItems: 'center',
                 borderWidth: 1.5,
-                borderRadius: Width(10),
+                borderRadius: Width(5),
                 borderColor: index === 7 ? primary : '#a9a9a9',
                 marginTop: Height(10),
               }}
@@ -281,7 +281,7 @@ const styles = StyleSheet.create({
     height: Height(50),
     backgroundColor: '#E9EAEC',
     alignSelf: 'center',
-    borderRadius: Width(10),
+    borderRadius: Width(5),
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -310,12 +310,12 @@ const styles = StyleSheet.create({
   },
 
   addinput: {
-    height: Height(40),
-    width: Width(310),
+    height: Height(45),
+    width: Width(360),
     borderWidth: 1.5,
     // borderColor: index === 7 ? primary : '#a9a9a9',
     alignSelf: 'center',
-    borderRadius: Width(10),
+    borderRadius: Width(5),
     flexDirection: 'row',
     alignItems: 'center',
     marginTop: Height(10),
@@ -327,8 +327,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   loginbtn: {
-    width: Width(310),
-    height: Height(40),
+    width: Width(360),
+    height: Height(45),
     backgroundColor: primary,
     borderRadius: 10,
     display: 'flex',

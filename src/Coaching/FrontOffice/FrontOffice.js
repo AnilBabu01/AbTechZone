@@ -47,7 +47,7 @@ const FrontOffice = ({navigation}) => {
       </TouchableOpacity>
 
       <View style={styles.loginbtndiv}>
-        <TouchableOpacity onPress={() => setopenModel(true)}>
+        <TouchableOpacity onPress={() => navigation.navigate('AddEnquiryCoaching')}>
           <View style={styles.loginbtn}>
             <Text style={styles.logintextstyle}>Add Enquiry</Text>
           </View>

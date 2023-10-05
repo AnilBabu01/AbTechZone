@@ -2,7 +2,7 @@ import {StyleSheet, Text, View, Image} from 'react-native';
 import React from 'react';
 import {DrawerItem} from '@react-navigation/drawer';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {secondary, hightlight} from '../utils/Colors';
+import {secondary, profileheader} from '../utils/Colors';
 import profileimg from '../assets/logoblue1.png';
 import Help from '../assets/help.png';
 import homee from '../assets/homee.png';
@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
   innearview: {
     display: 'flex',
     alignItems: 'center',
-    backgroundColor: hightlight,
+    backgroundColor: profileheader,
     borderRadius: 10,
     paddingVertical: 10,
     marginBottom: 5,

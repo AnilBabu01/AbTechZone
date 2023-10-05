@@ -62,7 +62,7 @@ const EmployeeDrawerItem = ({navigation}) => {
             </>
           )} */}
 
-          <Text style={{color: 'white'}}>Anil Babu</Text>
+          <Text style={{color: 'white'}}>Demo</Text>
         </View>
       </View>
 
