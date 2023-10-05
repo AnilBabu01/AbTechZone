@@ -91,7 +91,7 @@ const CoachingDrawerItem = ({navigation}) => {
           />
         )}
         onPress={() => {
-            navigation.navigate('FrontOfficeCoaching');
+          navigation.navigate('FrontOfficeCoaching');
           navigation.closeDrawer();
         }}
         labelStyle={{color: 'black'}}
@@ -110,7 +110,7 @@ const CoachingDrawerItem = ({navigation}) => {
           />
         )}
         onPress={() => {
-            navigation.navigate('StudentTabCoaching');
+          navigation.navigate('StudentTabCoaching');
           navigation.closeDrawer();
         }}
         labelStyle={{color: 'black'}}
@@ -128,7 +128,7 @@ const CoachingDrawerItem = ({navigation}) => {
           />
         )}
         onPress={() => {
-          //   navigation.navigate('Changepassword');
+          navigation.navigate('AttendanceTabCoaching');
           navigation.closeDrawer();
         }}
         labelStyle={{color: 'black'}}

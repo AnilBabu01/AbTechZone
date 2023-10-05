@@ -11,6 +11,9 @@ import SearchEnquiryCoaching from '../Coaching/FrontOffice/SearchEnquiry';
 import StudentTabCoaching from '../Coaching//Student/StudentTab';
 import SearchaddCoaching from '../Coaching/Student/Add/Search';
 import SearchadminssionCoaching from '../Coaching/Student/admission/Search';
+import TakeAdmissionCoaching from '../Coaching/Student/admission/TakeAdmission';
+import AddNewStudentCoaching from '../Coaching/Student/Add/AddNewStudent';
+import AttendanceTabCoaching from '../Coaching/Attendance/AttendanceTab';
 import {primary} from '../utils/Colors';
 const Stack = createNativeStackNavigator();
 
@@ -45,15 +48,41 @@ function StackNavigation() {
         name="FrontOfficeCoaching"
         component={FrontOfficeCoaching}
       />
-
-         <Stack.Screen
-        name="SearchaddCoaching"
-        component={SearchaddCoaching}
-      />
-
-         <Stack.Screen
+      <Stack.Screen name="SearchaddCoaching" component={SearchaddCoaching} />
+      <Stack.Screen
         name="SearchadminssionCoaching"
         component={SearchadminssionCoaching}
+      />
+      <Stack.Screen
+        name="TakeAdmissionCoaching"
+        component={TakeAdmissionCoaching}
+        options={{
+          headerShown: true,
+          title: 'Add Admission',
+          headerStyle: {
+            backgroundColor: primary,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
+
+      <Stack.Screen
+        name="AddNewStudent"
+        component={AddNewStudentCoaching}
+        options={{
+          headerShown: true,
+          title: 'Add New Student',
+          headerStyle: {
+            backgroundColor: primary,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
       />
       <Stack.Screen
         name="SearchEnquiryCoaching"
@@ -70,22 +99,10 @@ function StackNavigation() {
           },
         }}
       />
-      {/* 
       <Stack.Screen
-        name="Changepassword"
-        component={ChangePasswordScreen}
-        options={{
-          headerShown: true,
-          title: 'Edit Profile',
-          headerStyle: {
-            backgroundColor: donationavtivebtn,
-          },
-          headerTintColor: '#fff',
-          headerTitleStyle: {
-            fontWeight: 'bold',
-          },
-        }}
-      /> */}
+        name="AttendanceTabCoaching"
+        component={AttendanceTabCoaching}
+      />
     </Stack.Navigator>
   );
 }

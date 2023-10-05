@@ -47,7 +47,7 @@ import {
         </TouchableOpacity>
   
         <View style={styles.loginbtndiv}>
-          <TouchableOpacity onPress={() => setopenModel(true)}>
+          <TouchableOpacity onPress={() => navigation.navigate('AddNewStudent')}>
             <View style={styles.loginbtn}>
               <Text style={styles.logintextstyle}>Add Student</Text>
             </View>
