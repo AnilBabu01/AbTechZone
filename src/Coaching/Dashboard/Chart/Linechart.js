@@ -8,35 +8,40 @@ import {
   ContributionGraph,
   StackedBarChart,
 } from 'react-native-chart-kit';
-const data = {
-  labels: ["January", "February", "March", "April", "May", "June"],
+import {Width} from '../../../utils/responsive';
+const line = {
+  labels: ['January', 'February', 'March', 'April', 'May', 'June'],
   datasets: [
     {
-      data: [20, 45, 28, 80, 99, 43]
-    }
-  ]
+      data: [20, 45, 28, 80, 99, 43],
+      strokeWidth: 2, // optional
+    },
+  ],
 };
-const chartConfig = {
-  backgroundGradientFrom: '#1E2923',
-  backgroundGradientFromOpacity: 0,
-  backgroundGradientTo: '#08130D',
-  backgroundGradientToOpacity: 0.5,
-  color: (opacity = 1) => `rgba(26, 25, 14, ${opacity})`,
-  strokeWidth: 2, // optional, default 3
-  barPercentage: 0.5,
-  useShadowColorFromDataset: false, // optional
-};
-const screenWidth = Dimensions.get('window').width;
-const Linechart = () => {
+
+const Linechart = ({color}) => {
   return (
     <>
       <LineChart
-        data={data}
-        width={screenWidth}
-        height={256}
-        verticalLabelRotation={30}
-        chartConfig={chartConfig}
+        data={line}
+        width={Width(340)} // from react-native
+        height={220}
+        yAxisLabel={''}
+        chartConfig={{
+          backgroundColor: 'white',
+          backgroundGradientFrom: color ? color : '#fb8c00',
+          backgroundGradientTo: '#ffa726',
+          decimalPlaces: 2, // optional, defaults to 2dp
+          color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+          style: {
+            borderRadius: 16,
+          },
+        }}
         bezier
+        style={{
+          marginVertical: 8,
+          borderRadius: 16,
+        }}
       />
     </>
   );

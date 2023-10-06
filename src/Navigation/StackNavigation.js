@@ -56,10 +56,10 @@ function StackNavigation() {
       {showsplash && (
         <Stack.Screen name="OnBoarding" component={SplashScreen} />
       )}
-      <Stack.Screen name="home" component={HomeScreen} />
-      <Stack.Screen name="drawer" component={DrawerNavigation} />
-      <Stack.Screen name="Login" component={LoginScreen} />
+      {/* <Stack.Screen name="home" component={HomeScreen} /> */}
       <Stack.Screen name="DashboardCoaching" component={DashboardCoaching} />
+
+      <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="StudentTabCoaching" component={StudentTabCoaching} />
       <Stack.Screen
         name="MasterOptionsCoaching"
@@ -353,6 +353,7 @@ function StackNavigation() {
           },
         }}
       />
+      <Stack.Screen name="drawer" component={DrawerNavigation} />
     </Stack.Navigator>
   );
 }

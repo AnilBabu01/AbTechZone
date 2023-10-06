@@ -29,27 +29,13 @@ import {
             <AddEnquiry />
           </View>
         </Modal>
-        {/* <Header /> */}
-        {/* <TouchableOpacity
-            onPress={() => navigation.navigate('SearchEnquiryCoaching')}>
-            <View style={styles.inputview}>
-              <View style={styles.inputsaerch}>
-                <Text style={styles.searchtext}>Search here</Text>
-              </View>
-              <Ionicons
-                name="search-outline"
-                size={Height(22)}
-                style={{marginRight: Width(20)}}
-                color="rgba(0, 0, 0, 0.5)"
-              />
-            </View>
-          </TouchableOpacity> */}
+       
   
         <View style={styles.loginbtndiv}>
           <TouchableOpacity
-            onPress={() => navigation.navigate('AddBatchCoaching')}>
+            onPress={() => navigation.navigate('AddFeesCoaching')}>
             <View style={styles.loginbtn}>
-              <Text style={styles.logintextstyle}>Add Batch Time</Text>
+              <Text style={styles.logintextstyle}>Add Fee</Text>
             </View>
           </TouchableOpacity>
         </View>

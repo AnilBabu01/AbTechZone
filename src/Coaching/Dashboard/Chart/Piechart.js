@@ -8,6 +8,7 @@ import {
   ContributionGraph,
   StackedBarChart,
 } from 'react-native-chart-kit';
+import {Width} from '../../../utils/responsive';
 const data = [
   {
     name: 'Seoul',
@@ -55,13 +56,13 @@ const chartConfig = {
   barPercentage: 0.5,
   useShadowColorFromDataset: false, // optional
 };
-const screenWidth = Dimensions.get('window').width;
+
 const Piechart = () => {
   return (
     <>
       <PieChart
         data={data}
-        width={screenWidth}
+        width={Width(355)}
         height={220}
         chartConfig={chartConfig}
         accessor={'population'}

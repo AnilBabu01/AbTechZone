@@ -21,39 +21,42 @@ const MasterOptions = () => {
             <Text>Course</Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('')}>
+        {/* <TouchableOpacity onPress={() => navigation.navigate('DurationCoaching')}>
           <View style={styles.mainoption}>
             <Image source={Option} style={styles.optionimg} />
             <Text>Duration</Text>
           </View>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.mainoptionmain}>
-        <TouchableOpacity onPress={() => navigation.navigate('')}>
+        </TouchableOpacity> */}
+        <TouchableOpacity
+          onPress={() => navigation.navigate('CategoryCoaching')}>
           <View style={styles.mainoption}>
             <Image source={Option} style={styles.optionimg} />
             <Text>Category</Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('')}>
+      </View>
+      <View style={styles.mainoptionmain}>
+        <TouchableOpacity onPress={() => navigation.navigate('FeesCoaching')}>
           <View style={styles.mainoption}>
             <Image source={Option} style={styles.optionimg} />
             <Text>Fees</Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('')}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('DepartmentCoaching')}>
           <View style={styles.mainoption}>
             <Image source={Option} style={styles.optionimg} />
             <Text>Department</Text>
           </View>
         </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('DesignationCoaching')}>
+          <View style={styles.mainoption}>
+            <Image source={Option} style={styles.optionimg} />
+            <Text>Designation</Text>
+          </View>
+        </TouchableOpacity>
       </View>
-      <TouchableOpacity onPress={() => navigation.navigate('')}>
-        <View style={styles.mainoption}>
-          <Image source={Option} style={styles.optionimg} />
-          <Text>Designation</Text>
-        </View>
-      </TouchableOpacity>
     </>
   );
 };
@@ -67,6 +70,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     flexWrap: 'wrap',
     paddingHorizontal: 20,
+    paddingRight:30
   },
   optionimg: {},
   mainoption: {

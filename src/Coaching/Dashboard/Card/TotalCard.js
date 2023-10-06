@@ -1,17 +1,15 @@
 import {StyleSheet, Text, View, ScrollView, Image} from 'react-native';
 import React from 'react';
-import {donationavtivebtn} from '../../../utils/Colors';
+import {Width, Height} from '../../../utils/responsive';
 
 const TotalCard = ({img, value, name}) => {
   return (
     <ScrollView>
       <View style={styles.connainer}>
         <View style={styles.card10}>
-          <View style={styles.viewdel}>
-            <Image style={styles.img} source={img} alt="abc" />
-            <Text>{name}</Text>
-            <Text>{value}</Text>
-          </View>
+          <Image style={styles.img} source={img} alt="abc" />
+          <Text>{name}</Text>
+          <Text>{value}</Text>
         </View>
       </View>
     </ScrollView>
@@ -24,31 +22,17 @@ const styles = StyleSheet.create({
   card10: {
     backgroundColor: 'white',
     borderRadius: 8,
-    width: '100%',
-    marginVertical: 10,
-    paddingVertical: 20,
-    paddingHorizontal: 100,
-    
-  },
-  viewdel: {
+    width: Width(170),
     display: 'flex',
-    flexDirection: 'column',
-    alignItems:"center",
-    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
     marginBottom: 10,
-    display: 'flex',
-    justifyContent: 'space-between',
+    paddingVertical: 10,
   },
-  viewdelbtn: {
-    display: 'flex',
-    flexDirection: 'row',
-    width: '100%',
-    display: 'flex',
-    justifyContent: 'space-between',
+
+  img: {
+    borderRadius: 50,
+    width: 40,
+    height: 40,
   },
-  img:{
-    borderRadius:50,
-    width:80,
-    height:80
-  }
 });
