@@ -15,6 +15,9 @@ import TakeAdmissionCoaching from '../Coaching/Student/admission/TakeAdmission';
 import AddNewStudentCoaching from '../Coaching/Student/Add/AddNewStudent';
 import AttendanceTabCoaching from '../Coaching/Attendance/AttendanceTab';
 import AddEnquiryCoaching from '../Coaching/FrontOffice/AddEnquiry';
+import MasterOptionsCoaching from '../Coaching/Masters/MasterOptions';
+import BatchCoaching from '../Coaching/Masters/Batch/Batch';
+import AddBatchCoaching from '../Coaching/Masters/Batch/AddBatch';
 import {primary} from '../utils/Colors';
 const Stack = createNativeStackNavigator();
 
@@ -45,6 +48,10 @@ function StackNavigation() {
       <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="DashboardCoaching" component={DashboardCoaching} />
       <Stack.Screen name="StudentTabCoaching" component={StudentTabCoaching} />
+      <Stack.Screen
+        name="MasterOptionsCoaching"
+        component={MasterOptionsCoaching}
+      />
       <Stack.Screen
         name="FrontOfficeCoaching"
         component={FrontOfficeCoaching}
@@ -100,7 +107,7 @@ function StackNavigation() {
           },
         }}
       />
-        <Stack.Screen
+      <Stack.Screen
         name="AddEnquiryCoaching"
         component={AddEnquiryCoaching}
         options={{
@@ -118,6 +125,34 @@ function StackNavigation() {
       <Stack.Screen
         name="AttendanceTabCoaching"
         component={AttendanceTabCoaching}
+      />
+      <Stack.Screen
+        name="AddBatchCoaching"
+        component={AddBatchCoaching}
+        options={{
+          headerShown: true,
+          title: 'Add Batch Time',
+          headerStyle: {
+            backgroundColor: primary,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
+      <Stack.Screen name="BatchCoaching" component={BatchCoaching}
+        options={{
+          headerShown: true,
+          title: 'Batch Time',
+          headerStyle: {
+            backgroundColor: primary,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
       />
     </Stack.Navigator>
   );

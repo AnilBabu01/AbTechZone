@@ -14,7 +14,6 @@ import {Height, Width} from '../utils/responsive';
 import profileimg from '../assets/profileimg.jpg';
 import {useNavigation} from '@react-navigation/native';
 const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
 const Header = () => {
   const navigation = useNavigation();
   return (

@@ -178,7 +178,10 @@ const CoachingDrawerItem = ({navigation}) => {
             }}
           />
         )}
-        // onPress={() => logout()}
+        onPress={() => {
+          navigation.navigate('MasterOptionsCoaching');
+          navigation.closeDrawer();
+        }}
         labelStyle={{color: 'black'}}
       />
       <DrawerItem
