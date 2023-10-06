@@ -24,7 +24,7 @@ const Header = () => {
           <Image source={hamburger} style={styles.menuimg} />
         </TouchableOpacity>
 
-        <Image source={logoblue1} style={styles.logoimg}/>
+        <Image source={logoblue1} style={styles.logoimg} />
         {/* <Text style={{color: 'white'}}>ABTECHZONE</Text> */}
 
         <View style={styles.profile}>
@@ -67,6 +67,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingHorizontal: 10,
     backgroundColor: primary,
+    paddingBottom:5
   },
   loginbtn: {
     width: Width(80),
@@ -91,8 +92,13 @@ const styles = StyleSheet.create({
     height: 40,
     borderRadius: 50,
   },
-  logoimg:{
-    height:Height(40),
-    width:Width(200)
-  }
+  logoimg: {
+    height: Height(40),
+    width: Width(200),
+  },
+  menuimg: {
+    height: Height(40),
+    width: Width(40),
+    borderRadius: 10,
+  },
 });

@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View, ScrollView} from 'react-native';
+import {StyleSheet, Text, View, ScrollView,StatusBar} from 'react-native';
 import React from 'react';
 import TotalCard from './Card/TotalCard';
 import dash1 from '../../assets/dash1.jpg';
@@ -8,11 +8,12 @@ import dash4 from '../../assets/dash4.jpg';
 import Piechart from './Chart/Piechart';
 import Linechart from './Chart/Linechart';
 import Header from '../../Owner/Header';
+import {primary}  from '../../utils/Colors'
 const Dashboard = () => {
   return (
     <View>
       <Header />
-
+      <StatusBar backgroundColor={primary} />
       <ScrollView>
         <View>
           <View style={styles.maintotalview}>
