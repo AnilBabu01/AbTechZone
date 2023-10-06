@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import React from 'react';
 import hamburger from '../assets/hamburger.png';
-import logoblue1 from '../assets/logoblue1.png';
+import logoblue1 from '../assets/whitelogo.png';
 import {primary, hightlight} from '../utils/Colors';
 import {Height, Width} from '../utils/responsive';
 import profileimg from '../assets/profileimg.jpg';
@@ -24,8 +24,8 @@ const Header = () => {
           <Image source={hamburger} style={styles.menuimg} />
         </TouchableOpacity>
 
-        {/* <Image source={logoblue1} style={styles.logoimg}/> */}
-        <Text style={{color: 'white'}}>ABTECHZONE</Text>
+        <Image source={logoblue1} style={styles.logoimg}/>
+        {/* <Text style={{color: 'white'}}>ABTECHZONE</Text> */}
 
         <View style={styles.profile}>
           <TouchableOpacity onPress={() => navigation.openDrawer()}>
@@ -91,4 +91,8 @@ const styles = StyleSheet.create({
     height: 40,
     borderRadius: 50,
   },
+  logoimg:{
+    height:Height(40),
+    width:Width(200)
+  }
 });
