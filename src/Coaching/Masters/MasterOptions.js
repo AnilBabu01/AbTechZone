@@ -15,7 +15,7 @@ const MasterOptions = () => {
             <Text>batch</Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('')}>
+        <TouchableOpacity onPress={() => navigation.navigate('CourseCoaching')}>
           <View style={styles.mainoption}>
             <Image source={Option} style={styles.optionimg} />
             <Text>Course</Text>
