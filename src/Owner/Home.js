@@ -1,7 +1,7 @@
 import {StyleSheet, Text, View, ScrollView, StatusBar} from 'react-native';
 import React from 'react';
 import {primary} from '../utils/Colors';
-import Header from './Header';
+import Header from '../Component/Header/Header';
 const Home = () => {
   return (
     <View>

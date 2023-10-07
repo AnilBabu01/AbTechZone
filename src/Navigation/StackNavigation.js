@@ -3,7 +3,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import LoginScreen from '../Auth/Login';
 import SplashScreen from '../Splash/Splash';
 import HomeScreen from '../Owner/Home';
-import Header from '../Owner/Header';
+import Header from '../Component/Header/Header';
 import DrawerNavigation from '../Navigation/DrawerNavigation';
 import DashboardCoaching from '../Coaching/Dashboard/Dashboard';
 import FrontOfficeCoaching from '../Coaching/FrontOffice/FrontOffice';
@@ -30,8 +30,13 @@ import AddDurationCoaching from '../Coaching/Masters/Duration/AddDuration';
 import DurationCoaching from '../Coaching/Masters/Duration/Duration';
 import AddFeesCoaching from '../Coaching/Masters/Fees/AddFees';
 import FeesCoaching from '../Coaching/Masters/Fees/Fees';
-import {primary} from '../utils/Colors';
 import Fees from '../Coaching/Masters/Fees/Fees';
+import ProfileCoaching from '../Coaching/Profile/Profile';
+import UpdateInstituteCoaching from '../Coaching/Profile/UpdateInstitute';
+import UpdateCredentialCoaching from '../Coaching/Profile/UpdateCredential';
+import UpdateImgaesCoaching from '../Coaching/Profile/UpdateImgaes';
+import UpdateCommunicationCoaching from '../Coaching/Profile/UpdateCommunication';
+import {primary} from '../utils/Colors';
 const Stack = createNativeStackNavigator();
 
 function StackNavigation() {
@@ -344,6 +349,71 @@ function StackNavigation() {
         options={{
           headerShown: true,
           title: 'Designation',
+          headerStyle: {
+            backgroundColor: primary,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
+      <Stack.Screen
+        name="ProfileCoaching"
+        component={ProfileCoaching}
+      
+      />
+      <Stack.Screen
+        name="UpdateInstituteCoaching"
+        component={UpdateInstituteCoaching}
+        options={{
+          headerShown: true,
+          title: 'Edit Institute Details',
+          headerStyle: {
+            backgroundColor: primary,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
+        <Stack.Screen
+        name="UpdateImgaesCoaching"
+        component={UpdateImgaesCoaching}
+        options={{
+          headerShown: true,
+          title: 'Edit Images',
+          headerStyle: {
+            backgroundColor: primary,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
+       <Stack.Screen
+        name="UpdateCredentialCoaching"
+        component={UpdateCredentialCoaching}
+        options={{
+          headerShown: true,
+          title: 'Edit Credentials',
+          headerStyle: {
+            backgroundColor: primary,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
+       <Stack.Screen
+        name="UpdateCommunicationCoaching"
+        component={UpdateCommunicationCoaching}
+        options={{
+          headerShown: true,
+          title: 'Edit Communication Credentials ',
           headerStyle: {
             backgroundColor: primary,
           },

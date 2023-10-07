@@ -1,6 +1,6 @@
 import {StyleSheet, Image, View, Text, TouchableOpacity} from 'react-native';
 import React from 'react';
-import Header from '../../Owner/Header';
+import Header from '../../Component/Header/Header';
 import Option from '../../assets/option.png';
 import {useNavigation} from '@react-navigation/native';
 const MasterOptions = () => {

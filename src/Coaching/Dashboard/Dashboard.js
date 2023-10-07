@@ -1,19 +1,35 @@
-import {StyleSheet, Text, View, ScrollView, StatusBar} from 'react-native';
-import React from 'react';
+import {
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  StatusBar,
+  ActivityIndicator,
+} from 'react-native';
+import React, {useState, useEffect} from 'react';
 import TotalCard from './Card/TotalCard';
 import dash1 from '../../assets/dash1.jpg';
 import dash2 from '../../assets/dash2.jpg';
 import dash3 from '../../assets/dash3.jpg';
 import dash4 from '../../assets/dash4.jpg';
 import Linechart from './Chart/Linechart';
-import Header from '../../Owner/Header';
+import Header from '../../Component/Header/Header';
 import {primary} from '../../utils/Colors';
+import Loader from '../../Component/Loader/Loader';
 const Dashboard = () => {
+  const [loader, setloader] = useState(true);
+  useEffect(() => {
+    setTimeout(() => {
+      setloader(false);
+    }, 1000);
+  }, []);
+
   return (
     <>
       <Header />
       <StatusBar backgroundColor={primary} />
       <ScrollView>
+        <Loader loader={loader} sms={'Loading...'} />
         <View>
           <View style={styles.minacardinfo}>
             <TotalCard img={dash2} value={'20'} name={'Student'} />
@@ -30,15 +46,15 @@ const Dashboard = () => {
           </View>
           <View style={styles.card}>
             <Text>Monthly Active Students Data</Text>
-            <Linechart  color={'#00FFFF'} />
+            <Linechart color={'#00FFFF'} />
           </View>
           <View style={styles.card}>
             <Text>Monthly Deactive Students Data</Text>
-            <Linechart  color={'#008080'} />
+            <Linechart color={'#008080'} />
           </View>
           <View style={styles.card}>
             <Text>Monthly Fee Collection Data</Text>
-            <Linechart  color={'#0000FF'} />
+            <Linechart color={'#0000FF'} />
           </View>
         </View>
       </ScrollView>
@@ -50,7 +66,7 @@ export default Dashboard;
 
 const styles = StyleSheet.create({
   maintotalview: {
-    paddingHorizontal:10
+    paddingHorizontal: 10,
   },
 
   card: {
@@ -70,5 +86,11 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     paddingLeft: 12,
     paddingTop: 10,
+  },
+  activityIndicator: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 80,
   },
 });

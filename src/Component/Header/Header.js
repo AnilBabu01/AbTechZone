@@ -7,11 +7,11 @@ import {
   Dimensions,
 } from 'react-native';
 import React from 'react';
-import hamburger from '../assets/hamburger.png';
-import logoblue1 from '../assets/whitelogo.png';
-import {primary, hightlight} from '../utils/Colors';
-import {Height, Width} from '../utils/responsive';
-import profileimg from '../assets/profileimg.jpg';
+import hamburger from '../../assets/hamburger.png';
+import logoblue1 from '../../assets/whitelogo.png';
+import {primary, hightlight} from '../../utils/Colors';
+import {Height, Width} from '../../utils/responsive';
+import profileimg from '../../assets/profileimg.jpg';
 import {useNavigation} from '@react-navigation/native';
 const windowWidth = Dimensions.get('window').width;
 const Header = () => {
@@ -27,7 +27,7 @@ const Header = () => {
         {/* <Text style={{color: 'white'}}>ABTECHZONE</Text> */}
 
         <View style={styles.profile}>
-          <TouchableOpacity onPress={() => navigation.openDrawer()}>
+          <TouchableOpacity onPress={() => navigation.navigate('ProfileCoaching')}>
             {/* {user?.profile_image ? (
           <>
             <Image

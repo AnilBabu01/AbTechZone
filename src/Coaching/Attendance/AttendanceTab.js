@@ -2,7 +2,7 @@ import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs
 import TakeAttendance from './TakeAttendance/TakeAttendance';
 import TodayAttendance from './TodayAttendance/TodayAttendance';
 import Analysis from './Analysis/Analysis';
-import Header from '../../Owner/Header';
+import Header from '../../Component/Header/Header';
 const Tab = createMaterialTopTabNavigator();
 
 function StudentTab() {
