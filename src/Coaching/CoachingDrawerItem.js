@@ -147,7 +147,7 @@ const CoachingDrawerItem = ({navigation}) => {
         )}
         onPress={() => {
           navigation.closeDrawer();
-          //   navigation.navigate('login');
+          navigation.navigate('FeeCollectCoaching');
         }}
         labelStyle={{color: 'black'}}
       />

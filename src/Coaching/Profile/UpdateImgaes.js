@@ -18,6 +18,8 @@ const formData = new FormData();
 const UpdateImgaes = () => {
   const [openModel, setopenModel] = useState(false);
   const [passportsize, setpassportsize] = useState('');
+  const [logo, setlogo] = useState('');
+  const [Certificatelogo, setCertificatelogo] = useState('');
 
   const handleChoosePhotoSignature = () => {
     const options = {
@@ -84,6 +86,138 @@ const UpdateImgaes = () => {
       }
     });
   };
+
+  const handleChoosePhotoLogo = () => {
+    const options = {
+      mediaType: 'photo',
+      maxWidth: 500,
+      maxHeight: 500,
+      quality: 0.5,
+      includeBase64: true,
+    };
+
+    launchImageLibrary(options, Response => {
+      if (Response.didCancel) {
+      } else if (Response.error) {
+      } else {
+        setlogo(Response.assets[0].uri);
+        const source =
+          Platform.OS === 'android'
+            ? Response.assets[0].uri
+            : Response.assets[0].uri.replace('file://', '');
+        const name = Response.assets[0].fileName;
+        const type = Response.assets[0].type;
+        const file = {
+          uri: source,
+          name: name,
+          type: type,
+        };
+        if (file != null) {
+          formData.append('sign', file);
+        }
+      }
+    });
+  };
+
+  const handleTakePhotoLogo = () => {
+    const options = {
+      mediaType: 'photo',
+      maxWidth: 500,
+      maxHeight: 500,
+      quality: 0.5,
+      includeBase64: true,
+    };
+
+    launchCamera(options, Response => {
+      if (Response.didCancel) {
+      } else if (Response.error) {
+      } else {
+        setlogo(Response.assets[0].uri);
+
+        const source =
+          Platform.OS === 'android'
+            ? Response.assets[0].uri
+            : Response.assets[0].uri.replace('file://', '');
+        const name = Response.assets[0].fileName;
+        const type = Response.assets[0].type;
+        const file = {
+          uri: source,
+          name: name,
+          type: type,
+        };
+
+        if (file != null) {
+          formData.append('sign', file);
+        }
+      }
+    });
+  };
+
+  const handleChoosePhotoCertificatelogo = () => {
+    const options = {
+      mediaType: 'photo',
+      maxWidth: 500,
+      maxHeight: 500,
+      quality: 0.5,
+      includeBase64: true,
+    };
+
+    launchImageLibrary(options, Response => {
+      if (Response.didCancel) {
+      } else if (Response.error) {
+      } else {
+        setCertificatelogo(Response.assets[0].uri);
+        const source =
+          Platform.OS === 'android'
+            ? Response.assets[0].uri
+            : Response.assets[0].uri.replace('file://', '');
+        const name = Response.assets[0].fileName;
+        const type = Response.assets[0].type;
+        const file = {
+          uri: source,
+          name: name,
+          type: type,
+        };
+        if (file != null) {
+          formData.append('sign', file);
+        }
+      }
+    });
+  };
+
+  const handleTakePhotoCertificatelogo = () => {
+    const options = {
+      mediaType: 'photo',
+      maxWidth: 500,
+      maxHeight: 500,
+      quality: 0.5,
+      includeBase64: true,
+    };
+
+    launchCamera(options, Response => {
+      if (Response.didCancel) {
+      } else if (Response.error) {
+      } else {
+        setCertificatelogo(Response.assets[0].uri);
+
+        const source =
+          Platform.OS === 'android'
+            ? Response.assets[0].uri
+            : Response.assets[0].uri.replace('file://', '');
+        const name = Response.assets[0].fileName;
+        const type = Response.assets[0].type;
+        const file = {
+          uri: source,
+          name: name,
+          type: type,
+        };
+
+        if (file != null) {
+          formData.append('sign', file);
+        }
+      }
+    });
+  };
   return (
     <View>
       <Modal animationType={'fade'} transparent={true} visible={openModel}>
@@ -127,7 +261,7 @@ const UpdateImgaes = () => {
               <Text style={{fontSize: 20, marginBottom: 10, marginTop: 8}}>
                 Profile Photo
               </Text>
-              <View style={styles.imgpreview}>
+              <View>
                 {passportsize ? (
                   <>
                     <Image
@@ -137,84 +271,81 @@ const UpdateImgaes = () => {
                   </>
                 ) : (
                   <>
-                    <TouchableOpacity
-                      onPress={() => handleTakePhotoSignature()}>
-                      <View>
-                        <Ionicons name="camera" size={50} />
-                        {/* <Text>Camera</Text> */}
-                      </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      onPress={() => handleChoosePhotoSignature()}>
-                      <View>
-                        <Ionicons name="image" size={50} />
-                        {/* <Text>Gallery</Text> */}
-                      </View>
-                    </TouchableOpacity>
+                    <View style={styles.imgpreview}>
+                      <TouchableOpacity
+                        onPress={() => handleTakePhotoSignature()}>
+                        <View>
+                          <Ionicons name="camera" size={50} />
+                          {/* <Text>Camera</Text> */}
+                        </View>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        onPress={() => handleChoosePhotoSignature()}>
+                        <View>
+                          <Ionicons name="image" size={50} />
+                          {/* <Text>Gallery</Text> */}
+                        </View>
+                      </TouchableOpacity>
+                    </View>
                   </>
                 )}
               </View>
               <Text style={{fontSize: 20, marginBottom: 10, marginTop: 8}}>
                 Logo
               </Text>
-              <View style={styles.imgpreview}>
-                {passportsize ? (
+              <View>
+                {logo ? (
                   <>
-                    <Image
-                      source={{uri: passportsize}}
-                      style={styles.imgprestyle}
-                    />
-
-                    {console.log('images', passportsize)}
+                    <Image source={{uri: logo}} style={styles.imgprestyle} />
                   </>
                 ) : (
                   <>
-                    <TouchableOpacity
-                      onPress={() => handleTakePhotoSignature()}>
-                      <View>
-                        <Ionicons name="camera" size={50} />
-                        {/* <Text>Camera</Text> */}
-                      </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      onPress={() => handleChoosePhotoSignature()}>
-                      <View>
-                        <Ionicons name="image" size={50} />
-                        {/* <Text>Gallery</Text> */}
-                      </View>
-                    </TouchableOpacity>
+                    <View style={styles.imgpreview}>
+                      <TouchableOpacity onPress={() => handleTakePhotoLogo()}>
+                        <View>
+                          <Ionicons name="camera" size={50} />
+                          {/* <Text>Camera</Text> */}
+                        </View>
+                      </TouchableOpacity>
+                      <TouchableOpacity onPress={() => handleChoosePhotoLogo()}>
+                        <View>
+                          <Ionicons name="image" size={50} />
+                          {/* <Text>Gallery</Text> */}
+                        </View>
+                      </TouchableOpacity>
+                    </View>
                   </>
                 )}
               </View>
               <Text style={{fontSize: 20, marginBottom: 10, marginTop: 8}}>
                 Certificate
               </Text>
-              <View style={styles.imgpreview}>
-                {passportsize ? (
+              <View>
+                {Certificatelogo ? (
                   <>
                     <Image
-                      source={{uri: passportsize}}
+                      source={{uri: Certificatelogo}}
                       style={styles.imgprestyle}
                     />
-
-                    {console.log('images', passportsize)}
                   </>
                 ) : (
                   <>
-                    <TouchableOpacity
-                      onPress={() => handleTakePhotoSignature()}>
-                      <View>
-                        <Ionicons name="camera" size={50} />
-                        {/* <Text>Camera</Text> */}
-                      </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      onPress={() => handleChoosePhotoSignature()}>
-                      <View>
-                        <Ionicons name="image" size={50} />
-                        {/* <Text>Gallery</Text> */}
-                      </View>
-                    </TouchableOpacity>
+                    <View style={styles.imgpreview}>
+                      <TouchableOpacity
+                        onPress={() => handleTakePhotoCertificatelogo()}>
+                        <View>
+                          <Ionicons name="camera" size={50} />
+                          {/* <Text>Camera</Text> */}
+                        </View>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        onPress={() => handleChoosePhotoCertificatelogo()}>
+                        <View>
+                          <Ionicons name="image" size={50} />
+                          {/* <Text>Gallery</Text> */}
+                        </View>
+                      </TouchableOpacity>
+                    </View>
                   </>
                 )}
               </View>

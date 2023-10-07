@@ -33,8 +33,8 @@ const AddNewStudent = () => {
   const [openModel, setopenModel] = useState(false);
   const [selectedValue, setSelectedValue] = useState('option1');
   const [passportsize, setpassportsize] = useState('');
-  const [MarkSheet, setMarkSheet] = useState('');
-  const [adharcard, setadharcard] = useState('');
+  const [adharno, setadharno] = useState('');
+  const [premarksheet, setpremarksheet] = useState('');
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
   const showDatePicker = () => {
@@ -115,7 +115,7 @@ const AddNewStudent = () => {
     });
   };
 
-  const handleChooseadhar = () => {
+  const handleChoosePhotoAdhar = () => {
     const options = {
       mediaType: 'photo',
       maxWidth: 500,
@@ -128,7 +128,7 @@ const AddNewStudent = () => {
       if (Response.didCancel) {
       } else if (Response.error) {
       } else {
-        setadharcard(Response.assets[0].uri);
+        setadharno(Response.assets[0].uri);
         const source =
           Platform.OS === 'android'
             ? Response.assets[0].uri
@@ -147,7 +147,7 @@ const AddNewStudent = () => {
     });
   };
 
-  const handleTakeadhar = () => {
+  const handleTakePhotoAdhar = () => {
     const options = {
       mediaType: 'photo',
       maxWidth: 500,
@@ -160,7 +160,7 @@ const AddNewStudent = () => {
       if (Response.didCancel) {
       } else if (Response.error) {
       } else {
-        setadharcard(Response.assets[0].uri);
+        setadharno(Response.assets[0].uri);
 
         const source =
           Platform.OS === 'android'
@@ -181,7 +181,7 @@ const AddNewStudent = () => {
     });
   };
 
-  const handleChooseMarksheet = () => {
+  const handleChoosePhotoMarksheet = () => {
     const options = {
       mediaType: 'photo',
       maxWidth: 500,
@@ -194,7 +194,7 @@ const AddNewStudent = () => {
       if (Response.didCancel) {
       } else if (Response.error) {
       } else {
-        setMarkSheet(Response.assets[0].uri);
+        setpremarksheet(Response.assets[0].uri);
         const source =
           Platform.OS === 'android'
             ? Response.assets[0].uri
@@ -226,7 +226,7 @@ const AddNewStudent = () => {
       if (Response.didCancel) {
       } else if (Response.error) {
       } else {
-        setMarkSheet(Response.assets[0].uri);
+        setpremarksheet(Response.assets[0].uri);
 
         const source =
           Platform.OS === 'android'
@@ -246,6 +246,7 @@ const AddNewStudent = () => {
       }
     });
   };
+
   return (
     <View>
       <Modal animationType={'fade'} transparent={true} visible={openModel}>
@@ -263,13 +264,13 @@ const AddNewStudent = () => {
               </TouchableOpacity>
             </View>
             <View style={styles.buttonmodal}>
-              {/* <TouchableOpacity style={styles.processpatbtn}>
-                  <View>
-                    <Text style={{color: 'white', fontSize: 16}}>
-                      Process To Fee
-                    </Text>
-                  </View>
-                </TouchableOpacity> */}
+              <TouchableOpacity style={styles.processpatbtn}>
+                <View>
+                  <Text style={{color: 'white', fontSize: 16}}>
+                    Process To Fee
+                  </Text>
+                </View>
+              </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => setopenModel(false)}
                 style={styles.okbtn}>
@@ -658,7 +659,7 @@ const AddNewStudent = () => {
               <Text style={{fontSize: 20, marginBottom: 10, marginTop: 8}}>
                 Password Size Photo
               </Text>
-              <View style={styles.imgpreview}>
+              <View>
                 {passportsize ? (
                   <>
                     <Image
@@ -668,84 +669,82 @@ const AddNewStudent = () => {
                   </>
                 ) : (
                   <>
-                    <TouchableOpacity
-                      onPress={() => handleTakePhotoSignature()}>
-                      <View>
-                        <Ionicons name="camera" size={50} />
-                        {/* <Text>Camera</Text> */}
-                      </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      onPress={() => handleChoosePhotoSignature()}>
-                      <View>
-                        <Ionicons name="image" size={50} />
-                        {/* <Text>Gallery</Text> */}
-                      </View>
-                    </TouchableOpacity>
+                    <View style={styles.imgpreview}>
+                      <TouchableOpacity
+                        onPress={() => handleTakePhotoSignature()}>
+                        <View>
+                          <Ionicons name="camera" size={50} />
+                          {/* <Text>Camera</Text> */}
+                        </View>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        onPress={() => handleChoosePhotoSignature()}>
+                        <View>
+                          <Ionicons name="image" size={50} />
+                          {/* <Text>Gallery</Text> */}
+                        </View>
+                      </TouchableOpacity>
+                    </View>
                   </>
                 )}
               </View>
               <Text style={{fontSize: 20, marginBottom: 10, marginTop: 8}}>
                 Adhar Card
               </Text>
-              <View style={styles.imgpreview}>
-                {passportsize ? (
+              <View>
+                {adharno ? (
                   <>
-                    <Image
-                      source={{uri: passportsize}}
-                      style={styles.imgprestyle}
-                    />
-
-                    {console.log('images', passportsize)}
+                    <Image source={{uri: adharno}} style={styles.imgprestyle} />
                   </>
                 ) : (
                   <>
-                    <TouchableOpacity
-                      onPress={() => handleTakePhotoSignature()}>
-                      <View>
-                        <Ionicons name="camera" size={50} />
-                        {/* <Text>Camera</Text> */}
-                      </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      onPress={() => handleChoosePhotoSignature()}>
-                      <View>
-                        <Ionicons name="image" size={50} />
-                        {/* <Text>Gallery</Text> */}
-                      </View>
-                    </TouchableOpacity>
+                    <View style={styles.imgpreview}>
+                      <TouchableOpacity onPress={() => handleTakePhotoAdhar()}>
+                        <View>
+                          <Ionicons name="camera" size={50} />
+                          {/* <Text>Camera</Text> */}
+                        </View>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        onPress={() => handleChoosePhotoAdhar()}>
+                        <View>
+                          <Ionicons name="image" size={50} />
+                          {/* <Text>Gallery</Text> */}
+                        </View>
+                      </TouchableOpacity>
+                    </View>
                   </>
                 )}
               </View>
               <Text style={{fontSize: 20, marginBottom: 10, marginTop: 8}}>
                 Previous MarkSheet
               </Text>
-              <View style={styles.imgpreview}>
-                {passportsize ? (
+              <View>
+                {premarksheet ? (
                   <>
                     <Image
-                      source={{uri: passportsize}}
+                      source={{uri: premarksheet}}
                       style={styles.imgprestyle}
                     />
-
-                    {console.log('images', passportsize)}
                   </>
                 ) : (
                   <>
-                    <TouchableOpacity
-                      onPress={() => handleTakePhotoSignature()}>
-                      <View>
-                        <Ionicons name="camera" size={50} />
-                        {/* <Text>Camera</Text> */}
-                      </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      onPress={() => handleChoosePhotoSignature()}>
-                      <View>
-                        <Ionicons name="image" size={50} />
-                        {/* <Text>Gallery</Text> */}
-                      </View>
-                    </TouchableOpacity>
+                    <View style={styles.imgpreview}>
+                      <TouchableOpacity
+                        onPress={() => handleTakePhotoMarksheet()}>
+                        <View>
+                          <Ionicons name="camera" size={50} />
+                          {/* <Text>Camera</Text> */}
+                        </View>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        onPress={() => handleChoosePhotoMarksheet()}>
+                        <View>
+                          <Ionicons name="image" size={50} />
+                          {/* <Text>Gallery</Text> */}
+                        </View>
+                      </TouchableOpacity>
+                    </View>
                   </>
                 )}
               </View>
@@ -973,7 +972,7 @@ const AddNewStudent = () => {
                 <View
                   style={{
                     width: Width(355),
-                    height: Height(40),
+                    height: Height(45),
                     alignSelf: 'center',
                     flexDirection: 'row',
                     alignItems: 'center',
@@ -1004,7 +1003,7 @@ const AddNewStudent = () => {
                 <View
                   style={{
                     width: Width(355),
-                    height: Height(40),
+                    height: Height(45),
                     alignSelf: 'center',
                     flexDirection: 'row',
                     alignItems: 'center',
@@ -1035,7 +1034,7 @@ const AddNewStudent = () => {
                 <View
                   style={{
                     width: Width(355),
-                    height: Height(40),
+                    height: Height(45),
                     alignSelf: 'center',
                     flexDirection: 'row',
                     alignItems: 'center',
@@ -1153,7 +1152,7 @@ const styles = StyleSheet.create({
     width: Width(80),
     height: Height(40),
     backgroundColor: primary,
-    borderRadius: 5,
+    borderRadius: 10,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -1225,7 +1224,7 @@ const styles = StyleSheet.create({
     // justifyContent: 'center',
     // marginTop: '15%',
     paddingBottom: 10,
-    height: '20%',
+    height: '25%',
     // position: 'relative',
   },
   elevation: {
@@ -1234,7 +1233,7 @@ const styles = StyleSheet.create({
   },
   cancalView: {
     position: 'absolute',
-    bottom: Height(130),
+    bottom: Height(170),
     alignSelf: 'center',
     justifyContent: 'center',
     alignItems: 'center',

@@ -33,6 +33,8 @@ const TakeAdmission = () => {
   const [openModel, setopenModel] = useState(false);
   const [selectedValue, setSelectedValue] = useState('option1');
   const [passportsize, setpassportsize] = useState('');
+  const [adharno, setadharno] = useState('');
+  const [premarksheet, setpremarksheet] = useState('');
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
   const showDatePicker = () => {
@@ -112,6 +114,139 @@ const TakeAdmission = () => {
       }
     });
   };
+
+  const handleChoosePhotoAdhar = () => {
+    const options = {
+      mediaType: 'photo',
+      maxWidth: 500,
+      maxHeight: 500,
+      quality: 0.5,
+      includeBase64: true,
+    };
+
+    launchImageLibrary(options, Response => {
+      if (Response.didCancel) {
+      } else if (Response.error) {
+      } else {
+        setadharno(Response.assets[0].uri);
+        const source =
+          Platform.OS === 'android'
+            ? Response.assets[0].uri
+            : Response.assets[0].uri.replace('file://', '');
+        const name = Response.assets[0].fileName;
+        const type = Response.assets[0].type;
+        const file = {
+          uri: source,
+          name: name,
+          type: type,
+        };
+        if (file != null) {
+          formData.append('sign', file);
+        }
+      }
+    });
+  };
+
+  const handleTakePhotoAdhar = () => {
+    const options = {
+      mediaType: 'photo',
+      maxWidth: 500,
+      maxHeight: 500,
+      quality: 0.5,
+      includeBase64: true,
+    };
+
+    launchCamera(options, Response => {
+      if (Response.didCancel) {
+      } else if (Response.error) {
+      } else {
+        setadharno(Response.assets[0].uri);
+
+        const source =
+          Platform.OS === 'android'
+            ? Response.assets[0].uri
+            : Response.assets[0].uri.replace('file://', '');
+        const name = Response.assets[0].fileName;
+        const type = Response.assets[0].type;
+        const file = {
+          uri: source,
+          name: name,
+          type: type,
+        };
+
+        if (file != null) {
+          formData.append('sign', file);
+        }
+      }
+    });
+  };
+
+  const handleChoosePhotoMarksheet = () => {
+    const options = {
+      mediaType: 'photo',
+      maxWidth: 500,
+      maxHeight: 500,
+      quality: 0.5,
+      includeBase64: true,
+    };
+
+    launchImageLibrary(options, Response => {
+      if (Response.didCancel) {
+      } else if (Response.error) {
+      } else {
+        setpremarksheet(Response.assets[0].uri);
+        const source =
+          Platform.OS === 'android'
+            ? Response.assets[0].uri
+            : Response.assets[0].uri.replace('file://', '');
+        const name = Response.assets[0].fileName;
+        const type = Response.assets[0].type;
+        const file = {
+          uri: source,
+          name: name,
+          type: type,
+        };
+        if (file != null) {
+          formData.append('sign', file);
+        }
+      }
+    });
+  };
+
+  const handleTakePhotoMarksheet = () => {
+    const options = {
+      mediaType: 'photo',
+      maxWidth: 500,
+      maxHeight: 500,
+      quality: 0.5,
+      includeBase64: true,
+    };
+
+    launchCamera(options, Response => {
+      if (Response.didCancel) {
+      } else if (Response.error) {
+      } else {
+        setpremarksheet(Response.assets[0].uri);
+
+        const source =
+          Platform.OS === 'android'
+            ? Response.assets[0].uri
+            : Response.assets[0].uri.replace('file://', '');
+        const name = Response.assets[0].fileName;
+        const type = Response.assets[0].type;
+        const file = {
+          uri: source,
+          name: name,
+          type: type,
+        };
+
+        if (file != null) {
+          formData.append('sign', file);
+        }
+      }
+    });
+  };
+
   return (
     <View>
       <Modal animationType={'fade'} transparent={true} visible={openModel}>
@@ -183,7 +318,7 @@ const TakeAdmission = () => {
             <View
               style={{
                 width: Width(355),
-                height: Height(40),
+                height: Height(45),
                 alignSelf: 'center',
                 flexDirection: 'row',
                 alignItems: 'center',
@@ -214,7 +349,7 @@ const TakeAdmission = () => {
             <View
               style={{
                 width: Width(355),
-                height: Height(40),
+                height: Height(45),
                 alignSelf: 'center',
                 flexDirection: 'row',
                 alignItems: 'center',
@@ -245,7 +380,7 @@ const TakeAdmission = () => {
             <View
               style={{
                 width: Width(355),
-                height: Height(40),
+                height: Height(45),
                 alignSelf: 'center',
                 flexDirection: 'row',
                 alignItems: 'center',
@@ -276,7 +411,7 @@ const TakeAdmission = () => {
             <View
               style={{
                 width: Width(355),
-                height: Height(40),
+                height: Height(45),
                 alignSelf: 'center',
                 flexDirection: 'row',
                 alignItems: 'center',
@@ -307,7 +442,7 @@ const TakeAdmission = () => {
             <View
               style={{
                 width: Width(355),
-                height: Height(40),
+                height: Height(45),
                 alignSelf: 'center',
                 flexDirection: 'row',
                 alignItems: 'center',
@@ -338,7 +473,7 @@ const TakeAdmission = () => {
             <View
               style={{
                 width: Width(355),
-                height: Height(40),
+                height: Height(45),
                 alignSelf: 'center',
                 flexDirection: 'row',
                 alignItems: 'center',
@@ -369,7 +504,7 @@ const TakeAdmission = () => {
             <View
               style={{
                 width: Width(355),
-                height: Height(40),
+                height: Height(45),
                 alignSelf: 'center',
                 flexDirection: 'row',
                 alignItems: 'center',
@@ -399,7 +534,7 @@ const TakeAdmission = () => {
             <View
               style={{
                 width: Width(355),
-                height: Height(40),
+                height: Height(45),
                 alignSelf: 'center',
                 flexDirection: 'row',
                 alignItems: 'center',
@@ -430,7 +565,7 @@ const TakeAdmission = () => {
             <View
               style={{
                 width: Width(355),
-                height: Height(40),
+                height: Height(45),
                 alignSelf: 'center',
                 flexDirection: 'row',
                 alignItems: 'center',
@@ -461,7 +596,7 @@ const TakeAdmission = () => {
             <View
               style={{
                 width: Width(355),
-                height: Height(40),
+                height: Height(45),
                 alignSelf: 'center',
                 flexDirection: 'row',
                 alignItems: 'center',
@@ -492,7 +627,7 @@ const TakeAdmission = () => {
             <View
               style={{
                 width: Width(355),
-                height: Height(40),
+                height: Height(45),
                 alignSelf: 'center',
                 flexDirection: 'row',
                 alignItems: 'center',
@@ -524,7 +659,7 @@ const TakeAdmission = () => {
               <Text style={{fontSize: 20, marginBottom: 10, marginTop: 8}}>
                 Password Size Photo
               </Text>
-              <View style={styles.imgpreview}>
+              <View>
                 {passportsize ? (
                   <>
                     <Image
@@ -534,84 +669,82 @@ const TakeAdmission = () => {
                   </>
                 ) : (
                   <>
-                    <TouchableOpacity
-                      onPress={() => handleTakePhotoSignature()}>
-                      <View>
-                        <Ionicons name="camera" size={50} />
-                        {/* <Text>Camera</Text> */}
-                      </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      onPress={() => handleChoosePhotoSignature()}>
-                      <View>
-                        <Ionicons name="image" size={50} />
-                        {/* <Text>Gallery</Text> */}
-                      </View>
-                    </TouchableOpacity>
+                    <View style={styles.imgpreview}>
+                      <TouchableOpacity
+                        onPress={() => handleTakePhotoSignature()}>
+                        <View>
+                          <Ionicons name="camera" size={50} />
+                          {/* <Text>Camera</Text> */}
+                        </View>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        onPress={() => handleChoosePhotoSignature()}>
+                        <View>
+                          <Ionicons name="image" size={50} />
+                          {/* <Text>Gallery</Text> */}
+                        </View>
+                      </TouchableOpacity>
+                    </View>
                   </>
                 )}
               </View>
               <Text style={{fontSize: 20, marginBottom: 10, marginTop: 8}}>
                 Adhar Card
               </Text>
-              <View style={styles.imgpreview}>
-                {passportsize ? (
+              <View>
+                {adharno ? (
                   <>
-                    <Image
-                      source={{uri: passportsize}}
-                      style={styles.imgprestyle}
-                    />
-
-                    {console.log('images', passportsize)}
+                    <Image source={{uri: adharno}} style={styles.imgprestyle} />
                   </>
                 ) : (
                   <>
-                    <TouchableOpacity
-                      onPress={() => handleTakePhotoSignature()}>
-                      <View>
-                        <Ionicons name="camera" size={50} />
-                        {/* <Text>Camera</Text> */}
-                      </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      onPress={() => handleChoosePhotoSignature()}>
-                      <View>
-                        <Ionicons name="image" size={50} />
-                        {/* <Text>Gallery</Text> */}
-                      </View>
-                    </TouchableOpacity>
+                    <View style={styles.imgpreview}>
+                      <TouchableOpacity onPress={() => handleTakePhotoAdhar()}>
+                        <View>
+                          <Ionicons name="camera" size={50} />
+                          {/* <Text>Camera</Text> */}
+                        </View>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        onPress={() => handleChoosePhotoAdhar()}>
+                        <View>
+                          <Ionicons name="image" size={50} />
+                          {/* <Text>Gallery</Text> */}
+                        </View>
+                      </TouchableOpacity>
+                    </View>
                   </>
                 )}
               </View>
               <Text style={{fontSize: 20, marginBottom: 10, marginTop: 8}}>
                 Previous MarkSheet
               </Text>
-              <View style={styles.imgpreview}>
-                {passportsize ? (
+              <View>
+                {premarksheet ? (
                   <>
                     <Image
-                      source={{uri: passportsize}}
+                      source={{uri: premarksheet}}
                       style={styles.imgprestyle}
                     />
-
-                    {console.log('images', passportsize)}
                   </>
                 ) : (
                   <>
-                    <TouchableOpacity
-                      onPress={() => handleTakePhotoSignature()}>
-                      <View>
-                        <Ionicons name="camera" size={50} />
-                        {/* <Text>Camera</Text> */}
-                      </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      onPress={() => handleChoosePhotoSignature()}>
-                      <View>
-                        <Ionicons name="image" size={50} />
-                        {/* <Text>Gallery</Text> */}
-                      </View>
-                    </TouchableOpacity>
+                    <View style={styles.imgpreview}>
+                      <TouchableOpacity
+                        onPress={() => handleTakePhotoMarksheet()}>
+                        <View>
+                          <Ionicons name="camera" size={50} />
+                          {/* <Text>Camera</Text> */}
+                        </View>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        onPress={() => handleChoosePhotoMarksheet()}>
+                        <View>
+                          <Ionicons name="image" size={50} />
+                          {/* <Text>Gallery</Text> */}
+                        </View>
+                      </TouchableOpacity>
+                    </View>
                   </>
                 )}
               </View>
@@ -621,7 +754,7 @@ const TakeAdmission = () => {
               style={{
                 alignSelf: 'center',
                 width: Width(355),
-                height: Height(40),
+                height: Height(45),
                 fontFamily: 'Gilroy-SemiBold',
                 borderWidth: 1.5,
                 borderRadius: Width(5),
@@ -653,7 +786,7 @@ const TakeAdmission = () => {
               style={{
                 alignSelf: 'center',
                 width: Width(355),
-                height: Height(40),
+                height: Height(45),
                 fontFamily: 'Gilroy-SemiBold',
                 borderWidth: 1.5,
                 borderRadius: Width(5),
@@ -684,7 +817,7 @@ const TakeAdmission = () => {
             <View
               style={{
                 width: Width(355),
-                height: Height(40),
+                height: Height(45),
                 alignSelf: 'center',
                 flexDirection: 'row',
                 alignItems: 'center',
@@ -730,7 +863,7 @@ const TakeAdmission = () => {
                 <View
                   style={{
                     width: Width(355),
-                    height: Height(40),
+                    height: Height(45),
                     alignSelf: 'center',
                     flexDirection: 'row',
                     alignItems: 'center',
@@ -761,7 +894,7 @@ const TakeAdmission = () => {
                 <View
                   style={{
                     width: Width(355),
-                    height: Height(40),
+                    height: Height(45),
                     alignSelf: 'center',
                     flexDirection: 'row',
                     alignItems: 'center',
@@ -792,7 +925,7 @@ const TakeAdmission = () => {
                 <View
                   style={{
                     width: Width(355),
-                    height: Height(40),
+                    height: Height(45),
                     alignSelf: 'center',
                     flexDirection: 'row',
                     alignItems: 'center',
@@ -839,7 +972,7 @@ const TakeAdmission = () => {
                 <View
                   style={{
                     width: Width(355),
-                    height: Height(40),
+                    height: Height(45),
                     alignSelf: 'center',
                     flexDirection: 'row',
                     alignItems: 'center',
@@ -870,7 +1003,7 @@ const TakeAdmission = () => {
                 <View
                   style={{
                     width: Width(355),
-                    height: Height(40),
+                    height: Height(45),
                     alignSelf: 'center',
                     flexDirection: 'row',
                     alignItems: 'center',
@@ -901,7 +1034,7 @@ const TakeAdmission = () => {
                 <View
                   style={{
                     width: Width(355),
-                    height: Height(40),
+                    height: Height(45),
                     alignSelf: 'center',
                     flexDirection: 'row',
                     alignItems: 'center',
@@ -982,7 +1115,7 @@ const styles = StyleSheet.create({
   },
 
   addinput: {
-    height: Height(40),
+    height: Height(45),
     width: Width(355),
     borderWidth: 1,
     // borderColor: index === 7 ? primary : '#a9a9a9',

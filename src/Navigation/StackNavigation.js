@@ -36,6 +36,7 @@ import UpdateInstituteCoaching from '../Coaching/Profile/UpdateInstitute';
 import UpdateCredentialCoaching from '../Coaching/Profile/UpdateCredential';
 import UpdateImgaesCoaching from '../Coaching/Profile/UpdateImgaes';
 import UpdateCommunicationCoaching from '../Coaching/Profile/UpdateCommunication';
+import FeeCollectCoaching from '../Coaching/Accounts/FeeCollect';
 import {primary} from '../utils/Colors';
 const Stack = createNativeStackNavigator();
 
@@ -358,11 +359,7 @@ function StackNavigation() {
           },
         }}
       />
-      <Stack.Screen
-        name="ProfileCoaching"
-        component={ProfileCoaching}
-      
-      />
+      <Stack.Screen name="ProfileCoaching" component={ProfileCoaching} />
       <Stack.Screen
         name="UpdateInstituteCoaching"
         component={UpdateInstituteCoaching}
@@ -378,7 +375,7 @@ function StackNavigation() {
           },
         }}
       />
-        <Stack.Screen
+      <Stack.Screen
         name="UpdateImgaesCoaching"
         component={UpdateImgaesCoaching}
         options={{
@@ -393,7 +390,7 @@ function StackNavigation() {
           },
         }}
       />
-       <Stack.Screen
+      <Stack.Screen
         name="UpdateCredentialCoaching"
         component={UpdateCredentialCoaching}
         options={{
@@ -408,7 +405,7 @@ function StackNavigation() {
           },
         }}
       />
-       <Stack.Screen
+      <Stack.Screen
         name="UpdateCommunicationCoaching"
         component={UpdateCommunicationCoaching}
         options={{
@@ -423,6 +420,7 @@ function StackNavigation() {
           },
         }}
       />
+      <Stack.Screen name="FeeCollectCoaching" component={FeeCollectCoaching} />
       <Stack.Screen name="drawer" component={DrawerNavigation} />
     </Stack.Navigator>
   );
