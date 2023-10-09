@@ -2,12 +2,10 @@ import React from 'react';
 import AppNavigation from './src/Navigation/AppNavigation';
 import Toast, {BaseToast, ErrorToast} from 'react-native-toast-message';
 import {PaperProvider} from 'react-native-paper';
+import {Provider} from 'react-redux';
+import store from './src/redux/store';
 export default function App() {
   const toastConfig = {
-    /*
-      Overwrite 'success' type,
-      by modifying the existing `BaseToast` component
-    */
     success: props => (
       <BaseToast
         {...props}
@@ -19,10 +17,7 @@ export default function App() {
         }}
       />
     ),
-    /*
-      Overwrite 'error' type,
-      by modifying the existing `ErrorToast` component
-    */
+
     error: props => (
       <ErrorToast
         {...props}
@@ -40,13 +35,13 @@ export default function App() {
 
   return (
     <>
-      {/* <Provider store={store}>
-        <AppNavigation />
-      </Provider> */}
-      <PaperProvider>
-        <AppNavigation />
-      </PaperProvider>
-     <Toast config={toastConfig} />
+      <Provider store={store}>
+        <PaperProvider>
+          <AppNavigation />
+        </PaperProvider>
+      </Provider>
+
+      <Toast config={toastConfig} />
     </>
   );
 }
