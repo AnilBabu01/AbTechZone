@@ -1671,7 +1671,7 @@ export const getStudentTestReducer = (state = { test: [] }, action) => {
 };
 
 export const updateStudentTestReducer = (state = { result: [] }, action) => {
-  console.log('data from addresult action',action.payload);
+
   switch (action.type) {
     case UPDATE_STUDENT_TEST_REQUEST:
       return {

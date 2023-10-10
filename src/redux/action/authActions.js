@@ -1,6 +1,6 @@
 import axios from "axios";
 import { toast } from "react-toastify";
-import { backendUrl, backendApiUrl } from "../../config/config";
+import { backendUrl, backendApiUrl } from "../../Config/config";
 import {
   LOGIN_REQUEST,
   LOGIN_SUCCESS,

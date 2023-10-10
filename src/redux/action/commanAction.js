@@ -1,6 +1,6 @@
 import axios from "axios";
 import { toast } from "react-toastify";
-import { backendApiUrl } from "../../config/config";
+import { backendApiUrl } from "../../Config/config";
 import { serverInstance } from "../../API/ServerInstance";
 import {
   ALL_COACHING_REQUEST,

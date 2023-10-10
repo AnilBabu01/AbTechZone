@@ -3,7 +3,7 @@ import AppNavigation from './src/Navigation/AppNavigation';
 import Toast, {BaseToast, ErrorToast} from 'react-native-toast-message';
 import {PaperProvider} from 'react-native-paper';
 import {Provider} from 'react-redux';
-import store from './src/redux/store';
+import store from './src/Redux/store';
 export default function App() {
   const toastConfig = {
     success: props => (
@@ -39,7 +39,13 @@ export default function App() {
         <PaperProvider>
           <AppNavigation />
         </PaperProvider>
+
+        
       </Provider>
+
+      {/* <PaperProvider>
+          <AppNavigation />
+        </PaperProvider> */}
 
       <Toast config={toastConfig} />
     </>
