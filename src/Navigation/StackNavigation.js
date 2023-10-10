@@ -3,7 +3,6 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import LoginScreen from '../Auth/Login';
 import SplashScreen from '../Splash/Splash';
 import HomeScreen from '../Owner/Home';
-import Header from '../Component/Header/Header';
 import DrawerNavigation from '../Navigation/DrawerNavigation';
 import DashboardCoaching from '../Coaching/Dashboard/Dashboard';
 import FrontOfficeCoaching from '../Coaching/FrontOffice/FrontOffice';
@@ -51,14 +50,7 @@ function StackNavigation() {
   }, []);
 
   return (
-    <Stack.Navigator
-      screenOptions={{headerShown: false}}
-
-      // headerMode={'screen'}
-      // screenOptions={{
-      //   header: ({navigation}) => <Header navigation={navigation} />,
-      // }}
-    >
+    <Stack.Navigator screenOptions={{headerShown: false}}>
       {showsplash && (
         <Stack.Screen name="OnBoarding" component={SplashScreen} />
       )}
