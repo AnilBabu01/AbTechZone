@@ -1,6 +1,6 @@
-import axios from "axios";
-import { toast } from "react-toastify";
-import { backendUrl, backendApiUrl } from "../../Config/config";
+import axios from 'axios';
+import {toast} from 'react-toastify';
+import {backendUrl, backendApiUrl} from '../../Config/config';
 import {
   LOGIN_REQUEST,
   LOGIN_SUCCESS,
@@ -35,25 +35,25 @@ import {
   LOGOUT_SUCCESS,
   LOGOUT_FAIL,
   CLEAR_ERRORS,
-} from "../constants/authConstants";
+} from '../constants/authConstants';
 
 // Register user
 export const register =
-  (userData, loginas, setOpen, setOpen1) => async (dispatch) => {
+  (userData, loginas, setOpen, setOpen1) => async dispatch => {
     try {
-      dispatch({ type: REGISTER_USER_REQUEST });
+      dispatch({type: REGISTER_USER_REQUEST});
 
       const config = {
         headers: {
-          "Content-Type": "multipart/form-data",
+          'Content-Type': 'multipart/form-data',
         },
       };
 
-      if (loginas === "college") {
-        const { data } = await axios.post(
+      if (loginas === 'college') {
+        const {data} = await axios.post(
           `${backendApiUrl}college/register`,
           userData,
-          config
+          config,
         );
 
         if (data?.status) {
@@ -70,11 +70,11 @@ export const register =
         });
       }
 
-      if (loginas === "school") {
-        const { data } = await axios.post(
+      if (loginas === 'school') {
+        const {data} = await axios.post(
           `${backendApiUrl}school/register`,
           userData,
-          config
+          config,
         );
         if (data?.status) {
           toast.success(data?.msg, {
@@ -88,11 +88,11 @@ export const register =
           payload: data,
         });
       }
-      if (loginas === "institute") {
-        const { data } = await axios.post(
+      if (loginas === 'institute') {
+        const {data} = await axios.post(
           `${backendApiUrl}coaching/register`,
           userData,
-          config
+          config,
         );
         if (data?.status) {
           toast.success(data?.msg, {
@@ -111,236 +111,234 @@ export const register =
         type: REGISTER_USER_FAIL,
         payload: error?.response?.data?.msg,
       });
-      toast.error(error?.response?.data?.msg, { autoClose: 1000 });
+      toast.error(error?.response?.data?.msg, {autoClose: 1000});
     }
   };
 
 // Login
 
-export const login =
-  (email, password, loginas, Fullname) => async (dispatch) => {
-    try {
-
-      console.log("login is ", loginas);
-
-      dispatch({ type: LOGIN_REQUEST });
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      };
-
-      if (loginas === "college") {
-        const guestdata = {
-          email: email,
-          phoneNo: password,
-          userType: loginas,
-          Fullname: Fullname,
-        };
-        const { data } = await axios.post(
-          `${backendApiUrl}guest/login`,
-          guestdata,
-          config
-        );
-
-        if (data?.status) {
-          toast.success(data?.msg, {
-            autoClose: 1000,
-          });
-        }
-        dispatch({
-          type: LOGIN_SUCCESS,
-          payload: data,
-        });
-      }
-
-      if (loginas === "institute") {
-        const guestdata = {
-          email: email,
-          phoneNo: password,
-          userType: loginas,
-          Fullname: Fullname,
-        };
-        const { data } = await axios.post(
-          `${backendApiUrl}guest/login`,
-          guestdata,
-          config
-        );
-        if (data?.status) {
-          toast.success(data?.msg, {
-            autoClose: 1000,
-          });
-        }
-        dispatch({
-          type: LOGIN_SUCCESS,
-          payload: data,
-        });
-      }
-      if (loginas === "school") {
-        const guestdata = {
-          email: email,
-          phoneNo: password,
-          userType: loginas,
-          Fullname: Fullname,
-        };
-        const { data } = await axios.post(
-          `${backendApiUrl}guest/login`,
-          guestdata,
-          config
-        );
-        if (data?.status) {
-          toast.success(data?.msg, {
-            autoClose: 1000,
-          });
-        }
-        dispatch({
-          type: LOGIN_SUCCESS,
-          payload: data,
-        });
-      }
-
-      if (loginas === "College") {
-        const { data } = await axios.post(
-          `${backendApiUrl}college/login`,
-          { email: email, password: password, institutename: Fullname },
-          config
-        );
-        if (data?.status) {
-          toast.success(data?.msg, {
-            autoClose: 1000,
-          });
-        }
-        dispatch({
-          type: LOGIN_SUCCESS,
-          payload: data,
-        });
-      }
-      if (loginas === "School") {
-        const { data } = await axios.post(
-          `${backendApiUrl}school/login`,
-          { email: email, password: password, institutename: Fullname },
-          config
-        );
-        if (data?.status) {
-          toast.success(data?.msg, {
-            autoClose: 1000,
-          });
-        }
-        dispatch({
-          type: LOGIN_SUCCESS,
-          payload: data,
-        });
-      }
-
-      if (loginas === "Coaching Institute") {
-        const { data } = await axios.post(
-          `${backendApiUrl}coaching/login`,
-          { email: email, password: password, institutename: Fullname },
-          config
-        );
-        if (data?.status) {
-          toast.success(data?.msg, {
-            autoClose: 1000,
-          });
-        }
-        dispatch({
-          type: LOGIN_SUCCESS,
-          payload: data,
-        });
-      }
-
-
-      if (loginas === "Employee") {
-        const { data } = await axios.post(
-          `${backendApiUrl}comman/employeelogin`,
-          { email, password, institutename: Fullname },
-          config
-        );
-        if (data?.status) {
-          toast.success(data?.msg, {
-            autoClose: 1000,
-          });
-        }
-        dispatch({
-          type: LOGIN_SUCCESS,
-          payload: data,
-        });
-      }
-
-      if (loginas === "Student") {
-        const { data } = await axios.post(
-          `${backendApiUrl}student/login`,
-          {
-            rollnumber: email,
-            password: password,
-            institutename: Fullname,
-          },
-          config
-        );
-        if (data?.status) {
-          toast.success(data?.msg, {
-            autoClose: 1000,
-          });
-        }
-        dispatch({
-          type: LOGIN_SUCCESS,
-          payload: data,
-        });
-      }
-
-      if (loginas === "Parent") {
-        const { data } = await axios.post(
-          `${backendApiUrl}parent/login`,
-          { phoneno1: email, password: password, institutename: Fullname },
-          config
-        );
-        if (data?.status) {
-          toast.success(data?.msg, {
-            autoClose: 1000,
-          });
-        }
-        dispatch({
-          type: LOGIN_SUCCESS,
-          payload: data,
-        });
-      }
-
-      if (loginas === "Others") {
-        const { data } = await axios.post(
-          `${backendApiUrl}admin/login`,
-          { email, password },
-          config
-        );
-        if (data?.status) {
-          toast.success(data?.msg, {
-            autoClose: 1000,
-          });
-        }
-        dispatch({
-          type: LOGIN_SUCCESS,
-          payload: data,
-        });
-      }
-    } catch (error) {
-      dispatch({
-        type: LOGIN_FAIL,
-        payload: error?.response?.data?.msg,
-      });
-      toast.error(error?.response?.data?.msg, { autoClose: 1000 });
-    }
-  };
-
-//loader user
-export const loadUser = () => async (dispatch) => {
+export const login = (email, password, loginas, Fullname) => async dispatch => {
   try {
-    dispatch({ type: LOAD_USER_REQUEST });
+    console.log('login is ', loginas);
+
+    dispatch({type: LOGIN_REQUEST});
     const config = {
       headers: {
-        "Content-Type": "application/json",
-        Authorization: `${localStorage.getItem("erptoken")}`,
+        'Content-Type': 'application/json',
       },
     };
-    const { data } = await axios.get(`${backendApiUrl}comman/profile`, config);
+
+    if (loginas === 'college') {
+      const guestdata = {
+        email: email,
+        phoneNo: password,
+        userType: loginas,
+        Fullname: Fullname,
+      };
+      const {data} = await axios.post(
+        `${backendApiUrl}guest/login`,
+        guestdata,
+        config,
+      );
+
+      if (data?.status) {
+        toast.success(data?.msg, {
+          autoClose: 1000,
+        });
+      }
+      dispatch({
+        type: LOGIN_SUCCESS,
+        payload: data,
+      });
+    }
+
+    if (loginas === 'institute') {
+      const guestdata = {
+        email: email,
+        phoneNo: password,
+        userType: loginas,
+        Fullname: Fullname,
+      };
+      const {data} = await axios.post(
+        `${backendApiUrl}guest/login`,
+        guestdata,
+        config,
+      );
+      if (data?.status) {
+        toast.success(data?.msg, {
+          autoClose: 1000,
+        });
+      }
+      dispatch({
+        type: LOGIN_SUCCESS,
+        payload: data,
+      });
+    }
+    if (loginas === 'school') {
+      const guestdata = {
+        email: email,
+        phoneNo: password,
+        userType: loginas,
+        Fullname: Fullname,
+      };
+      const {data} = await axios.post(
+        `${backendApiUrl}guest/login`,
+        guestdata,
+        config,
+      );
+      if (data?.status) {
+        toast.success(data?.msg, {
+          autoClose: 1000,
+        });
+      }
+      dispatch({
+        type: LOGIN_SUCCESS,
+        payload: data,
+      });
+    }
+
+    if (loginas === 'College') {
+      const {data} = await axios.post(
+        `${backendApiUrl}college/login`,
+        {email: email, password: password, institutename: Fullname},
+        config,
+      );
+      if (data?.status) {
+        toast.success(data?.msg, {
+          autoClose: 1000,
+        });
+      }
+      dispatch({
+        type: LOGIN_SUCCESS,
+        payload: data,
+      });
+    }
+    if (loginas === 'School') {
+      const {data} = await axios.post(
+        `${backendApiUrl}school/login`,
+        {email: email, password: password, institutename: Fullname},
+        config,
+      );
+      if (data?.status) {
+        toast.success(data?.msg, {
+          autoClose: 1000,
+        });
+      }
+      dispatch({
+        type: LOGIN_SUCCESS,
+        payload: data,
+      });
+    }
+
+    if (loginas === 'Coaching Institute') {
+      const {data} = await axios.post(
+        `${backendApiUrl}coaching/login`,
+        {email: email, password: password, institutename: Fullname},
+        config,
+      );
+      if (data?.status) {
+        toast.success(data?.msg, {
+          autoClose: 1000,
+        });
+      }
+      dispatch({
+        type: LOGIN_SUCCESS,
+        payload: data,
+      });
+    }
+
+    if (loginas === 'Employee') {
+      const {data} = await axios.post(
+        `${backendApiUrl}comman/employeelogin`,
+        {email, password, institutename: Fullname},
+        config,
+      );
+      if (data?.status) {
+        toast.success(data?.msg, {
+          autoClose: 1000,
+        });
+      }
+      dispatch({
+        type: LOGIN_SUCCESS,
+        payload: data,
+      });
+    }
+
+    if (loginas === 'Student') {
+      const {data} = await axios.post(
+        `${backendApiUrl}student/login`,
+        {
+          rollnumber: email,
+          password: password,
+          institutename: Fullname,
+        },
+        config,
+      );
+      if (data?.status) {
+        toast.success(data?.msg, {
+          autoClose: 1000,
+        });
+      }
+      dispatch({
+        type: LOGIN_SUCCESS,
+        payload: data,
+      });
+    }
+
+    if (loginas === 'Parent') {
+      const {data} = await axios.post(
+        `${backendApiUrl}parent/login`,
+        {phoneno1: email, password: password, institutename: Fullname},
+        config,
+      );
+      if (data?.status) {
+        toast.success(data?.msg, {
+          autoClose: 1000,
+        });
+      }
+      dispatch({
+        type: LOGIN_SUCCESS,
+        payload: data,
+      });
+    }
+
+    if (loginas === 'Others') {
+      const {data} = await axios.post(
+        `${backendApiUrl}admin/login`,
+        {email, password},
+        config,
+      );
+      if (data?.status) {
+        toast.success(data?.msg, {
+          autoClose: 1000,
+        });
+      }
+      dispatch({
+        type: LOGIN_SUCCESS,
+        payload: data,
+      });
+    }
+  } catch (error) {
+    dispatch({
+      type: LOGIN_FAIL,
+      payload: error?.response?.data?.msg,
+    });
+    toast.error(error?.response?.data?.msg, {autoClose: 1000});
+  }
+};
+
+//loader user
+export const loadUser = () => async dispatch => {
+  try {
+    let token = await AsyncStorage.getItem('erptoken');
+    dispatch({type: LOAD_USER_REQUEST});
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `${token}`,
+      },
+    };
+    const {data} = await axios.get(`${backendApiUrl}comman/profile`, config);
 
     dispatch({
       type: LOAD_USER_SUCCESS,
@@ -356,15 +354,15 @@ export const loadUser = () => async (dispatch) => {
 };
 
 // Logout user
-export const logout = () => async (dispatch) => {
+export const logout = () => async dispatch => {
   try {
     axios.defaults.headers.get[
-      "Authorization"
-    ] = `Bearer ${localStorage.getItem("token")}`;
+      'Authorization'
+    ] = `Bearer ${localStorage.getItem('token')}`;
 
     axios.defaults.headers.post[
-      "Authorization"
-    ] = `Bearer ${localStorage.getItem("token")}`;
+      'Authorization'
+    ] = `Bearer ${localStorage.getItem('token')}`;
     await axios.get(`${backendUrl}/api/auth/logout`);
 
     dispatch({
@@ -379,27 +377,24 @@ export const logout = () => async (dispatch) => {
 };
 
 // Update password
-export const updatePassword = (passwords) => async (dispatch) => {
+export const updatePassword = passwords => async dispatch => {
   try {
-    axios.defaults.headers.get[
-      "Authorization"
-    ] = `Bearer ${localStorage.getItem("token")}`;
+    let token = await AsyncStorage.getItem('erptoken');
+    axios.defaults.headers.get['Authorization'] = `Bearer ${token}`;
 
-    axios.defaults.headers.put[
-      "Authorization"
-    ] = `Bearer ${localStorage.getItem("token")}`;
-    dispatch({ type: UPDATE_PASSWORD_REQUEST });
+    axios.defaults.headers.put['Authorization'] = `Bearer ${token}`;
+    dispatch({type: UPDATE_PASSWORD_REQUEST});
 
     const config = {
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
     };
 
-    const { data } = await axios.put(
+    const {data} = await axios.put(
       `${backendUrl}/api/auth/password/update`,
       passwords,
-      config
+      config,
     );
 
     dispatch({
@@ -415,27 +410,24 @@ export const updatePassword = (passwords) => async (dispatch) => {
 };
 
 // Forgot password
-export const forgotPassword = (email) => async (dispatch) => {
+export const forgotPassword = email => async dispatch => {
   try {
-    axios.defaults.headers.get[
-      "Authorization"
-    ] = `Bearer ${localStorage.getItem("token")}`;
+    let token = await AsyncStorage.getItem('erptoken');
+    axios.defaults.headers.get['Authorization'] = `Bearer ${token}`;
 
-    axios.defaults.headers.post[
-      "Authorization"
-    ] = `Bearer ${localStorage.getItem("token")}`;
-    dispatch({ type: FORGOT_PASSWORD_REQUEST });
+    axios.defaults.headers.post['Authorization'] = `Bearer ${token}`;
+    dispatch({type: FORGOT_PASSWORD_REQUEST});
 
     const config = {
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
     };
 
-    const { data } = await axios.post(
+    const {data} = await axios.post(
       `${backendUrl}/api/auth/password/forgot`,
       email,
-      config
+      config,
     );
 
     dispatch({
@@ -451,27 +443,24 @@ export const forgotPassword = (email) => async (dispatch) => {
 };
 
 // Reset password
-export const resetPassword = (token, passwords) => async (dispatch) => {
+export const resetPassword = (token, passwords) => async dispatch => {
   try {
-    axios.defaults.headers.get[
-      "Authorization"
-    ] = `Bearer ${localStorage.getItem("token")}`;
+    let token = await AsyncStorage.getItem('erptoken');
+    axios.defaults.headers.get['Authorization'] = `Bearer ${token}`;
 
-    axios.defaults.headers.put[
-      "Authorization"
-    ] = `Bearer ${localStorage.getItem("token")}`;
-    dispatch({ type: NEW_PASSWORD_REQUEST });
+    axios.defaults.headers.put['Authorization'] = `Bearer ${token}`;
+    dispatch({type: NEW_PASSWORD_REQUEST});
 
     const config = {
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
     };
 
-    const { data } = await axios.put(
+    const {data} = await axios.put(
       `${backendUrl}/api/auth/password/reset/${token}`,
       passwords,
-      config
+      config,
     );
 
     dispatch({
@@ -487,18 +476,14 @@ export const resetPassword = (token, passwords) => async (dispatch) => {
 };
 
 // Get all users
-export const allUsers = () => async (dispatch) => {
+export const allUsers = () => async dispatch => {
   try {
-    axios.defaults.headers.get[
-      "Authorization"
-    ] = `Bearer ${localStorage.getItem("token")}`;
+    let token = await AsyncStorage.getItem('erptoken');
+    axios.defaults.headers.get['Authorization'] = `Bearer ${token}`;
 
-    axios.defaults.headers.post[
-      "Authorization"
-    ] = `Bearer ${localStorage.getItem("token")}`;
-    dispatch({ type: ALL_USERS_REQUEST });
+    dispatch({type: ALL_USERS_REQUEST});
 
-    const { data } = await axios.get(`${backendUrl}/api/auth/admin/users`);
+    const {data} = await axios.get(`${backendUrl}/api/auth/admin/users`);
 
     dispatch({
       type: ALL_USERS_SUCCESS,
@@ -513,27 +498,23 @@ export const allUsers = () => async (dispatch) => {
 };
 
 // Update user - ADMIN
-export const updateUser = (id, userData) => async (dispatch) => {
+export const updateUser = (id, userData) => async dispatch => {
   try {
-    axios.defaults.headers.get[
-      "Authorization"
-    ] = `Bearer ${localStorage.getItem("token")}`;
+    let token = await AsyncStorage.getItem('erptoken');
 
-    axios.defaults.headers.put[
-      "Authorization"
-    ] = `Bearer ${localStorage.getItem("token")}`;
-    dispatch({ type: UPDATE_USER_REQUEST });
+    axios.defaults.headers.put['Authorization'] = `Bearer ${token}`;
+    dispatch({type: UPDATE_USER_REQUEST});
 
     const config = {
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
     };
 
-    const { data } = await axios.put(
+    const {data} = await axios.put(
       `${backendUrl}/api/auth/admin/user/${id}`,
       userData,
-      config
+      config,
     );
 
     dispatch({
@@ -549,18 +530,14 @@ export const updateUser = (id, userData) => async (dispatch) => {
 };
 
 // Get user details - ADMIN
-export const getUserDetails = (id) => async (dispatch) => {
+export const getUserDetails = id => async dispatch => {
   try {
-    axios.defaults.headers.get[
-      "Authorization"
-    ] = `Bearer ${localStorage.getItem("token")}`;
+    let token = await AsyncStorage.getItem('erptoken');
+    axios.defaults.headers.get['Authorization'] = `Bearer ${token}`;
 
-    axios.defaults.headers.post[
-      "Authorization"
-    ] = `Bearer ${localStorage.getItem("token")}`;
-    dispatch({ type: USER_DETAILS_REQUEST });
+    dispatch({type: USER_DETAILS_REQUEST});
 
-    const { data } = await axios.get(`${backendUrl}/api/auth/admin/user/${id}`);
+    const {data} = await axios.get(`${backendUrl}/api/auth/admin/user/${id}`);
 
     dispatch({
       type: USER_DETAILS_SUCCESS,
@@ -575,19 +552,15 @@ export const getUserDetails = (id) => async (dispatch) => {
 };
 
 // Delete user - ADMIN
-export const deleteUser = (id) => async (dispatch) => {
+export const deleteUser = id => async dispatch => {
   try {
-    axios.defaults.headers.get[
-      "Authorization"
-    ] = `Bearer ${localStorage.getItem("token")}`;
+    let token = await AsyncStorage.getItem('erptoken');
 
-    axios.defaults.headers.delete[
-      "Authorization"
-    ] = `Bearer ${localStorage.getItem("token")}`;
-    dispatch({ type: DELETE_USER_REQUEST });
+    axios.defaults.headers.delete['Authorization'] = `Bearer ${token}`;
+    dispatch({type: DELETE_USER_REQUEST});
 
-    const { data } = await axios.delete(
-      `${backendUrl}/api/auth/admin/user/${id}`
+    const {data} = await axios.delete(
+      `${backendUrl}/api/auth/admin/user/${id}`,
     );
 
     dispatch({
@@ -603,7 +576,7 @@ export const deleteUser = (id) => async (dispatch) => {
 };
 
 // Clear Errors
-export const clearErrors = () => async (dispatch) => {
+export const clearErrors = () => async dispatch => {
   dispatch({
     type: CLEAR_ERRORS,
   });

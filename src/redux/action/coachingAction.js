@@ -33,10 +33,11 @@ import {
 // post add enquiry
 export const Addenquiry = (datas, setOpen) => async (dispatch) => {
   try {
+    let token = await AsyncStorage.getItem('erptoken');
     const config = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `${localStorage.getItem("erptoken")}`,
+        Authorization: `${token}`,
       },
     };
     dispatch({ type: ADD_ENQUIRY_REQUEST });
@@ -70,10 +71,11 @@ export const Addenquiry = (datas, setOpen) => async (dispatch) => {
 // post add enquiry
 export const Updateenquiry = (datas, setOpen) => async (dispatch) => {
   try {
+    let token = await AsyncStorage.getItem('erptoken');
     const config = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `${localStorage.getItem("erptoken")}`,
+        Authorization: `${token}`,
       },
     };
     dispatch({ type: UPDATE_ENQUIRY_REQUEST });
@@ -135,10 +137,11 @@ export const deleteenquiry = (deleteid, setOpenalert) => async (dispatch) => {
 // Get all Enquiry
 export const getenquiries = (page, limit, setPage) => async (dispatch) => {
   try {
+    let token = await AsyncStorage.getItem('erptoken');
     const config = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `${localStorage.getItem("erptoken")}`,
+        Authorization: `${token}`,
       },
     };
     dispatch({ type: ALL_ENQUIRY_REQUEST });
@@ -178,10 +181,11 @@ export const getenquiries = (page, limit, setPage) => async (dispatch) => {
 export const getFILTERenquiries =
   (fromdate, todate, name) => async (dispatch) => {
     try {
+      let token = await AsyncStorage.getItem('erptoken');
       const config = {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `${localStorage.getItem("erptoken")}`,
+          Authorization: `${token}`,
         },
       };
       dispatch({ type: FILTER_ENQUIRY_REQUEST });
@@ -203,10 +207,11 @@ export const getFILTERenquiries =
 // post Update profile
 export const UpdateProfile = (datas, setOpen) => async (dispatch) => {
   try {
+    let token = await AsyncStorage.getItem('erptoken');
     const config = {
       headers: {
         "Content-Type": "multipart/form-data",
-        Authorization: `${localStorage.getItem("erptoken")}`,
+        Authorization: `${token}`,
       },
     };
     dispatch({ type: UPDATE_PROFILE_REQUEST });
@@ -238,10 +243,11 @@ export const UpdateProfile = (datas, setOpen) => async (dispatch) => {
 
 export const Addpayfee = (datas, setOpen) => async (dispatch) => {
   try {
+    let token = await AsyncStorage.getItem('erptoken');
     const config = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `${localStorage.getItem("erptoken")}`,
+        Authorization: `${token}`,
       },
     };
     dispatch({ type: ADD_PAYCOACHINGFEE_REQUEST });

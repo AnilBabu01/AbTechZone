@@ -54,10 +54,9 @@ function StackNavigation() {
       {showsplash && (
         <Stack.Screen name="OnBoarding" component={SplashScreen} />
       )}
-      {/* <Stack.Screen name="home" component={HomeScreen} /> */}
-      <Stack.Screen name="DashboardCoaching" component={DashboardCoaching} />
-
+      <Stack.Screen name="home" component={HomeScreen} />
       <Stack.Screen name="Login" component={LoginScreen} />
+      <Stack.Screen name="DashboardCoaching" component={DashboardCoaching} />
       <Stack.Screen name="StudentTabCoaching" component={StudentTabCoaching} />
       <Stack.Screen
         name="MasterOptionsCoaching"

@@ -1,7 +1,7 @@
-import axios from "axios";
-import { toast } from "react-toastify";
-import { backendApiUrl } from "../../Config/config";
-import { serverInstance } from "../../API/ServerInstance";
+import axios from 'axios';
+import {toast} from 'react-toastify';
+import {backendApiUrl} from '../../Config/config';
+import {serverInstance} from '../../API/ServerInstance';
 import {
   ALL_COACHING_REQUEST,
   ALL_COACHING_SUCCESS,
@@ -160,21 +160,21 @@ import {
   UPDATE_STUDENT_TEST_SUCCESS,
   UPDATE_STUDENT_TEST_RESET_SUCCESS,
   UPDATE_STUDENT_TEST_FAIL,
-} from "../constants/commanConstants";
+} from '../constants/commanConstants';
 
 // Get all College
-export const allCollege = () => async (dispatch) => {
+export const allCollege = () => async dispatch => {
   try {
     const config = {
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
     };
-    dispatch({ type: ALL_COLLEGE_REQUEST });
-    const { data } = await axios.get(
+    dispatch({type: ALL_COLLEGE_REQUEST});
+    const {data} = await axios.get(
       `${backendApiUrl}comman/allcollege`,
 
-      config
+      config,
     );
     dispatch({
       type: ALL_COLLEGE_SUCCESS,
@@ -189,18 +189,18 @@ export const allCollege = () => async (dispatch) => {
 };
 
 // Get all School
-export const allschool = () => async (dispatch) => {
+export const allschool = () => async dispatch => {
   try {
     const config = {
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
     };
-    dispatch({ type: ALL_SCHOOL_REQUEST });
-    const { data } = await axios.get(
+    dispatch({type: ALL_SCHOOL_REQUEST});
+    const {data} = await axios.get(
       `${backendApiUrl}comman/allschool`,
 
-      config
+      config,
     );
     dispatch({
       type: ALL_SCHOOL_SUCCESS,
@@ -215,18 +215,18 @@ export const allschool = () => async (dispatch) => {
 };
 
 // Get all School
-export const alCoaching = () => async (dispatch) => {
+export const alCoaching = () => async dispatch => {
   try {
     const config = {
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
     };
-    dispatch({ type: ALL_COACHING_REQUEST });
-    const { data } = await axios.get(
+    dispatch({type: ALL_COACHING_REQUEST});
+    const {data} = await axios.get(
       `${backendApiUrl}comman/allcoaching`,
 
-      config
+      config,
     );
     dispatch({
       type: ALL_COACHING_SUCCESS,
@@ -241,18 +241,18 @@ export const alCoaching = () => async (dispatch) => {
 };
 
 // Get all School
-export const allClient = () => async (dispatch) => {
+export const allClient = () => async dispatch => {
   try {
     const config = {
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
     };
-    dispatch({ type: ALL_CLIENT_REQUEST });
-    const { data } = await axios.get(
+    dispatch({type: ALL_CLIENT_REQUEST});
+    const {data} = await axios.get(
       `${backendApiUrl}comman/allclient`,
 
-      config
+      config,
     );
     dispatch({
       type: ALL_CLIENT_SUCCESS,
@@ -266,20 +266,21 @@ export const allClient = () => async (dispatch) => {
   }
 };
 
-export const Addbatch = (datas, setOpen) => async (dispatch) => {
+export const Addbatch = (datas, setOpen) => async dispatch => {
   try {
+    let token = await AsyncStorage.getItem('erptoken');
     const config = {
       headers: {
-        "Content-Type": "application/json",
-        Authorization: `${localStorage.getItem("erptoken")}`,
+        'Content-Type': 'application/json',
+        Authorization: `${token}`,
       },
     };
-    dispatch({ type: ADD_BATCH_REQUEST });
+    dispatch({type: ADD_BATCH_REQUEST});
 
-    const { data } = await axios.post(
+    const {data} = await axios.post(
       `${backendApiUrl}coaching/batch`,
       datas,
-      config
+      config,
     );
 
     if (data?.status) {
@@ -298,25 +299,26 @@ export const Addbatch = (datas, setOpen) => async (dispatch) => {
       type: ADD_BATCH_FAIL,
       payload: error?.response?.data?.msg,
     });
-    toast.error(error?.response?.data?.msg, { autoClose: 1000 });
+    toast.error(error?.response?.data?.msg, {autoClose: 1000});
   }
 };
 
 // post add enquiry
-export const Updatebatch = (datas, setOpen) => async (dispatch) => {
+export const Updatebatch = (datas, setOpen) => async dispatch => {
   try {
+    let token = await AsyncStorage.getItem('erptoken');
     const config = {
       headers: {
-        "Content-Type": "application/json",
-        Authorization: `${localStorage.getItem("erptoken")}`,
+        'Content-Type': 'application/json',
+        Authorization: `${token}`,
       },
     };
-    dispatch({ type: UPDATE_BATCH_REQUEST });
+    dispatch({type: UPDATE_BATCH_REQUEST});
 
-    const { data } = await axios.put(
+    const {data} = await axios.put(
       `${backendApiUrl}coaching/batch`,
       datas,
-      config
+      config,
     );
 
     if (data?.status) {
@@ -335,24 +337,24 @@ export const Updatebatch = (datas, setOpen) => async (dispatch) => {
       type: UPDATE_BATCH_FAIL,
       payload: error?.response?.data?.msg,
     });
-    toast.error(error?.response?.data?.msg, { autoClose: 1000 });
+    toast.error(error?.response?.data?.msg, {autoClose: 1000});
   }
 };
 
 // delete  enquiry
-export const deletebatch = (deleteid, setOpenalert) => async (dispatch) => {
+export const deletebatch = (deleteid, setOpenalert) => async dispatch => {
   try {
-    dispatch({ type: DELETE_BATCH_REQUEST });
-    serverInstance("coaching/batch", "delete", {
+    dispatch({type: DELETE_BATCH_REQUEST});
+    serverInstance('coaching/batch', 'delete', {
       id: deleteid,
-    }).then((res) => {
+    }).then(res => {
       if (res?.status) {
         toast.success(res?.msg, {
           autoClose: 1000,
         });
         setOpenalert(false);
       }
-      console.log("delete data is ", res);
+      console.log('delete data is ', res);
       dispatch({
         type: DELETE_BATCH_SUCCESS,
         payload: res?.data,
@@ -363,26 +365,27 @@ export const deletebatch = (deleteid, setOpenalert) => async (dispatch) => {
       type: DELETE_BATCH_FAIL,
       payload: error?.response?.data?.msg,
     });
-    toast.error(error?.response?.data?.msg, { autoClose: 1000 });
+    toast.error(error?.response?.data?.msg, {autoClose: 1000});
     setOpenalert(false);
   }
 };
 
 // Get all Enquiry
-export const getbatch = (page, limit, setPage) => async (dispatch) => {
+export const getbatch = (page, limit, setPage) => async dispatch => {
   try {
+    let token = await AsyncStorage.getItem('erptoken');
     const config = {
       headers: {
-        "Content-Type": "application/json",
-        Authorization: `${localStorage.getItem("erptoken")}`,
+        'Content-Type': 'application/json',
+        Authorization: `${token}`,
       },
     };
-    dispatch({ type: ALL_BATCH_REQUEST });
+    dispatch({type: ALL_BATCH_REQUEST});
 
-    const { data } = await axios.get(
+    const {data} = await axios.get(
       `${backendApiUrl}coaching/batch`,
 
-      config
+      config,
     );
     dispatch({
       type: ALL_BATCH_SUCCESS,
@@ -396,20 +399,21 @@ export const getbatch = (page, limit, setPage) => async (dispatch) => {
   }
 };
 
-export const Addcourse = (datas, setOpen) => async (dispatch) => {
+export const Addcourse = (datas, setOpen) => async dispatch => {
   try {
+    let token = await AsyncStorage.getItem('erptoken');
     const config = {
       headers: {
-        "Content-Type": "application/json",
-        Authorization: `${localStorage.getItem("erptoken")}`,
+        'Content-Type': 'application/json',
+        Authorization: `${token}`,
       },
     };
-    dispatch({ type: ADD_COURSE_REQUEST });
+    dispatch({type: ADD_COURSE_REQUEST});
 
-    const { data } = await axios.post(
+    const {data} = await axios.post(
       `${backendApiUrl}comman/course`,
       datas,
-      config
+      config,
     );
 
     if (data?.status) {
@@ -428,25 +432,26 @@ export const Addcourse = (datas, setOpen) => async (dispatch) => {
       type: ADD_COURSE_FAIL,
       payload: error?.response?.data?.msg,
     });
-    toast.error(error?.response?.data?.msg, { autoClose: 1000 });
+    toast.error(error?.response?.data?.msg, {autoClose: 1000});
   }
 };
 
 // post add enquiry
-export const UpdateCourse = (datas, setOpen) => async (dispatch) => {
+export const UpdateCourse = (datas, setOpen) => async dispatch => {
   try {
+    let token = await AsyncStorage.getItem('erptoken');
     const config = {
       headers: {
-        "Content-Type": "application/json",
-        Authorization: `${localStorage.getItem("erptoken")}`,
+        'Content-Type': 'application/json',
+        Authorization: `${token}`,
       },
     };
-    dispatch({ type: UPDATE_COURSE_REQUEST });
+    dispatch({type: UPDATE_COURSE_REQUEST});
 
-    const { data } = await axios.put(
+    const {data} = await axios.put(
       `${backendApiUrl}comman/course`,
       datas,
-      config
+      config,
     );
 
     if (data?.status) {
@@ -465,17 +470,18 @@ export const UpdateCourse = (datas, setOpen) => async (dispatch) => {
       type: UPDATE_COURSE_FAIL,
       payload: error?.response?.data?.msg,
     });
-    toast.error(error?.response?.data?.msg, { autoClose: 1000 });
+    toast.error(error?.response?.data?.msg, {autoClose: 1000});
   }
 };
 
 // delete  enquiry
-export const deletecourse = (deleteid, setOpenalert) => async (dispatch) => {
+export const deletecourse = (deleteid, setOpenalert) => async dispatch => {
   try {
-    dispatch({ type: DELETE_COURSE_REQUEST });
-    serverInstance("comman/course", "delete", {
+
+    dispatch({type: DELETE_COURSE_REQUEST});
+    serverInstance('comman/course', 'delete', {
       id: deleteid,
-    }).then((res) => {
+    }).then(res => {
       if (res?.status) {
         toast.success(res?.msg, {
           autoClose: 1000,
@@ -493,26 +499,27 @@ export const deletecourse = (deleteid, setOpenalert) => async (dispatch) => {
       type: DELETE_COURSE_FAIL,
       payload: error?.response?.data?.msg,
     });
-    toast.error(error?.response?.data?.msg, { autoClose: 1000 });
+    toast.error(error?.response?.data?.msg, {autoClose: 1000});
     setOpenalert(false);
   }
 };
 
 // Get all Enquiry
-export const getcourse = (page, limit, setPage) => async (dispatch) => {
+export const getcourse = (page, limit, setPage) => async dispatch => {
   try {
+    let token = await AsyncStorage.getItem('erptoken');
     const config = {
       headers: {
-        "Content-Type": "application/json",
-        Authorization: `${localStorage.getItem("erptoken")}`,
+        'Content-Type': 'application/json',
+        Authorization: `${token}`,
       },
     };
-    dispatch({ type: ALL_COURSE_REQUEST });
+    dispatch({type: ALL_COURSE_REQUEST});
 
-    const { data } = await axios.get(
+    const {data} = await axios.get(
       `${backendApiUrl}comman/course`,
 
-      config
+      config,
     );
     dispatch({
       type: ALL_COURSE_SUCCESS,
@@ -526,20 +533,21 @@ export const getcourse = (page, limit, setPage) => async (dispatch) => {
   }
 };
 
-export const Addcategory = (datas, setOpen) => async (dispatch) => {
+export const Addcategory = (datas, setOpen) => async dispatch => {
   try {
+    let token = await AsyncStorage.getItem('erptoken');
     const config = {
       headers: {
-        "Content-Type": "application/json",
-        Authorization: `${localStorage.getItem("erptoken")}`,
+        'Content-Type': 'application/json',
+        Authorization: `${token}`,
       },
     };
-    dispatch({ type: ADD_CATEGORY_REQUEST });
+    dispatch({type: ADD_CATEGORY_REQUEST});
 
-    const { data } = await axios.post(
+    const {data} = await axios.post(
       `${backendApiUrl}comman/studentcategory`,
       datas,
-      config
+      config,
     );
 
     if (data?.status) {
@@ -558,25 +566,26 @@ export const Addcategory = (datas, setOpen) => async (dispatch) => {
       type: ADD_CATEGORY_FAIL,
       payload: error?.response?.data?.msg,
     });
-    toast.error(error?.response?.data?.msg, { autoClose: 1000 });
+    toast.error(error?.response?.data?.msg, {autoClose: 1000});
   }
 };
 
 // post add enquiry
-export const Updatecategory = (datas, setOpen) => async (dispatch) => {
+export const Updatecategory = (datas, setOpen) => async dispatch => {
   try {
+    let token = await AsyncStorage.getItem('erptoken');
     const config = {
       headers: {
-        "Content-Type": "application/json",
-        Authorization: `${localStorage.getItem("erptoken")}`,
+        'Content-Type': 'application/json',
+        Authorization: `${token}`,
       },
     };
-    dispatch({ type: UPDATE_CATEGORY_REQUEST });
+    dispatch({type: UPDATE_CATEGORY_REQUEST});
 
-    const { data } = await axios.put(
+    const {data} = await axios.put(
       `${backendApiUrl}comman/studentcategory`,
       datas,
-      config
+      config,
     );
 
     if (data?.status) {
@@ -595,17 +604,17 @@ export const Updatecategory = (datas, setOpen) => async (dispatch) => {
       type: UPDATE_CATEGORY_FAIL,
       payload: error?.response?.data?.msg,
     });
-    toast.error(error?.response?.data?.msg, { autoClose: 1000 });
+    toast.error(error?.response?.data?.msg, {autoClose: 1000});
   }
 };
 
 // delete  enquiry
-export const deletecategory = (deleteid, setOpenalert) => async (dispatch) => {
+export const deletecategory = (deleteid, setOpenalert) => async dispatch => {
   try {
-    dispatch({ type: DELETE_CATEGORY_REQUEST });
-    serverInstance("comman/studentcategory", "delete", {
+    dispatch({type: DELETE_CATEGORY_REQUEST});
+    serverInstance('comman/studentcategory', 'delete', {
       id: deleteid,
-    }).then((res) => {
+    }).then(res => {
       if (res?.status) {
         toast.success(res?.msg, {
           autoClose: 1000,
@@ -623,26 +632,27 @@ export const deletecategory = (deleteid, setOpenalert) => async (dispatch) => {
       type: DELETE_CATEGORY_FAIL,
       payload: error?.response?.data?.msg,
     });
-    toast.error(error?.response?.data?.msg, { autoClose: 1000 });
+    toast.error(error?.response?.data?.msg, {autoClose: 1000});
     setOpenalert(false);
   }
 };
 
 // Get all Enquiry
-export const getcategory = (page, limit, setPage) => async (dispatch) => {
+export const getcategory = (page, limit, setPage) => async dispatch => {
   try {
+    let token = await AsyncStorage.getItem('erptoken');
     const config = {
       headers: {
-        "Content-Type": "application/json",
-        Authorization: `${localStorage.getItem("erptoken")}`,
+        'Content-Type': 'application/json',
+        Authorization: `${token}`,
       },
     };
-    dispatch({ type: ALL_CATEGORY_REQUEST });
+    dispatch({type: ALL_CATEGORY_REQUEST});
 
-    const { data } = await axios.get(
+    const {data} = await axios.get(
       `${backendApiUrl}comman/studentcategory`,
 
-      config
+      config,
     );
     dispatch({
       type: ALL_CATEGORY_SUCCESS,
@@ -656,20 +666,21 @@ export const getcategory = (page, limit, setPage) => async (dispatch) => {
   }
 };
 
-export const AddFee = (datas, setOpen) => async (dispatch) => {
+export const AddFee = (datas, setOpen) => async dispatch => {
   try {
+    let token = await AsyncStorage.getItem('erptoken');
     const config = {
       headers: {
-        "Content-Type": "application/json",
-        Authorization: `${localStorage.getItem("erptoken")}`,
+        'Content-Type': 'application/json',
+        Authorization: `${token}`,
       },
     };
-    dispatch({ type: ADD_FEESTRUCTURE_REQUEST });
+    dispatch({type: ADD_FEESTRUCTURE_REQUEST});
 
-    const { data } = await axios.post(
+    const {data} = await axios.post(
       `${backendApiUrl}comman/fee`,
       datas,
-      config
+      config,
     );
 
     if (data?.status) {
@@ -688,26 +699,23 @@ export const AddFee = (datas, setOpen) => async (dispatch) => {
       type: ADD_FEESTRUCTURE_FAIL,
       payload: error?.response?.data?.msg,
     });
-    toast.error(error?.response?.data?.msg, { autoClose: 1000 });
+    toast.error(error?.response?.data?.msg, {autoClose: 1000});
   }
 };
 
 // post add enquiry
-export const Updatefee = (datas, setOpen) => async (dispatch) => {
+export const Updatefee = (datas, setOpen) => async dispatch => {
   try {
+    let token = await AsyncStorage.getItem('erptoken');
     const config = {
       headers: {
-        "Content-Type": "application/json",
-        Authorization: `${localStorage.getItem("erptoken")}`,
+        'Content-Type': 'application/json',
+        Authorization: `${token}`,
       },
     };
-    dispatch({ type: UPDATE_FEESTRUCTURE_REQUEST });
+    dispatch({type: UPDATE_FEESTRUCTURE_REQUEST});
 
-    const { data } = await axios.put(
-      `${backendApiUrl}comman/fee`,
-      datas,
-      config
-    );
+    const {data} = await axios.put(`${backendApiUrl}comman/fee`, datas, config);
 
     if (data?.status) {
       toast.success(data?.msg, {
@@ -725,17 +733,18 @@ export const Updatefee = (datas, setOpen) => async (dispatch) => {
       type: UPDATE_FEESTRUCTURE_FAIL,
       payload: error?.response?.data?.msg,
     });
-    toast.error(error?.response?.data?.msg, { autoClose: 1000 });
+    toast.error(error?.response?.data?.msg, {autoClose: 1000});
   }
 };
 
 // delete  enquiry
-export const deletefee = (deleteid, setOpenalert) => async (dispatch) => {
+export const deletefee = (deleteid, setOpenalert) => async dispatch => {
   try {
-    dispatch({ type: DELETE_FEESTRUCTURE_REQUEST });
-    serverInstance("comman/fee", "delete", {
+    
+    dispatch({type: DELETE_FEESTRUCTURE_REQUEST});
+    serverInstance('comman/fee', 'delete', {
       id: deleteid,
-    }).then((res) => {
+    }).then(res => {
       if (res?.status) {
         toast.success(res?.msg, {
           autoClose: 1000,
@@ -753,26 +762,27 @@ export const deletefee = (deleteid, setOpenalert) => async (dispatch) => {
       type: DELETE_FEESTRUCTURE_FAIL,
       payload: error?.response?.data?.msg,
     });
-    toast.error(error?.response?.data?.msg, { autoClose: 1000 });
+    toast.error(error?.response?.data?.msg, {autoClose: 1000});
     setOpenalert(false);
   }
 };
 
 // Get all Enquiry
-export const getfee = (page, limit, setPage) => async (dispatch) => {
+export const getfee = (page, limit, setPage) => async dispatch => {
   try {
+    let token = await AsyncStorage.getItem('erptoken');
     const config = {
       headers: {
-        "Content-Type": "application/json",
-        Authorization: `${localStorage.getItem("erptoken")}`,
+        'Content-Type': 'application/json',
+        Authorization: `${token}`,
       },
     };
-    dispatch({ type: ALL_FEESTRUCTURE_REQUEST });
+    dispatch({type: ALL_FEESTRUCTURE_REQUEST});
 
-    const { data } = await axios.get(
+    const {data} = await axios.get(
       `${backendApiUrl}comman/fee`,
 
-      config
+      config,
     );
     dispatch({
       type: ALL_FEESTRUCTURE_SUCCESS,
@@ -786,20 +796,21 @@ export const getfee = (page, limit, setPage) => async (dispatch) => {
   }
 };
 
-export const AddDesignation = (datas, setOpen) => async (dispatch) => {
+export const AddDesignation = (datas, setOpen) => async dispatch => {
   try {
+    let token = await AsyncStorage.getItem('erptoken');
     const config = {
       headers: {
-        "Content-Type": "application/json",
-        Authorization: `${localStorage.getItem("erptoken")}`,
+        'Content-Type': 'application/json',
+        Authorization: `${token}`,
       },
     };
-    dispatch({ type: ADD_Designation_REQUEST });
+    dispatch({type: ADD_Designation_REQUEST});
 
-    const { data } = await axios.post(
+    const {data} = await axios.post(
       `${backendApiUrl}comman/designation`,
       datas,
-      config
+      config,
     );
 
     if (data?.status) {
@@ -818,25 +829,26 @@ export const AddDesignation = (datas, setOpen) => async (dispatch) => {
       type: ADD_Designation_FAIL,
       payload: error?.response?.data?.msg,
     });
-    toast.error(error?.response?.data?.msg, { autoClose: 1000 });
+    toast.error(error?.response?.data?.msg, {autoClose: 1000});
   }
 };
 
 // post add enquiry
-export const UpdateDesignation = (datas, setOpen) => async (dispatch) => {
+export const UpdateDesignation = (datas, setOpen) => async dispatch => {
   try {
+    let token = await AsyncStorage.getItem('erptoken');
     const config = {
       headers: {
-        "Content-Type": "application/json",
-        Authorization: `${localStorage.getItem("erptoken")}`,
+        'Content-Type': 'application/json',
+        Authorization: `${token}`,
       },
     };
-    dispatch({ type: UPDATE_Designation_REQUEST });
+    dispatch({type: UPDATE_Designation_REQUEST});
 
-    const { data } = await axios.put(
+    const {data} = await axios.put(
       `${backendApiUrl}comman/designation`,
       datas,
-      config
+      config,
     );
 
     if (data?.status) {
@@ -855,54 +867,54 @@ export const UpdateDesignation = (datas, setOpen) => async (dispatch) => {
       type: UPDATE_Designation_FAIL,
       payload: error?.response?.data?.msg,
     });
-    toast.error(error?.response?.data?.msg, { autoClose: 1000 });
+    toast.error(error?.response?.data?.msg, {autoClose: 1000});
   }
 };
 
 // delete  enquiry
-export const deleteDesignation =
-  (deleteid, setOpenalert) => async (dispatch) => {
-    try {
-      dispatch({ type: DELETE_Designation_REQUEST });
-      serverInstance("comman/designation", "delete", {
-        id: deleteid,
-      }).then((res) => {
-        if (res?.status) {
-          toast.success(res?.msg, {
-            autoClose: 1000,
-          });
-          setOpenalert(false);
-        }
-
-        dispatch({
-          type: DELETE_Designation_SUCCESS,
-          payload: res?.data,
+export const deleteDesignation = (deleteid, setOpenalert) => async dispatch => {
+  try {
+    dispatch({type: DELETE_Designation_REQUEST});
+    serverInstance('comman/designation', 'delete', {
+      id: deleteid,
+    }).then(res => {
+      if (res?.status) {
+        toast.success(res?.msg, {
+          autoClose: 1000,
         });
-      });
-    } catch (error) {
+        setOpenalert(false);
+      }
+
       dispatch({
-        type: DELETE_Designation_FAIL,
-        payload: error?.response?.data?.msg,
+        type: DELETE_Designation_SUCCESS,
+        payload: res?.data,
       });
-      toast.error(error?.response?.data?.msg, { autoClose: 1000 });
-      setOpenalert(false);
-    }
-  };
+    });
+  } catch (error) {
+    dispatch({
+      type: DELETE_Designation_FAIL,
+      payload: error?.response?.data?.msg,
+    });
+    toast.error(error?.response?.data?.msg, {autoClose: 1000});
+    setOpenalert(false);
+  }
+};
 
 // Get all Enquiry
-export const getDesignation = (page, limit, setPage) => async (dispatch) => {
+export const getDesignation = (page, limit, setPage) => async dispatch => {
   try {
+    let token = await AsyncStorage.getItem('erptoken');
     const config = {
       headers: {
-        "Content-Type": "application/json",
-        Authorization: `${localStorage.getItem("erptoken")}`,
+        'Content-Type': 'application/json',
+        Authorization: `${token}`,
       },
     };
-    dispatch({ type: ALL_Designation_REQUEST });
+    dispatch({type: ALL_Designation_REQUEST});
 
-    const { data } = await axios.get(
+    const {data} = await axios.get(
       `${backendApiUrl}comman/designation`,
-      config
+      config,
     );
 
     dispatch({
@@ -917,20 +929,21 @@ export const getDesignation = (page, limit, setPage) => async (dispatch) => {
   }
 };
 
-export const Addstudent = (datas) => async (dispatch) => {
+export const Addstudent = datas => async dispatch => {
   try {
+    let token = await AsyncStorage.getItem('erptoken');
     const config = {
       headers: {
-        "Content-Type": "multipart/form-data",
-        Authorization: `${localStorage.getItem("erptoken")}`,
+        'Content-Type': 'multipart/form-data',
+        Authorization: `${token}`,
       },
     };
-    dispatch({ type: ADD_STUDENT_REQUEST });
+    dispatch({type: ADD_STUDENT_REQUEST});
 
-    const { data } = await axios.post(
+    const {data} = await axios.post(
       `${backendApiUrl}student/addstudent`,
       datas,
-      config
+      config,
     );
 
     if (data?.status) {
@@ -948,25 +961,26 @@ export const Addstudent = (datas) => async (dispatch) => {
       type: ADD_STUDENT_FAIL,
       payload: error?.response?.data?.msg,
     });
-    toast.error(error?.response?.data?.msg, { autoClose: 1000 });
+    toast.error(error?.response?.data?.msg, {autoClose: 1000});
   }
 };
 
 // post add enquiry
-export const Updatestudent = (datas, setOpen) => async (dispatch) => {
+export const Updatestudent = (datas, setOpen) => async dispatch => {
   try {
+    let token = await AsyncStorage.getItem('erptoken');
     const config = {
       headers: {
-        "Content-Type": "application/json",
-        Authorization: `${localStorage.getItem("erptoken")}`,
+        'Content-Type': 'application/json',
+        Authorization: `${token}`,
       },
     };
-    dispatch({ type: UPDATE_STUDENT_REQUEST });
+    dispatch({type: UPDATE_STUDENT_REQUEST});
 
-    const { data } = await axios.put(
+    const {data} = await axios.put(
       `${backendApiUrl}student/addstudent`,
       datas,
-      config
+      config,
     );
 
     if (data?.status) {
@@ -985,17 +999,17 @@ export const Updatestudent = (datas, setOpen) => async (dispatch) => {
       type: UPDATE_STUDENT_FAIL,
       payload: error?.response?.data?.msg,
     });
-    toast.error(error?.response?.data?.msg, { autoClose: 1000 });
+    toast.error(error?.response?.data?.msg, {autoClose: 1000});
   }
 };
 
 // delete  enquiry
-export const deletestudent = (deleteid, setOpenalert) => async (dispatch) => {
+export const deletestudent = (deleteid, setOpenalert) => async dispatch => {
   try {
-    dispatch({ type: DELETE_STUDENT_REQUEST });
-    serverInstance(`student/addstudent?id=${deleteid}`, "delete", {
+    dispatch({type: DELETE_STUDENT_REQUEST});
+    serverInstance(`student/addstudent?id=${deleteid}`, 'delete', {
       id: deleteid,
-    }).then((res) => {
+    }).then(res => {
       if (res?.status) {
         toast.success(res?.msg, {
           autoClose: 1000,
@@ -1013,7 +1027,7 @@ export const deletestudent = (deleteid, setOpenalert) => async (dispatch) => {
       type: DELETE_STUDENT_FAIL,
       payload: error?.response?.data?.msg,
     });
-    toast.error(error?.response?.data?.msg, { autoClose: 1000 });
+    toast.error(error?.response?.data?.msg, {autoClose: 1000});
     setOpenalert(false);
   }
 };
@@ -1021,30 +1035,31 @@ export const deletestudent = (deleteid, setOpenalert) => async (dispatch) => {
 // Get all Enquiry
 export const getstudent =
   (fromdate, todate, scoursename, sbatch, sstudent, sfathers) =>
-  async (dispatch) => {
+  async dispatch => {
     try {
+      let token = await AsyncStorage.getItem('erptoken');
       const config = {
         headers: {
-          "Content-Type": "application/json",
-          Authorization: `${localStorage.getItem("erptoken")}`,
+          'Content-Type': 'application/json',
+          Authorization: `${token}`,
         },
       };
       if (fromdate || todate || scoursename || sbatch || sfathers || sstudent) {
-        dispatch({ type: ALL_STUDENT_REQUEST });
-        const { data } = await axios.get(
+        dispatch({type: ALL_STUDENT_REQUEST});
+        const {data} = await axios.get(
           `${backendApiUrl}student/addstudent?name=${scoursename}&batch=${sbatch}&fromdate=${fromdate}&todate=${todate}&fathers=${sfathers}&studentname=${sstudent}`,
-          config
+          config,
         );
         dispatch({
           type: ALL_STUDENT_SUCCESS,
           payload: data?.data,
         });
       } else {
-        dispatch({ type: ALL_STUDENT_REQUEST });
-        const { data } = await axios.get(
+        dispatch({type: ALL_STUDENT_REQUEST});
+        const {data} = await axios.get(
           `${backendApiUrl}student/addstudent`,
 
-          config
+          config,
         );
         dispatch({
           type: ALL_STUDENT_SUCCESS,
@@ -1059,20 +1074,21 @@ export const getstudent =
     }
   };
 
-export const AddEmployee = (datas, setOpen) => async (dispatch) => {
+export const AddEmployee = (datas, setOpen) => async dispatch => {
   try {
+    let token = await AsyncStorage.getItem('erptoken');
     const config = {
       headers: {
-        "Content-Type": "application/json",
-        Authorization: `${localStorage.getItem("erptoken")}`,
+        'Content-Type': 'application/json',
+        Authorization: `${token}`,
       },
     };
-    dispatch({ type: ADD_EMPLOYEETYPE_REQUEST });
+    dispatch({type: ADD_EMPLOYEETYPE_REQUEST});
 
-    const { data } = await axios.post(
+    const {data} = await axios.post(
       `${backendApiUrl}comman/createemployee`,
       datas,
-      config
+      config,
     );
 
     if (data?.status) {
@@ -1091,25 +1107,26 @@ export const AddEmployee = (datas, setOpen) => async (dispatch) => {
       type: ADD_EMPLOYEETYPE_FAIL,
       payload: error?.response?.data?.msg,
     });
-    toast.error(error?.response?.data?.msg, { autoClose: 1000 });
+    toast.error(error?.response?.data?.msg, {autoClose: 1000});
   }
 };
 
 // post add enquiry
-export const UpdateEmployee = (datas, setOpen) => async (dispatch) => {
+export const UpdateEmployee = (datas, setOpen) => async dispatch => {
   try {
+    let token = await AsyncStorage.getItem('erptoken');
     const config = {
       headers: {
-        "Content-Type": "application/json",
-        Authorization: `${localStorage.getItem("erptoken")}`,
+        'Content-Type': 'application/json',
+        Authorization: `${token}`,
       },
     };
-    dispatch({ type: UPDATE_EMPLOYEETYPE_REQUEST });
+    dispatch({type: UPDATE_EMPLOYEETYPE_REQUEST});
 
-    const { data } = await axios.put(
+    const {data} = await axios.put(
       `${backendApiUrl}comman/updateemployee`,
       datas,
-      config
+      config,
     );
 
     if (data?.status) {
@@ -1128,17 +1145,17 @@ export const UpdateEmployee = (datas, setOpen) => async (dispatch) => {
       type: UPDATE_EMPLOYEETYPE_FAIL,
       payload: error?.response?.data?.msg,
     });
-    toast.error(error?.response?.data?.msg, { autoClose: 1000 });
+    toast.error(error?.response?.data?.msg, {autoClose: 1000});
   }
 };
 
 // delete  enquiry
-export const deleteEmployee = (deleteid, setOpenalert) => async (dispatch) => {
+export const deleteEmployee = (deleteid, setOpenalert) => async dispatch => {
   try {
-    dispatch({ type: DELETE_EMPLOYEETYPE_REQUEST });
-    serverInstance("comman/deleteemployee", "delete", {
+    dispatch({type: DELETE_EMPLOYEETYPE_REQUEST});
+    serverInstance('comman/deleteemployee', 'delete', {
       id: deleteid,
-    }).then((res) => {
+    }).then(res => {
       if (res?.status) {
         toast.success(res?.msg, {
           autoClose: 1000,
@@ -1156,35 +1173,36 @@ export const deleteEmployee = (deleteid, setOpenalert) => async (dispatch) => {
       type: DELETE_EMPLOYEETYPE_FAIL,
       payload: error?.response?.data?.msg,
     });
-    toast.error(error?.response?.data?.msg, { autoClose: 1000 });
+    toast.error(error?.response?.data?.msg, {autoClose: 1000});
     setOpenalert(false);
   }
 };
 
 // Get all Enquiry
-export const getEmployee = (fromdate, todate, sstudent) => async (dispatch) => {
+export const getEmployee = (fromdate, todate, sstudent) => async dispatch => {
   try {
+    let token = await AsyncStorage.getItem('erptoken');
     const config = {
       headers: {
-        "Content-Type": "application/json",
-        Authorization: `${localStorage.getItem("erptoken")}`,
+        'Content-Type': 'application/json',
+        Authorization: `${token}`,
       },
     };
-    dispatch({ type: ALL_EMPLOYEETYPE_REQUEST });
+    dispatch({type: ALL_EMPLOYEETYPE_REQUEST});
     if (fromdate || todate || sstudent) {
-      dispatch({ type: ALL_STUDENT_REQUEST });
-      const { data } = await axios.get(
+      dispatch({type: ALL_STUDENT_REQUEST});
+      const {data} = await axios.get(
         `${backendApiUrl}comman/allemployee?name=${sstudent}&fromdate=${fromdate}&todate=${todate}`,
-        config
+        config,
       );
       dispatch({
         type: ALL_EMPLOYEETYPE_SUCCESS,
         payload: data?.data,
       });
     } else {
-      const { data } = await axios.get(
+      const {data} = await axios.get(
         `${backendApiUrl}comman/allemployee`,
-        config
+        config,
       );
 
       dispatch({
@@ -1200,20 +1218,21 @@ export const getEmployee = (fromdate, todate, sstudent) => async (dispatch) => {
   }
 };
 
-export const AddDepartment = (datas, setOpen) => async (dispatch) => {
+export const AddDepartment = (datas, setOpen) => async dispatch => {
   try {
+    let token = await AsyncStorage.getItem('erptoken');
     const config = {
       headers: {
-        "Content-Type": "application/json",
-        Authorization: `${localStorage.getItem("erptoken")}`,
+        'Content-Type': 'application/json',
+        Authorization: `${token}`,
       },
     };
-    dispatch({ type: ADD_Department_REQUEST });
+    dispatch({type: ADD_Department_REQUEST});
 
-    const { data } = await axios.post(
+    const {data} = await axios.post(
       `${backendApiUrl}comman/department`,
       datas,
-      config
+      config,
     );
 
     if (data?.status) {
@@ -1232,25 +1251,26 @@ export const AddDepartment = (datas, setOpen) => async (dispatch) => {
       type: ADD_Department_FAIL,
       payload: error?.response?.data?.msg,
     });
-    toast.error(error?.response?.data?.msg, { autoClose: 1000 });
+    toast.error(error?.response?.data?.msg, {autoClose: 1000});
   }
 };
 
 // post add enquiry
-export const UpdateDepartment = (datas, setOpen) => async (dispatch) => {
+export const UpdateDepartment = (datas, setOpen) => async dispatch => {
   try {
+    let token = await AsyncStorage.getItem('erptoken');
     const config = {
       headers: {
-        "Content-Type": "application/json",
-        Authorization: `${localStorage.getItem("erptoken")}`,
+        'Content-Type': 'application/json',
+        Authorization: `${token}`,
       },
     };
-    dispatch({ type: UPDATE_Department_REQUEST });
+    dispatch({type: UPDATE_Department_REQUEST});
 
-    const { data } = await axios.put(
+    const {data} = await axios.put(
       `${backendApiUrl}comman/department`,
       datas,
-      config
+      config,
     );
 
     if (data?.status) {
@@ -1269,57 +1289,54 @@ export const UpdateDepartment = (datas, setOpen) => async (dispatch) => {
       type: UPDATE_Department_FAIL,
       payload: error?.response?.data?.msg,
     });
-    toast.error(error?.response?.data?.msg, { autoClose: 1000 });
+    toast.error(error?.response?.data?.msg, {autoClose: 1000});
   }
 };
 
 // delete  enquiry
-export const deleteDepartment =
-  (deleteid, setOpenalert) => async (dispatch) => {
-    try {
-      dispatch({ type: DELETE_Department_REQUEST });
-      serverInstance("comman/department", "delete", {
-        id: deleteid,
-      }).then((res) => {
-        if (res?.status) {
-          toast.success(res?.msg, {
-            autoClose: 1000,
-          });
-          setOpenalert(false);
-        }
-
-        dispatch({
-          type: DELETE_Department_SUCCESS,
-          payload: res?.data,
+export const deleteDepartment = (deleteid, setOpenalert) => async dispatch => {
+  try {
+    dispatch({type: DELETE_Department_REQUEST});
+    serverInstance('comman/department', 'delete', {
+      id: deleteid,
+    }).then(res => {
+      if (res?.status) {
+        toast.success(res?.msg, {
+          autoClose: 1000,
         });
-      });
-    } catch (error) {
+        setOpenalert(false);
+      }
+
       dispatch({
-        type: DELETE_Department_FAIL,
-        payload: error?.response?.data?.msg,
+        type: DELETE_Department_SUCCESS,
+        payload: res?.data,
       });
-      toast.error(error?.response?.data?.msg, { autoClose: 1000 });
-      setOpenalert(false);
-    }
-  };
+    });
+  } catch (error) {
+    dispatch({
+      type: DELETE_Department_FAIL,
+      payload: error?.response?.data?.msg,
+    });
+    toast.error(error?.response?.data?.msg, {autoClose: 1000});
+    setOpenalert(false);
+  }
+};
 
 // Get all Enquiry
-export const getDepartment = (page, limit, setPage) => async (dispatch) => {
+export const getDepartment = (page, limit, setPage) => async dispatch => {
   try {
+    let token = await AsyncStorage.getItem('erptoken');
     const config = {
       headers: {
-        "Content-Type": "application/json",
-        Authorization: `${localStorage.getItem("erptoken")}`,
+        'Content-Type': 'application/json',
+        Authorization: `${token}`,
       },
     };
-    dispatch({ type: ALL_Department_REQUEST });
+    dispatch({type: ALL_Department_REQUEST});
 
-    const { data } = await axios.get(
-      `${backendApiUrl}comman/department`,
-      config
-    );
+    const {data} = await axios.get(`${backendApiUrl}comman/department`, config);
 
-    console.log("data from department", data?.data);
+    console.log('data from department', data?.data);
 
     dispatch({
       type: ALL_Department_SUCCESS,
@@ -1333,20 +1350,21 @@ export const getDepartment = (page, limit, setPage) => async (dispatch) => {
   }
 };
 
-export const AddCourseDuration = (datas, setOpen) => async (dispatch) => {
+export const AddCourseDuration = (datas, setOpen) => async dispatch => {
   try {
+    let token = await AsyncStorage.getItem('erptoken');
     const config = {
       headers: {
-        "Content-Type": "application/json",
-        Authorization: `${localStorage.getItem("erptoken")}`,
+        'Content-Type': 'application/json',
+        Authorization: `${token}`,
       },
     };
-    dispatch({ type: ADD_CourseDuration_REQUEST });
+    dispatch({type: ADD_CourseDuration_REQUEST});
 
-    const { data } = await axios.post(
+    const {data} = await axios.post(
       `${backendApiUrl}comman/courseduration`,
       datas,
-      config
+      config,
     );
 
     if (data?.status) {
@@ -1365,25 +1383,26 @@ export const AddCourseDuration = (datas, setOpen) => async (dispatch) => {
       type: ADD_CourseDuration_FAIL,
       payload: error?.response?.data?.msg,
     });
-    toast.error(error?.response?.data?.msg, { autoClose: 1000 });
+    toast.error(error?.response?.data?.msg, {autoClose: 1000});
   }
 };
 
 // post add enquiry
-export const UpdateCourseDuration = (datas, setOpen) => async (dispatch) => {
+export const UpdateCourseDuration = (datas, setOpen) => async dispatch => {
   try {
+    let token = await AsyncStorage.getItem('erptoken');
     const config = {
       headers: {
-        "Content-Type": "application/json",
-        Authorization: `${localStorage.getItem("erptoken")}`,
+        'Content-Type': 'application/json',
+        Authorization: `${token}`,
       },
     };
-    dispatch({ type: UPDATE_CourseDuration_REQUEST });
+    dispatch({type: UPDATE_CourseDuration_REQUEST});
 
-    const { data } = await axios.put(
+    const {data} = await axios.put(
       `${backendApiUrl}comman/courseduration`,
       datas,
-      config
+      config,
     );
 
     if (data?.status) {
@@ -1402,18 +1421,18 @@ export const UpdateCourseDuration = (datas, setOpen) => async (dispatch) => {
       type: UPDATE_CourseDuration_FAIL,
       payload: error?.response?.data?.msg,
     });
-    toast.error(error?.response?.data?.msg, { autoClose: 1000 });
+    toast.error(error?.response?.data?.msg, {autoClose: 1000});
   }
 };
 
 // delete  enquiry
 export const deleteCourseDuration =
-  (deleteid, setOpenalert) => async (dispatch) => {
+  (deleteid, setOpenalert) => async dispatch => {
     try {
-      dispatch({ type: DELETE_CourseDuration_REQUEST });
-      serverInstance("comman/courseduration", "delete", {
+      dispatch({type: DELETE_CourseDuration_REQUEST});
+      serverInstance('comman/courseduration', 'delete', {
         id: deleteid,
-      }).then((res) => {
+      }).then(res => {
         if (res?.status) {
           toast.success(res?.msg, {
             autoClose: 1000,
@@ -1431,28 +1450,29 @@ export const deleteCourseDuration =
         type: DELETE_CourseDuration_FAIL,
         payload: error?.response?.data?.msg,
       });
-      toast.error(error?.response?.data?.msg, { autoClose: 1000 });
+      toast.error(error?.response?.data?.msg, {autoClose: 1000});
       setOpenalert(false);
     }
   };
 
 // Get all Enquiry
-export const getCourseDuration = (page, limit, setPage) => async (dispatch) => {
+export const getCourseDuration = (page, limit, setPage) => async dispatch => {
   try {
+    let token = await AsyncStorage.getItem('erptoken');
     const config = {
       headers: {
-        "Content-Type": "application/json",
-        Authorization: `${localStorage.getItem("erptoken")}`,
+        'Content-Type': 'application/json',
+        Authorization: `${token}`,
       },
     };
-    dispatch({ type: ALL_CourseDuration_REQUEST });
+    dispatch({type: ALL_CourseDuration_REQUEST});
 
-    const { data } = await axios.get(
+    const {data} = await axios.get(
       `${backendApiUrl}comman/courseduration`,
-      config
+      config,
     );
 
-    console.log("data from course", data?.data);
+    console.log('data from course', data?.data);
 
     dispatch({
       type: ALL_CourseDuration_SUCCESS,
@@ -1466,20 +1486,21 @@ export const getCourseDuration = (page, limit, setPage) => async (dispatch) => {
   }
 };
 
-export const Addtest = (datas, setOpen) => async (dispatch) => {
+export const Addtest = (datas, setOpen) => async dispatch => {
   try {
+    let token = await AsyncStorage.getItem('erptoken');
     const config = {
       headers: {
-        "Content-Type": "application/json",
-        Authorization: `${localStorage.getItem("erptoken")}`,
+        'Content-Type': 'application/json',
+        Authorization: `${token}`,
       },
     };
-    dispatch({ type: ADD_TEST_REQUEST });
+    dispatch({type: ADD_TEST_REQUEST});
 
-    const { data } = await axios.post(
+    const {data} = await axios.post(
       `${backendApiUrl}test/addtest`,
       datas,
-      config
+      config,
     );
 
     if (data?.status) {
@@ -1498,25 +1519,26 @@ export const Addtest = (datas, setOpen) => async (dispatch) => {
       type: ADD_TEST_FAIL,
       payload: error?.response?.data?.msg,
     });
-    toast.error(error?.response?.data?.msg, { autoClose: 1000 });
+    toast.error(error?.response?.data?.msg, {autoClose: 1000});
   }
 };
 
 // post add enquiry
-export const Updatetest = (datas, setOpen) => async (dispatch) => {
+export const Updatetest = (datas, setOpen) => async dispatch => {
   try {
+    let token = await AsyncStorage.getItem('erptoken');
     const config = {
       headers: {
-        "Content-Type": "application/json",
-        Authorization: `${localStorage.getItem("erptoken")}`,
+        'Content-Type': 'application/json',
+        Authorization: `${token}`,
       },
     };
-    dispatch({ type: UPDATE_TEST_REQUEST });
+    dispatch({type: UPDATE_TEST_REQUEST});
 
-    const { data } = await axios.put(
+    const {data} = await axios.put(
       `${backendApiUrl}test/updatetest`,
       datas,
-      config
+      config,
     );
 
     if (data?.status) {
@@ -1535,17 +1557,17 @@ export const Updatetest = (datas, setOpen) => async (dispatch) => {
       type: UPDATE_TEST_FAIL,
       payload: error?.response?.data?.msg,
     });
-    toast.error(error?.response?.data?.msg, { autoClose: 1000 });
+    toast.error(error?.response?.data?.msg, {autoClose: 1000});
   }
 };
 
 // delete  enquiry
-export const deleteTest = (deleteid, setOpenalert) => async (dispatch) => {
+export const deleteTest = (deleteid, setOpenalert) => async dispatch => {
   try {
-    dispatch({ type: DELETE_TEST_REQUEST });
-    serverInstance("test/deletetest", "delete", {
+    dispatch({type: DELETE_TEST_REQUEST});
+    serverInstance('test/deletetest', 'delete', {
       id: deleteid,
-    }).then((res) => {
+    }).then(res => {
       if (res?.status) {
         toast.success(res?.msg, {
           autoClose: 1000,
@@ -1563,7 +1585,7 @@ export const deleteTest = (deleteid, setOpenalert) => async (dispatch) => {
       type: DELETE_TEST_FAIL,
       payload: error?.response?.data?.msg,
     });
-    toast.error(error?.response?.data?.msg, { autoClose: 1000 });
+    toast.error(error?.response?.data?.msg, {autoClose: 1000});
     setOpenalert(false);
   }
 };
@@ -1571,20 +1593,21 @@ export const deleteTest = (deleteid, setOpenalert) => async (dispatch) => {
 // Get all Enquiry
 export const getTest =
   (fromdate, todate, scoursename, sbatch, page, limit, setPage) =>
-  async (dispatch) => {
+  async dispatch => {
     try {
+      let token = await AsyncStorage.getItem('erptoken');
       if (fromdate || todate || scoursename || sbatch) {
         const config = {
           headers: {
-            "Content-Type": "application/json",
-            Authorization: `${localStorage.getItem("erptoken")}`,
+            'Content-Type': 'application/json',
+            Authorization: `${token}`,
           },
         };
-        dispatch({ type: ALL_TEST_REQUEST });
+        dispatch({type: ALL_TEST_REQUEST});
 
-        const { data } = await axios.get(
+        const {data} = await axios.get(
           `${backendApiUrl}test/getalltest?course=${scoursename}&batch=${sbatch}&testdate=${todate}`,
-          config
+          config,
         );
         dispatch({
           type: ALL_TEST_SUCCESS,
@@ -1593,15 +1616,15 @@ export const getTest =
       } else {
         const config = {
           headers: {
-            "Content-Type": "application/json",
-            Authorization: `${localStorage.getItem("erptoken")}`,
+            'Content-Type': 'application/json',
+            Authorization: `${localStorage.getItem('erptoken')}`,
           },
         };
-        dispatch({ type: ALL_TEST_REQUEST });
+        dispatch({type: ALL_TEST_REQUEST});
 
-        const { data } = await axios.get(
+        const {data} = await axios.get(
           `${backendApiUrl}test/getalltest`,
-          config
+          config,
         );
         dispatch({
           type: ALL_TEST_SUCCESS,
@@ -1617,20 +1640,21 @@ export const getTest =
   };
 
 // post add enquiry
-export const Updatecredentials = (formData, setOpen) => async (dispatch) => {
+export const Updatecredentials = (formData, setOpen) => async dispatch => {
   try {
+    let token = await AsyncStorage.getItem('erptoken');
     const config = {
       headers: {
-        "Content-Type": "multipart/form-data",
-        Authorization: `${localStorage.getItem("erptoken")}`,
+        'Content-Type': 'multipart/form-data',
+        Authorization: `${token}`,
       },
     };
-    dispatch({ type: UPDATE_CREDENTIALS_REQUEST });
+    dispatch({type: UPDATE_CREDENTIALS_REQUEST});
 
-    const { data } = await axios.put(
+    const {data} = await axios.put(
       `${backendApiUrl}comman/credentials`,
       formData,
-      config
+      config,
     );
     if (data?.status) {
       toast.success(data?.msg, {
@@ -1648,26 +1672,26 @@ export const Updatecredentials = (formData, setOpen) => async (dispatch) => {
       type: UPDATE_CREDENTIALS_FAIL,
       payload: error?.response?.data?.msg,
     });
-    toast.error(error?.response?.data?.msg, { autoClose: 1000 });
+    toast.error(error?.response?.data?.msg, {autoClose: 1000});
   }
 };
 
-
 // post add enquiry
-export const Adddresult = (datas, setOpen) => async (dispatch) => {
+export const Adddresult = (datas, setOpen) => async dispatch => {
   try {
+    let token = await AsyncStorage.getItem('erptoken');
     const config = {
       headers: {
-        "Content-Type": "application/json",
-        Authorization: `${localStorage.getItem("erptoken")}`,
+        'Content-Type': 'application/json',
+        Authorization: `${token}`,
       },
     };
-    dispatch({ type: UPDATE_STUDENT_TEST_REQUEST });
+    dispatch({type: UPDATE_STUDENT_TEST_REQUEST});
 
-    const { data } = await axios.post(
+    const {data} = await axios.post(
       `${backendApiUrl}test/addtestretult`,
       datas,
-      config
+      config,
     );
 
     if (data?.status) {
@@ -1686,24 +1710,28 @@ export const Adddresult = (datas, setOpen) => async (dispatch) => {
       type: UPDATE_STUDENT_TEST_FAIL,
       payload: error?.response?.data?.msg,
     });
-    toast.error(error?.response?.data?.msg, { autoClose: 1000 });
+    toast.error(error?.response?.data?.msg, {autoClose: 1000});
   }
 };
 
 // Get all Enquiry
-export const getStudenttest = (page, limit, setPage) => async (dispatch) => {
+export const getStudenttest = (page, limit, setPage) => async dispatch => {
   try {
+    let token = await AsyncStorage.getItem('erptoken');
     const config = {
       headers: {
-        "Content-Type": "application/json",
-        Authorization: `${localStorage.getItem("erptoken")}`,
+        'Content-Type': 'application/json',
+        Authorization: `${token}`,
       },
     };
-    dispatch({ type: ALL_STUDENT_TEST_REQUEST });
+    dispatch({type: ALL_STUDENT_TEST_REQUEST});
 
-    const { data } = await axios.get(`${backendApiUrl}test/getstudentalltest`, config);
+    const {data} = await axios.get(
+      `${backendApiUrl}test/getstudentalltest`,
+      config,
+    );
 
-    console.log("data from course", data?.data);
+    console.log('data from course', data?.data);
 
     dispatch({
       type: ALL_STUDENT_TEST_SUCCESS,

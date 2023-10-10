@@ -15,10 +15,11 @@ import {
 
 export const MarkStudentAttendance = (date, batch) => async (dispatch) => {
   try {
+    let token = await AsyncStorage.getItem('erptoken');
     const config = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `${localStorage.getItem("erptoken")}`,
+        Authorization: `${token}`,
       },
     };
     dispatch({ type: MARK_ATTENDANCE_REQUEST });
@@ -53,10 +54,11 @@ export const MarkStudentAttendance = (date, batch) => async (dispatch) => {
 
 export const DoneStudentAttendance = (udata) => async (dispatch) => {
   try {
+    let token = await AsyncStorage.getItem('erptoken');
     const config = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `${localStorage.getItem("erptoken")}`,
+        Authorization: `${token}`,
       },
     };
     dispatch({ type: DONE_ATTENDANCE_REQUEST });
@@ -89,10 +91,11 @@ export const DoneStudentAttendance = (udata) => async (dispatch) => {
 
 export const MonthlyStudentAttendance = (udata, months) => async (dispatch) => {
   try {
+    let token = await AsyncStorage.getItem('erptoken');
     const config = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `${localStorage.getItem("erptoken")}`,
+        Authorization: `${token}`,
       },
     };
     dispatch({ type: MONTHLY_ATTENDANCE_REQUEST });

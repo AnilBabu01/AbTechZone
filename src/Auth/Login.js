@@ -18,6 +18,7 @@ import {Dropdown} from 'react-native-element-dropdown';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
+
 const data = [
   {label: 'College', value: 'College'},
   {label: 'School', value: 'School'},
@@ -33,7 +34,7 @@ const Login = ({navigation}) => {
   const [showloginoption, setshowloginoption] = useState(false);
   const [value, setValue] = useState(null);
   const [loginas, setloginas] = useState('College');
-
+  
   return (
     <SafeAreaView>
       <StatusBar backgroundColor={primary} />
