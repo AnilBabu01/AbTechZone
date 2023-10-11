@@ -1,5 +1,6 @@
 import axios from 'axios';
 import {toast} from 'react-toastify';
+import Toast from 'react-native-toast-message';
 import {backendUrl, backendApiUrl} from '../../Config/config';
 import {
   LOGIN_REQUEST,
@@ -57,8 +58,10 @@ export const register =
         );
 
         if (data?.status) {
-          toast.success(data?.msg, {
-            autoClose: 1000,
+          Toast.show({
+            type: 'success',
+            text1: 'Success',
+            text2: data?.msg,
           });
           setOpen(false);
           setOpen1(true);
@@ -142,8 +145,10 @@ export const login = (email, password, loginas, Fullname) => async dispatch => {
       );
 
       if (data?.status) {
-        toast.success(data?.msg, {
-          autoClose: 1000,
+        Toast.show({
+          type: 'success',
+          text1: 'Success',
+          text2: data?.msg,
         });
       }
       dispatch({
@@ -165,8 +170,17 @@ export const login = (email, password, loginas, Fullname) => async dispatch => {
         config,
       );
       if (data?.status) {
-        toast.success(data?.msg, {
-          autoClose: 1000,
+        Toast.show({
+          type: 'success',
+          text1: 'Success',
+          text2: data?.msg,
+        });
+      }
+      if (data?.status===false) {
+        Toast.show({
+          type: 'success',
+          text1: 'Success',
+          text2: data?.msg,
         });
       }
       dispatch({
@@ -187,8 +201,10 @@ export const login = (email, password, loginas, Fullname) => async dispatch => {
         config,
       );
       if (data?.status) {
-        toast.success(data?.msg, {
-          autoClose: 1000,
+        Toast.show({
+          type: 'success',
+          text1: 'Success',
+          text2: data?.msg,
         });
       }
       dispatch({
@@ -198,7 +214,7 @@ export const login = (email, password, loginas, Fullname) => async dispatch => {
     }
 
     if (loginas === 'College') {
-      console.log("login from main colllege",loginas);
+      console.log('login from main colllege', loginas);
       const {data} = await axios.post(
         `${backendApiUrl}college/login`,
         {email: email, password: password, institutename: Fullname},
@@ -209,7 +225,7 @@ export const login = (email, password, loginas, Fullname) => async dispatch => {
           autoClose: 1000,
         });
       }
-    
+
       dispatch({
         type: LOGIN_SUCCESS,
         payload: data,
@@ -222,8 +238,10 @@ export const login = (email, password, loginas, Fullname) => async dispatch => {
         config,
       );
       if (data?.status) {
-        toast.success(data?.msg, {
-          autoClose: 1000,
+        Toast.show({
+          type: 'success',
+          text1: 'Success',
+          text2: data?.msg,
         });
       }
       dispatch({
@@ -239,8 +257,10 @@ export const login = (email, password, loginas, Fullname) => async dispatch => {
         config,
       );
       if (data?.status) {
-        toast.success(data?.msg, {
-          autoClose: 1000,
+        Toast.show({
+          type: 'success',
+          text1: 'Success',
+          text2: data?.msg,
         });
       }
       dispatch({
@@ -256,8 +276,10 @@ export const login = (email, password, loginas, Fullname) => async dispatch => {
         config,
       );
       if (data?.status) {
-        toast.success(data?.msg, {
-          autoClose: 1000,
+        Toast.show({
+          type: 'success',
+          text1: 'Success',
+          text2: data?.msg,
         });
       }
       dispatch({
@@ -277,8 +299,10 @@ export const login = (email, password, loginas, Fullname) => async dispatch => {
         config,
       );
       if (data?.status) {
-        toast.success(data?.msg, {
-          autoClose: 1000,
+        Toast.show({
+          type: 'success',
+          text1: 'Success',
+          text2: data?.msg,
         });
       }
       dispatch({
@@ -294,8 +318,10 @@ export const login = (email, password, loginas, Fullname) => async dispatch => {
         config,
       );
       if (data?.status) {
-        toast.success(data?.msg, {
-          autoClose: 1000,
+        Toast.show({
+          type: 'success',
+          text1: 'Success',
+          text2: data?.msg,
         });
       }
       dispatch({
@@ -311,8 +337,10 @@ export const login = (email, password, loginas, Fullname) => async dispatch => {
         config,
       );
       if (data?.status) {
-        toast.success(data?.msg, {
-          autoClose: 1000,
+        Toast.show({
+          type: 'success',
+          text1: 'Success',
+          text2: data?.msg,
         });
       }
       dispatch({

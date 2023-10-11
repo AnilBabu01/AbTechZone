@@ -13,13 +13,20 @@ import {primary, hightlight} from '../../utils/Colors';
 import {Height, Width} from '../../utils/responsive';
 import profileimg from '../../assets/profileimg.jpg';
 import {useNavigation} from '@react-navigation/native';
+import {useDispatch, useSelector} from 'react-redux';
+import {loadUser} from '../../Redux/action/authActions';
 const windowWidth = Dimensions.get('window').width;
 const Header = () => {
+  const dispatch = useDispatch();
   const navigation = useNavigation();
   return (
     <View>
       <View style={styles.mainheader}>
-        <TouchableOpacity onPress={() => navigation.openDrawer()}>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.openDrawer();
+            dispatch(loadUser());
+          }}>
           <Image source={hamburger} style={styles.menuimg} />
         </TouchableOpacity>
 
@@ -27,7 +34,8 @@ const Header = () => {
         {/* <Text style={{color: 'white'}}>ABTECHZONE</Text> */}
 
         <View style={styles.profile}>
-          <TouchableOpacity onPress={() => navigation.navigate('ProfileCoaching')}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('ProfileCoaching')}>
             {/* {user?.profile_image ? (
           <>
             <Image
@@ -66,7 +74,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingHorizontal: 10,
     backgroundColor: primary,
-    paddingBottom:5
+    paddingBottom: 5,
   },
   loginbtn: {
     width: Width(80),

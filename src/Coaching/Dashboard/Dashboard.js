@@ -16,12 +16,16 @@ import Linechart from './Chart/Linechart';
 import Header from '../../Component/Header/Header';
 import {primary} from '../../utils/Colors';
 import Loader from '../../Component/Loader/Loader';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const Dashboard = () => {
-  const [loader, setloader] = useState(true);
+  const [loader, setloader] = useState(false);
+  const gettoken = async () => {};
   useEffect(() => {
     setTimeout(() => {
       setloader(false);
-    }, 1000);
+    }, 10);
+
+    gettoken();
   }, []);
 
   return (

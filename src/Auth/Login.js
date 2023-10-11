@@ -24,6 +24,8 @@ import {
   allClient,
 } from '../Redux/action/commanAction';
 import {useNavigation} from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Loader from '../Component/Loader/Loader';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
@@ -36,11 +38,18 @@ const data = [
   {label: 'Parent', value: 'Parent'},
   {label: 'Others', value: 'Others'},
 ];
+const dataguest = [
+  {label: 'college', value: 'college'},
+  {label: 'school', value: 'school'},
+  {label: 'coaching Institute', value: 'institute'},
+];
 
 const Login = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const [index, setIndex] = useState(0);
+  const [loader, setloader] = useState(false);
+  const [sms, setsms] = useState('');
   const [showloginoption, setshowloginoption] = useState(false);
   const [value, setValue] = useState(null);
   const [loginas, setloginas] = useState('College');
@@ -48,6 +57,8 @@ const Login = () => {
   const [loginfor, setloginfor] = useState('');
   const [userid, setuserid] = useState('');
   const [password, setpassword] = useState('');
+  const [email, setemail] = useState('');
+  const [phonono, setphonono] = useState('');
   const [useriderror, setuseriderror] = useState('');
   const [passworderror, setpassworderror] = useState('');
   const [Fullname, setFullname] = useState('');
@@ -59,7 +70,7 @@ const Login = () => {
   const {client} = useSelector(state => state.client);
 
   const submit = () => {
-    if (showloginoption === true) {
+    if (showloginoption === false) {
       if (userid === '') {
         setuseriderror('User id required');
       }
@@ -67,49 +78,72 @@ const Login = () => {
         setpassworderror('Password is required');
       }
       if (userid && password) {
+        setloader(true);
+        setsms('Loging...');
         dispatch(login(userid, password, loginas, loginfor));
       }
-    } else {
+    }
+    if (showloginoption === true) {
       if (userid && password) {
+        setloader(true);
+        setsms('Loging...');
         dispatch(login(userid, password, guestloginas, Fullname));
       }
     }
   };
 
+  const setauthtoken = async () => {
+    await AsyncStorage.setItem('erptoken', user?.data[0]?.token);
+  };
+
   useEffect(() => {
     if (isAuthenticated) {
-      localStorage.setItem('erptoken', user?.data[0]?.token);
       dispatch(loadUser());
-      setOpen(false);
-      if (user?.data[0]?.newclient === true) {
-        navigate.push('/pricing');
-      } else {
-        if (user?.data[0]?.userType === 'school') {
-          navigate.push('/school/dashboard');
-        }
-        if (user?.data[0]?.userType === 'college') {
-          navigate.push('/college/dashboard');
-        }
-        if (user?.data[0]?.userType === 'institute') {
-          navigate.push('/coaching/dashboard');
-        }
+      if (user?.data[0]?.token) {
+        setauthtoken();
       }
+
+      // setOpen(false);
+      // if (user?.data[0]?.newclient === true) {
+      //   navigate.navigate('/pricing');
+      // } else {
+      if (user?.data[0]?.User?.userType === 'school') {
+        navigation.navigate('DashboardCoaching');
+        setloader(false);
+        setsms('');
+      }
+      if (user?.data[0]?.User?.userType === 'college') {
+        navigation.navigate('DashboardCoaching');
+        setloader(false);
+        setsms('');
+      }
+      if (user?.data[0]?.User?.userType === 'institute') {
+        navigation.navigate('DashboardCoaching');
+        setloader(false);
+        setsms('');
+      }
+      // }
+
       if (user?.data[0]?.userType === 'admin') {
-        navigate.push('/mainadmin/dashboard');
+        navigate.navigate('DashboardCoaching');
+        setloader(false);
+        setsms('');
       }
 
-      if (user?.data[0]?.userType === 'employee') {
-        navigate.push('/employee/dashboard');
+      if (user?.data[0]?.User?.userType === 'employee') {
+        navigation.navigate('DashboardCoaching');
+        setloader(false);
+        setsms('');
       }
-      if (user?.data[0]?.userType === 'student') {
-        navigate.push('/student/dashboard');
+      if (user?.data[0]?.User?.userType === 'student') {
+        navigation.navigate('DashboardCoaching');
+        setloader(false);
+        setsms('');
       }
-      if (user?.data[0]?.userType === 'parent') {
-        navigate.push('/parent/dashboard');
-      }
-
-      if (user) {
-        console.log('data from login screen', user?.data[0]?.token);
+      if (user?.data[0]?.User?.userType === 'parent') {
+        navigation.navigate('DashboardCoaching');
+        setloader(false);
+        setsms('');
       }
     }
   }, [user]);
@@ -119,13 +153,12 @@ const Login = () => {
     dispatch(allCollege());
     dispatch(allschool());
     dispatch(allClient());
-
-    console.log('apis data is ', college, coaching, school, client);
   }, []);
 
   return (
     <SafeAreaView>
       <StatusBar backgroundColor={primary} />
+      <Loader loader={loader} sms={sms}/>
       <ScrollView>
         <View style={styles.connainer}>
           <Image source={loginicon} style={styles.imgtop} />
@@ -133,7 +166,10 @@ const Login = () => {
             <Text style={styles.logintext}>Login</Text>
           </View>
           <View style={styles.btnsdiv}>
-            <TouchableOpacity onPress={() => setshowloginoption(false)}>
+            <TouchableOpacity
+              onPress={() => {
+                setshowloginoption(false);
+              }}>
               <View style={showloginoption ? styles.btn : styles.activebtn}>
                 <Text style={{color: showloginoption ? 'black' : 'white'}}>
                   LOGIN
@@ -177,20 +213,17 @@ const Login = () => {
                 selectedTextStyle={styles.selectedTextStyle}
                 inputSearchStyle={styles.inputSearchStyle}
                 iconStyle={styles.iconStyle}
-                data={data}
+                data={dataguest}
                 search
                 maxHeight={300}
                 labelField="label"
                 valueField="value"
                 placeholder="Please Select"
                 searchPlaceholder="Search..."
-                value={value}
+                value={guestloginas}
                 onChange={item => {
-                  setValue(item.value);
+                  setguestloginas(item.value);
                 }}
-                // renderLeftIcon={() => (
-                //   <AntDesign style={styles.icon} color="black" name="Safety" size={20} />
-                // )}
               />
 
               <Text
@@ -216,13 +249,13 @@ const Login = () => {
                   paddingHorizontal: Width(10),
                   fontSize: Height(16),
                   marginTop: Height(10),
-                  borderColor: index === 1 ? primary : '#a9a9a9',
+                  borderColor: index === 2 ? primary : '#a9a9a9',
                 }}
-                // value={email}
+                value={Fullname}
                 // onBlur={() => Validation()}
-                // onChangeText={text => setEmail(text)}
+                onChangeText={text => setFullname(text)}
                 // keyboardType="email-address"
-                onFocus={() => setIndex(1)}
+                onFocus={() => setIndex(2)}
               />
               {/* {emailError.length > 0 && (
                 <Text
@@ -259,13 +292,13 @@ const Login = () => {
                   paddingHorizontal: Width(10),
                   fontSize: Height(16),
                   marginTop: Height(10),
-                  borderColor: index === 1 ? primary : '#a9a9a9',
+                  borderColor: index === 3 ? primary : '#a9a9a9',
                 }}
-                // value={email}
+                value={userid}
                 // onBlur={() => Validation()}
-                // onChangeText={text => setEmail(text)}
-                // keyboardType="email-address"
-                onFocus={() => setIndex(1)}
+                onChangeText={text => setuserid(text)}
+                keyboardType="email-address"
+                onFocus={() => setIndex(3)}
               />
               {/* {emailError.length > 0 && (
                 <Text
@@ -302,13 +335,13 @@ const Login = () => {
                   paddingHorizontal: Width(10),
                   fontSize: Height(16),
                   marginTop: Height(10),
-                  borderColor: index === 1 ? primary : '#a9a9a9',
+                  borderColor: index === 4 ? primary : '#a9a9a9',
                 }}
-                // value={email}
+                value={password}
                 // onBlur={() => Validation()}
-                // onChangeText={text => setEmail(text)}
+                onChangeText={text => setpassword(text)}
                 // keyboardType="email-address"
-                onFocus={() => setIndex(1)}
+                onFocus={() => setIndex(4)}
               />
               {/* {emailError.length > 0 && (
                 <Text
@@ -323,7 +356,7 @@ const Login = () => {
               )} */}
 
               <View style={styles.loginbtndiv}>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => submit()}>
                   <View style={styles.loginbtn}>
                     <Text style={styles.logintextstyle}>Login</Text>
                   </View>
@@ -355,7 +388,7 @@ const Login = () => {
                   paddingHorizontal: Width(10),
                   fontSize: Height(16),
                   marginTop: Height(10),
-                  borderColor: index === 1 ? primary : '#a9a9a9',
+                  borderColor: index === 5 ? primary : '#a9a9a9',
                 }}
                 placeholderStyle={styles.placeholderStyle}
                 selectedTextStyle={styles.selectedTextStyle}
@@ -402,7 +435,7 @@ const Login = () => {
                           paddingHorizontal: Width(10),
                           fontSize: Height(16),
                           marginTop: Height(10),
-                          borderColor: index === 1 ? primary : '#a9a9a9',
+                          borderColor: index === 6 ? primary : '#a9a9a9',
                         }}
                         placeholderStyle={styles.placeholderStyle}
                         selectedTextStyle={styles.selectedTextStyle}
@@ -421,16 +454,10 @@ const Login = () => {
                         valueField="value"
                         placeholder="Please Select"
                         searchPlaceholder="Search..."
-                        value={value}
+                        value={loginfor}
                         onChange={item => {
-                          // setValue(item.value);
-
-                          console.log('select values', item?.value);
+                          setloginfor(item.value);
                         }}
-
-                        // renderLeftIcon={() => (
-                        //   <AntDesign style={styles.icon} color="black" name="Safety" size={20} />
-                        // )}
                       />
                     </>
                   ) : (
@@ -445,10 +472,10 @@ const Login = () => {
                       marginTop: Height(10),
                       marginLeft: Width(40),
                     }}>
-                    User Id<Text style={{color: primary}}> *</Text>
+                    College Id<Text style={{color: primary}}> *</Text>
                   </Text>
                   <TextInput
-                    placeholder="Enter User Id"
+                    placeholder="Enter college Id"
                     placeholderTextColor="rgba(0, 0, 0, 0.6)"
                     style={{
                       alignSelf: 'center',
@@ -460,13 +487,13 @@ const Login = () => {
                       paddingHorizontal: Width(10),
                       fontSize: Height(16),
                       marginTop: Height(10),
-                      borderColor: index === 1 ? primary : '#a9a9a9',
+                      borderColor: index === 7 ? primary : '#a9a9a9',
                     }}
-                    // value={email}
+                    value={userid}
                     // onBlur={() => Validation()}
-                    // onChangeText={text => setEmail(text)}
+                    onChangeText={text => setuserid(text)}
                     // keyboardType="email-address"
-                    onFocus={() => setIndex(1)}
+                    onFocus={() => setIndex(7)}
                   />
                   {/* {emailError.length > 0 && (
                 <Text
@@ -504,13 +531,13 @@ const Login = () => {
                       paddingHorizontal: Width(10),
                       fontSize: Height(16),
                       marginTop: Height(10),
-                      borderColor: index === 1 ? primary : '#a9a9a9',
+                      borderColor: index === 8 ? primary : '#a9a9a9',
                     }}
-                    // value={email}
+                    value={password}
                     // onBlur={() => Validation()}
-                    // onChangeText={text => setEmail(text)}
+                    onChangeText={text => setpassword(text)}
                     // keyboardType="email-address"
-                    onFocus={() => setIndex(1)}
+                    onFocus={() => setIndex(8)}
                   />
                   {/* {emailError.length > 0 && (
                 <Text
@@ -552,7 +579,7 @@ const Login = () => {
                           paddingHorizontal: Width(10),
                           fontSize: Height(16),
                           marginTop: Height(10),
-                          borderColor: index === 1 ? primary : '#a9a9a9',
+                          borderColor: index === 9 ? primary : '#a9a9a9',
                         }}
                         placeholderStyle={styles.placeholderStyle}
                         selectedTextStyle={styles.selectedTextStyle}
@@ -571,13 +598,10 @@ const Login = () => {
                         valueField="value"
                         placeholder="Please Select"
                         searchPlaceholder="Search..."
-                        value={value}
+                        value={loginfor}
                         onChange={item => {
-                          setValue(item.value);
+                          setloginfor(item.value);
                         }}
-                        // renderLeftIcon={() => (
-                        //   <AntDesign style={styles.icon} color="black" name="Safety" size={20} />
-                        // )}
                       />
                     </>
                   ) : (
@@ -592,7 +616,7 @@ const Login = () => {
                       marginTop: Height(10),
                       marginLeft: Width(40),
                     }}>
-                    User Id<Text style={{color: primary}}> *</Text>
+                    School Id<Text style={{color: primary}}> *</Text>
                   </Text>
                   <TextInput
                     placeholder="Enter User Id"
@@ -607,13 +631,13 @@ const Login = () => {
                       paddingHorizontal: Width(10),
                       fontSize: Height(16),
                       marginTop: Height(10),
-                      borderColor: index === 1 ? primary : '#a9a9a9',
+                      borderColor: index === 10 ? primary : '#a9a9a9',
                     }}
-                    // value={email}
+                    value={userid}
                     // onBlur={() => Validation()}
-                    // onChangeText={text => setEmail(text)}
+                    onChangeText={text => setuserid(text)}
                     // keyboardType="email-address"
-                    onFocus={() => setIndex(1)}
+                    onFocus={() => setIndex(10)}
                   />
                   {/* {emailError.length > 0 && (
                 <Text
@@ -651,13 +675,13 @@ const Login = () => {
                       paddingHorizontal: Width(10),
                       fontSize: Height(16),
                       marginTop: Height(10),
-                      borderColor: index === 1 ? primary : '#a9a9a9',
+                      borderColor: index === 12 ? primary : '#a9a9a9',
                     }}
-                    // value={email}
+                    value={password}
                     // onBlur={() => Validation()}
-                    // onChangeText={text => setEmail(text)}
+                    onChangeText={text => setpassword(text)}
                     // keyboardType="email-address"
-                    onFocus={() => setIndex(1)}
+                    onFocus={() => setIndex(12)}
                   />
                   {/* {emailError.length > 0 && (
                 <Text
@@ -699,7 +723,7 @@ const Login = () => {
                           paddingHorizontal: Width(10),
                           fontSize: Height(16),
                           marginTop: Height(10),
-                          borderColor: index === 1 ? primary : '#a9a9a9',
+                          borderColor: index === 13 ? primary : '#a9a9a9',
                         }}
                         placeholderStyle={styles.placeholderStyle}
                         selectedTextStyle={styles.selectedTextStyle}
@@ -718,13 +742,10 @@ const Login = () => {
                         valueField="value"
                         placeholder="Please Select"
                         searchPlaceholder="Search..."
-                        value={value}
+                        value={loginfor}
                         onChange={item => {
-                          setValue(item.value);
+                          setloginfor(item.value);
                         }}
-                        // renderLeftIcon={() => (
-                        //   <AntDesign style={styles.icon} color="black" name="Safety" size={20} />
-                        // )}
                       />
                     </>
                   ) : (
@@ -739,10 +760,10 @@ const Login = () => {
                       marginTop: Height(10),
                       marginLeft: Width(40),
                     }}>
-                    User Id<Text style={{color: primary}}> *</Text>
+                    Coaching Id<Text style={{color: primary}}> *</Text>
                   </Text>
                   <TextInput
-                    placeholder="Enter User Id"
+                    placeholder="Enter Coaching Id"
                     placeholderTextColor="rgba(0, 0, 0, 0.6)"
                     style={{
                       alignSelf: 'center',
@@ -754,13 +775,13 @@ const Login = () => {
                       paddingHorizontal: Width(10),
                       fontSize: Height(16),
                       marginTop: Height(10),
-                      borderColor: index === 1 ? primary : '#a9a9a9',
+                      borderColor: index === 14 ? primary : '#a9a9a9',
                     }}
-                    // value={email}
+                    value={userid}
                     // onBlur={() => Validation()}
-                    // onChangeText={text => setEmail(text)}
+                    onChangeText={text => setuserid(text)}
                     // keyboardType="email-address"
-                    onFocus={() => setIndex(1)}
+                    onFocus={() => setIndex(14)}
                   />
                   {/* {emailError.length > 0 && (
                 <Text
@@ -798,13 +819,13 @@ const Login = () => {
                       paddingHorizontal: Width(10),
                       fontSize: Height(16),
                       marginTop: Height(10),
-                      borderColor: index === 1 ? primary : '#a9a9a9',
+                      borderColor: index === 15 ? primary : '#a9a9a9',
                     }}
-                    // value={email}
+                    value={password}
                     // onBlur={() => Validation()}
-                    // onChangeText={text => setEmail(text)}
+                    onChangeText={text => setpassword(text)}
                     // keyboardType="email-address"
-                    onFocus={() => setIndex(1)}
+                    onFocus={() => setIndex(15)}
                   />
                   {/* {emailError.length > 0 && (
                 <Text
@@ -845,7 +866,7 @@ const Login = () => {
                           paddingHorizontal: Width(10),
                           fontSize: Height(16),
                           marginTop: Height(10),
-                          borderColor: index === 1 ? primary : '#a9a9a9',
+                          borderColor: index === 16 ? primary : '#a9a9a9',
                         }}
                         placeholderStyle={styles.placeholderStyle}
                         selectedTextStyle={styles.selectedTextStyle}
@@ -866,11 +887,8 @@ const Login = () => {
                         searchPlaceholder="Search..."
                         value={value}
                         onChange={item => {
-                          setValue(item.value);
+                          setloginfor(item.value);
                         }}
-                        // renderLeftIcon={() => (
-                        //   <AntDesign style={styles.icon} color="black" name="Safety" size={20} />
-                        // )}
                       />
                     </>
                   ) : (
@@ -901,13 +919,13 @@ const Login = () => {
                       paddingHorizontal: Width(10),
                       fontSize: Height(16),
                       marginTop: Height(10),
-                      borderColor: index === 1 ? primary : '#a9a9a9',
+                      borderColor: index === 17 ? primary : '#a9a9a9',
                     }}
-                    // value={email}
+                    value={userid}
                     // onBlur={() => Validation()}
-                    // onChangeText={text => setEmail(text)}
+                    onChangeText={text => setuserid(text)}
                     // keyboardType="email-address"
-                    onFocus={() => setIndex(1)}
+                    onFocus={() => setIndex(17)}
                   />
                   {/* {emailError.length > 0 && (
                 <Text
@@ -945,13 +963,13 @@ const Login = () => {
                       paddingHorizontal: Width(10),
                       fontSize: Height(16),
                       marginTop: Height(10),
-                      borderColor: index === 1 ? primary : '#a9a9a9',
+                      borderColor: index === 18 ? primary : '#a9a9a9',
                     }}
-                    // value={email}
+                    value={password}
                     // onBlur={() => Validation()}
-                    // onChangeText={text => setEmail(text)}
+                    onChangeText={text => setpassword(text)}
                     // keyboardType="email-address"
-                    onFocus={() => setIndex(1)}
+                    onFocus={() => setIndex(18)}
                   />
                   {/* {emailError.length > 0 && (
                 <Text
@@ -992,7 +1010,7 @@ const Login = () => {
                           paddingHorizontal: Width(10),
                           fontSize: Height(16),
                           marginTop: Height(10),
-                          borderColor: index === 1 ? primary : '#a9a9a9',
+                          borderColor: index === 19 ? primary : '#a9a9a9',
                         }}
                         placeholderStyle={styles.placeholderStyle}
                         selectedTextStyle={styles.selectedTextStyle}
@@ -1013,11 +1031,8 @@ const Login = () => {
                         searchPlaceholder="Search..."
                         value={value}
                         onChange={item => {
-                          setValue(item.value);
+                          loginfor(item.value);
                         }}
-                        // renderLeftIcon={() => (
-                        //   <AntDesign style={styles.icon} color="black" name="Safety" size={20} />
-                        // )}
                       />
                     </>
                   ) : (
@@ -1047,13 +1062,13 @@ const Login = () => {
                       paddingHorizontal: Width(10),
                       fontSize: Height(16),
                       marginTop: Height(10),
-                      borderColor: index === 1 ? primary : '#a9a9a9',
+                      borderColor: index === 20 ? primary : '#a9a9a9',
                     }}
-                    // value={email}
+                    value={userid}
                     // onBlur={() => Validation()}
-                    // onChangeText={text => setEmail(text)}
+                    onChangeText={text => setuserid(text)}
                     // keyboardType="email-address"
-                    onFocus={() => setIndex(1)}
+                    onFocus={() => setIndex(20)}
                   />
                   {/* {emailError.length > 0 && (
                 <Text
@@ -1091,13 +1106,13 @@ const Login = () => {
                       paddingHorizontal: Width(10),
                       fontSize: Height(16),
                       marginTop: Height(10),
-                      borderColor: index === 1 ? primary : '#a9a9a9',
+                      borderColor: index === 21 ? primary : '#a9a9a9',
                     }}
-                    // value={email}
+                    value={password}
                     // onBlur={() => Validation()}
-                    // onChangeText={text => setEmail(text)}
+                    onChangeText={text => setpassword(text)}
                     // keyboardType="email-address"
-                    onFocus={() => setIndex(1)}
+                    onFocus={() => setIndex(21)}
                   />
                   {/* {emailError.length > 0 && (
                 <Text
@@ -1139,7 +1154,7 @@ const Login = () => {
                           paddingHorizontal: Width(10),
                           fontSize: Height(16),
                           marginTop: Height(10),
-                          borderColor: index === 1 ? primary : '#a9a9a9',
+                          borderColor: index === 22 ? primary : '#a9a9a9',
                         }}
                         placeholderStyle={styles.placeholderStyle}
                         selectedTextStyle={styles.selectedTextStyle}
@@ -1160,9 +1175,8 @@ const Login = () => {
                         searchPlaceholder="Search..."
                         value={value}
                         onChange={item => {
-                          setValue(item.value);
+                          setloginfor(item.value);
                         }}
-                     
                       />
                     </>
                   ) : (
@@ -1192,13 +1206,13 @@ const Login = () => {
                       paddingHorizontal: Width(10),
                       fontSize: Height(16),
                       marginTop: Height(10),
-                      borderColor: index === 1 ? primary : '#a9a9a9',
+                      borderColor: index === 23 ? primary : '#a9a9a9',
                     }}
-                    // value={email}
+                    value={userid}
                     // onBlur={() => Validation()}
-                    // onChangeText={text => setEmail(text)}
+                    onChangeText={text => setuserid(text)}
                     // keyboardType="email-address"
-                    onFocus={() => setIndex(1)}
+                    onFocus={() => setIndex(23)}
                   />
                   {/* {emailError.length > 0 && (
                 <Text
@@ -1236,13 +1250,13 @@ const Login = () => {
                       paddingHorizontal: Width(10),
                       fontSize: Height(16),
                       marginTop: Height(10),
-                      borderColor: index === 1 ? primary : '#a9a9a9',
+                      borderColor: index === 24 ? primary : '#a9a9a9',
                     }}
-                    // value={email}
+                    value={password}
                     // onBlur={() => Validation()}
-                    // onChangeText={text => setEmail(text)}
+                    onChangeText={text => setpassword(text)}
                     // keyboardType="email-address"
-                    onFocus={() => setIndex(1)}
+                    onFocus={() => setIndex(24)}
                   />
                   {/* {emailError.length > 0 && (
                 <Text
@@ -1283,13 +1297,13 @@ const Login = () => {
                       paddingHorizontal: Width(10),
                       fontSize: Height(16),
                       marginTop: Height(10),
-                      borderColor: index === 1 ? primary : '#a9a9a9',
+                      borderColor: index === 25 ? primary : '#a9a9a9',
                     }}
-                    // value={email}
+                    value={userid}
                     // onBlur={() => Validation()}
-                    // onChangeText={text => setEmail(text)}
+                    onChangeText={text => setuserid(text)}
                     // keyboardType="email-address"
-                    onFocus={() => setIndex(1)}
+                    onFocus={() => setIndex(25)}
                   />
                   {/* {emailError.length > 0 && (
                 <Text
@@ -1327,13 +1341,13 @@ const Login = () => {
                       paddingHorizontal: Width(10),
                       fontSize: Height(16),
                       marginTop: Height(10),
-                      borderColor: index === 1 ? primary : '#a9a9a9',
+                      borderColor: index === 26 ? primary : '#a9a9a9',
                     }}
-                    // value={email}
+                    value={password}
                     // onBlur={() => Validation()}
-                    // onChangeText={text => setEmail(text)}
+                    onChangeText={text => setpassword(text)}
                     // keyboardType="email-address"
-                    onFocus={() => setIndex(1)}
+                    onFocus={() => setIndex(26)}
                   />
                   {/* {emailError.length > 0 && (
                 <Text

@@ -1,9 +1,10 @@
-import React from 'react';
+import React, {useState} from 'react';
 import AppNavigation from './src/Navigation/AppNavigation';
 import Toast, {BaseToast, ErrorToast} from 'react-native-toast-message';
 import {PaperProvider} from 'react-native-paper';
 import {Provider} from 'react-redux';
 import store from './src/Redux/store';
+
 export default function App() {
   const toastConfig = {
     success: props => (
@@ -40,7 +41,7 @@ export default function App() {
           <AppNavigation />
         </PaperProvider>
       </Provider>
-    <Toast config={toastConfig} />
+      <Toast config={toastConfig} />
     </>
   );
 }

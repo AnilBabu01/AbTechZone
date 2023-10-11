@@ -1,6 +1,6 @@
 import {StyleSheet, Text, View, ActivityIndicator, Modal} from 'react-native';
-import React, {useState, useEffect} from 'react';
-import {primary} from '../../utils/Colors'
+import React from 'react';
+import {primary} from '../../utils/Colors';
 const Loader = ({loader, sms}) => {
   return (
     <>
@@ -20,7 +20,9 @@ const Loader = ({loader, sms}) => {
                 size="large"
                 style={styles.activityIndicator}
               />
-              <Text style={{fontSize:17,fontWeight:700,color:primary}}>{sms}</Text>
+              <Text style={{fontSize: 17, fontWeight: 700, color: primary}}>
+                {sms}
+              </Text>
             </View>
           </View>
         </View>
