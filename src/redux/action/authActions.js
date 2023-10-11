@@ -1,6 +1,7 @@
 import axios from 'axios';
 import {toast} from 'react-toastify';
 import Toast from 'react-native-toast-message';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {backendUrl, backendApiUrl} from '../../Config/config';
 import {
   LOGIN_REQUEST,
@@ -169,6 +170,10 @@ export const login = (email, password, loginas, Fullname) => async dispatch => {
         guestdata,
         config,
       );
+      dispatch({
+        type: LOGIN_SUCCESS,
+        payload: data,
+      });
       if (data?.status) {
         Toast.show({
           type: 'success',
@@ -176,17 +181,6 @@ export const login = (email, password, loginas, Fullname) => async dispatch => {
           text2: data?.msg,
         });
       }
-      if (data?.status===false) {
-        Toast.show({
-          type: 'success',
-          text1: 'Success',
-          text2: data?.msg,
-        });
-      }
-      dispatch({
-        type: LOGIN_SUCCESS,
-        payload: data,
-      });
     }
     if (loginas === 'school') {
       const guestdata = {
@@ -263,6 +257,7 @@ export const login = (email, password, loginas, Fullname) => async dispatch => {
           text2: data?.msg,
         });
       }
+
       dispatch({
         type: LOGIN_SUCCESS,
         payload: data,
@@ -351,21 +346,24 @@ export const login = (email, password, loginas, Fullname) => async dispatch => {
   } catch (error) {
     dispatch({
       type: LOGIN_FAIL,
-      payload: error?.response?.data?.msg,
+      payload: error?.response?.data,
     });
-    toast.error(error?.response?.data?.msg, {autoClose: 1000});
+    Toast.show({
+      type: 'error',
+      text1: 'Error',
+      text2: error?.response?.data?.msg,
+    });
   }
 };
 
 //loader user
 export const loadUser = () => async dispatch => {
   try {
-    let token = await AsyncStorage.getItem('erptoken');
     dispatch({type: LOAD_USER_REQUEST});
     const config = {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `${token}`,
+        Authorization: await AsyncStorage.getItem('erptoken'),
       },
     };
     const {data} = await axios.get(`${backendApiUrl}comman/profile`, config);

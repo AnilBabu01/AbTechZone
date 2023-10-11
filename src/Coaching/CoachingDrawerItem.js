@@ -23,15 +23,16 @@ const CoachingDrawerItem = ({navigation, setuserData}) => {
   const [loader, setloader] = useState(false);
   const [sms, setsms] = useState('');
   const dispatch = useDispatch();
+  const {user} = useSelector(state => state.auth);
   const logout = async () => {
     setloader(true);
-    setsms("Logout....");
-    await AsyncStorage.removeItem('token');
+    setsms('Logout....');
+    await AsyncStorage.removeItem('erptoken');
     navigation.navigate('home');
     dispatch(loadUser());
     setuserData('');
     setloader(false);
-    setsms("");
+    setsms('');
   };
   return (
     <View>
@@ -74,7 +75,7 @@ const CoachingDrawerItem = ({navigation, setuserData}) => {
             </>
           )} */}
 
-          <Text style={{color: 'white'}}>Demo</Text>
+          <Text style={{color: 'white'}}>{user?.data?.User?.name}</Text>
         </View>
       </View>
 

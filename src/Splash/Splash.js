@@ -1,18 +1,24 @@
 import {View, Text, StyleSheet, StatusBar, Image} from 'react-native';
-import React, {useEffect} from 'react';
+import React, {useEffect,useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import logo1 from '../assets/phonelogo.png';
+import {useDispatch, useSelector} from 'react-redux';
+import {loadUser} from '../Redux/action/authActions';
 
 const Splash = ({navigation}) => {
+  const dispatch = useDispatch();
+  const [Token, setToken] = useState('');
   const gettoken = async () => {
-    let token = await AsyncStorage.getItem('token');
+    let token = await AsyncStorage.getItem('erptoken');
+    setToken(token)
     if (token) {
-      navigation.navigate('Drawer');
+      navigation.navigate('DashboardCoaching');
     }
   };
-
+console.log("Token from get profile",Token);
   useEffect(() => {
     gettoken();
+    dispatch(loadUser());
   }, []);
 
   return (

@@ -63,7 +63,9 @@ const Login = () => {
   const [passworderror, setpassworderror] = useState('');
   const [Fullname, setFullname] = useState('');
   const [showonldpassword, setshowonldpassword] = useState(false);
-  const {loading, isAuthenticated, user} = useSelector(state => state.auth);
+  const {loading, isAuthenticated, user, error} = useSelector(
+    state => state.auth,
+  );
   const {college} = useSelector(state => state.college);
   const {coaching} = useSelector(state => state.coaching);
   const {school} = useSelector(state => state.school);
@@ -98,9 +100,9 @@ const Login = () => {
 
   useEffect(() => {
     if (isAuthenticated) {
-      dispatch(loadUser());
       if (user?.data[0]?.token) {
         setauthtoken();
+        dispatch(loadUser());
       }
 
       // setOpen(false);
@@ -145,20 +147,35 @@ const Login = () => {
         setloader(false);
         setsms('');
       }
-    }
-  }, [user]);
 
+      if (user) {
+        console.log('serror from login api', user);
+      }
+    }
+    if (user) {
+      console.log('serror from login api', user);
+    }
+  }, [user, error]);
+  useEffect(() => {
+    if (error) {
+      if (error?.status === false) {
+        setloader(false);
+        setsms('');
+      }
+    }
+  }, [error]);
   useEffect(() => {
     dispatch(alCoaching());
     dispatch(allCollege());
     dispatch(allschool());
     dispatch(allClient());
+    dispatch(loadUser());
   }, []);
 
   return (
     <SafeAreaView>
       <StatusBar backgroundColor={primary} />
-      <Loader loader={loader} sms={sms}/>
+      <Loader loader={loader} sms={sms} />
       <ScrollView>
         <View style={styles.connainer}>
           <Image source={loginicon} style={styles.imgtop} />
