@@ -170,12 +170,15 @@ export const allCollege = () => async dispatch => {
         'Content-Type': 'application/json',
       },
     };
+
+
     dispatch({type: ALL_COLLEGE_REQUEST});
-    const {data} = await axios.get(
+     const {data} = await axios.get(
       `${backendApiUrl}comman/allcollege`,
 
       config,
     );
+  
     dispatch({
       type: ALL_COLLEGE_SUCCESS,
       payload: data.data,
@@ -202,6 +205,7 @@ export const allschool = () => async dispatch => {
 
       config,
     );
+
     dispatch({
       type: ALL_SCHOOL_SUCCESS,
       payload: data.data,
@@ -228,6 +232,7 @@ export const alCoaching = () => async dispatch => {
 
       config,
     );
+
     dispatch({
       type: ALL_COACHING_SUCCESS,
       payload: data.data,
@@ -254,6 +259,7 @@ export const allClient = () => async dispatch => {
 
       config,
     );
+
     dispatch({
       type: ALL_CLIENT_SUCCESS,
       payload: data.data,
@@ -354,7 +360,7 @@ export const deletebatch = (deleteid, setOpenalert) => async dispatch => {
         });
         setOpenalert(false);
       }
-      console.log('delete data is ', res);
+
       dispatch({
         type: DELETE_BATCH_SUCCESS,
         payload: res?.data,
@@ -477,7 +483,6 @@ export const UpdateCourse = (datas, setOpen) => async dispatch => {
 // delete  enquiry
 export const deletecourse = (deleteid, setOpenalert) => async dispatch => {
   try {
-
     dispatch({type: DELETE_COURSE_REQUEST});
     serverInstance('comman/course', 'delete', {
       id: deleteid,
@@ -740,7 +745,6 @@ export const Updatefee = (datas, setOpen) => async dispatch => {
 // delete  enquiry
 export const deletefee = (deleteid, setOpenalert) => async dispatch => {
   try {
-    
     dispatch({type: DELETE_FEESTRUCTURE_REQUEST});
     serverInstance('comman/fee', 'delete', {
       id: deleteid,

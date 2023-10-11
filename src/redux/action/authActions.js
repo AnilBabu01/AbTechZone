@@ -198,6 +198,7 @@ export const login = (email, password, loginas, Fullname) => async dispatch => {
     }
 
     if (loginas === 'College') {
+      console.log("login from main colllege",loginas);
       const {data} = await axios.post(
         `${backendApiUrl}college/login`,
         {email: email, password: password, institutename: Fullname},
@@ -208,6 +209,7 @@ export const login = (email, password, loginas, Fullname) => async dispatch => {
           autoClose: 1000,
         });
       }
+    
       dispatch({
         type: LOGIN_SUCCESS,
         payload: data,

@@ -10,14 +10,22 @@ import {
   SafeAreaView,
   TextInput,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {primary, secondary} from '../utils/Colors';
 import loginicon from '../assets/phonelogo.png';
 import {Height, Width} from '../utils/responsive';
 import {Dropdown} from 'react-native-element-dropdown';
+import {useDispatch, useSelector} from 'react-redux';
+import {login, loadUser} from '../Redux/action/authActions';
+import {
+  alCoaching,
+  allCollege,
+  allschool,
+  allClient,
+} from '../Redux/action/commanAction';
+import {useNavigation} from '@react-navigation/native';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
-
 
 const data = [
   {label: 'College', value: 'College'},
@@ -29,12 +37,92 @@ const data = [
   {label: 'Others', value: 'Others'},
 ];
 
-const Login = ({navigation}) => {
+const Login = () => {
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
   const [index, setIndex] = useState(0);
   const [showloginoption, setshowloginoption] = useState(false);
   const [value, setValue] = useState(null);
   const [loginas, setloginas] = useState('College');
-  
+  const [guestloginas, setguestloginas] = useState('college');
+  const [loginfor, setloginfor] = useState('');
+  const [userid, setuserid] = useState('');
+  const [password, setpassword] = useState('');
+  const [useriderror, setuseriderror] = useState('');
+  const [passworderror, setpassworderror] = useState('');
+  const [Fullname, setFullname] = useState('');
+  const [showonldpassword, setshowonldpassword] = useState(false);
+  const {loading, isAuthenticated, user} = useSelector(state => state.auth);
+  const {college} = useSelector(state => state.college);
+  const {coaching} = useSelector(state => state.coaching);
+  const {school} = useSelector(state => state.school);
+  const {client} = useSelector(state => state.client);
+
+  const submit = () => {
+    if (showloginoption === true) {
+      if (userid === '') {
+        setuseriderror('User id required');
+      }
+      if (password === '') {
+        setpassworderror('Password is required');
+      }
+      if (userid && password) {
+        dispatch(login(userid, password, loginas, loginfor));
+      }
+    } else {
+      if (userid && password) {
+        dispatch(login(userid, password, guestloginas, Fullname));
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      localStorage.setItem('erptoken', user?.data[0]?.token);
+      dispatch(loadUser());
+      setOpen(false);
+      if (user?.data[0]?.newclient === true) {
+        navigate.push('/pricing');
+      } else {
+        if (user?.data[0]?.userType === 'school') {
+          navigate.push('/school/dashboard');
+        }
+        if (user?.data[0]?.userType === 'college') {
+          navigate.push('/college/dashboard');
+        }
+        if (user?.data[0]?.userType === 'institute') {
+          navigate.push('/coaching/dashboard');
+        }
+      }
+      if (user?.data[0]?.userType === 'admin') {
+        navigate.push('/mainadmin/dashboard');
+      }
+
+      if (user?.data[0]?.userType === 'employee') {
+        navigate.push('/employee/dashboard');
+      }
+      if (user?.data[0]?.userType === 'student') {
+        navigate.push('/student/dashboard');
+      }
+      if (user?.data[0]?.userType === 'parent') {
+        navigate.push('/parent/dashboard');
+      }
+
+      if (user) {
+        console.log('data from login screen', user?.data[0]?.token);
+      }
+    }
+  }, [user]);
+
+  useEffect(() => {
+    dispatch(alCoaching());
+    dispatch(allCollege());
+    dispatch(allschool());
+    dispatch(allClient());
+
+    console.log('apis data is ', college, coaching, school, client);
+  }, []);
+
   return (
     <SafeAreaView>
       <StatusBar backgroundColor={primary} />
@@ -301,38 +389,53 @@ const Login = ({navigation}) => {
                     Please Select College
                     <Text style={{color: primary}}> *</Text>
                   </Text>
-                  <Dropdown
-                    style={{
-                      alignSelf: 'center',
-                      width: Width(315),
-                      height: Height(40),
-                      fontFamily: 'Gilroy-SemiBold',
-                      borderWidth: 1.5,
-                      borderRadius: Width(10),
-                      paddingHorizontal: Width(10),
-                      fontSize: Height(16),
-                      marginTop: Height(10),
-                      borderColor: index === 1 ? primary : '#a9a9a9',
-                    }}
-                    placeholderStyle={styles.placeholderStyle}
-                    selectedTextStyle={styles.selectedTextStyle}
-                    inputSearchStyle={styles.inputSearchStyle}
-                    iconStyle={styles.iconStyle}
-                    data={data}
-                    search
-                    maxHeight={300}
-                    labelField="label"
-                    valueField="value"
-                    placeholder="Please Select"
-                    searchPlaceholder="Search..."
-                    value={value}
-                    onChange={item => {
-                      setValue(item.value);
-                    }}
-                    // renderLeftIcon={() => (
-                    //   <AntDesign style={styles.icon} color="black" name="Safety" size={20} />
-                    // )}
-                  />
+                  {college?.length ? (
+                    <>
+                      <Dropdown
+                        style={{
+                          alignSelf: 'center',
+                          width: Width(315),
+                          height: Height(40),
+                          fontFamily: 'Gilroy-SemiBold',
+                          borderWidth: 1.5,
+                          borderRadius: Width(10),
+                          paddingHorizontal: Width(10),
+                          fontSize: Height(16),
+                          marginTop: Height(10),
+                          borderColor: index === 1 ? primary : '#a9a9a9',
+                        }}
+                        placeholderStyle={styles.placeholderStyle}
+                        selectedTextStyle={styles.selectedTextStyle}
+                        inputSearchStyle={styles.inputSearchStyle}
+                        iconStyle={styles.iconStyle}
+                        data={
+                          college &&
+                          college?.map(item => ({
+                            label: `${item?.institutename} ${item?.ClientCode}`,
+                            value: `${item?.institutename} ${item?.ClientCode}`,
+                          }))
+                        }
+                        search
+                        maxHeight={300}
+                        labelField="label"
+                        valueField="value"
+                        placeholder="Please Select"
+                        searchPlaceholder="Search..."
+                        value={value}
+                        onChange={item => {
+                          // setValue(item.value);
+
+                          console.log('select values', item?.value);
+                        }}
+
+                        // renderLeftIcon={() => (
+                        //   <AntDesign style={styles.icon} color="black" name="Safety" size={20} />
+                        // )}
+                      />
+                    </>
+                  ) : (
+                    ''
+                  )}
 
                   <Text
                     style={{
@@ -436,38 +539,50 @@ const Login = ({navigation}) => {
                     Please Select School
                     <Text style={{color: primary}}> *</Text>
                   </Text>
-                  <Dropdown
-                    style={{
-                      alignSelf: 'center',
-                      width: Width(315),
-                      height: Height(40),
-                      fontFamily: 'Gilroy-SemiBold',
-                      borderWidth: 1.5,
-                      borderRadius: Width(10),
-                      paddingHorizontal: Width(10),
-                      fontSize: Height(16),
-                      marginTop: Height(10),
-                      borderColor: index === 1 ? primary : '#a9a9a9',
-                    }}
-                    placeholderStyle={styles.placeholderStyle}
-                    selectedTextStyle={styles.selectedTextStyle}
-                    inputSearchStyle={styles.inputSearchStyle}
-                    iconStyle={styles.iconStyle}
-                    data={data}
-                    search
-                    maxHeight={300}
-                    labelField="label"
-                    valueField="value"
-                    placeholder="Please Select"
-                    searchPlaceholder="Search..."
-                    value={value}
-                    onChange={item => {
-                      setValue(item.value);
-                    }}
-                    // renderLeftIcon={() => (
-                    //   <AntDesign style={styles.icon} color="black" name="Safety" size={20} />
-                    // )}
-                  />
+                  {school ? (
+                    <>
+                      <Dropdown
+                        style={{
+                          alignSelf: 'center',
+                          width: Width(315),
+                          height: Height(40),
+                          fontFamily: 'Gilroy-SemiBold',
+                          borderWidth: 1.5,
+                          borderRadius: Width(10),
+                          paddingHorizontal: Width(10),
+                          fontSize: Height(16),
+                          marginTop: Height(10),
+                          borderColor: index === 1 ? primary : '#a9a9a9',
+                        }}
+                        placeholderStyle={styles.placeholderStyle}
+                        selectedTextStyle={styles.selectedTextStyle}
+                        inputSearchStyle={styles.inputSearchStyle}
+                        iconStyle={styles.iconStyle}
+                        data={
+                          school &&
+                          school?.map(item => ({
+                            label: `${item?.institutename} ${item?.ClientCode}`,
+                            value: `${item?.institutename} ${item?.ClientCode}`,
+                          }))
+                        }
+                        search
+                        maxHeight={300}
+                        labelField="label"
+                        valueField="value"
+                        placeholder="Please Select"
+                        searchPlaceholder="Search..."
+                        value={value}
+                        onChange={item => {
+                          setValue(item.value);
+                        }}
+                        // renderLeftIcon={() => (
+                        //   <AntDesign style={styles.icon} color="black" name="Safety" size={20} />
+                        // )}
+                      />
+                    </>
+                  ) : (
+                    ''
+                  )}
 
                   <Text
                     style={{
@@ -571,38 +686,50 @@ const Login = ({navigation}) => {
                     Please Select Coaching
                     <Text style={{color: primary}}> *</Text>
                   </Text>
-                  <Dropdown
-                    style={{
-                      alignSelf: 'center',
-                      width: Width(315),
-                      height: Height(40),
-                      fontFamily: 'Gilroy-SemiBold',
-                      borderWidth: 1.5,
-                      borderRadius: Width(10),
-                      paddingHorizontal: Width(10),
-                      fontSize: Height(16),
-                      marginTop: Height(10),
-                      borderColor: index === 1 ? primary : '#a9a9a9',
-                    }}
-                    placeholderStyle={styles.placeholderStyle}
-                    selectedTextStyle={styles.selectedTextStyle}
-                    inputSearchStyle={styles.inputSearchStyle}
-                    iconStyle={styles.iconStyle}
-                    data={data}
-                    search
-                    maxHeight={300}
-                    labelField="label"
-                    valueField="value"
-                    placeholder="Please Select"
-                    searchPlaceholder="Search..."
-                    value={value}
-                    onChange={item => {
-                      setValue(item.value);
-                    }}
-                    // renderLeftIcon={() => (
-                    //   <AntDesign style={styles.icon} color="black" name="Safety" size={20} />
-                    // )}
-                  />
+                  {coaching ? (
+                    <>
+                      <Dropdown
+                        style={{
+                          alignSelf: 'center',
+                          width: Width(315),
+                          height: Height(40),
+                          fontFamily: 'Gilroy-SemiBold',
+                          borderWidth: 1.5,
+                          borderRadius: Width(10),
+                          paddingHorizontal: Width(10),
+                          fontSize: Height(16),
+                          marginTop: Height(10),
+                          borderColor: index === 1 ? primary : '#a9a9a9',
+                        }}
+                        placeholderStyle={styles.placeholderStyle}
+                        selectedTextStyle={styles.selectedTextStyle}
+                        inputSearchStyle={styles.inputSearchStyle}
+                        iconStyle={styles.iconStyle}
+                        data={
+                          coaching &&
+                          coaching?.map(item => ({
+                            label: `${item?.institutename} ${item?.ClientCode}`,
+                            value: `${item?.institutename} ${item?.ClientCode}`,
+                          }))
+                        }
+                        search
+                        maxHeight={300}
+                        labelField="label"
+                        valueField="value"
+                        placeholder="Please Select"
+                        searchPlaceholder="Search..."
+                        value={value}
+                        onChange={item => {
+                          setValue(item.value);
+                        }}
+                        // renderLeftIcon={() => (
+                        //   <AntDesign style={styles.icon} color="black" name="Safety" size={20} />
+                        // )}
+                      />
+                    </>
+                  ) : (
+                    ''
+                  )}
 
                   <Text
                     style={{
@@ -702,41 +829,53 @@ const Login = ({navigation}) => {
                       marginTop: Height(10),
                       marginLeft: Width(40),
                     }}>
-                    Please Select 
+                    Please Select
                     <Text style={{color: primary}}> *</Text>
                   </Text>
-                  <Dropdown
-                    style={{
-                      alignSelf: 'center',
-                      width: Width(315),
-                      height: Height(40),
-                      fontFamily: 'Gilroy-SemiBold',
-                      borderWidth: 1.5,
-                      borderRadius: Width(10),
-                      paddingHorizontal: Width(10),
-                      fontSize: Height(16),
-                      marginTop: Height(10),
-                      borderColor: index === 1 ? primary : '#a9a9a9',
-                    }}
-                    placeholderStyle={styles.placeholderStyle}
-                    selectedTextStyle={styles.selectedTextStyle}
-                    inputSearchStyle={styles.inputSearchStyle}
-                    iconStyle={styles.iconStyle}
-                    data={data}
-                    search
-                    maxHeight={300}
-                    labelField="label"
-                    valueField="value"
-                    placeholder="Please Select"
-                    searchPlaceholder="Search..."
-                    value={value}
-                    onChange={item => {
-                      setValue(item.value);
-                    }}
-                    // renderLeftIcon={() => (
-                    //   <AntDesign style={styles.icon} color="black" name="Safety" size={20} />
-                    // )}
-                  />
+                  {client ? (
+                    <>
+                      <Dropdown
+                        style={{
+                          alignSelf: 'center',
+                          width: Width(315),
+                          height: Height(40),
+                          fontFamily: 'Gilroy-SemiBold',
+                          borderWidth: 1.5,
+                          borderRadius: Width(10),
+                          paddingHorizontal: Width(10),
+                          fontSize: Height(16),
+                          marginTop: Height(10),
+                          borderColor: index === 1 ? primary : '#a9a9a9',
+                        }}
+                        placeholderStyle={styles.placeholderStyle}
+                        selectedTextStyle={styles.selectedTextStyle}
+                        inputSearchStyle={styles.inputSearchStyle}
+                        iconStyle={styles.iconStyle}
+                        data={
+                          client &&
+                          client?.map(item => ({
+                            label: `${item?.institutename} ${item?.ClientCode}`,
+                            value: `${item?.institutename} ${item?.ClientCode}`,
+                          }))
+                        }
+                        search
+                        maxHeight={300}
+                        labelField="label"
+                        valueField="value"
+                        placeholder="Please Select"
+                        searchPlaceholder="Search..."
+                        value={value}
+                        onChange={item => {
+                          setValue(item.value);
+                        }}
+                        // renderLeftIcon={() => (
+                        //   <AntDesign style={styles.icon} color="black" name="Safety" size={20} />
+                        // )}
+                      />
+                    </>
+                  ) : (
+                    ''
+                  )}
 
                   <Text
                     style={{
@@ -746,7 +885,8 @@ const Login = ({navigation}) => {
                       marginTop: Height(10),
                       marginLeft: Width(40),
                     }}>
-                    Employee import { second } from 'first'<Text style={{color: primary}}> *</Text>
+                    Employee Id
+                    <Text style={{color: primary}}>*</Text>
                   </Text>
                   <TextInput
                     placeholder="Enter User Id"
@@ -839,38 +979,50 @@ const Login = ({navigation}) => {
                     Please Select
                     <Text style={{color: primary}}> *</Text>
                   </Text>
-                  <Dropdown
-                    style={{
-                      alignSelf: 'center',
-                      width: Width(315),
-                      height: Height(40),
-                      fontFamily: 'Gilroy-SemiBold',
-                      borderWidth: 1.5,
-                      borderRadius: Width(10),
-                      paddingHorizontal: Width(10),
-                      fontSize: Height(16),
-                      marginTop: Height(10),
-                      borderColor: index === 1 ? primary : '#a9a9a9',
-                    }}
-                    placeholderStyle={styles.placeholderStyle}
-                    selectedTextStyle={styles.selectedTextStyle}
-                    inputSearchStyle={styles.inputSearchStyle}
-                    iconStyle={styles.iconStyle}
-                    data={data}
-                    search
-                    maxHeight={300}
-                    labelField="label"
-                    valueField="value"
-                    placeholder="Please Select"
-                    searchPlaceholder="Search..."
-                    value={value}
-                    onChange={item => {
-                      setValue(item.value);
-                    }}
-                    // renderLeftIcon={() => (
-                    //   <AntDesign style={styles.icon} color="black" name="Safety" size={20} />
-                    // )}
-                  />
+                  {client ? (
+                    <>
+                      <Dropdown
+                        style={{
+                          alignSelf: 'center',
+                          width: Width(315),
+                          height: Height(40),
+                          fontFamily: 'Gilroy-SemiBold',
+                          borderWidth: 1.5,
+                          borderRadius: Width(10),
+                          paddingHorizontal: Width(10),
+                          fontSize: Height(16),
+                          marginTop: Height(10),
+                          borderColor: index === 1 ? primary : '#a9a9a9',
+                        }}
+                        placeholderStyle={styles.placeholderStyle}
+                        selectedTextStyle={styles.selectedTextStyle}
+                        inputSearchStyle={styles.inputSearchStyle}
+                        iconStyle={styles.iconStyle}
+                        data={
+                          client &&
+                          client?.map(item => ({
+                            label: `${item?.institutename} ${item?.ClientCode}`,
+                            value: `${item?.institutename} ${item?.ClientCode}`,
+                          }))
+                        }
+                        search
+                        maxHeight={300}
+                        labelField="label"
+                        valueField="value"
+                        placeholder="Please Select"
+                        searchPlaceholder="Search..."
+                        value={value}
+                        onChange={item => {
+                          setValue(item.value);
+                        }}
+                        // renderLeftIcon={() => (
+                        //   <AntDesign style={styles.icon} color="black" name="Safety" size={20} />
+                        // )}
+                      />
+                    </>
+                  ) : (
+                    ''
+                  )}
 
                   <Text
                     style={{
@@ -974,38 +1126,48 @@ const Login = ({navigation}) => {
                     Please Select Organization
                     <Text style={{color: primary}}> *</Text>
                   </Text>
-                  <Dropdown
-                    style={{
-                      alignSelf: 'center',
-                      width: Width(315),
-                      height: Height(40),
-                      fontFamily: 'Gilroy-SemiBold',
-                      borderWidth: 1.5,
-                      borderRadius: Width(10),
-                      paddingHorizontal: Width(10),
-                      fontSize: Height(16),
-                      marginTop: Height(10),
-                      borderColor: index === 1 ? primary : '#a9a9a9',
-                    }}
-                    placeholderStyle={styles.placeholderStyle}
-                    selectedTextStyle={styles.selectedTextStyle}
-                    inputSearchStyle={styles.inputSearchStyle}
-                    iconStyle={styles.iconStyle}
-                    data={data}
-                    search
-                    maxHeight={300}
-                    labelField="label"
-                    valueField="value"
-                    placeholder="Please Select"
-                    searchPlaceholder="Search..."
-                    value={value}
-                    onChange={item => {
-                      setValue(item.value);
-                    }}
-                    // renderLeftIcon={() => (
-                    //   <AntDesign style={styles.icon} color="black" name="Safety" size={20} />
-                    // )}
-                  />
+                  {client ? (
+                    <>
+                      <Dropdown
+                        style={{
+                          alignSelf: 'center',
+                          width: Width(315),
+                          height: Height(40),
+                          fontFamily: 'Gilroy-SemiBold',
+                          borderWidth: 1.5,
+                          borderRadius: Width(10),
+                          paddingHorizontal: Width(10),
+                          fontSize: Height(16),
+                          marginTop: Height(10),
+                          borderColor: index === 1 ? primary : '#a9a9a9',
+                        }}
+                        placeholderStyle={styles.placeholderStyle}
+                        selectedTextStyle={styles.selectedTextStyle}
+                        inputSearchStyle={styles.inputSearchStyle}
+                        iconStyle={styles.iconStyle}
+                        data={
+                          client &&
+                          client?.map(item => ({
+                            label: `${item?.institutename} ${item?.ClientCode}`,
+                            value: `${item?.institutename} ${item?.ClientCode}`,
+                          }))
+                        }
+                        search
+                        maxHeight={300}
+                        labelField="label"
+                        valueField="value"
+                        placeholder="Please Select"
+                        searchPlaceholder="Search..."
+                        value={value}
+                        onChange={item => {
+                          setValue(item.value);
+                        }}
+                     
+                      />
+                    </>
+                  ) : (
+                    ''
+                  )}
 
                   <Text
                     style={{
@@ -1098,7 +1260,6 @@ const Login = ({navigation}) => {
 
               {loginas === 'Others' && (
                 <>
-                 
                   <Text
                     style={{
                       color: 'black',
@@ -1189,7 +1350,7 @@ const Login = ({navigation}) => {
               )}
 
               <View style={styles.loginbtndiv}>
-                <TouchableOpacity onPress={()=>  navigation.navigate('CollegeOptions')}>
+                <TouchableOpacity onPress={() => submit()}>
                   <View style={styles.loginbtn}>
                     <Text style={styles.logintextstyle}>Login</Text>
                   </View>

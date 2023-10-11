@@ -39,15 +39,8 @@ export default function App() {
         <PaperProvider>
           <AppNavigation />
         </PaperProvider>
-
-        
       </Provider>
-
-      {/* <PaperProvider>
-          <AppNavigation />
-        </PaperProvider> */}
-
-      <Toast config={toastConfig} />
+    <Toast config={toastConfig} />
     </>
   );
 }

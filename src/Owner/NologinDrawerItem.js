@@ -38,7 +38,7 @@ const NologinDrawerItem = ({navigation}) => {
         )}
         onPress={() => {
           navigation.closeDrawer();
-          navigation.navigate('login');
+          // navigation.navigate('login');
         }}
         labelStyle={{color: 'black'}}
       />
@@ -57,7 +57,7 @@ const NologinDrawerItem = ({navigation}) => {
         )}
         onPress={() => {
           navigation.closeDrawer();
-          navigation.navigate('login');
+          // navigation.navigate('login');
         }}
         labelStyle={{color: 'black'}}
       />
@@ -75,7 +75,7 @@ const NologinDrawerItem = ({navigation}) => {
         )}
         onPress={() => {
           navigation.closeDrawer();
-          navigation.navigate('login');
+          navigation.navigate('Login');
         }}
         labelStyle={{color: 'black'}}
       />
