@@ -96,6 +96,7 @@ const Login = () => {
 
   const setauthtoken = async () => {
     await AsyncStorage.setItem('erptoken', user?.data[0]?.token);
+    await AsyncStorage.setItem('userType', user?.data[0]?.User?.userType);
   };
 
   useEffect(() => {
@@ -110,12 +111,12 @@ const Login = () => {
       //   navigate.navigate('/pricing');
       // } else {
       if (user?.data[0]?.User?.userType === 'school') {
-        navigation.navigate('DashboardCoaching');
+        navigation.navigate('DashboardSchool');
         setloader(false);
         setsms('');
       }
       if (user?.data[0]?.User?.userType === 'college') {
-        navigation.navigate('DashboardCoaching');
+        navigation.navigate('DashboardCollege');
         setloader(false);
         setsms('');
       }
@@ -127,33 +128,26 @@ const Login = () => {
       // }
 
       if (user?.data[0]?.userType === 'admin') {
-        navigate.navigate('DashboardCoaching');
+        navigate.navigate('DashboardOwner');
         setloader(false);
         setsms('');
       }
 
       if (user?.data[0]?.User?.userType === 'employee') {
-        navigation.navigate('DashboardCoaching');
+        navigation.navigate('DashboardEmplyee');
         setloader(false);
         setsms('');
       }
       if (user?.data[0]?.User?.userType === 'student') {
-        navigation.navigate('DashboardCoaching');
+        navigation.navigate('DashboardStudent');
         setloader(false);
         setsms('');
       }
       if (user?.data[0]?.User?.userType === 'parent') {
-        navigation.navigate('DashboardCoaching');
+        navigation.navigate('DashboardParent');
         setloader(false);
         setsms('');
       }
-
-      if (user) {
-        console.log('serror from login api', user);
-      }
-    }
-    if (user) {
-      console.log('serror from login api', user);
     }
   }, [user, error]);
   useEffect(() => {

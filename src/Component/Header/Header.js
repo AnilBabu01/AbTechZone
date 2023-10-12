@@ -22,7 +22,7 @@ const Header = () => {
   useEffect(() => {
     // dispatch(loadUser());
 
-    console.log("from homedd",user)
+    console.log('from homedd', user);
   }, [user]);
 
   return (
@@ -36,12 +36,13 @@ const Header = () => {
         </TouchableOpacity>
 
         <Image source={logoblue1} style={styles.logoimg} />
-        {/* <Text style={{color: 'white'}}>ABTECHZONE</Text> */}
 
-        <View style={styles.profile}>
-          <TouchableOpacity
-            onPress={() => navigation.navigate('ProfileCoaching')}>
-            {/* {user?.profile_image ? (
+        {user ? (
+          <>
+            <View style={styles.profile}>
+              <TouchableOpacity
+                onPress={() => navigation.navigate('ProfileCoaching')}>
+                {/* {user?.profile_image ? (
           <>
             <Image
               source={{
@@ -55,14 +56,19 @@ const Header = () => {
             <Image source={profileimg} style={styles.avator} />
           </>
         )} */}
-            <Image source={profileimg} style={styles.avator} />
-          </TouchableOpacity>
-        </View>
-        {/* <TouchableOpacity>
-          <View style={styles.loginbtn}>
-            <Text style={styles.logintextstyle}>LogOut</Text>
-          </View>
-        </TouchableOpacity> */}
+                <Image source={profileimg} style={styles.avator} />
+              </TouchableOpacity>
+            </View>
+          </>
+        ) : (
+          <>
+            <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+              <View style={styles.loginbtn}>
+                <Text style={styles.logintextstyle}>Login</Text>
+              </View>
+            </TouchableOpacity>
+          </>
+        )}
       </View>
     </View>
   );

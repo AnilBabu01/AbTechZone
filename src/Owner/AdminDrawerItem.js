@@ -25,7 +25,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {loadUser} from '../Redux/action/authActions';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Loader from '../Component/Loader/Loader';
-const EmployeeDrawerItem = ({navigation,setuserData}) => {
+const AdminDrawerItem = ({navigation,setuserData}) => {
   const [loader, setloader] = useState(false);
   const [sms, setsms] = useState('');
   const dispatch = useDispatch();
@@ -329,7 +329,7 @@ const EmployeeDrawerItem = ({navigation,setuserData}) => {
   );
 };
 
-export default EmployeeDrawerItem;
+export default AdminDrawerItem;
 
 const styles = StyleSheet.create({
   mainprofile: {

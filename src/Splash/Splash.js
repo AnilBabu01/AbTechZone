@@ -1,21 +1,39 @@
-import {View, Text, StyleSheet, StatusBar, Image} from 'react-native';
-import React, {useEffect,useState} from 'react';
+import {View, StyleSheet, StatusBar, Image} from 'react-native';
+import React, {useEffect} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import logo1 from '../assets/phonelogo.png';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import {loadUser} from '../Redux/action/authActions';
 
 const Splash = ({navigation}) => {
   const dispatch = useDispatch();
-  const [Token, setToken] = useState('');
+
   const gettoken = async () => {
-    let token = await AsyncStorage.getItem('erptoken');
-    setToken(token)
-    if (token) {
+    let userType = await AsyncStorage.getItem('userType');
+
+    if (userType === 'school') {
+      navigation.navigate('DashboardSchool');
+    }
+    if (userType === 'college') {
+      navigation.navigate('DashboardCollege');
+    }
+    if (userType === 'institute') {
       navigation.navigate('DashboardCoaching');
     }
+    if (userType === 'employee') {
+      navigation.navigate('DashboardEmplyee');
+    }
+    if (userType === 'student') {
+      navigation.navigate('DashboardStudent');
+    }
+    if (userType === 'parent') {
+      navigation.navigate('DashboardParent');
+    }
+    if (userType === 'admin') {
+      navigation.navigate('DashboardOwner');
+    }
   };
-console.log("Token from get profile",Token);
+
   useEffect(() => {
     gettoken();
     dispatch(loadUser());
@@ -24,8 +42,7 @@ console.log("Token from get profile",Token);
   return (
     <View style={style.maincontainer}>
       <StatusBar hidden={true} />
-      {/* <View></View> */}
-      <View style={style.logocontainer}>
+     <View style={style.logocontainer}>
         <Image
           source={logo1}
           style={{
@@ -34,11 +51,7 @@ console.log("Token from get profile",Token);
             borderRadius: 11,
           }}
         />
-        {/* <Text style={style.textsplsh}>erp</Text> */}
       </View>
-      {/* <View style={style.bottomcontainer}>
-        <Text style={style.bottomtext}>erp</Text>
-      </View> */}
     </View>
   );
 };
@@ -61,6 +74,4 @@ const style = StyleSheet.create({
   logocontainer: {
     alignItems: 'center',
   },
-  bottomcontainer: {},
-  bottomtext: {},
 });

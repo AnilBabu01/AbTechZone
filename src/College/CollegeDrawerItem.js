@@ -1,5 +1,5 @@
 import {StyleSheet, Text, View, Image} from 'react-native';
-import React from 'react';
+import React,{useState} from 'react';
 import {DrawerItem} from '@react-navigation/drawer';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {secondary, profileheader} from '../utils/Colors';
@@ -19,9 +19,28 @@ import master from '../assets/master.png';
 import reports from '../assets/reports.png';
 import coaching from '../assets/coaching.png';
 import test from '../assets/test.png';
-const CollegeDrawerItem = ({navigation}) => {
+import {useDispatch, useSelector} from 'react-redux';
+import {loadUser} from '../Redux/action/authActions';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Loader from '../Component/Loader/Loader';
+const CollegeDrawerItem = ({navigation,setuserData}) => {
+  const [loader, setloader] = useState(false);
+  const [sms, setsms] = useState('');
+  const dispatch = useDispatch();
+  const {user} = useSelector(state => state.auth);
+  const logout = async () => {
+    setloader(true);
+    setsms('Logout....');
+    await AsyncStorage.removeItem('erptoken');
+    navigation.navigate('home');
+    dispatch(loadUser());
+    setuserData('');
+    setloader(false);
+    setsms('');
+  };
   return (
     <View>
+      <Loader loader={loader} sms={sms}/>
       <View style={styles.mainprofile}>
         <View style={styles.innearview}>
           <Image
@@ -222,7 +241,7 @@ const CollegeDrawerItem = ({navigation}) => {
 
       <DrawerItem
         style={styles.menu}
-        label="Library"
+        label="Transport"
         icon={() => (
           <Image
             source={transport}
@@ -297,9 +316,12 @@ const CollegeDrawerItem = ({navigation}) => {
       />
       <DrawerItem
         style={styles.menu}
-        label="Logouts"
+        label="Logout"
         icon={() => <Ionicons name="lock-closed-outline" size={30} />}
-        // onPress={() => logout()}
+        onPress={() => {
+          navigation.closeDrawer();
+          logout();
+        }}
         labelStyle={{color: 'black'}}
       />
 

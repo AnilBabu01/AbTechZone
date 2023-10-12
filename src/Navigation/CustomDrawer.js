@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {DrawerContentScrollView} from '@react-navigation/drawer';
 import {primary} from '../utils/Colors';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import NologinDrawerItem from '../Owner/NologinDrawerItem';
 import CoachingDrawerItem from '../Coaching/CoachingDrawerItem';
 import SchoolDrawerItem from '../School/SchoolDrawerItem';
@@ -9,6 +8,7 @@ import EmployeeDrawerItem from '../Employee/EmployeeDrawerItem';
 import StudentDrawerItem from '../Student/StudentDrawerItem';
 import ParentDrawerItem from '../Parent/ParentDrawerItem';
 import CollegeDrawerItem from '../College/CollegeDrawerItem';
+import AdminDrawerItem from '../Owner/AdminDrawerItem';
 import {useDispatch, useSelector} from 'react-redux';
 import {loadUser} from '../Redux/action/authActions';
 function CustomDrawer(props) {
@@ -44,31 +44,54 @@ function CustomDrawer(props) {
 
           {userData?.userType === 'college' && (
             <>
-              <CollegeDrawerItem navigation={navigation} />
+              <CollegeDrawerItem
+                navigation={navigation}
+                setuserData={setuserData}
+              />
             </>
           )}
 
           {userData?.userType === 'school' && (
             <>
-              <SchoolDrawerItem navigation={navigation} />
+              <SchoolDrawerItem
+                navigation={navigation}
+                setuserData={setuserData}
+              />
             </>
           )}
 
           {userData?.userType === 'employee' && (
             <>
-              <EmployeeDrawerItem navigation={navigation} />
+              <EmployeeDrawerItem
+                navigation={navigation}
+                setuserData={setuserData}
+              />
             </>
           )}
 
           {userData?.userType === 'student' && (
             <>
-              <StudentDrawerItem navigation={navigation} />
+              <StudentDrawerItem
+                navigation={navigation}
+                setuserData={setuserData}
+              />
             </>
           )}
 
           {userData?.userType === 'parent' && (
             <>
-              <ParentDrawerItem navigation={navigation} />
+              <ParentDrawerItem
+                navigation={navigation}
+                setuserData={setuserData}
+              />
+            </>
+          )}
+          {userData?.userType === 'admin' && (
+            <>
+              <AdminDrawerItem
+                navigation={navigation}
+                setuserData={setuserData}
+              />
             </>
           )}
         </>

@@ -36,6 +36,12 @@ import UpdateCredentialCoaching from '../Coaching/Profile/UpdateCredential';
 import UpdateImgaesCoaching from '../Coaching/Profile/UpdateImgaes';
 import UpdateCommunicationCoaching from '../Coaching/Profile/UpdateCommunication';
 import FeeCollectCoaching from '../Coaching/Accounts/FeeCollect';
+import DashboardCollege from '../College/Dashboard/Dashboard';
+import DashboardSchool from '../School/Dashboard/Dashboard';
+import DashboardEmplyee from '../Employee/Dashboard/Dashboard';
+import DashboardStudent from '../School/Dashboard/Dashboard';
+import DashboardParent from '../Parent/Dashboard/Dashboard';
+import DashboardOwner from '../Owner/Dashboard/Dashboard';
 import {primary} from '../utils/Colors';
 const Stack = createNativeStackNavigator();
 
@@ -412,6 +418,12 @@ function StackNavigation() {
         }}
       />
       <Stack.Screen name="FeeCollectCoaching" component={FeeCollectCoaching} />
+      <Stack.Screen name="DashboardCollege" component={DashboardCollege} />
+      <Stack.Screen name="DashboardSchool" component={DashboardSchool} />
+      <Stack.Screen name="DashboardEmplyee" component={DashboardEmplyee} />
+      <Stack.Screen name="DashboardStudent" component={DashboardStudent} />
+      <Stack.Screen name="DashboardParent" component={DashboardParent} />
+      <Stack.Screen name="DashboardOwner" component={DashboardOwner} />
       <Stack.Screen name="drawer" component={DrawerNavigation} />
     </Stack.Navigator>
   );
