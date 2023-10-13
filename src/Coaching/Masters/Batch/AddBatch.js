@@ -2,19 +2,17 @@ import {
   StyleSheet,
   Text,
   View,
-  Modal,
   TouchableOpacity,
   ScrollView,
-  TextInput,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Height, Width} from '../../../utils/responsive';
 import {primary} from '../../../utils/Colors';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import DateTimePickerModal from 'react-native-modal-datetime-picker';
-import moment from 'moment';
 import {Dropdown} from 'react-native-element-dropdown';
 import {useNavigation} from '@react-navigation/native';
+import {Addbatch, getbatch} from '../../../Redux/action/commanAction';
+import {useDispatch, useSelector} from 'react-redux';
+import Loader from '../../../Component/Loader/Loader';
 const data = [
   {label: '01:00 AM', value: '01:00 AM'},
   {label: '02:00 AM', value: '02:00 AM'},
@@ -42,29 +40,55 @@ const data = [
   {label: '12:00 PM', value: '12:00 PM'},
 ];
 const AddBatch = () => {
+  const dispatch = useDispatch();
   const navigation = useNavigation();
   const [index, setIndex] = useState(0);
-  const [fromdate, setfromdate] = useState('');
+  const [sms, setsms] = useState('');
+  const [loader, setloader] = useState(false);
   const [endtime, setendtime] = useState('');
   const [starttime, setstarttime] = useState('');
-  const [course, setcourse] = useState('');
-  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-
-  const showDatePicker = () => {
-    setDatePickerVisibility(true);
+  const {batch, error} = useSelector(state => state.addbatch);
+  const submit = () => {
+    if (starttime && endtime) {
+      setloader(true);
+      setsms('Adding Batch Time');
+      const data = {
+        StartingTime: starttime,
+        EndingTime: endtime,
+      };
+      dispatch(Addbatch(data));
+      // if (batch) {
+      //   console.log('batch from add ', batch);
+      //   navigation.navigate('BatchCoaching');
+      //   setsms('');
+      //   setloader(false);
+      // }
+    } else {
+      setsms('');
+      setloader(false);
+    }
   };
 
-  const hideDatePicker = () => {
-    setDatePickerVisibility(false);
-  };
-
-  const handleConfirm = date => {
-    hideDatePicker();
-    setfromdate(date);
-  };
+  useEffect(() => {
+    if (batch?.status) {
+      dispatch(getbatch());
+      setsms('');
+      setloader(false);
+      // navigation.navigate('BatchCoaching');
+    }
+  }, [batch]);
+  useEffect(() => {
+    if (error) {
+      if (error?.status === false) {
+        setloader(false);
+        setsms('');
+      }
+    }
+  }, [error]);
 
   return (
     <View>
+      <Loader loader={loader} sms={sms} />
       <ScrollView>
         <View style={styles.enquirymainview}>
           <View style={styles.dateview}>
@@ -96,9 +120,6 @@ const AddBatch = () => {
               onChange={item => {
                 setstarttime(item.value);
               }}
-              // renderLeftIcon={() => (
-              //   <AntDesign style={styles.icon} color="black" name="Safety" size={20} />
-              // )}
             />
             <Dropdown
               style={{
@@ -128,45 +149,11 @@ const AddBatch = () => {
               onChange={item => {
                 setendtime(item.value);
               }}
-              // renderLeftIcon={() => (
-              //   <AntDesign style={styles.icon} color="black" name="Safety" size={20} />
-              // )}
             />
-            {/* <View
-              style={{
-                width: Width(360),
-                height: Height(45),
-                alignSelf: 'center',
-                flexDirection: 'row',
-                alignItems: 'center',
-                borderWidth: 1.5,
-                borderRadius: Width(5),
-                borderColor: index === 7 ? primary : '#a9a9a9',
-                marginTop: Height(10),
-              }}
-              onStartShouldSetResponder={() => setIndex(7)}>
-              <TextInput
-                placeholder="Comment"
-                placeholderTextColor="rgba(0, 0, 0, 0.6)"
-                style={{
-                  width: Width(280),
-                  fontFamily: 'Gilroy-SemiBold',
-                  paddingHorizontal: Width(20),
-                  fontSize: Height(16),
-                }}
-                // secureTextEntry={passwordVisible}
-                // onBlur={() => Validation()}
-                // value={address}
-                // onChangeText={text => setaddress(text)}
-                // onPressIn={() => setIndex(3)}
-                onFocus={() => setIndex(7)}
-              />
-            </View> */}
           </View>
 
           <View style={styles.loginbtndiv}>
-            <TouchableOpacity
-              onPress={() => navigation.navigate('BatchCoaching')}>
+            <TouchableOpacity onPress={() => submit()}>
               <View style={styles.loginbtn}>
                 <Text style={styles.logintextstyle}>Save</Text>
               </View>

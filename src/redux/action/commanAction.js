@@ -1,5 +1,6 @@
 import axios from 'axios';
-import {toast} from 'react-toastify';
+import Toast from 'react-native-toast-message';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {backendApiUrl} from '../../Config/config';
 import {serverInstance} from '../../API/ServerInstance';
 import {
@@ -171,14 +172,13 @@ export const allCollege = () => async dispatch => {
       },
     };
 
-
     dispatch({type: ALL_COLLEGE_REQUEST});
-     const {data} = await axios.get(
+    const {data} = await axios.get(
       `${backendApiUrl}comman/allcollege`,
 
       config,
     );
-  
+
     dispatch({
       type: ALL_COLLEGE_SUCCESS,
       payload: data.data,
@@ -290,10 +290,11 @@ export const Addbatch = (datas, setOpen) => async dispatch => {
     );
 
     if (data?.status) {
-      toast.success(data?.msg, {
-        autoClose: 1000,
+      Toast.show({
+        type: 'success',
+        text1: 'Success',
+        text2: data?.msg,
       });
-      setOpen(false);
     }
 
     dispatch({
@@ -303,9 +304,13 @@ export const Addbatch = (datas, setOpen) => async dispatch => {
   } catch (error) {
     dispatch({
       type: ADD_BATCH_FAIL,
-      payload: error?.response?.data?.msg,
+      payload: error?.response?.data,
     });
-    toast.error(error?.response?.data?.msg, {autoClose: 1000});
+    Toast.show({
+      type: 'error',
+      text1: 'Error',
+      text2: error?.response?.data?.msg,
+    });
   }
 };
 
@@ -328,10 +333,11 @@ export const Updatebatch = (datas, setOpen) => async dispatch => {
     );
 
     if (data?.status) {
-      toast.success(data?.msg, {
-        autoClose: 1000,
+      Toast.show({
+        type: 'success',
+        text1: 'Success',
+        text2: data?.msg,
       });
-      setOpen(false);
     }
 
     dispatch({
@@ -343,7 +349,11 @@ export const Updatebatch = (datas, setOpen) => async dispatch => {
       type: UPDATE_BATCH_FAIL,
       payload: error?.response?.data?.msg,
     });
-    toast.error(error?.response?.data?.msg, {autoClose: 1000});
+    Toast.show({
+      type: 'error',
+      text1: 'Error',
+      text2: error?.response?.data?.msg,
+    });
   }
 };
 
@@ -355,10 +365,11 @@ export const deletebatch = (deleteid, setOpenalert) => async dispatch => {
       id: deleteid,
     }).then(res => {
       if (res?.status) {
-        toast.success(res?.msg, {
-          autoClose: 1000,
+        Toast.show({
+          type: 'success',
+          text1: 'Success',
+          text2: data?.msg,
         });
-        setOpenalert(false);
       }
 
       dispatch({
@@ -371,8 +382,11 @@ export const deletebatch = (deleteid, setOpenalert) => async dispatch => {
       type: DELETE_BATCH_FAIL,
       payload: error?.response?.data?.msg,
     });
-    toast.error(error?.response?.data?.msg, {autoClose: 1000});
-    setOpenalert(false);
+    Toast.show({
+      type: 'error',
+      text1: 'Error',
+      text2: error?.response?.data?.msg,
+    });
   }
 };
 
@@ -423,8 +437,10 @@ export const Addcourse = (datas, setOpen) => async dispatch => {
     );
 
     if (data?.status) {
-      toast.success(data?.msg, {
-        autoClose: 1000,
+      Toast.show({
+        type: 'success',
+        text1: 'Success',
+        text2: data?.msg,
       });
       setOpen(false);
     }
@@ -438,7 +454,11 @@ export const Addcourse = (datas, setOpen) => async dispatch => {
       type: ADD_COURSE_FAIL,
       payload: error?.response?.data?.msg,
     });
-    toast.error(error?.response?.data?.msg, {autoClose: 1000});
+    Toast.show({
+      type: 'error',
+      text1: 'Error',
+      text2: error?.response?.data?.msg,
+    });
   }
 };
 
@@ -461,10 +481,11 @@ export const UpdateCourse = (datas, setOpen) => async dispatch => {
     );
 
     if (data?.status) {
-      toast.success(data?.msg, {
-        autoClose: 1000,
+      Toast.show({
+        type: 'success',
+        text1: 'Success',
+        text2: data?.msg,
       });
-      setOpen(false);
     }
 
     dispatch({
@@ -476,7 +497,11 @@ export const UpdateCourse = (datas, setOpen) => async dispatch => {
       type: UPDATE_COURSE_FAIL,
       payload: error?.response?.data?.msg,
     });
-    toast.error(error?.response?.data?.msg, {autoClose: 1000});
+    Toast.show({
+      type: 'error',
+      text1: 'Error',
+      text2: error?.response?.data?.msg,
+    });
   }
 };
 
@@ -488,10 +513,11 @@ export const deletecourse = (deleteid, setOpenalert) => async dispatch => {
       id: deleteid,
     }).then(res => {
       if (res?.status) {
-        toast.success(res?.msg, {
-          autoClose: 1000,
+        Toast.show({
+          type: 'success',
+          text1: 'Success',
+          text2: data?.msg,
         });
-        setOpenalert(false);
       }
 
       dispatch({
@@ -504,8 +530,11 @@ export const deletecourse = (deleteid, setOpenalert) => async dispatch => {
       type: DELETE_COURSE_FAIL,
       payload: error?.response?.data?.msg,
     });
-    toast.error(error?.response?.data?.msg, {autoClose: 1000});
-    setOpenalert(false);
+    Toast.show({
+      type: 'error',
+      text1: 'Error',
+      text2: error?.response?.data?.msg,
+    });
   }
 };
 
@@ -556,10 +585,11 @@ export const Addcategory = (datas, setOpen) => async dispatch => {
     );
 
     if (data?.status) {
-      toast.success(data?.msg, {
-        autoClose: 1000,
+      Toast.show({
+        type: 'success',
+        text1: 'Success',
+        text2: data?.msg,
       });
-      setOpen(false);
     }
 
     dispatch({
@@ -571,7 +601,11 @@ export const Addcategory = (datas, setOpen) => async dispatch => {
       type: ADD_CATEGORY_FAIL,
       payload: error?.response?.data?.msg,
     });
-    toast.error(error?.response?.data?.msg, {autoClose: 1000});
+    Toast.show({
+      type: 'error',
+      text1: 'Error',
+      text2: error?.response?.data?.msg,
+    });
   }
 };
 
@@ -594,10 +628,11 @@ export const Updatecategory = (datas, setOpen) => async dispatch => {
     );
 
     if (data?.status) {
-      toast.success(data?.msg, {
-        autoClose: 1000,
+      Toast.show({
+        type: 'success',
+        text1: 'Success',
+        text2: data?.msg,
       });
-      setOpen(false);
     }
 
     dispatch({
@@ -609,7 +644,11 @@ export const Updatecategory = (datas, setOpen) => async dispatch => {
       type: UPDATE_CATEGORY_FAIL,
       payload: error?.response?.data?.msg,
     });
-    toast.error(error?.response?.data?.msg, {autoClose: 1000});
+    Toast.show({
+      type: 'error',
+      text1: 'Error',
+      text2: error?.response?.data?.msg,
+    });
   }
 };
 
@@ -621,10 +660,11 @@ export const deletecategory = (deleteid, setOpenalert) => async dispatch => {
       id: deleteid,
     }).then(res => {
       if (res?.status) {
-        toast.success(res?.msg, {
-          autoClose: 1000,
+        Toast.show({
+          type: 'success',
+          text1: 'Success',
+          text2: data?.msg,
         });
-        setOpenalert(false);
       }
 
       dispatch({
@@ -637,8 +677,11 @@ export const deletecategory = (deleteid, setOpenalert) => async dispatch => {
       type: DELETE_CATEGORY_FAIL,
       payload: error?.response?.data?.msg,
     });
-    toast.error(error?.response?.data?.msg, {autoClose: 1000});
-    setOpenalert(false);
+    Toast.show({
+      type: 'error',
+      text1: 'Error',
+      text2: error?.response?.data?.msg,
+    });
   }
 };
 
@@ -689,10 +732,11 @@ export const AddFee = (datas, setOpen) => async dispatch => {
     );
 
     if (data?.status) {
-      toast.success(data?.msg, {
-        autoClose: 1000,
+      Toast.show({
+        type: 'success',
+        text1: 'Success',
+        text2: data?.msg,
       });
-      setOpen(false);
     }
 
     dispatch({
@@ -704,7 +748,11 @@ export const AddFee = (datas, setOpen) => async dispatch => {
       type: ADD_FEESTRUCTURE_FAIL,
       payload: error?.response?.data?.msg,
     });
-    toast.error(error?.response?.data?.msg, {autoClose: 1000});
+    Toast.show({
+      type: 'error',
+      text1: 'Error',
+      text2: error?.response?.data?.msg,
+    });
   }
 };
 
@@ -723,10 +771,11 @@ export const Updatefee = (datas, setOpen) => async dispatch => {
     const {data} = await axios.put(`${backendApiUrl}comman/fee`, datas, config);
 
     if (data?.status) {
-      toast.success(data?.msg, {
-        autoClose: 1000,
+      Toast.show({
+        type: 'success',
+        text1: 'Success',
+        text2: data?.msg,
       });
-      setOpen(false);
     }
 
     dispatch({
@@ -738,7 +787,11 @@ export const Updatefee = (datas, setOpen) => async dispatch => {
       type: UPDATE_FEESTRUCTURE_FAIL,
       payload: error?.response?.data?.msg,
     });
-    toast.error(error?.response?.data?.msg, {autoClose: 1000});
+    Toast.show({
+      type: 'error',
+      text1: 'Error',
+      text2: error?.response?.data?.msg,
+    });
   }
 };
 
@@ -750,10 +803,11 @@ export const deletefee = (deleteid, setOpenalert) => async dispatch => {
       id: deleteid,
     }).then(res => {
       if (res?.status) {
-        toast.success(res?.msg, {
-          autoClose: 1000,
+        Toast.show({
+          type: 'success',
+          text1: 'Success',
+          text2: data?.msg,
         });
-        setOpenalert(false);
       }
 
       dispatch({
@@ -766,8 +820,11 @@ export const deletefee = (deleteid, setOpenalert) => async dispatch => {
       type: DELETE_FEESTRUCTURE_FAIL,
       payload: error?.response?.data?.msg,
     });
-    toast.error(error?.response?.data?.msg, {autoClose: 1000});
-    setOpenalert(false);
+    Toast.show({
+      type: 'error',
+      text1: 'Error',
+      text2: error?.response?.data?.msg,
+    });
   }
 };
 
@@ -818,10 +875,11 @@ export const AddDesignation = (datas, setOpen) => async dispatch => {
     );
 
     if (data?.status) {
-      toast.success(data?.msg, {
-        autoClose: 1000,
+      Toast.show({
+        type: 'success',
+        text1: 'Success',
+        text2: data?.msg,
       });
-      setOpen(false);
     }
 
     dispatch({
@@ -833,7 +891,11 @@ export const AddDesignation = (datas, setOpen) => async dispatch => {
       type: ADD_Designation_FAIL,
       payload: error?.response?.data?.msg,
     });
-    toast.error(error?.response?.data?.msg, {autoClose: 1000});
+    Toast.show({
+      type: 'error',
+      text1: 'Error',
+      text2: error?.response?.data?.msg,
+    });
   }
 };
 
@@ -856,10 +918,11 @@ export const UpdateDesignation = (datas, setOpen) => async dispatch => {
     );
 
     if (data?.status) {
-      toast.success(data?.msg, {
-        autoClose: 1000,
+      Toast.show({
+        type: 'success',
+        text1: 'Success',
+        text2: data?.msg,
       });
-      setOpen(false);
     }
 
     dispatch({
@@ -871,7 +934,11 @@ export const UpdateDesignation = (datas, setOpen) => async dispatch => {
       type: UPDATE_Designation_FAIL,
       payload: error?.response?.data?.msg,
     });
-    toast.error(error?.response?.data?.msg, {autoClose: 1000});
+    Toast.show({
+      type: 'error',
+      text1: 'Error',
+      text2: error?.response?.data?.msg,
+    });
   }
 };
 
@@ -883,10 +950,11 @@ export const deleteDesignation = (deleteid, setOpenalert) => async dispatch => {
       id: deleteid,
     }).then(res => {
       if (res?.status) {
-        toast.success(res?.msg, {
-          autoClose: 1000,
+        Toast.show({
+          type: 'success',
+          text1: 'Success',
+          text2: data?.msg,
         });
-        setOpenalert(false);
       }
 
       dispatch({
@@ -899,8 +967,11 @@ export const deleteDesignation = (deleteid, setOpenalert) => async dispatch => {
       type: DELETE_Designation_FAIL,
       payload: error?.response?.data?.msg,
     });
-    toast.error(error?.response?.data?.msg, {autoClose: 1000});
-    setOpenalert(false);
+    Toast.show({
+      type: 'error',
+      text1: 'Error',
+      text2: error?.response?.data?.msg,
+    });
   }
 };
 
@@ -951,8 +1022,10 @@ export const Addstudent = datas => async dispatch => {
     );
 
     if (data?.status) {
-      toast.success(data?.msg, {
-        autoClose: 1000,
+      Toast.show({
+        type: 'success',
+        text1: 'Success',
+        text2: data?.msg,
       });
     }
 
@@ -965,7 +1038,11 @@ export const Addstudent = datas => async dispatch => {
       type: ADD_STUDENT_FAIL,
       payload: error?.response?.data?.msg,
     });
-    toast.error(error?.response?.data?.msg, {autoClose: 1000});
+    Toast.show({
+      type: 'error',
+      text1: 'Error',
+      text2: error?.response?.data?.msg,
+    });
   }
 };
 
@@ -988,10 +1065,11 @@ export const Updatestudent = (datas, setOpen) => async dispatch => {
     );
 
     if (data?.status) {
-      toast.success(data?.msg, {
-        autoClose: 1000,
+      Toast.show({
+        type: 'success',
+        text1: 'Success',
+        text2: data?.msg,
       });
-      setOpen(false);
     }
 
     dispatch({
@@ -1003,7 +1081,11 @@ export const Updatestudent = (datas, setOpen) => async dispatch => {
       type: UPDATE_STUDENT_FAIL,
       payload: error?.response?.data?.msg,
     });
-    toast.error(error?.response?.data?.msg, {autoClose: 1000});
+    Toast.show({
+      type: 'error',
+      text1: 'Error',
+      text2: error?.response?.data?.msg,
+    });
   }
 };
 
@@ -1015,10 +1097,11 @@ export const deletestudent = (deleteid, setOpenalert) => async dispatch => {
       id: deleteid,
     }).then(res => {
       if (res?.status) {
-        toast.success(res?.msg, {
-          autoClose: 1000,
+        Toast.show({
+          type: 'success',
+          text1: 'Success',
+          text2: data?.msg,
         });
-        setOpenalert(false);
       }
 
       dispatch({
@@ -1031,8 +1114,11 @@ export const deletestudent = (deleteid, setOpenalert) => async dispatch => {
       type: DELETE_STUDENT_FAIL,
       payload: error?.response?.data?.msg,
     });
-    toast.error(error?.response?.data?.msg, {autoClose: 1000});
-    setOpenalert(false);
+    Toast.show({
+      type: 'error',
+      text1: 'Error',
+      text2: error?.response?.data?.msg,
+    });
   }
 };
 
@@ -1096,10 +1182,11 @@ export const AddEmployee = (datas, setOpen) => async dispatch => {
     );
 
     if (data?.status) {
-      toast.success(data?.msg, {
-        autoClose: 1000,
+      Toast.show({
+        type: 'success',
+        text1: 'Success',
+        text2: data?.msg,
       });
-      setOpen(false);
     }
 
     dispatch({
@@ -1111,7 +1198,11 @@ export const AddEmployee = (datas, setOpen) => async dispatch => {
       type: ADD_EMPLOYEETYPE_FAIL,
       payload: error?.response?.data?.msg,
     });
-    toast.error(error?.response?.data?.msg, {autoClose: 1000});
+    Toast.show({
+      type: 'error',
+      text1: 'Error',
+      text2: error?.response?.data?.msg,
+    });
   }
 };
 
@@ -1134,10 +1225,11 @@ export const UpdateEmployee = (datas, setOpen) => async dispatch => {
     );
 
     if (data?.status) {
-      toast.success(data?.msg, {
-        autoClose: 1000,
+      Toast.show({
+        type: 'success',
+        text1: 'Success',
+        text2: data?.msg,
       });
-      setOpen(false);
     }
 
     dispatch({
@@ -1149,7 +1241,11 @@ export const UpdateEmployee = (datas, setOpen) => async dispatch => {
       type: UPDATE_EMPLOYEETYPE_FAIL,
       payload: error?.response?.data?.msg,
     });
-    toast.error(error?.response?.data?.msg, {autoClose: 1000});
+    Toast.show({
+      type: 'error',
+      text1: 'Error',
+      text2: error?.response?.data?.msg,
+    });
   }
 };
 
@@ -1161,10 +1257,11 @@ export const deleteEmployee = (deleteid, setOpenalert) => async dispatch => {
       id: deleteid,
     }).then(res => {
       if (res?.status) {
-        toast.success(res?.msg, {
-          autoClose: 1000,
+        Toast.show({
+          type: 'success',
+          text1: 'Success',
+          text2: data?.msg,
         });
-        setOpenalert(false);
       }
 
       dispatch({
@@ -1177,8 +1274,11 @@ export const deleteEmployee = (deleteid, setOpenalert) => async dispatch => {
       type: DELETE_EMPLOYEETYPE_FAIL,
       payload: error?.response?.data?.msg,
     });
-    toast.error(error?.response?.data?.msg, {autoClose: 1000});
-    setOpenalert(false);
+    Toast.show({
+      type: 'error',
+      text1: 'Error',
+      text2: error?.response?.data?.msg,
+    });
   }
 };
 
@@ -1240,10 +1340,11 @@ export const AddDepartment = (datas, setOpen) => async dispatch => {
     );
 
     if (data?.status) {
-      toast.success(data?.msg, {
-        autoClose: 1000,
+      Toast.show({
+        type: 'success',
+        text1: 'Success',
+        text2: data?.msg,
       });
-      setOpen(false);
     }
 
     dispatch({
@@ -1255,7 +1356,11 @@ export const AddDepartment = (datas, setOpen) => async dispatch => {
       type: ADD_Department_FAIL,
       payload: error?.response?.data?.msg,
     });
-    toast.error(error?.response?.data?.msg, {autoClose: 1000});
+    Toast.show({
+      type: 'error',
+      text1: 'Error',
+      text2: error?.response?.data?.msg,
+    });
   }
 };
 
@@ -1278,10 +1383,11 @@ export const UpdateDepartment = (datas, setOpen) => async dispatch => {
     );
 
     if (data?.status) {
-      toast.success(data?.msg, {
-        autoClose: 1000,
+      Toast.show({
+        type: 'success',
+        text1: 'Success',
+        text2: data?.msg,
       });
-      setOpen(false);
     }
 
     dispatch({
@@ -1293,7 +1399,11 @@ export const UpdateDepartment = (datas, setOpen) => async dispatch => {
       type: UPDATE_Department_FAIL,
       payload: error?.response?.data?.msg,
     });
-    toast.error(error?.response?.data?.msg, {autoClose: 1000});
+    Toast.show({
+      type: 'error',
+      text1: 'Error',
+      text2: error?.response?.data?.msg,
+    });
   }
 };
 
@@ -1305,10 +1415,11 @@ export const deleteDepartment = (deleteid, setOpenalert) => async dispatch => {
       id: deleteid,
     }).then(res => {
       if (res?.status) {
-        toast.success(res?.msg, {
-          autoClose: 1000,
+        Toast.show({
+          type: 'success',
+          text1: 'Success',
+          text2: data?.msg,
         });
-        setOpenalert(false);
       }
 
       dispatch({
@@ -1321,8 +1432,11 @@ export const deleteDepartment = (deleteid, setOpenalert) => async dispatch => {
       type: DELETE_Department_FAIL,
       payload: error?.response?.data?.msg,
     });
-    toast.error(error?.response?.data?.msg, {autoClose: 1000});
-    setOpenalert(false);
+    Toast.show({
+      type: 'error',
+      text1: 'Error',
+      text2: error?.response?.data?.msg,
+    });
   }
 };
 
@@ -1372,10 +1486,11 @@ export const AddCourseDuration = (datas, setOpen) => async dispatch => {
     );
 
     if (data?.status) {
-      toast.success(data?.msg, {
-        autoClose: 1000,
+      Toast.show({
+        type: 'success',
+        text1: 'Success',
+        text2: data?.msg,
       });
-      setOpen(false);
     }
 
     dispatch({
@@ -1387,7 +1502,11 @@ export const AddCourseDuration = (datas, setOpen) => async dispatch => {
       type: ADD_CourseDuration_FAIL,
       payload: error?.response?.data?.msg,
     });
-    toast.error(error?.response?.data?.msg, {autoClose: 1000});
+    Toast.show({
+      type: 'error',
+      text1: 'Error',
+      text2: error?.response?.data?.msg,
+    });
   }
 };
 
@@ -1410,10 +1529,11 @@ export const UpdateCourseDuration = (datas, setOpen) => async dispatch => {
     );
 
     if (data?.status) {
-      toast.success(data?.msg, {
-        autoClose: 1000,
+      Toast.show({
+        type: 'success',
+        text1: 'Success',
+        text2: data?.msg,
       });
-      setOpen(false);
     }
 
     dispatch({
@@ -1425,7 +1545,11 @@ export const UpdateCourseDuration = (datas, setOpen) => async dispatch => {
       type: UPDATE_CourseDuration_FAIL,
       payload: error?.response?.data?.msg,
     });
-    toast.error(error?.response?.data?.msg, {autoClose: 1000});
+    Toast.show({
+      type: 'error',
+      text1: 'Error',
+      text2: error?.response?.data?.msg,
+    });
   }
 };
 
@@ -1438,10 +1562,11 @@ export const deleteCourseDuration =
         id: deleteid,
       }).then(res => {
         if (res?.status) {
-          toast.success(res?.msg, {
-            autoClose: 1000,
+          Toast.show({
+            type: 'success',
+            text1: 'Success',
+            text2: data?.msg,
           });
-          setOpenalert(false);
         }
 
         dispatch({
@@ -1454,8 +1579,11 @@ export const deleteCourseDuration =
         type: DELETE_CourseDuration_FAIL,
         payload: error?.response?.data?.msg,
       });
-      toast.error(error?.response?.data?.msg, {autoClose: 1000});
-      setOpenalert(false);
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: error?.response?.data?.msg,
+      });
     }
   };
 
@@ -1508,10 +1636,11 @@ export const Addtest = (datas, setOpen) => async dispatch => {
     );
 
     if (data?.status) {
-      toast.success(data?.msg, {
-        autoClose: 1000,
+      Toast.show({
+        type: 'success',
+        text1: 'Success',
+        text2: data?.msg,
       });
-      setOpen(false);
     }
 
     dispatch({
@@ -1523,7 +1652,11 @@ export const Addtest = (datas, setOpen) => async dispatch => {
       type: ADD_TEST_FAIL,
       payload: error?.response?.data?.msg,
     });
-    toast.error(error?.response?.data?.msg, {autoClose: 1000});
+    Toast.show({
+      type: 'error',
+      text1: 'Error',
+      text2: error?.response?.data?.msg,
+    });
   }
 };
 
@@ -1546,10 +1679,11 @@ export const Updatetest = (datas, setOpen) => async dispatch => {
     );
 
     if (data?.status) {
-      toast.success(data?.msg, {
-        autoClose: 1000,
+      Toast.show({
+        type: 'success',
+        text1: 'Success',
+        text2: data?.msg,
       });
-      setOpen(false);
     }
 
     dispatch({
@@ -1561,7 +1695,11 @@ export const Updatetest = (datas, setOpen) => async dispatch => {
       type: UPDATE_TEST_FAIL,
       payload: error?.response?.data?.msg,
     });
-    toast.error(error?.response?.data?.msg, {autoClose: 1000});
+    Toast.show({
+      type: 'error',
+      text1: 'Error',
+      text2: error?.response?.data?.msg,
+    });
   }
 };
 
@@ -1573,10 +1711,11 @@ export const deleteTest = (deleteid, setOpenalert) => async dispatch => {
       id: deleteid,
     }).then(res => {
       if (res?.status) {
-        toast.success(res?.msg, {
-          autoClose: 1000,
+        Toast.show({
+          type: 'success',
+          text1: 'Success',
+          text2: data?.msg,
         });
-        setOpenalert(false);
       }
 
       dispatch({
@@ -1589,8 +1728,11 @@ export const deleteTest = (deleteid, setOpenalert) => async dispatch => {
       type: DELETE_TEST_FAIL,
       payload: error?.response?.data?.msg,
     });
-    toast.error(error?.response?.data?.msg, {autoClose: 1000});
-    setOpenalert(false);
+    Toast.show({
+      type: 'error',
+      text1: 'Error',
+      text2: error?.response?.data?.msg,
+    });
   }
 };
 
@@ -1661,10 +1803,11 @@ export const Updatecredentials = (formData, setOpen) => async dispatch => {
       config,
     );
     if (data?.status) {
-      toast.success(data?.msg, {
-        autoClose: 1000,
+      Toast.show({
+        type: 'success',
+        text1: 'Success',
+        text2: data?.msg,
       });
-      setOpen(false);
     }
 
     dispatch({
@@ -1676,7 +1819,11 @@ export const Updatecredentials = (formData, setOpen) => async dispatch => {
       type: UPDATE_CREDENTIALS_FAIL,
       payload: error?.response?.data?.msg,
     });
-    toast.error(error?.response?.data?.msg, {autoClose: 1000});
+    Toast.show({
+      type: 'error',
+      text1: 'Error',
+      text2: error?.response?.data?.msg,
+    });
   }
 };
 
@@ -1699,10 +1846,11 @@ export const Adddresult = (datas, setOpen) => async dispatch => {
     );
 
     if (data?.status) {
-      toast.success(data?.msg, {
-        autoClose: 1000,
+      Toast.show({
+        type: 'success',
+        text1: 'Success',
+        text2: data?.msg,
       });
-      setOpen(false);
     }
 
     dispatch({
@@ -1714,7 +1862,11 @@ export const Adddresult = (datas, setOpen) => async dispatch => {
       type: UPDATE_STUDENT_TEST_FAIL,
       payload: error?.response?.data?.msg,
     });
-    toast.error(error?.response?.data?.msg, {autoClose: 1000});
+    Toast.show({
+      type: 'error',
+      text1: 'Error',
+      text2: error?.response?.data?.msg,
+    });
   }
 };
 

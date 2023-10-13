@@ -64,8 +64,6 @@ export const register =
             text1: 'Success',
             text2: data?.msg,
           });
-          setOpen(false);
-          setOpen1(true);
         }
 
         dispatch({

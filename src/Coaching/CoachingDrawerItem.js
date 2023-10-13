@@ -19,6 +19,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {loadUser} from '../Redux/action/authActions';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Loader from '../Component/Loader/Loader';
+import {backendUrl} from '../Config/config';
 const CoachingDrawerItem = ({navigation, setuserData}) => {
   const [loader, setloader] = useState(false);
   const [sms, setsms] = useState('');
@@ -39,21 +40,11 @@ const CoachingDrawerItem = ({navigation, setuserData}) => {
       <Loader loader={loader} sms={sms} />
       <View style={styles.mainprofile}>
         <View style={styles.innearview}>
-          <Image
-            source={profileimg}
-            style={{
-              width: 80,
-              height: 80,
-              borderRadius: 50,
-            }}
-          />
-
-          {/*             
-          {user?.profile_image ? (
+          {user?.data?.CredentailsData?.profileurl ? (
             <>
               <Image
                 source={{
-                  uri: `${backendUrl}uploads/images/${user?.profile_image}`,
+                  uri: `${backendUrl}public/upload/${user?.data?.CredentailsData?.profileurl}`,
                 }}
                 style={{
                   width: 80,
@@ -73,7 +64,7 @@ const CoachingDrawerItem = ({navigation, setuserData}) => {
                 }}
               />
             </>
-          )} */}
+          )}
 
           <Text style={{color: 'white'}}>{user?.data?.User?.name}</Text>
         </View>

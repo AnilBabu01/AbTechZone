@@ -3,18 +3,18 @@ import React from 'react';
 import {primary} from '../../../utils/Colors';
 import Delete from '../../../assets/Delete.png';
 import Edit from '../../../assets/Edit.png';
-const BatchCard = ({item}) => {
+const BatchCard = ({data, index}) => {
   return (
     <ScrollView>
       <View style={styles.connainer}>
         <View style={styles.card10}>
           <View style={styles.viewdel}>
-            <Text>Batch No : 1</Text>
+            <Text>Batch No : {index + 1}</Text>
             <Text></Text>
           </View>
           <View style={styles.viewdel}>
-            <Text>Start Time : 07:00 AM</Text>
-            <Text>Endi Time : 07:00 AM</Text>
+            <Text>Start Time : {data?.StartingTime}</Text>
+            <Text>Endi Time : {data?.StartingTime}</Text>
           </View>
           <View style={styles.viewdel}>
             <Text></Text>

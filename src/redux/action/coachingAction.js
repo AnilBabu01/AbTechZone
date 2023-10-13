@@ -1,5 +1,6 @@
 import axios from "axios";
-import { toast } from "react-toastify";
+import Toast from 'react-native-toast-message';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { backendApiUrl } from "../../Config/config";
 import {
   ALL_ENQUIRY_REQUEST,
@@ -49,10 +50,11 @@ export const Addenquiry = (datas, setOpen) => async (dispatch) => {
     );
 
     if (data?.status) {
-      toast.success(data?.msg, {
-        autoClose: 1000,
+      Toast.show({
+        type: 'success',
+        text1: 'Success',
+        text2: data?.msg,
       });
-      setOpen(false);
     }
 
     dispatch({
@@ -64,7 +66,11 @@ export const Addenquiry = (datas, setOpen) => async (dispatch) => {
       type: ADD_ENQUIRY_FAIL,
       payload: error?.response?.data?.msg,
     });
-    toast.error(error?.response?.data?.msg, { autoClose: 1000 });
+    Toast.show({
+      type: 'error',
+      text1: 'Error',
+      text2: error?.response?.data?.msg,
+    });
   }
 };
 
@@ -87,10 +93,11 @@ export const Updateenquiry = (datas, setOpen) => async (dispatch) => {
     );
 
     if (data?.status) {
-      toast.success(data?.msg, {
-        autoClose: 1000,
+      Toast.show({
+        type: 'success',
+        text1: 'Success',
+        text2: data?.msg,
       });
-      setOpen(false);
     }
 
     dispatch({
@@ -102,7 +109,11 @@ export const Updateenquiry = (datas, setOpen) => async (dispatch) => {
       type: UPDATE_ENQUIRY_FAIL,
       payload: error?.response?.data?.msg,
     });
-    toast.error(error?.response?.data?.msg, { autoClose: 1000 });
+    Toast.show({
+      type: 'error',
+      text1: 'Error',
+      text2: error?.response?.data?.msg,
+    });
   }
 };
 
@@ -114,10 +125,11 @@ export const deleteenquiry = (deleteid, setOpenalert) => async (dispatch) => {
       id: deleteid,
     }).then((res) => {
       if (res?.status) {
-        toast.success(res?.msg, {
-          autoClose: 1000,
+        Toast.show({
+          type: 'success',
+          text1: 'Success',
+          text2: data?.msg,
         });
-        setOpenalert(false);
       }
       dispatch({
         type: DELETE_ENQUIRY_SUCCESS,
@@ -129,8 +141,11 @@ export const deleteenquiry = (deleteid, setOpenalert) => async (dispatch) => {
       type: DELETE_ENQUIRY_FAIL,
       payload: error?.response?.data?.msg,
     });
-    toast.error(error?.response?.data?.msg, { autoClose: 1000 });
-    setOpenalert(false);
+    Toast.show({
+      type: 'error',
+      text1: 'Error',
+      text2: error?.response?.data?.msg,
+    });
   }
 };
 
@@ -222,10 +237,11 @@ export const UpdateProfile = (datas, setOpen) => async (dispatch) => {
       config
     );
     if (data?.status) {
-      toast.success(data?.msg, {
-        autoClose: 1000,
+      Toast.show({
+        type: 'success',
+        text1: 'Success',
+        text2: data?.msg,
       });
-      setOpen(false);
     }
 
     dispatch({
@@ -237,7 +253,11 @@ export const UpdateProfile = (datas, setOpen) => async (dispatch) => {
       type: UPDATE_PROFILE_FAIL,
       payload: error?.response?.data?.msg,
     });
-    toast.error(error?.response?.data?.msg, { autoClose: 1000 });
+    Toast.show({
+      type: 'error',
+      text1: 'Error',
+      text2: error?.response?.data?.msg,
+    });
   }
 };
 
@@ -258,10 +278,11 @@ export const Addpayfee = (datas, setOpen) => async (dispatch) => {
       config
     );
     if (data?.status) {
-      toast.success(data?.msg, {
-        autoClose: 1000,
+      Toast.show({
+        type: 'success',
+        text1: 'Success',
+        text2: data?.msg,
       });
-      setOpen(false);
     }
     dispatch({
       type: ADD_PAYCOACHINGFEE_SUCCESS,
@@ -272,6 +293,10 @@ export const Addpayfee = (datas, setOpen) => async (dispatch) => {
       type: ADD_PAYCOACHINGFEE_FAIL,
       payload: error?.response?.data?.msg,
     });
-    toast.error(error?.response?.data?.msg, { autoClose: 1000 });
+    Toast.show({
+      type: 'error',
+      text1: 'Error',
+      text2: error?.response?.data?.msg,
+    });
   }
 };

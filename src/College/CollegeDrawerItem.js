@@ -1,5 +1,5 @@
 import {StyleSheet, Text, View, Image} from 'react-native';
-import React,{useState} from 'react';
+import React, {useState} from 'react';
 import {DrawerItem} from '@react-navigation/drawer';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {secondary, profileheader} from '../utils/Colors';
@@ -23,7 +23,8 @@ import {useDispatch, useSelector} from 'react-redux';
 import {loadUser} from '../Redux/action/authActions';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Loader from '../Component/Loader/Loader';
-const CollegeDrawerItem = ({navigation,setuserData}) => {
+import {backendUrl} from '../Config/config';
+const CollegeDrawerItem = ({navigation, setuserData}) => {
   const [loader, setloader] = useState(false);
   const [sms, setsms] = useState('');
   const dispatch = useDispatch();
@@ -38,26 +39,17 @@ const CollegeDrawerItem = ({navigation,setuserData}) => {
     setloader(false);
     setsms('');
   };
+
   return (
     <View>
-      <Loader loader={loader} sms={sms}/>
+      <Loader loader={loader} sms={sms} />
       <View style={styles.mainprofile}>
         <View style={styles.innearview}>
-          <Image
-            source={profileimg}
-            style={{
-              width: 80,
-              height: 80,
-              borderRadius: 50,
-            }}
-          />
-
-          {/*             
-          {user?.profile_image ? (
+          {user?.data?.CredentailsData?.profileurl ? (
             <>
               <Image
                 source={{
-                  uri: `${backendUrl}uploads/images/${user?.profile_image}`,
+                  uri: `${backendUrl}public/upload/${user?.data?.CredentailsData?.profileurl}`,
                 }}
                 style={{
                   width: 80,
@@ -77,9 +69,11 @@ const CollegeDrawerItem = ({navigation,setuserData}) => {
                 }}
               />
             </>
-          )} */}
+          )}
 
-          <Text style={{color: 'white'}}>Demo</Text>
+          <Text style={{color: 'white'}}>
+            {user?.data?.CredentailsData?.name}
+          </Text>
         </View>
       </View>
 

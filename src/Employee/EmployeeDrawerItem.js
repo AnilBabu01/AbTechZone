@@ -1,5 +1,5 @@
 import {StyleSheet, Text, View, Image} from 'react-native';
-import React,{useState} from 'react';
+import React, {useState} from 'react';
 import {DrawerItem} from '@react-navigation/drawer';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {secondary, hightlight} from '../utils/Colors';
@@ -25,7 +25,8 @@ import {useDispatch, useSelector} from 'react-redux';
 import {loadUser} from '../Redux/action/authActions';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Loader from '../Component/Loader/Loader';
-const EmployeeDrawerItem = ({navigation,setuserData}) => {
+import {backendUrl} from '../Config/config';
+const EmployeeDrawerItem = ({navigation, setuserData}) => {
   const [loader, setloader] = useState(false);
   const [sms, setsms] = useState('');
   const dispatch = useDispatch();
@@ -42,24 +43,14 @@ const EmployeeDrawerItem = ({navigation,setuserData}) => {
   };
   return (
     <View>
-       <Loader loader={loader} sms={sms}/>
+      <Loader loader={loader} sms={sms} />
       <View style={styles.mainprofile}>
         <View style={styles.innearview}>
-          <Image
-            source={profileimg}
-            style={{
-              width: 80,
-              height: 80,
-              borderRadius: 50,
-            }}
-          />
-
-          {/*             
-          {user?.profile_image ? (
+          {user?.data?.CredentailsData?.profileurl ? (
             <>
               <Image
                 source={{
-                  uri: `${backendUrl}uploads/images/${user?.profile_image}`,
+                  uri: `${backendUrl}public/upload/${user?.data?.CredentailsData?.profileurl}`,
                 }}
                 style={{
                   width: 80,
@@ -79,7 +70,7 @@ const EmployeeDrawerItem = ({navigation,setuserData}) => {
                 }}
               />
             </>
-          )} */}
+          )}
 
           <Text style={{color: 'white'}}>Demo</Text>
         </View>

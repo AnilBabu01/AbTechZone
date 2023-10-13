@@ -14,6 +14,7 @@ import {Height, Width} from '../../utils/responsive';
 import profileimg from '../../assets/profileimg.jpg';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
+import {backendUrl} from '../../Config/config';
 const windowWidth = Dimensions.get('window').width;
 const Header = () => {
   const dispatch = useDispatch();
@@ -21,8 +22,6 @@ const Header = () => {
   const {user} = useSelector(state => state.auth);
   useEffect(() => {
     // dispatch(loadUser());
-
-    console.log('from homedd', user);
   }, [user]);
 
   return (
@@ -34,29 +33,40 @@ const Header = () => {
           }}>
           <Image source={hamburger} style={styles.menuimg} />
         </TouchableOpacity>
-
-        <Image source={logoblue1} style={styles.logoimg} />
+        {user?.data?.CredentailsData?.logourl ? (
+          <>
+            <Image
+              source={{
+                uri: `${backendUrl}public/upload/${user?.data?.CredentailsData?.logourl}`,
+              }}
+              style={styles.logoimg}
+            />
+          </>
+        ) : (
+          <>
+            <Image source={logoblue1} style={styles.logoimg} />
+          </>
+        )}
 
         {user ? (
           <>
             <View style={styles.profile}>
               <TouchableOpacity
                 onPress={() => navigation.navigate('ProfileCoaching')}>
-                {/* {user?.profile_image ? (
-          <>
-            <Image
-              source={{
-                uri: `${backendUrl}uploads/images/${user?.profile_image}`,
-              }}
-              style={styles.avator}
-            />
-          </>
-        ) : (
-          <>
-            <Image source={profileimg} style={styles.avator} />
-          </>
-        )} */}
-                <Image source={profileimg} style={styles.avator} />
+                {user?.data?.CredentailsData?.profileurl ? (
+                  <>
+                    <Image
+                      source={{
+                        uri: `${backendUrl}public/upload/${user?.data?.CredentailsData?.profileurl}`,
+                      }}
+                      style={styles.avator}
+                    />
+                  </>
+                ) : (
+                  <>
+                    <Image source={profileimg} style={styles.avator} />
+                  </>
+                )}
               </TouchableOpacity>
             </View>
           </>
@@ -111,7 +121,7 @@ const styles = StyleSheet.create({
     borderRadius: 50,
   },
   logoimg: {
-    height: Height(40),
+    height: Height(50),
     width: Width(200),
   },
   menuimg: {

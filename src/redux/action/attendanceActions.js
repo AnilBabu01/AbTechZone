@@ -1,5 +1,6 @@
 import axios from "axios";
-import { toast } from "react-toastify";
+import Toast from 'react-native-toast-message';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { backendApiUrl } from "../../Config/config";
 import {
   MARK_ATTENDANCE_REQUEST,
@@ -34,8 +35,10 @@ export const MarkStudentAttendance = (date, batch) => async (dispatch) => {
 
     console.log("search", date, batch);
     if (data?.status) {
-      toast.success(data?.msg, {
-        autoClose: 1000,
+      Toast.show({
+        type: 'success',
+        text1: 'Success',
+        text2: data?.msg,
       });
     }
 
@@ -48,7 +51,11 @@ export const MarkStudentAttendance = (date, batch) => async (dispatch) => {
       type: MARK_ATTENDANCE_FAIL,
       payload: error?.response?.data?.msg,
     });
-    toast.error(error?.response?.data?.msg, { autoClose: 1000 });
+    Toast.show({
+      type: 'error',
+      text1: 'Error',
+      text2: error?.response?.data?.msg,
+    });
   }
 };
 
@@ -71,8 +78,10 @@ export const DoneStudentAttendance = (udata) => async (dispatch) => {
     );
     console.log("Done Attendance is ", data);
     if (data?.status) {
-      toast.success(data?.msg, {
-        autoClose: 1000,
+      Toast.show({
+        type: 'success',
+        text1: 'Success',
+        text2: data?.msg,
       });
     }
 
@@ -85,7 +94,11 @@ export const DoneStudentAttendance = (udata) => async (dispatch) => {
       type: DONE_ATTENDANCE_FAIL,
       payload: error?.response?.data?.msg,
     });
-    toast.error(error?.response?.data?.msg, { autoClose: 1000 });
+    Toast.show({
+      type: 'error',
+      text1: 'Error',
+      text2: error?.response?.data?.msg,
+    });
   }
 };
 
@@ -109,8 +122,10 @@ export const MonthlyStudentAttendance = (udata, months) => async (dispatch) => {
     );
 
     if (data?.status) {
-      toast.success(data?.msg, {
-        autoClose: 1000,
+      Toast.show({
+        type: 'success',
+        text1: 'Success',
+        text2: data?.msg,
       });
     }
 
@@ -123,6 +138,10 @@ export const MonthlyStudentAttendance = (udata, months) => async (dispatch) => {
       type: MONTHLY__ATTENDANCE_FAIL,
       payload: error?.response?.data?.msg,
     });
-    toast.error(error?.response?.data?.msg, { autoClose: 1000 });
+    Toast.show({
+      type: 'error',
+      text1: 'Error',
+      text2: error?.response?.data?.msg,
+    });
   }
 };
