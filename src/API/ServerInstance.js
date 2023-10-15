@@ -1,10 +1,10 @@
 import {backendApiUrl} from '../Config/config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 export const serverInstance = async (path, method = 'get', payload, token) => {
-  let tokens = await AsyncStorage.getItem('token');
+  let tokens = await AsyncStorage.getItem('erptoken');
   let headers = {
     'Content-Type': 'application/json',
-    Authorization: `Bearer ${tokens}`,
+    Authorization: `${tokens}`,
   };
   return new Promise((resolve, reject) => {
     let fetchOptions = {

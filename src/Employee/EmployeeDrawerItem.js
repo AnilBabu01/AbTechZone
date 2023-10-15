@@ -35,6 +35,7 @@ const EmployeeDrawerItem = ({navigation, setuserData}) => {
     setloader(true);
     setsms('Logout....');
     await AsyncStorage.removeItem('erptoken');
+    await AsyncStorage.removeItem('userType');
     navigation.navigate('home');
     dispatch(loadUser());
     setuserData('');

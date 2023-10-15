@@ -6,33 +6,35 @@ import {
   ScrollView,
   TextInput,
 } from 'react-native';
-import React, {useState,useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Height, Width} from '../../../utils/responsive';
 import {primary} from '../../../utils/Colors';
-import {useNavigation} from '@react-navigation/native';
-import {Addcourse, getcourse} from '../../../Redux/action/commanAction';
+import {useNavigation, useRoute} from '@react-navigation/native';
+import {Updatecourse, getcourse} from '../../../Redux/action/commanAction';
 import {useDispatch, useSelector} from 'react-redux';
 import Loader from '../../../Component/Loader/Loader';
 
-const AddCourse = () => {
+const UpdateCourse = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const route = useRoute();
   const [index, setIndex] = useState(0);
   const [sms, setsms] = useState('');
   const [loader, setloader] = useState(false);
   const [coursename, setcoursename] = useState('');
   const [courseduration, setcourseduration] = useState('');
-  const {course,error} = useSelector(state => state.addcourse);
-
+  const [isData, setisData] = useState('');
+  const {error, isUpdated} = useSelector(state => state.editbatch);
   const submit = () => {
-    if (coursename && courseduration) {
+    if (courseduration && coursename) {
       setloader(true);
-      setsms('Adding...');
+      setsms('Updating...');
       const data = {
-        coursename: coursename,
-        courseduration: courseduration,
+        id: isData?.id,
+        StartingTime: starttime,
+        EndingTime: endtime,
       };
-      dispatch(Addcourse(data));
+      dispatch(Updatecourse(data));
     } else {
       setsms('');
       setloader(false);
@@ -40,16 +42,12 @@ const AddCourse = () => {
   };
 
   useEffect(() => {
-    if (course?.status) {
+    if (isUpdated) {
       dispatch(getcourse());
       setsms('');
       setloader(false);
-    }else
-    {
-      setsms('');
-      setloader(false);
     }
-  }, [course]);
+  }, [isUpdated]);
   useEffect(() => {
     if (error) {
       if (error?.status === false) {
@@ -58,6 +56,14 @@ const AddCourse = () => {
       }
     }
   }, [error]);
+
+  useEffect(() => {
+    if (route.params?.data) {
+      setcoursename(route.params?.data?.coursename);
+      setcourseduration( route.params?.data?.courseduration);
+      setisData(route.params?.data);
+    }
+  }, []);
   return (
     <View>
       <Loader loader={loader} sms={sms} />
@@ -107,7 +113,7 @@ const AddCourse = () => {
               }}
               onStartShouldSetResponder={() => setIndex(7)}>
               <TextInput
-                placeholder="Duration In Month"
+                placeholder="Enter Course Name"
                 placeholderTextColor="rgba(0, 0, 0, 0.6)"
                 style={{
                   width: Width(280),
@@ -115,19 +121,17 @@ const AddCourse = () => {
                   paddingHorizontal: Width(20),
                   fontSize: Height(16),
                 }}
-                // secureTextEntry={passwordVisible}
                 // onBlur={() => Validation()}
                 value={courseduration}
                 onChangeText={text => setcourseduration(text)}
                 // onPressIn={() => setIndex(3)}
-                onFocus={() => setIndex(9)}
+                onFocus={() => setIndex(8)}
               />
             </View>
           </View>
 
           <View style={styles.loginbtndiv}>
-            <TouchableOpacity
-              onPress={() => submit()}>
+            <TouchableOpacity onPress={() => submit()}>
               <View style={styles.loginbtn}>
                 <Text style={styles.logintextstyle}>Save</Text>
               </View>
@@ -139,7 +143,7 @@ const AddCourse = () => {
   );
 };
 
-export default AddCourse;
+export default UpdateCourse;
 
 const styles = StyleSheet.create({
   inputview: {

@@ -17,9 +17,11 @@ import AddEnquiryCoaching from '../Coaching/FrontOffice/AddEnquiry';
 import MasterOptionsCoaching from '../Coaching/Masters/MasterOptions';
 import BatchCoaching from '../Coaching/Masters/Batch/Batch';
 import AddBatchCoaching from '../Coaching/Masters/Batch/AddBatch';
+import UpdateBatchCoaching from '../Coaching/Masters/Batch/UpdateBatch';
 import CategoryCoaching from '../Coaching/Masters/Category/Category';
 import AddCatehoryCoaching from '../Coaching/Masters/Category/AddCatehory';
 import AddCourseCoaching from '../Coaching/Masters/Course/AddCourse';
+import UpdateCourseCoaching from '../Coaching/Masters/Course/UpdateCourse';
 import CourseCoaching from '../Coaching/Masters/Course/Course';
 import AddDepartmentCoaching from '../Coaching/Masters/Department/AddDepartment';
 import DepartmentCoaching from '../Coaching/Masters/Department/Department';
@@ -61,7 +63,19 @@ function StackNavigation() {
         <Stack.Screen name="OnBoarding" component={SplashScreen} />
       )}
       <Stack.Screen name="home" component={HomeScreen} />
-      <Stack.Screen name="Login" component={LoginScreen} />
+      <Stack.Screen name="Login" component={LoginScreen} 
+        options={{
+          headerShown: true,
+          title: 'Sign-in',
+          headerStyle: {
+            backgroundColor: primary,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
       <Stack.Screen name="DashboardCoaching" component={DashboardCoaching} />
       <Stack.Screen name="StudentTabCoaching" component={StudentTabCoaching} />
       <Stack.Screen
@@ -172,9 +186,39 @@ function StackNavigation() {
           },
         }}
       />
+       <Stack.Screen
+        name="UpdateBatchCoaching"
+        component={UpdateBatchCoaching}
+        options={{
+          headerShown: true,
+          title: 'Update Batch Time',
+          headerStyle: {
+            backgroundColor: primary,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
       <Stack.Screen
         name="AddCourseCoaching"
         component={AddCourseCoaching}
+        options={{
+          headerShown: true,
+          title: 'Add Course',
+          headerStyle: {
+            backgroundColor: primary,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
+       <Stack.Screen
+        name="UpdateCourseCoaching"
+        component={UpdateCourseCoaching}
         options={{
           headerShown: true,
           title: 'Add Course',
@@ -218,6 +262,7 @@ function StackNavigation() {
           },
         }}
       />
+      
       <Stack.Screen
         name="DurationCoaching"
         component={DurationCoaching}

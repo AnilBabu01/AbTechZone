@@ -315,7 +315,7 @@ export const Addbatch = (datas, setOpen) => async dispatch => {
 };
 
 // post add enquiry
-export const Updatebatch = (datas, setOpen) => async dispatch => {
+export const Updatebatch = datas => async dispatch => {
   try {
     let token = await AsyncStorage.getItem('erptoken');
     const config = {
@@ -331,6 +331,8 @@ export const Updatebatch = (datas, setOpen) => async dispatch => {
       datas,
       config,
     );
+
+    console.log('res data from batch ', data);
 
     if (data?.status) {
       Toast.show({
@@ -358,7 +360,7 @@ export const Updatebatch = (datas, setOpen) => async dispatch => {
 };
 
 // delete  enquiry
-export const deletebatch = (deleteid, setOpenalert) => async dispatch => {
+export const deletebatch = deleteid => async dispatch => {
   try {
     dispatch({type: DELETE_BATCH_REQUEST});
     serverInstance('coaching/batch', 'delete', {
@@ -368,14 +370,14 @@ export const deletebatch = (deleteid, setOpenalert) => async dispatch => {
         Toast.show({
           type: 'success',
           text1: 'Success',
-          text2: data?.msg,
+          text2: res?.msg,
+        });
+
+        dispatch({
+          type: DELETE_BATCH_SUCCESS,
+          payload: res,
         });
       }
-
-      dispatch({
-        type: DELETE_BATCH_SUCCESS,
-        payload: res?.data,
-      });
     });
   } catch (error) {
     dispatch({
@@ -419,8 +421,9 @@ export const getbatch = (page, limit, setPage) => async dispatch => {
   }
 };
 
-export const Addcourse = (datas, setOpen) => async dispatch => {
+export const Addcourse = datas => async dispatch => {
   try {
+    console.log('course  data is ', datas);
     let token = await AsyncStorage.getItem('erptoken');
     const config = {
       headers: {
@@ -442,7 +445,6 @@ export const Addcourse = (datas, setOpen) => async dispatch => {
         text1: 'Success',
         text2: data?.msg,
       });
-      setOpen(false);
     }
 
     dispatch({
@@ -516,14 +518,14 @@ export const deletecourse = (deleteid, setOpenalert) => async dispatch => {
         Toast.show({
           type: 'success',
           text1: 'Success',
-          text2: data?.msg,
+          text2: res?.msg,
+        });
+
+        dispatch({
+          type: DELETE_COURSE_SUCCESS,
+          payload: res,
         });
       }
-
-      dispatch({
-        type: DELETE_COURSE_SUCCESS,
-        payload: res?.data,
-      });
     });
   } catch (error) {
     dispatch({

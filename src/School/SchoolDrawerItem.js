@@ -33,6 +33,7 @@ const SchoolDrawerItem = ({navigation, setuserData}) => {
     setloader(true);
     setsms('Logout....');
     await AsyncStorage.removeItem('erptoken');
+    await AsyncStorage.removeItem('userType');
     navigation.navigate('home');
     dispatch(loadUser());
     setuserData('');
@@ -231,7 +232,7 @@ const SchoolDrawerItem = ({navigation, setuserData}) => {
 
       <DrawerItem
         style={styles.menu}
-        label="Library"
+        label="Transport"
         icon={() => (
           <Image
             source={transport}

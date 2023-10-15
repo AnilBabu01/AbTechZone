@@ -1,4 +1,4 @@
-import { Cases } from "@mui/icons-material";
+import {Cases} from '@mui/icons-material';
 import {
   ALL_COACHING_REQUEST,
   ALL_COACHING_SUCCESS,
@@ -18,6 +18,7 @@ import {
   UPDATE_BATCH_REQUEST,
   UPDATE_BATCH_SUCCESS,
   UPDATE_BATCH_FAIL,
+  UPDATE_BATCH_RESET,
   DELETE_BATCH_REQUEST,
   DELETE_BATCH_SUCCESS,
   DELETE_BATCH_FAIL,
@@ -158,9 +159,9 @@ import {
   UPDATE_STUDENT_TEST_RESET_SUCCESS,
   UPDATE_STUDENT_TEST_FAIL,
   CLEAR_ERRORS,
-} from "../constants/commanConstants";
+} from '../constants/commanConstants';
 
-export const getCollegeReducer = (state = { college: {} }, action) => {
+export const getCollegeReducer = (state = {college: {}}, action) => {
   switch (action.type) {
     case ALL_COLLEGE_REQUEST:
       return {
@@ -192,7 +193,7 @@ export const getCollegeReducer = (state = { college: {} }, action) => {
   }
 };
 
-export const getCoachingReducer = (state = { coaching: {} }, action) => {
+export const getCoachingReducer = (state = {coaching: {}}, action) => {
   switch (action.type) {
     case ALL_COACHING_REQUEST:
       return {
@@ -224,7 +225,7 @@ export const getCoachingReducer = (state = { coaching: {} }, action) => {
   }
 };
 
-export const getSchoolReducer = (state = { school: {} }, action) => {
+export const getSchoolReducer = (state = {school: {}}, action) => {
   switch (action.type) {
     case ALL_SCHOOL_REQUEST:
       return {
@@ -256,7 +257,7 @@ export const getSchoolReducer = (state = { school: {} }, action) => {
   }
 };
 
-export const getClientReducer = (state = { client: {} }, action) => {
+export const getClientReducer = (state = {client: {}}, action) => {
   switch (action.type) {
     case ALL_CLIENT_REQUEST:
       return {
@@ -288,7 +289,7 @@ export const getClientReducer = (state = { client: {} }, action) => {
   }
 };
 
-export const addbatchReducer = (state = { batch: [] }, action) => {
+export const addbatchReducer = (state = {batch: []}, action) => {
   switch (action.type) {
     case ADD_BATCH_REQUEST:
       return {
@@ -320,7 +321,7 @@ export const addbatchReducer = (state = { batch: [] }, action) => {
   }
 };
 
-export const updatebatchReducer = (state = { batch: [] }, action) => {
+export const updatebatchReducer = (state = {batch: []}, action) => {
   switch (action.type) {
     case UPDATE_BATCH_REQUEST:
       return {
@@ -331,14 +332,20 @@ export const updatebatchReducer = (state = { batch: [] }, action) => {
       return {
         ...state,
         loading: false,
-        batch: action.payload,
+        isUpdated: action.payload,
       };
-
+    case UPDATE_BATCH_RESET:
+      setTimeout(() => {
+        return {
+          ...state,
+          isUpdated: false,
+        };
+      }, 1000);
     case UPDATE_BATCH_FAIL:
       return {
         loading: false,
         batch: null,
-        error: action.payload,
+        isUpdated: action.payload,
       };
 
     case CLEAR_ERRORS:
@@ -352,7 +359,7 @@ export const updatebatchReducer = (state = { batch: [] }, action) => {
   }
 };
 
-export const getebatchReducer = (state = { batch: [] }, action) => {
+export const getebatchReducer = (state = {batch: []}, action) => {
   switch (action.type) {
     case ALL_BATCH_REQUEST:
       return {
@@ -384,7 +391,7 @@ export const getebatchReducer = (state = { batch: [] }, action) => {
   }
 };
 
-export const deletebatchReducer = (state = { batch: [] }, action) => {
+export const deletebatchReducer = (state = {batch: []}, action) => {
   switch (action.type) {
     case DELETE_BATCH_REQUEST:
       return {
@@ -416,7 +423,7 @@ export const deletebatchReducer = (state = { batch: [] }, action) => {
   }
 };
 
-export const addcourseReducer = (state = { course: [] }, action) => {
+export const addcourseReducer = (state = {course: []}, action) => {
   switch (action.type) {
     case ADD_COURSE_REQUEST:
       return {
@@ -448,7 +455,7 @@ export const addcourseReducer = (state = { course: [] }, action) => {
   }
 };
 
-export const updatecourseReducer = (state = { course: [] }, action) => {
+export const updatecourseReducer = (state = {course: []}, action) => {
   switch (action.type) {
     case UPDATE_COURSE_REQUEST:
       return {
@@ -480,7 +487,7 @@ export const updatecourseReducer = (state = { course: [] }, action) => {
   }
 };
 
-export const getcourseReducer = (state = { course: [] }, action) => {
+export const getcourseReducer = (state = {course: []}, action) => {
   switch (action.type) {
     case ALL_COURSE_REQUEST:
       return {
@@ -512,7 +519,7 @@ export const getcourseReducer = (state = { course: [] }, action) => {
   }
 };
 
-export const deletecourseReducer = (state = { course: [] }, action) => {
+export const deletecourseReducer = (state = {course: []}, action) => {
   switch (action.type) {
     case DELETE_COURSE_REQUEST:
       return {
@@ -544,7 +551,7 @@ export const deletecourseReducer = (state = { course: [] }, action) => {
   }
 };
 
-export const addcategoryReducer = (state = { category: [] }, action) => {
+export const addcategoryReducer = (state = {category: []}, action) => {
   switch (action.type) {
     case ADD_CATEGORY_REQUEST:
       return {
@@ -576,7 +583,7 @@ export const addcategoryReducer = (state = { category: [] }, action) => {
   }
 };
 
-export const updatecategoryReducer = (state = { category: [] }, action) => {
+export const updatecategoryReducer = (state = {category: []}, action) => {
   switch (action.type) {
     case UPDATE_CATEGORY_REQUEST:
       return {
@@ -608,7 +615,7 @@ export const updatecategoryReducer = (state = { category: [] }, action) => {
   }
 };
 
-export const getcategoryReducer = (state = { category: [] }, action) => {
+export const getcategoryReducer = (state = {category: []}, action) => {
   switch (action.type) {
     case ALL_CATEGORY_REQUEST:
       return {
@@ -640,7 +647,7 @@ export const getcategoryReducer = (state = { category: [] }, action) => {
   }
 };
 
-export const deletecategoryReducer = (state = { category: [] }, action) => {
+export const deletecategoryReducer = (state = {category: []}, action) => {
   switch (action.type) {
     case DELETE_CATEGORY_REQUEST:
       return {
@@ -672,7 +679,7 @@ export const deletecategoryReducer = (state = { category: [] }, action) => {
   }
 };
 
-export const addDesignationReducer = (state = { designation: [] }, action) => {
+export const addDesignationReducer = (state = {designation: []}, action) => {
   switch (action.type) {
     case ADD_Designation_REQUEST:
       return {
@@ -704,10 +711,7 @@ export const addDesignationReducer = (state = { designation: [] }, action) => {
   }
 };
 
-export const updateDesignationReducer = (
-  state = { designation: [] },
-  action
-) => {
+export const updateDesignationReducer = (state = {designation: []}, action) => {
   switch (action.type) {
     case UPDATE_Designation_REQUEST:
       return {
@@ -740,8 +744,8 @@ export const updateDesignationReducer = (
 };
 
 export const getcateDesignationReducer = (
-  state = { designation: [] },
-  action
+  state = {designation: []},
+  action,
 ) => {
   switch (action.type) {
     case ALL_Designation_REQUEST:
@@ -774,10 +778,7 @@ export const getcateDesignationReducer = (
   }
 };
 
-export const deleteDesignationReducer = (
-  state = { designation: [] },
-  action
-) => {
+export const deleteDesignationReducer = (state = {designation: []}, action) => {
   switch (action.type) {
     case DELETE_Designation_REQUEST:
       return {
@@ -809,7 +810,7 @@ export const deleteDesignationReducer = (
   }
 };
 
-export const addfeeReducer = (state = { fee: [] }, action) => {
+export const addfeeReducer = (state = {fee: []}, action) => {
   switch (action.type) {
     case ADD_FEESTRUCTURE_REQUEST:
       return {
@@ -841,7 +842,7 @@ export const addfeeReducer = (state = { fee: [] }, action) => {
   }
 };
 
-export const updatefeeReducer = (state = { fee: [] }, action) => {
+export const updatefeeReducer = (state = {fee: []}, action) => {
   switch (action.type) {
     case UPDATE_FEESTRUCTURE_REQUEST:
       return {
@@ -873,7 +874,7 @@ export const updatefeeReducer = (state = { fee: [] }, action) => {
   }
 };
 
-export const getcatefeeReducer = (state = { fee: [] }, action) => {
+export const getcatefeeReducer = (state = {fee: []}, action) => {
   switch (action.type) {
     case ALL_FEESTRUCTURE_REQUEST:
       return {
@@ -905,7 +906,7 @@ export const getcatefeeReducer = (state = { fee: [] }, action) => {
   }
 };
 
-export const deletefeeReducer = (state = { fee: [] }, action) => {
+export const deletefeeReducer = (state = {fee: []}, action) => {
   switch (action.type) {
     case DELETE_FEESTRUCTURE_REQUEST:
       return {
@@ -937,7 +938,7 @@ export const deletefeeReducer = (state = { fee: [] }, action) => {
   }
 };
 
-export const addstudentReducer = (state = { student: [] }, action) => {
+export const addstudentReducer = (state = {student: []}, action) => {
   switch (action.type) {
     case ADD_STUDENT_REQUEST:
       return {
@@ -975,7 +976,7 @@ export const addstudentReducer = (state = { student: [] }, action) => {
   }
 };
 
-export const updatestudentReducer = (state = { student: [] }, action) => {
+export const updatestudentReducer = (state = {student: []}, action) => {
   switch (action.type) {
     case UPDATE_STUDENT_REQUEST:
       return {
@@ -1007,7 +1008,7 @@ export const updatestudentReducer = (state = { student: [] }, action) => {
   }
 };
 
-export const getstudentReducer = (state = { student: [] }, action) => {
+export const getstudentReducer = (state = {student: []}, action) => {
   switch (action.type) {
     case ALL_STUDENT_REQUEST:
       return {
@@ -1039,7 +1040,7 @@ export const getstudentReducer = (state = { student: [] }, action) => {
   }
 };
 
-export const deletestudentReducer = (state = { student: [] }, action) => {
+export const deletestudentReducer = (state = {student: []}, action) => {
   switch (action.type) {
     case DELETE_STUDENT_REQUEST:
       return {
@@ -1071,7 +1072,7 @@ export const deletestudentReducer = (state = { student: [] }, action) => {
   }
 };
 
-export const addEmployeeReducer = (state = { employees: [] }, action) => {
+export const addEmployeeReducer = (state = {employees: []}, action) => {
   switch (action.type) {
     case ADD_EMPLOYEETYPE_REQUEST:
       return {
@@ -1103,7 +1104,7 @@ export const addEmployeeReducer = (state = { employees: [] }, action) => {
   }
 };
 
-export const updateEmployeeReducer = (state = { employees: [] }, action) => {
+export const updateEmployeeReducer = (state = {employees: []}, action) => {
   switch (action.type) {
     case UPDATE_EMPLOYEETYPE_REQUEST:
       return {
@@ -1135,7 +1136,7 @@ export const updateEmployeeReducer = (state = { employees: [] }, action) => {
   }
 };
 
-export const deleteEmployeeReducer = (state = { employees: [] }, action) => {
+export const deleteEmployeeReducer = (state = {employees: []}, action) => {
   switch (action.type) {
     case DELETE_EMPLOYEETYPE_REQUEST:
       return {
@@ -1167,7 +1168,7 @@ export const deleteEmployeeReducer = (state = { employees: [] }, action) => {
   }
 };
 
-export const getEmployeeReducer = (state = { employees: [] }, action) => {
+export const getEmployeeReducer = (state = {employees: []}, action) => {
   switch (action.type) {
     case ALL_EMPLOYEETYPE_REQUEST:
       return {
@@ -1199,7 +1200,7 @@ export const getEmployeeReducer = (state = { employees: [] }, action) => {
   }
 };
 
-export const addDepartmentReducer = (state = { department: [] }, action) => {
+export const addDepartmentReducer = (state = {department: []}, action) => {
   switch (action.type) {
     case ADD_Department_REQUEST:
       return {
@@ -1231,7 +1232,7 @@ export const addDepartmentReducer = (state = { department: [] }, action) => {
   }
 };
 
-export const updateDepartmentReducer = (state = { department: [] }, action) => {
+export const updateDepartmentReducer = (state = {department: []}, action) => {
   switch (action.type) {
     case UPDATE_Department_REQUEST:
       return {
@@ -1263,7 +1264,7 @@ export const updateDepartmentReducer = (state = { department: [] }, action) => {
   }
 };
 
-export const getDepartmentReducer = (state = { department: [] }, action) => {
+export const getDepartmentReducer = (state = {department: []}, action) => {
   switch (action.type) {
     case ALL_Department_REQUEST:
       return {
@@ -1295,7 +1296,7 @@ export const getDepartmentReducer = (state = { department: [] }, action) => {
   }
 };
 
-export const deleteDepartmentReducer = (state = { department: [] }, action) => {
+export const deleteDepartmentReducer = (state = {department: []}, action) => {
   switch (action.type) {
     case DELETE_Department_REQUEST:
       return {
@@ -1328,8 +1329,8 @@ export const deleteDepartmentReducer = (state = { department: [] }, action) => {
 };
 
 export const addCourseDurationReducer = (
-  state = { courseduarion: [] },
-  action
+  state = {courseduarion: []},
+  action,
 ) => {
   switch (action.type) {
     case ADD_CourseDuration_REQUEST:
@@ -1363,8 +1364,8 @@ export const addCourseDurationReducer = (
 };
 
 export const updateCourseDurationReducer = (
-  state = { courseduarion: [] },
-  action
+  state = {courseduarion: []},
+  action,
 ) => {
   switch (action.type) {
     case UPDATE_CourseDuration_REQUEST:
@@ -1398,8 +1399,8 @@ export const updateCourseDurationReducer = (
 };
 
 export const getCourseDurationReducer = (
-  state = { courseduarion: [] },
-  action
+  state = {courseduarion: []},
+  action,
 ) => {
   switch (action.type) {
     case ALL_CourseDuration_REQUEST:
@@ -1433,8 +1434,8 @@ export const getCourseDurationReducer = (
 };
 
 export const deleteCourseDurationReducer = (
-  state = { courseduarion: [] },
-  action
+  state = {courseduarion: []},
+  action,
 ) => {
   switch (action.type) {
     case DELETE_CourseDuration_REQUEST:
@@ -1467,7 +1468,7 @@ export const deleteCourseDurationReducer = (
   }
 };
 
-export const addTestReducer = (state = { test: [] }, action) => {
+export const addTestReducer = (state = {test: []}, action) => {
   switch (action.type) {
     case ADD_TEST_REQUEST:
       return {
@@ -1499,7 +1500,7 @@ export const addTestReducer = (state = { test: [] }, action) => {
   }
 };
 
-export const updateTestReducer = (state = { test: [] }, action) => {
+export const updateTestReducer = (state = {test: []}, action) => {
   switch (action.type) {
     case UPDATE_TEST_REQUEST:
       return {
@@ -1531,7 +1532,7 @@ export const updateTestReducer = (state = { test: [] }, action) => {
   }
 };
 
-export const getTestReducer = (state = { test: [] }, action) => {
+export const getTestReducer = (state = {test: []}, action) => {
   switch (action.type) {
     case ALL_TEST_REQUEST:
       return {
@@ -1563,7 +1564,7 @@ export const getTestReducer = (state = { test: [] }, action) => {
   }
 };
 
-export const deleteTestReducer = (state = { test: [] }, action) => {
+export const deleteTestReducer = (state = {test: []}, action) => {
   switch (action.type) {
     case DELETE_TEST_REQUEST:
       return {
@@ -1595,10 +1596,7 @@ export const deleteTestReducer = (state = { test: [] }, action) => {
   }
 };
 
-export const updateCredentialsReducer = (
-  state = { Credential: [] },
-  action
-) => {
+export const updateCredentialsReducer = (state = {Credential: []}, action) => {
   switch (action.type) {
     case UPDATE_CREDENTIALS_REQUEST:
       return {
@@ -1638,7 +1636,7 @@ export const updateCredentialsReducer = (
   }
 };
 
-export const getStudentTestReducer = (state = { test: [] }, action) => {
+export const getStudentTestReducer = (state = {test: []}, action) => {
   switch (action.type) {
     case ALL_STUDENT_TEST_REQUEST:
       return {
@@ -1670,8 +1668,7 @@ export const getStudentTestReducer = (state = { test: [] }, action) => {
   }
 };
 
-export const updateStudentTestReducer = (state = { result: [] }, action) => {
-
+export const updateStudentTestReducer = (state = {result: []}, action) => {
   switch (action.type) {
     case UPDATE_STUDENT_TEST_REQUEST:
       return {
@@ -1685,8 +1682,7 @@ export const updateStudentTestReducer = (state = { result: [] }, action) => {
         loading: false,
         result: action.payload,
       };
-  
-   
+
     case UPDATE_STUDENT_TEST_RESET_SUCCESS:
       setTimeout(() => {
         return {

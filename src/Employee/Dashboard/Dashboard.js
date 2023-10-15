@@ -22,8 +22,6 @@ const Dashboard = () => {
     setTimeout(() => {
       setloader(false);
     }, 10);
-
-    gettoken();
   }, []);
 
   return (

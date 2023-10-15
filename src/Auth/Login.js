@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import {primary, secondary} from '../utils/Colors';
-import loginicon from '../assets/phonelogo.png';
+import loginicon from '../assets/newphonelogo.png';
 import {Height, Width} from '../utils/responsive';
 import {Dropdown} from 'react-native-element-dropdown';
 import {useDispatch, useSelector} from 'react-redux';
@@ -26,6 +26,7 @@ import {
 import {useNavigation} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Loader from '../Component/Loader/Loader';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
@@ -57,8 +58,7 @@ const Login = () => {
   const [loginfor, setloginfor] = useState('');
   const [userid, setuserid] = useState('');
   const [password, setpassword] = useState('');
-  const [email, setemail] = useState('');
-  const [phonono, setphonono] = useState('');
+  const [passwordVisible, setPasswordVisible] = useState(true);
   const [useriderror, setuseriderror] = useState('');
   const [passworderror, setpassworderror] = useState('');
   const [Fullname, setFullname] = useState('');
@@ -95,8 +95,15 @@ const Login = () => {
   };
 
   const setauthtoken = async () => {
-    await AsyncStorage.setItem('erptoken', user?.data[0]?.token);
-    await AsyncStorage.setItem('userType', user?.data[0]?.User?.userType);
+    if (user?.data[0]?.user) {
+      await AsyncStorage.setItem('erptoken', user?.data[0]?.token);
+      await AsyncStorage.setItem('userType', user?.data[0]?.user?.userType);
+    }
+
+    if (user?.data[0]?.User) {
+      await AsyncStorage.setItem('erptoken', user?.data[0]?.token);
+      await AsyncStorage.setItem('userType', user?.data[0]?.User?.userType);
+    }
   };
 
   useEffect(() => {
@@ -133,7 +140,7 @@ const Login = () => {
         setsms('');
       }
 
-      if (user?.data[0]?.User?.userType === 'employee') {
+      if (user?.data[0]?.user?.userType === 'employee') {
         navigation.navigate('DashboardEmplyee');
         setloader(false);
         setsms('');
@@ -173,9 +180,6 @@ const Login = () => {
       <ScrollView>
         <View style={styles.connainer}>
           <Image source={loginicon} style={styles.imgtop} />
-          <View style={styles.textcenter}>
-            <Text style={styles.logintext}>Login</Text>
-          </View>
           <View style={styles.btnsdiv}>
             <TouchableOpacity
               onPress={() => {
@@ -214,12 +218,13 @@ const Login = () => {
                   height: Height(40),
                   fontFamily: 'Gilroy-SemiBold',
                   borderWidth: 1.5,
-                  borderRadius: Width(10),
+                  borderRadius: Width(5),
                   paddingHorizontal: Width(10),
                   fontSize: Height(16),
                   marginTop: Height(10),
                   borderColor: index === 1 ? primary : '#a9a9a9',
                 }}
+                onFocus={() => setIndex(1)}
                 placeholderStyle={styles.placeholderStyle}
                 selectedTextStyle={styles.selectedTextStyle}
                 inputSearchStyle={styles.inputSearchStyle}
@@ -256,7 +261,7 @@ const Login = () => {
                   height: Height(40),
                   fontFamily: 'Gilroy-SemiBold',
                   borderWidth: 1.5,
-                  borderRadius: Width(10),
+                  borderRadius: Width(5),
                   paddingHorizontal: Width(10),
                   fontSize: Height(16),
                   marginTop: Height(10),
@@ -299,7 +304,7 @@ const Login = () => {
                   height: Height(40),
                   fontFamily: 'Gilroy-SemiBold',
                   borderWidth: 1.5,
-                  borderRadius: Width(10),
+                  borderRadius: Width(5),
                   paddingHorizontal: Width(10),
                   fontSize: Height(16),
                   marginTop: Height(10),
@@ -342,7 +347,7 @@ const Login = () => {
                   height: Height(40),
                   fontFamily: 'Gilroy-SemiBold',
                   borderWidth: 1.5,
-                  borderRadius: Width(10),
+                  borderRadius: Width(5),
                   paddingHorizontal: Width(10),
                   fontSize: Height(16),
                   marginTop: Height(10),
@@ -395,12 +400,13 @@ const Login = () => {
                   height: Height(40),
                   fontFamily: 'Gilroy-SemiBold',
                   borderWidth: 1.5,
-                  borderRadius: Width(10),
+                  borderRadius: Width(5),
                   paddingHorizontal: Width(10),
                   fontSize: Height(16),
                   marginTop: Height(10),
                   borderColor: index === 5 ? primary : '#a9a9a9',
                 }}
+                onFocus={() => setIndex(5)}
                 placeholderStyle={styles.placeholderStyle}
                 selectedTextStyle={styles.selectedTextStyle}
                 inputSearchStyle={styles.inputSearchStyle}
@@ -409,16 +415,13 @@ const Login = () => {
                 search
                 maxHeight={300}
                 labelField="label"
-                valueField="loginas"
+                valueField="value"
                 placeholder="Please Select"
                 searchPlaceholder="Search..."
                 value={loginas}
                 onChange={item => {
                   setloginas(item.value);
                 }}
-                // renderLeftIcon={() => (
-                //   <AntDesign style={styles.icon} color="black" name="Safety" size={20} />
-                // )}
               />
               {loginas === 'College' && (
                 <>
@@ -442,12 +445,13 @@ const Login = () => {
                           height: Height(40),
                           fontFamily: 'Gilroy-SemiBold',
                           borderWidth: 1.5,
-                          borderRadius: Width(10),
+                          borderRadius: Width(5),
                           paddingHorizontal: Width(10),
                           fontSize: Height(16),
                           marginTop: Height(10),
                           borderColor: index === 6 ? primary : '#a9a9a9',
                         }}
+                        onFocus={() => setIndex(6)}
                         placeholderStyle={styles.placeholderStyle}
                         selectedTextStyle={styles.selectedTextStyle}
                         inputSearchStyle={styles.inputSearchStyle}
@@ -494,7 +498,7 @@ const Login = () => {
                       height: Height(40),
                       fontFamily: 'Gilroy-SemiBold',
                       borderWidth: 1.5,
-                      borderRadius: Width(10),
+                      borderRadius: Width(5),
                       paddingHorizontal: Width(10),
                       fontSize: Height(16),
                       marginTop: Height(10),
@@ -506,6 +510,7 @@ const Login = () => {
                     // keyboardType="email-address"
                     onFocus={() => setIndex(7)}
                   />
+
                   {/* {emailError.length > 0 && (
                 <Text
                   style={{
@@ -528,28 +533,38 @@ const Login = () => {
                     }}>
                     Password<Text style={{color: primary}}> *</Text>
                   </Text>
-                  <TextInput
-                    placeholder="Enter Password"
-                    placeholderTextColor="rgba(0, 0, 0, 0.6)"
-                    secureTextEntry={true}
-                    style={{
-                      alignSelf: 'center',
-                      width: Width(315),
-                      height: Height(40),
-                      fontFamily: 'Gilroy-SemiBold',
-                      borderWidth: 1.5,
-                      borderRadius: Width(10),
-                      paddingHorizontal: Width(10),
-                      fontSize: Height(16),
-                      marginTop: Height(10),
-                      borderColor: index === 8 ? primary : '#a9a9a9',
-                    }}
-                    value={password}
-                    // onBlur={() => Validation()}
-                    onChangeText={text => setpassword(text)}
-                    // keyboardType="email-address"
-                    onFocus={() => setIndex(8)}
-                  />
+                  <View style={styles.showpassView}>
+                    <TextInput
+                      placeholder="Enter Password"
+                      placeholderTextColor="rgba(0, 0, 0, 0.6)"
+                      secureTextEntry={passwordVisible}
+                      style={{
+                        alignSelf: 'center',
+                        width: Width(315),
+                        height: Height(40),
+                        fontFamily: 'Gilroy-SemiBold',
+                        borderWidth: 1.5,
+                        borderRadius: Width(5),
+                        paddingHorizontal: Width(10),
+                        fontSize: Height(16),
+                        marginTop: Height(10),
+                        borderColor: index === 8 ? primary : '#a9a9a9',
+                      }}
+                      value={password}
+                      // onBlur={() => Validation()}
+                      onChangeText={text => setpassword(text)}
+                      // keyboardType="email-address"
+                      onFocus={() => setIndex(8)}
+                    />
+                    <Ionicons
+                      style={styles.showpassIcon}
+                      name={passwordVisible ? 'eye' : 'eye-off'}
+                      onPress={() => setPasswordVisible(!passwordVisible)}
+                      color="#666666"
+                      size={Height(20)}
+                    />
+                  </View>
+
                   {/* {emailError.length > 0 && (
                 <Text
                   style={{
@@ -586,12 +601,13 @@ const Login = () => {
                           height: Height(40),
                           fontFamily: 'Gilroy-SemiBold',
                           borderWidth: 1.5,
-                          borderRadius: Width(10),
+                          borderRadius: Width(5),
                           paddingHorizontal: Width(10),
                           fontSize: Height(16),
                           marginTop: Height(10),
                           borderColor: index === 9 ? primary : '#a9a9a9',
                         }}
+                        onFocus={() => setIndex(9)}
                         placeholderStyle={styles.placeholderStyle}
                         selectedTextStyle={styles.selectedTextStyle}
                         inputSearchStyle={styles.inputSearchStyle}
@@ -638,7 +654,7 @@ const Login = () => {
                       height: Height(40),
                       fontFamily: 'Gilroy-SemiBold',
                       borderWidth: 1.5,
-                      borderRadius: Width(10),
+                      borderRadius: Width(5),
                       paddingHorizontal: Width(10),
                       fontSize: Height(16),
                       marginTop: Height(10),
@@ -672,28 +688,37 @@ const Login = () => {
                     }}>
                     Password<Text style={{color: primary}}> *</Text>
                   </Text>
-                  <TextInput
-                    placeholder="Enter Password"
-                    placeholderTextColor="rgba(0, 0, 0, 0.6)"
-                    secureTextEntry={true}
-                    style={{
-                      alignSelf: 'center',
-                      width: Width(315),
-                      height: Height(40),
-                      fontFamily: 'Gilroy-SemiBold',
-                      borderWidth: 1.5,
-                      borderRadius: Width(10),
-                      paddingHorizontal: Width(10),
-                      fontSize: Height(16),
-                      marginTop: Height(10),
-                      borderColor: index === 12 ? primary : '#a9a9a9',
-                    }}
-                    value={password}
-                    // onBlur={() => Validation()}
-                    onChangeText={text => setpassword(text)}
-                    // keyboardType="email-address"
-                    onFocus={() => setIndex(12)}
-                  />
+                  <View style={styles.showpassView}>
+                    <TextInput
+                      placeholder="Enter Password"
+                      placeholderTextColor="rgba(0, 0, 0, 0.6)"
+                      secureTextEntry={passwordVisible}
+                      style={{
+                        alignSelf: 'center',
+                        width: Width(315),
+                        height: Height(40),
+                        fontFamily: 'Gilroy-SemiBold',
+                        borderWidth: 1.5,
+                        borderRadius: Width(5),
+                        paddingHorizontal: Width(10),
+                        fontSize: Height(16),
+                        marginTop: Height(10),
+                        borderColor: index === 11 ? primary : '#a9a9a9',
+                      }}
+                      value={password}
+                      // onBlur={() => Validation()}
+                      onChangeText={text => setpassword(text)}
+                      // keyboardType="email-address"
+                      onFocus={() => setIndex(11)}
+                    />
+                    <Ionicons
+                      style={styles.showpassIcon}
+                      name={passwordVisible ? 'eye' : 'eye-off'}
+                      onPress={() => setPasswordVisible(!passwordVisible)}
+                      color="#666666"
+                      size={Height(20)}
+                    />
+                  </View>
                   {/* {emailError.length > 0 && (
                 <Text
                   style={{
@@ -730,12 +755,13 @@ const Login = () => {
                           height: Height(40),
                           fontFamily: 'Gilroy-SemiBold',
                           borderWidth: 1.5,
-                          borderRadius: Width(10),
+                          borderRadius: Width(5),
                           paddingHorizontal: Width(10),
                           fontSize: Height(16),
                           marginTop: Height(10),
                           borderColor: index === 13 ? primary : '#a9a9a9',
                         }}
+                        onFocus={() => setIndex(13)}
                         placeholderStyle={styles.placeholderStyle}
                         selectedTextStyle={styles.selectedTextStyle}
                         inputSearchStyle={styles.inputSearchStyle}
@@ -782,7 +808,7 @@ const Login = () => {
                       height: Height(40),
                       fontFamily: 'Gilroy-SemiBold',
                       borderWidth: 1.5,
-                      borderRadius: Width(10),
+                      borderRadius: Width(5),
                       paddingHorizontal: Width(10),
                       fontSize: Height(16),
                       marginTop: Height(10),
@@ -816,28 +842,37 @@ const Login = () => {
                     }}>
                     Password<Text style={{color: primary}}> *</Text>
                   </Text>
-                  <TextInput
-                    placeholder="Enter Password"
-                    placeholderTextColor="rgba(0, 0, 0, 0.6)"
-                    secureTextEntry={true}
-                    style={{
-                      alignSelf: 'center',
-                      width: Width(315),
-                      height: Height(40),
-                      fontFamily: 'Gilroy-SemiBold',
-                      borderWidth: 1.5,
-                      borderRadius: Width(10),
-                      paddingHorizontal: Width(10),
-                      fontSize: Height(16),
-                      marginTop: Height(10),
-                      borderColor: index === 15 ? primary : '#a9a9a9',
-                    }}
-                    value={password}
-                    // onBlur={() => Validation()}
-                    onChangeText={text => setpassword(text)}
-                    // keyboardType="email-address"
-                    onFocus={() => setIndex(15)}
-                  />
+                  <View style={styles.showpassView}>
+                    <TextInput
+                      placeholder="Enter Password"
+                      placeholderTextColor="rgba(0, 0, 0, 0.6)"
+                      secureTextEntry={passwordVisible}
+                      style={{
+                        alignSelf: 'center',
+                        width: Width(315),
+                        height: Height(40),
+                        fontFamily: 'Gilroy-SemiBold',
+                        borderWidth: 1.5,
+                        borderRadius: Width(5),
+                        paddingHorizontal: Width(10),
+                        fontSize: Height(16),
+                        marginTop: Height(10),
+                        borderColor: index === 15 ? primary : '#a9a9a9',
+                      }}
+                      value={password}
+                      // onBlur={() => Validation()}
+                      onChangeText={text => setpassword(text)}
+                      // keyboardType="email-address"
+                      onFocus={() => setIndex(15)}
+                    />
+                    <Ionicons
+                      style={styles.showpassIcon}
+                      name={passwordVisible ? 'eye' : 'eye-off'}
+                      onPress={() => setPasswordVisible(!passwordVisible)}
+                      color="#666666"
+                      size={Height(20)}
+                    />
+                  </View>
                   {/* {emailError.length > 0 && (
                 <Text
                   style={{
@@ -873,12 +908,13 @@ const Login = () => {
                           height: Height(40),
                           fontFamily: 'Gilroy-SemiBold',
                           borderWidth: 1.5,
-                          borderRadius: Width(10),
+                          borderRadius: Width(5),
                           paddingHorizontal: Width(10),
                           fontSize: Height(16),
                           marginTop: Height(10),
                           borderColor: index === 16 ? primary : '#a9a9a9',
                         }}
+                        onFocus={() => setIndex(16)}
                         placeholderStyle={styles.placeholderStyle}
                         selectedTextStyle={styles.selectedTextStyle}
                         inputSearchStyle={styles.inputSearchStyle}
@@ -896,7 +932,7 @@ const Login = () => {
                         valueField="value"
                         placeholder="Please Select"
                         searchPlaceholder="Search..."
-                        value={value}
+                        value={loginfor}
                         onChange={item => {
                           setloginfor(item.value);
                         }}
@@ -926,7 +962,7 @@ const Login = () => {
                       height: Height(40),
                       fontFamily: 'Gilroy-SemiBold',
                       borderWidth: 1.5,
-                      borderRadius: Width(10),
+                      borderRadius: Width(5),
                       paddingHorizontal: Width(10),
                       fontSize: Height(16),
                       marginTop: Height(10),
@@ -960,28 +996,37 @@ const Login = () => {
                     }}>
                     Password<Text style={{color: primary}}> *</Text>
                   </Text>
-                  <TextInput
-                    placeholder="Enter Password"
-                    placeholderTextColor="rgba(0, 0, 0, 0.6)"
-                    secureTextEntry={true}
-                    style={{
-                      alignSelf: 'center',
-                      width: Width(315),
-                      height: Height(40),
-                      fontFamily: 'Gilroy-SemiBold',
-                      borderWidth: 1.5,
-                      borderRadius: Width(10),
-                      paddingHorizontal: Width(10),
-                      fontSize: Height(16),
-                      marginTop: Height(10),
-                      borderColor: index === 18 ? primary : '#a9a9a9',
-                    }}
-                    value={password}
-                    // onBlur={() => Validation()}
-                    onChangeText={text => setpassword(text)}
-                    // keyboardType="email-address"
-                    onFocus={() => setIndex(18)}
-                  />
+                  <View style={styles.showpassView}>
+                    <TextInput
+                      placeholder="Enter Password"
+                      placeholderTextColor="rgba(0, 0, 0, 0.6)"
+                      secureTextEntry={passwordVisible}
+                      style={{
+                        alignSelf: 'center',
+                        width: Width(315),
+                        height: Height(40),
+                        fontFamily: 'Gilroy-SemiBold',
+                        borderWidth: 1.5,
+                        borderRadius: Width(5),
+                        paddingHorizontal: Width(10),
+                        fontSize: Height(16),
+                        marginTop: Height(10),
+                        borderColor: index === 18 ? primary : '#a9a9a9',
+                      }}
+                      value={password}
+                      // onBlur={() => Validation()}
+                      onChangeText={text => setpassword(text)}
+                      // keyboardType="email-address"
+                      onFocus={() => setIndex(18)}
+                    />
+                    <Ionicons
+                      style={styles.showpassIcon}
+                      name={passwordVisible ? 'eye' : 'eye-off'}
+                      onPress={() => setPasswordVisible(!passwordVisible)}
+                      color="#666666"
+                      size={Height(20)}
+                    />
+                  </View>
                   {/* {emailError.length > 0 && (
                 <Text
                   style={{
@@ -1018,11 +1063,12 @@ const Login = () => {
                           fontFamily: 'Gilroy-SemiBold',
                           borderWidth: 1.5,
                           borderRadius: Width(10),
-                          paddingHorizontal: Width(10),
+                          paddingHorizontal: Width(5),
                           fontSize: Height(16),
                           marginTop: Height(10),
                           borderColor: index === 19 ? primary : '#a9a9a9',
                         }}
+                        onFocus={() => setIndex(19)}
                         placeholderStyle={styles.placeholderStyle}
                         selectedTextStyle={styles.selectedTextStyle}
                         inputSearchStyle={styles.inputSearchStyle}
@@ -1040,9 +1086,9 @@ const Login = () => {
                         valueField="value"
                         placeholder="Please Select"
                         searchPlaceholder="Search..."
-                        value={value}
+                        value={loginfor}
                         onChange={item => {
-                          loginfor(item.value);
+                          setloginfor(item.value);
                         }}
                       />
                     </>
@@ -1069,7 +1115,7 @@ const Login = () => {
                       height: Height(40),
                       fontFamily: 'Gilroy-SemiBold',
                       borderWidth: 1.5,
-                      borderRadius: Width(10),
+                      borderRadius: Width(5),
                       paddingHorizontal: Width(10),
                       fontSize: Height(16),
                       marginTop: Height(10),
@@ -1103,28 +1149,38 @@ const Login = () => {
                     }}>
                     Password<Text style={{color: primary}}> *</Text>
                   </Text>
-                  <TextInput
-                    placeholder="Enter Password"
-                    placeholderTextColor="rgba(0, 0, 0, 0.6)"
-                    secureTextEntry={true}
-                    style={{
-                      alignSelf: 'center',
-                      width: Width(315),
-                      height: Height(40),
-                      fontFamily: 'Gilroy-SemiBold',
-                      borderWidth: 1.5,
-                      borderRadius: Width(10),
-                      paddingHorizontal: Width(10),
-                      fontSize: Height(16),
-                      marginTop: Height(10),
-                      borderColor: index === 21 ? primary : '#a9a9a9',
-                    }}
-                    value={password}
-                    // onBlur={() => Validation()}
-                    onChangeText={text => setpassword(text)}
-                    // keyboardType="email-address"
-                    onFocus={() => setIndex(21)}
-                  />
+                  <View style={styles.showpassView}>
+                    <TextInput
+                      placeholder="Enter Password"
+                      placeholderTextColor="rgba(0, 0, 0, 0.6)"
+                      secureTextEntry={passwordVisible}
+                      style={{
+                        alignSelf: 'center',
+                        width: Width(315),
+                        height: Height(40),
+                        fontFamily: 'Gilroy-SemiBold',
+                        borderWidth: 1.5,
+                        borderRadius: Width(5),
+                        paddingHorizontal: Width(10),
+                        fontSize: Height(16),
+                        marginTop: Height(10),
+                        borderColor: index === 20 ? primary : '#a9a9a9',
+                      }}
+                      value={password}
+                      // onBlur={() => Validation()}
+                      onChangeText={text => setpassword(text)}
+                      // keyboardType="email-address"
+                      onFocus={() => setIndex(20)}
+                    />
+                    <Ionicons
+                      style={styles.showpassIcon}
+                      name={passwordVisible ? 'eye' : 'eye-off'}
+                      onPress={() => setPasswordVisible(!passwordVisible)}
+                      color="#666666"
+                      size={Height(20)}
+                    />
+                  </View>
+
                   {/* {emailError.length > 0 && (
                 <Text
                   style={{
@@ -1161,12 +1217,13 @@ const Login = () => {
                           height: Height(40),
                           fontFamily: 'Gilroy-SemiBold',
                           borderWidth: 1.5,
-                          borderRadius: Width(10),
+                          borderRadius: Width(5),
                           paddingHorizontal: Width(10),
                           fontSize: Height(16),
                           marginTop: Height(10),
                           borderColor: index === 22 ? primary : '#a9a9a9',
                         }}
+                        onFocus={() => setIndex(22)}
                         placeholderStyle={styles.placeholderStyle}
                         selectedTextStyle={styles.selectedTextStyle}
                         inputSearchStyle={styles.inputSearchStyle}
@@ -1213,7 +1270,7 @@ const Login = () => {
                       height: Height(40),
                       fontFamily: 'Gilroy-SemiBold',
                       borderWidth: 1.5,
-                      borderRadius: Width(10),
+                      borderRadius: Width(5),
                       paddingHorizontal: Width(10),
                       fontSize: Height(16),
                       marginTop: Height(10),
@@ -1247,28 +1304,37 @@ const Login = () => {
                     }}>
                     Password<Text style={{color: primary}}> *</Text>
                   </Text>
-                  <TextInput
-                    placeholder="Enter Password"
-                    placeholderTextColor="rgba(0, 0, 0, 0.6)"
-                    secureTextEntry={true}
-                    style={{
-                      alignSelf: 'center',
-                      width: Width(315),
-                      height: Height(40),
-                      fontFamily: 'Gilroy-SemiBold',
-                      borderWidth: 1.5,
-                      borderRadius: Width(10),
-                      paddingHorizontal: Width(10),
-                      fontSize: Height(16),
-                      marginTop: Height(10),
-                      borderColor: index === 24 ? primary : '#a9a9a9',
-                    }}
-                    value={password}
-                    // onBlur={() => Validation()}
-                    onChangeText={text => setpassword(text)}
-                    // keyboardType="email-address"
-                    onFocus={() => setIndex(24)}
-                  />
+                  <View style={styles.showpassView}>
+                    <TextInput
+                      placeholder="Enter Password"
+                      placeholderTextColor="rgba(0, 0, 0, 0.6)"
+                      secureTextEntry={passwordVisible}
+                      style={{
+                        alignSelf: 'center',
+                        width: Width(315),
+                        height: Height(40),
+                        fontFamily: 'Gilroy-SemiBold',
+                        borderWidth: 1.5,
+                        borderRadius: Width(5),
+                        paddingHorizontal: Width(10),
+                        fontSize: Height(16),
+                        marginTop: Height(10),
+                        borderColor: index === 24 ? primary : '#a9a9a9',
+                      }}
+                      value={password}
+                      // onBlur={() => Validation()}
+                      onChangeText={text => setpassword(text)}
+                      // keyboardType="email-address"
+                      onFocus={() => setIndex(24)}
+                    />
+                    <Ionicons
+                      style={styles.showpassIcon}
+                      name={passwordVisible ? 'eye' : 'eye-off'}
+                      onPress={() => setPasswordVisible(!passwordVisible)}
+                      color="#666666"
+                      size={Height(20)}
+                    />
+                  </View>
                   {/* {emailError.length > 0 && (
                 <Text
                   style={{
@@ -1304,7 +1370,7 @@ const Login = () => {
                       height: Height(40),
                       fontFamily: 'Gilroy-SemiBold',
                       borderWidth: 1.5,
-                      borderRadius: Width(10),
+                      borderRadius: Width(5),
                       paddingHorizontal: Width(10),
                       fontSize: Height(16),
                       marginTop: Height(10),
@@ -1338,28 +1404,37 @@ const Login = () => {
                     }}>
                     Password<Text style={{color: primary}}> *</Text>
                   </Text>
-                  <TextInput
-                    placeholder="Enter Password"
-                    placeholderTextColor="rgba(0, 0, 0, 0.6)"
-                    secureTextEntry={true}
-                    style={{
-                      alignSelf: 'center',
-                      width: Width(315),
-                      height: Height(40),
-                      fontFamily: 'Gilroy-SemiBold',
-                      borderWidth: 1.5,
-                      borderRadius: Width(10),
-                      paddingHorizontal: Width(10),
-                      fontSize: Height(16),
-                      marginTop: Height(10),
-                      borderColor: index === 26 ? primary : '#a9a9a9',
-                    }}
-                    value={password}
-                    // onBlur={() => Validation()}
-                    onChangeText={text => setpassword(text)}
-                    // keyboardType="email-address"
-                    onFocus={() => setIndex(26)}
-                  />
+                  <View style={styles.showpassView}>
+                    <TextInput
+                      placeholder="Enter Password"
+                      placeholderTextColor="rgba(0, 0, 0, 0.6)"
+                      secureTextEntry={passwordVisible}
+                      style={{
+                        alignSelf: 'center',
+                        width: Width(315),
+                        height: Height(40),
+                        fontFamily: 'Gilroy-SemiBold',
+                        borderWidth: 1.5,
+                        borderRadius: Width(5),
+                        paddingHorizontal: Width(10),
+                        fontSize: Height(16),
+                        marginTop: Height(10),
+                        borderColor: index === 25 ? primary : '#a9a9a9',
+                      }}
+                      value={password}
+                      // onBlur={() => Validation()}
+                      onChangeText={text => setpassword(text)}
+                      // keyboardType="email-address"
+                      onFocus={() => setIndex(25)}
+                    />
+                    <Ionicons
+                      style={styles.showpassIcon}
+                      name={passwordVisible ? 'eye' : 'eye-off'}
+                      onPress={() => setPasswordVisible(!passwordVisible)}
+                      color="#666666"
+                      size={Height(20)}
+                    />
+                  </View>
                   {/* {emailError.length > 0 && (
                 <Text
                   style={{
@@ -1397,7 +1472,7 @@ const styles = StyleSheet.create({
   },
   imgtop: {
     width: windowWidth,
-    height: windowHeight / 3.3,
+    height: windowHeight / 6,
     // borderBottomRightRadius: windowHeight / 4,
     // borderBottomLeftRadius: windowHeight / 4,
   },
@@ -1409,7 +1484,7 @@ const styles = StyleSheet.create({
     width: 130,
     height: 35,
     backgroundColor: secondary,
-    borderRadius: 10,
+    borderRadius: 5,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -1418,7 +1493,7 @@ const styles = StyleSheet.create({
     width: 130,
     height: 35,
     backgroundColor: primary,
-    borderRadius: 10,
+    borderRadius: 5,
     borderColor: primary,
     borderWidth: 1,
     display: 'flex',
@@ -1430,8 +1505,9 @@ const styles = StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
     marginTop: 10,
+    paddingHorizontal: Width(30),
   },
   logintext: {
     color: primary,
@@ -1467,9 +1543,13 @@ const styles = StyleSheet.create({
   },
   placeholderStyle: {
     fontSize: 16,
+    borderColor: primary,
+    borderRadius: 10,
   },
   selectedTextStyle: {
     fontSize: 16,
+    borderColor: primary,
+    borderRadius: 10,
   },
   iconStyle: {
     width: 20,
@@ -1478,5 +1558,15 @@ const styles = StyleSheet.create({
   inputSearchStyle: {
     height: 40,
     fontSize: 16,
+    borderColor: primary,
+    borderRadius: 5,
+  },
+  showpassView: {
+    position: 'relative',
+  },
+  showpassIcon: {
+    position: 'absolute',
+    left: Width(310),
+    top: Height(20),
   },
 });

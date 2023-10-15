@@ -9,8 +9,8 @@ import React, {useState, useEffect} from 'react';
 import {Height, Width} from '../../../utils/responsive';
 import {primary} from '../../../utils/Colors';
 import {Dropdown} from 'react-native-element-dropdown';
-import {useNavigation} from '@react-navigation/native';
-import {Addbatch, getbatch} from '../../../Redux/action/commanAction';
+import {useNavigation, useRoute} from '@react-navigation/native';
+import {Updatebatch, getbatch} from '../../../Redux/action/commanAction';
 import {useDispatch, useSelector} from 'react-redux';
 import Loader from '../../../Component/Loader/Loader';
 const data = [
@@ -39,24 +39,27 @@ const data = [
   {label: '11:00 PM', value: '11:00 PM'},
   {label: '12:00 PM', value: '12:00 PM'},
 ];
-const AddBatch = () => {
+const UpdateBatch = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const route = useRoute();
   const [index, setIndex] = useState(0);
   const [sms, setsms] = useState('');
   const [loader, setloader] = useState(false);
   const [endtime, setendtime] = useState('');
   const [starttime, setstarttime] = useState('');
-  const {batch, error} = useSelector(state => state.addbatch);
+  const [isData, setisData] = useState('');
+  const {error, isUpdated} = useSelector(state => state.editbatch);
   const submit = () => {
     if (starttime && endtime) {
       setloader(true);
-      setsms('Adding...');
+      setsms('Updating...');
       const data = {
+        id: isData?.id,
         StartingTime: starttime,
         EndingTime: endtime,
       };
-      dispatch(Addbatch(data));
+      dispatch(Updatebatch(data));
     } else {
       setsms('');
       setloader(false);
@@ -64,12 +67,12 @@ const AddBatch = () => {
   };
 
   useEffect(() => {
-    if (batch?.status) {
+    if (isUpdated) {
       dispatch(getbatch());
       setsms('');
       setloader(false);
     }
-  }, [batch]);
+  }, [isUpdated]);
   useEffect(() => {
     if (error) {
       if (error?.status === false) {
@@ -78,6 +81,14 @@ const AddBatch = () => {
       }
     }
   }, [error]);
+
+  useEffect(() => {
+    if (route.params?.data) {
+      setendtime(route.params?.data?.EndingTime);
+      setstarttime(route.params?.data?.StartingTime);
+      setisData(route.params?.data);
+    }
+  }, []);
 
   return (
     <View>
@@ -110,6 +121,7 @@ const AddBatch = () => {
               placeholder="Start Time"
               searchPlaceholder="Search..."
               value={starttime}
+              onFocus={() => setIndex(1)}
               onChange={item => {
                 setstarttime(item.value);
               }}
@@ -125,7 +137,7 @@ const AddBatch = () => {
                 paddingHorizontal: Width(20),
                 fontSize: Height(16),
                 marginTop: Height(10),
-                borderColor: index === 1 ? primary : '#a9a9a9',
+                borderColor: index === 2 ? primary : '#a9a9a9',
               }}
               placeholderStyle={styles.placeholderStyle}
               selectedTextStyle={styles.selectedTextStyle}
@@ -138,6 +150,7 @@ const AddBatch = () => {
               valueField="value"
               placeholder="End Time"
               searchPlaceholder="Search..."
+              onFocus={() => setIndex(2)}
               value={endtime}
               onChange={item => {
                 setendtime(item.value);
@@ -148,7 +161,7 @@ const AddBatch = () => {
           <View style={styles.loginbtndiv}>
             <TouchableOpacity onPress={() => submit()}>
               <View style={styles.loginbtn}>
-                <Text style={styles.logintextstyle}>Save</Text>
+                <Text style={styles.logintextstyle}>Update</Text>
               </View>
             </TouchableOpacity>
           </View>
@@ -158,7 +171,7 @@ const AddBatch = () => {
   );
 };
 
-export default AddBatch;
+export default UpdateBatch;
 
 const styles = StyleSheet.create({
   inputview: {
