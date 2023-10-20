@@ -6,7 +6,7 @@ import {
   ScrollView,
   TextInput,
 } from 'react-native';
-import React, {useState,useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Height, Width} from '../../../utils/responsive';
 import {primary} from '../../../utils/Colors';
 import {useNavigation} from '@react-navigation/native';
@@ -22,7 +22,7 @@ const AddCourse = () => {
   const [loader, setloader] = useState(false);
   const [coursename, setcoursename] = useState('');
   const [courseduration, setcourseduration] = useState('');
-  const {course,error} = useSelector(state => state.addcourse);
+  const {course, error} = useSelector(state => state.addcourse);
 
   const submit = () => {
     if (coursename && courseduration) {
@@ -44,8 +44,7 @@ const AddCourse = () => {
       dispatch(getcourse());
       setsms('');
       setloader(false);
-    }else
-    {
+    } else {
       setsms('');
       setloader(false);
     }
@@ -126,8 +125,7 @@ const AddCourse = () => {
           </View>
 
           <View style={styles.loginbtndiv}>
-            <TouchableOpacity
-              onPress={() => submit()}>
+            <TouchableOpacity onPress={() => submit()}>
               <View style={styles.loginbtn}>
                 <Text style={styles.logintextstyle}>Save</Text>
               </View>

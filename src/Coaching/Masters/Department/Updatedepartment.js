@@ -2,6 +2,7 @@ import {
   StyleSheet,
   Text,
   View,
+  Modal,
   TouchableOpacity,
   ScrollView,
   TextInput,
@@ -10,44 +11,39 @@ import React, {useState, useEffect} from 'react';
 import {Height, Width} from '../../../utils/responsive';
 import {primary} from '../../../utils/Colors';
 import {useNavigation, useRoute} from '@react-navigation/native';
-import {Updatecourse, getcourse} from '../../../Redux/action/commanAction';
+import {
+  UpdateDepartment,
+  getDepartment,
+} from '../../../Redux/action/commanAction';
 import {useDispatch, useSelector} from 'react-redux';
 import Loader from '../../../Component/Loader/Loader';
 
-const UpdateCourse = () => {
+const Updatedepartment = () => {
+  const route = useRoute();
   const dispatch = useDispatch();
   const navigation = useNavigation();
-  const route = useRoute();
   const [index, setIndex] = useState(0);
+  const [departmentname, setdepartmentneme] = useState('');
+  const [isData, setisData] = useState('');
   const [sms, setsms] = useState('');
   const [loader, setloader] = useState(false);
-  const [coursename, setcoursename] = useState('');
-  const [courseduration, setcourseduration] = useState('');
-  const [isData, setisData] = useState('');
-  const {error, isUpdated} = useSelector(state => state.editcourse);
+  const {isUpdated, error} = useSelector(state => state.updatedepart);
+
   const submit = () => {
-    if (courseduration && coursename) {
-      setloader(true);
-      setsms('Updating...');
-      const data = {
-        id: isData?.id,
-        coursename: coursename,
-        courseduration: courseduration,
-      };
-      dispatch(Updatecourse(data));
-    } else {
-      setsms('');
-      setloader(false);
-    }
+    setloader(true);
+    setsms('Updating...');
+    const data = {
+      id: isData?.id,
+      DepartmentName: departmentname,
+    };
+    dispatch(UpdateDepartment(data));
   };
 
   useEffect(() => {
-    if (isUpdated) {
-      dispatch(getcourse());
+    if (isUpdated?.status) {
+      dispatch(getDepartment());
       setsms('');
       setloader(false);
-
-      console.log('dd', isUpdated);
     } else {
       setsms('');
       setloader(false);
@@ -64,11 +60,11 @@ const UpdateCourse = () => {
 
   useEffect(() => {
     if (route.params?.data) {
-      setcoursename(route.params?.data?.coursename);
-      setcourseduration(route.params?.data?.courseduration?.toString());
+      setdepartmentneme(route.params?.data?.DepartmentName);
       setisData(route.params?.data);
     }
   }, []);
+
   return (
     <View>
       <Loader loader={loader} sms={sms} />
@@ -84,12 +80,12 @@ const UpdateCourse = () => {
                 alignItems: 'center',
                 borderWidth: 1.5,
                 borderRadius: Width(5),
-                borderColor: index === 8 ? primary : '#a9a9a9',
+                borderColor: index === 7 ? primary : '#a9a9a9',
                 marginTop: Height(10),
               }}
               onStartShouldSetResponder={() => setIndex(7)}>
               <TextInput
-                placeholder="Enter Course Name"
+                placeholder="Enter Department Name"
                 placeholderTextColor="rgba(0, 0, 0, 0.6)"
                 style={{
                   width: Width(280),
@@ -97,40 +93,12 @@ const UpdateCourse = () => {
                   paddingHorizontal: Width(20),
                   fontSize: Height(16),
                 }}
+                // secureTextEntry={passwordVisible}
                 // onBlur={() => Validation()}
-                value={coursename}
-                onChangeText={text => setcoursename(text)}
+                value={departmentname}
+                onChangeText={text => setdepartmentneme(text)}
                 // onPressIn={() => setIndex(3)}
-                onFocus={() => setIndex(8)}
-              />
-            </View>
-            <View
-              style={{
-                width: Width(360),
-                height: Height(45),
-                alignSelf: 'center',
-                flexDirection: 'row',
-                alignItems: 'center',
-                borderWidth: 1.5,
-                borderRadius: Width(5),
-                borderColor: index === 9 ? primary : '#a9a9a9',
-                marginTop: Height(10),
-              }}
-              onStartShouldSetResponder={() => setIndex(7)}>
-              <TextInput
-                placeholder="Enter Course Name"
-                placeholderTextColor="rgba(0, 0, 0, 0.6)"
-                style={{
-                  width: Width(280),
-                  fontFamily: 'Gilroy-SemiBold',
-                  paddingHorizontal: Width(20),
-                  fontSize: Height(16),
-                }}
-                // onBlur={() => Validation()}
-                value={courseduration}
-                onChangeText={text => setcourseduration(text)}
-                // onPressIn={() => setIndex(3)}
-                onFocus={() => setIndex(8)}
+                onFocus={() => setIndex(7)}
               />
             </View>
           </View>
@@ -148,7 +116,7 @@ const UpdateCourse = () => {
   );
 };
 
-export default UpdateCourse;
+export default Updatedepartment;
 
 const styles = StyleSheet.create({
   inputview: {

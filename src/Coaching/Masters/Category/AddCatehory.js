@@ -6,17 +6,59 @@ import {
   ScrollView,
   TextInput,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import {Height, Width} from '../../../utils/responsive';
 import {primary} from '../../../utils/Colors';
 import {useNavigation} from '@react-navigation/native';
-
+import {Addcategory, getcategory} from '../../../Redux/action/commanAction';
+import {useDispatch, useSelector} from 'react-redux';
+import Loader from '../../../Component/Loader/Loader';
 const AddCatehory = () => {
+  const dispatch = useDispatch();
   const navigation = useNavigation();
   const [index, setIndex] = useState(0);
+  const [sms, setsms] = useState('');
+  const [loader, setloader] = useState(false);
+  const [categoryname, setcategoryname] = useState('');
+  const {category, error} = useSelector(state => state.addcategory);
+
+  const submit = () => {
+    if (categoryname) {
+      setloader(true);
+      setsms('Adding...');
+      const data = {
+        category: categoryname,
+   
+      };
+      dispatch(Addcategory(data));
+    } else {
+      setsms('');
+      setloader(false);
+    }
+  };
+
+  useEffect(() => {
+    if (category?.status) {
+      dispatch(getcategory());
+      setsms('');
+      setloader(false);
+    } else {
+      setsms('');
+      setloader(false);
+    }
+  }, [category]);
+  useEffect(() => {
+    if (error) {
+      if (error?.status === false) {
+        setloader(false);
+        setsms('');
+      }
+    }
+  }, [error]);
 
   return (
     <View>
+      <Loader loader={loader} sms={sms} />
       <ScrollView>
         <View style={styles.enquirymainview}>
           <View style={styles.dateview}>
@@ -44,8 +86,8 @@ const AddCatehory = () => {
                 }}
                 // secureTextEntry={passwordVisible}
                 // onBlur={() => Validation()}
-                // value={address}
-                // onChangeText={text => setaddress(text)}
+                value={categoryname}
+                onChangeText={text => setcategoryname(text)}
                 // onPressIn={() => setIndex(3)}
                 onFocus={() => setIndex(7)}
               />
@@ -53,8 +95,7 @@ const AddCatehory = () => {
           </View>
 
           <View style={styles.loginbtndiv}>
-            <TouchableOpacity
-              onPress={() => navigation.navigate('BatchCoaching')}>
+            <TouchableOpacity onPress={() => submit()}>
               <View style={styles.loginbtn}>
                 <Text style={styles.logintextstyle}>Save</Text>
               </View>

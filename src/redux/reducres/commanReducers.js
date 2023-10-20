@@ -31,6 +31,7 @@ import {
   UPDATE_COURSE_REQUEST,
   UPDATE_COURSE_SUCCESS,
   UPDATE_COURSE_FAIL,
+  DELETE_COURSE_RESET,
   ALL_COURSE_REQUEST,
   ALL_COURSE_SUCCESS,
   ALL_COURSE_FAIL,
@@ -43,6 +44,7 @@ import {
   UPDATE_CATEGORY_REQUEST,
   UPDATE_CATEGORY_SUCCESS,
   UPDATE_CATEGORY_FAIL,
+  UPDATE_CATEGORY_RESET,
   DELETE_CATEGORY_REQUEST,
   DELETE_CATEGORY_SUCCESS,
   DELETE_CATEGORY_FAIL,
@@ -115,6 +117,7 @@ import {
   ADD_Department_FAIL,
   UPDATE_Department_REQUEST,
   UPDATE_Department_SUCCESS,
+  UPDATE_Department_RESET,
   UPDATE_Department_FAIL,
   ALL_Department_REQUEST,
   ALL_Department_SUCCESS,
@@ -466,8 +469,15 @@ export const updatecourseReducer = (state = {course: []}, action) => {
       return {
         ...state,
         loading: false,
-        course: action.payload,
+        isUpdated: action.payload,
       };
+    case UPDATE_BATCH_RESET:
+      setTimeout(() => {
+        return {
+          ...state,
+          isUpdated: false,
+        };
+      }, 1000);
 
     case UPDATE_COURSE_FAIL:
       return {
@@ -594,8 +604,15 @@ export const updatecategoryReducer = (state = {category: []}, action) => {
       return {
         ...state,
         loading: false,
-        category: action.payload,
+        isUpdated: action.payload,
       };
+    case UPDATE_CATEGORY_RESET:
+      setTimeout(() => {
+        return {
+          ...state,
+          isUpdated: false,
+        };
+      }, 1000);
 
     case UPDATE_CATEGORY_FAIL:
       return {
@@ -1243,13 +1260,21 @@ export const updateDepartmentReducer = (state = {department: []}, action) => {
       return {
         ...state,
         loading: false,
-        department: action.payload,
+        isUpdated: action.payload,
       };
 
+    case UPDATE_Department_RESET:
+      setTimeout(() => {
+        return {
+          ...state,
+          isUpdated: false,
+        };
+      }, 1000);
     case UPDATE_Department_FAIL:
       return {
         loading: false,
         department: null,
+        isUpdated: false,
         error: action.payload,
       };
 

@@ -5,18 +5,35 @@ import {
   Modal,
   TouchableOpacity,
   ScrollView,
-  TextInput,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Height, Width} from '../../../utils/responsive';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Header from '../../../Component/Header/Header';
 import {primary} from '../../../utils/Colors';
 import AddEnquiry from './AddCatehory';
 import BatchCard from './CategoryCard';
+import {getcategory} from '../../../Redux/action/commanAction';
+import {useDispatch, useSelector} from 'react-redux';
 const Category = ({navigation}) => {
+  
+  const dispatch = useDispatch();
   const [openModel, setopenModel] = useState(false);
   const [index, setIndex] = useState(0);
+  const [sms, setsms] = useState('');
+  const [loader, setloader] = useState(false);
+  const [categorylist, setcategorylist] = useState('');
+  const {category, error} = useSelector(state => state.getcategory);
+
+  useEffect(() => {
+    dispatch(getcategory());
+  }, []);
+
+  useEffect(() => {
+    if (category) {
+      setcategorylist(category);
+    }
+  }, [category]);
   return (
     <View>
       <Modal animationType={'fade'} transparent={true} visible={openModel}>
@@ -40,7 +57,10 @@ const Category = ({navigation}) => {
       </View>
       <ScrollView>
         <View style={styles.enquirymainview}>
-          <BatchCard />
+          {categorylist &&
+            categorylist?.map((data, index) => {
+              return <BatchCard key={index} data={data} />;
+            })}
         </View>
       </ScrollView>
     </View>

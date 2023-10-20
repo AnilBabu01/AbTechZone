@@ -2,104 +2,123 @@ import {
   StyleSheet,
   Text,
   View,
-  Modal,
   TouchableOpacity,
   ScrollView,
   TextInput,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Height, Width} from '../../../utils/responsive';
 import {primary} from '../../../utils/Colors';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import DateTimePickerModal from 'react-native-modal-datetime-picker';
-import moment from 'moment';
 import {Dropdown} from 'react-native-element-dropdown';
 import {useNavigation} from '@react-navigation/native';
-const data = [
-  {label: '01:00 AM', value: '01:00 AM'},
-  {label: '02:00 AM', value: '02:00 AM'},
-  {label: '03:00 AM', value: '03:00 AM'},
-  {label: '04:00 AM', value: '04:00 AM'},
-  {label: '05:00 AM', value: '05:00 AM'},
-  {label: '06:00 AM', value: '06:00 AM'},
-  {label: '07:00 AM', value: '07:00 AM'},
-  {label: '08:00 AM', value: '08:00 AM'},
-  {label: '09:00 AM', value: '09:00 AM'},
-  {label: '10:00 AM', value: '10:00 AM'},
-  {label: '11:00 AM', value: '11:00 AM'},
-  {label: '12:00 AM', value: '12:00 AM'},
-  {label: '01:00 PM', value: '01:00 PM'},
-  {label: '02:00 PM', value: '02:00 PM'},
-  {label: '03:00 PM', value: '03:00 PM'},
-  {label: '04:00 PM', value: '04:00 PM'},
-  {label: '05:00 PM', value: '05:00 PM'},
-  {label: '06:00 PM', value: '06:00 PM'},
-  {label: '07:00 PM', value: '07:00 PM'},
-  {label: '08:00 PM', value: '08:00 PM'},
-  {label: '09:00 PM', value: '09:00 PM'},
-  {label: '10:00 PM', value: '10:00 PM'},
-  {label: '11:00 PM', value: '11:00 PM'},
-  {label: '12:00 PM', value: '12:00 PM'},
-];
+import {AddFee, getfee,getcourse} from '../../../Redux/action/commanAction';
+import {useDispatch, useSelector} from 'react-redux';
+import Loader from '../../../Component/Loader/Loader';
+
 const AddFees = () => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
   const [index, setIndex] = useState(0);
-  const [fromdate, setfromdate] = useState('');
-  const [endtime, setendtime] = useState('');
-  const [starttime, setstarttime] = useState('');
-  const [course, setcourse] = useState('');
-  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-
-  const showDatePicker = () => {
-    setDatePickerVisibility(true);
+  const [sms, setsms] = useState('');
+  const [loader, setloader] = useState(false);
+  const [coursename, setcoursename] = useState('');
+  const [permonthfee, setpermonthfee] = useState('');
+  const [regfee, setregfee] = useState('');
+  const [courselist, setcourselist] = useState('');
+  const {course} = useSelector(state => state.getcourse);
+  const {fee, error} = useSelector(state => state.addfee);
+  const submit = () => {
+    if (regfee && permonthfee && coursename) {
+      setloader(true);
+      setsms('Adding...');
+      const data = {
+        Registractionfee: regfee,
+        feepermonth: permonthfee,
+        coursename: coursename,
+        courseduration: 2,
+      };
+      dispatch(AddFee(data));
+    } else {
+      setsms('');
+      setloader(false);
+    }
   };
 
-  const hideDatePicker = () => {
-    setDatePickerVisibility(false);
-  };
+  useEffect(() => {
+    if (fee?.status) {
+      dispatch(getfee());
+      setsms('');
+      setloader(false);
+    } else {
+      setsms('');
+      setloader(false);
+    }
+  }, [fee]);
 
-  const handleConfirm = date => {
-    hideDatePicker();
-    setfromdate(date);
-  };
+  useEffect(() => {
+    if (error) {
+      if (error?.status === false) {
+        setloader(false);
+        setsms('');
+      }
+    }
+  }, [error]);
+
+  useEffect(() => {
+    dispatch(getcourse());
+  }, []);
+
+  useEffect(() => {
+    if (course) {
+      setcourselist(course);
+    }
+  }, [course]);
 
   return (
     <View>
+      <Loader loader={loader} sms={sms} />
       <ScrollView>
         <View style={styles.enquirymainview}>
           <View style={styles.dateview}>
-            <Dropdown
-              style={{
-                alignSelf: 'center',
-                width: Width(360),
-                height: Height(45),
-                fontFamily: 'Gilroy-SemiBold',
-                borderWidth: 1.5,
-                borderRadius: Width(5),
-                paddingHorizontal: Width(20),
-                fontSize: Height(16),
-                marginTop: Height(10),
-                borderColor: index === 1 ? primary : '#a9a9a9',
-              }}
-              placeholderStyle={styles.placeholderStyle}
-              selectedTextStyle={styles.selectedTextStyle}
-              inputSearchStyle={styles.inputSearchStyle}
-              iconStyle={styles.iconStyle}
-              data={data}
-              search
-              maxHeight={300}
-              labelField="label"
-              valueField="value"
-              placeholder="Course"
-              searchPlaceholder="Search..."
-              value={starttime}
-              onChange={item => {
-                setstarttime(item.value);
-              }}
-              // renderLeftIcon={() => (
-              //   <AntDesign style={styles.icon} color="black" name="Safety" size={20} />
-              // )}
-            />
+            {courselist && (
+              <>
+                <Dropdown
+                  style={{
+                    alignSelf: 'center',
+                    width: Width(360),
+                    height: Height(45),
+                    fontFamily: 'Gilroy-SemiBold',
+                    borderWidth: 1.5,
+                    borderRadius: Width(5),
+                    paddingHorizontal: Width(20),
+                    fontSize: Height(16),
+                    marginTop: Height(10),
+                    borderColor: index === 1 ? primary : '#a9a9a9',
+                  }}
+                  placeholderStyle={styles.placeholderStyle}
+                  selectedTextStyle={styles.selectedTextStyle}
+                  inputSearchStyle={styles.inputSearchStyle}
+                  iconStyle={styles.iconStyle}
+                  data={
+                    courselist &&
+                    courselist?.map(item => ({
+                      label: `${item?.coursename}`,
+                      value: `${item?.coursename}`,
+                    }))
+                  }
+                  search
+                  maxHeight={300}
+                  labelField="label"
+                  valueField="value"
+                  placeholder="Course"
+                  searchPlaceholder="Search..."
+                  value={coursename}
+                  onChange={item => {
+                    setcoursename(item.value);
+                  }}
+                />
+              </>
+            )}
 
             <View
               style={{
@@ -125,8 +144,8 @@ const AddFees = () => {
                 }}
                 // secureTextEntry={passwordVisible}
                 // onBlur={() => Validation()}
-                // value={address}
-                // onChangeText={text => setaddress(text)}
+                value={regfee}
+                onChangeText={text => setregfee(text)}
                 // onPressIn={() => setIndex(3)}
                 onFocus={() => setIndex(7)}
               />
@@ -156,8 +175,8 @@ const AddFees = () => {
                 }}
                 // secureTextEntry={passwordVisible}
                 // onBlur={() => Validation()}
-                // value={address}
-                // onChangeText={text => setaddress(text)}
+                value={permonthfee}
+                onChangeText={text => setpermonthfee(text)}
                 // onPressIn={() => setIndex(3)}
                 onFocus={() => setIndex(7)}
               />
@@ -165,8 +184,7 @@ const AddFees = () => {
           </View>
 
           <View style={styles.loginbtndiv}>
-            <TouchableOpacity
-              onPress={() => navigation.navigate('BatchCoaching')}>
+            <TouchableOpacity onPress={() => submit()}>
               <View style={styles.loginbtn}>
                 <Text style={styles.logintextstyle}>Save</Text>
               </View>

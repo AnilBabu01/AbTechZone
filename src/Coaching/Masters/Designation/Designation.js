@@ -5,7 +5,7 @@ import {
   Modal,
   TouchableOpacity,
   ScrollView,
-  TextInput,
+  useEffect,
 } from 'react-native';
 import React, {useState} from 'react';
 import {Height, Width} from '../../../utils/responsive';
@@ -14,9 +14,25 @@ import Header from '../../../Component/Header/Header';
 import {primary} from '../../../utils/Colors';
 import AddEnquiry from './AddDesignation';
 import BatchCard from './DesignationCard';
+import {getDesignation} from '../../../Redux/action/commanAction';
+import {useDispatch, useSelector} from 'react-redux';
 const Designation = ({navigation}) => {
+  const dispatch = useDispatch();
   const [openModel, setopenModel] = useState(false);
   const [index, setIndex] = useState(0);
+  const [departlist, setdepartlist] = useState('');
+  const {designation, error} = useSelector(state => state.getdesignation);
+
+  useEffect(() => {
+    dispatch(getDesignation());
+  }, []);
+
+  useEffect(() => {
+    if (designation) {
+      setdepartlist(designation);
+    }
+  }, [designation]);
+
   return (
     <View>
       <Modal animationType={'fade'} transparent={true} visible={openModel}>
@@ -40,7 +56,10 @@ const Designation = ({navigation}) => {
       </View>
       <ScrollView>
         <View style={styles.enquirymainview}>
-          <BatchCard />
+          {departlist &&
+            departlist?.map((data, index) => {
+              return <BatchCard key={index} data={data} />;
+            })}
         </View>
       </ScrollView>
     </View>

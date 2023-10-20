@@ -465,8 +465,9 @@ export const Addcourse = datas => async dispatch => {
 };
 
 // post add enquiry
-export const UpdateCourse = (datas, setOpen) => async dispatch => {
+export const Updatecourse = datas => async dispatch => {
   try {
+    console.log('data is ', datas);
     let token = await AsyncStorage.getItem('erptoken');
     const config = {
       headers: {
@@ -612,7 +613,7 @@ export const Addcategory = (datas, setOpen) => async dispatch => {
 };
 
 // post add enquiry
-export const Updatecategory = (datas, setOpen) => async dispatch => {
+export const UpdateCategory = (datas, setOpen) => async dispatch => {
   try {
     let token = await AsyncStorage.getItem('erptoken');
     const config = {
@@ -655,23 +656,21 @@ export const Updatecategory = (datas, setOpen) => async dispatch => {
 };
 
 // delete  enquiry
-export const deletecategory = (deleteid, setOpenalert) => async dispatch => {
+export const deletecategory = deleteid => async dispatch => {
   try {
     dispatch({type: DELETE_CATEGORY_REQUEST});
     serverInstance('comman/studentcategory', 'delete', {
       id: deleteid,
     }).then(res => {
-      if (res?.status) {
-        Toast.show({
-          type: 'success',
-          text1: 'Success',
-          text2: data?.msg,
-        });
-      }
+      Toast.show({
+        type: 'success',
+        text1: 'Success',
+        text2: res?.msg,
+      });
 
       dispatch({
         type: DELETE_CATEGORY_SUCCESS,
-        payload: res?.data,
+        payload: res,
       });
     });
   } catch (error) {
@@ -859,7 +858,7 @@ export const getfee = (page, limit, setPage) => async dispatch => {
   }
 };
 
-export const AddDesignation = (datas, setOpen) => async dispatch => {
+export const Adddesignation = (datas, setOpen) => async dispatch => {
   try {
     let token = await AsyncStorage.getItem('erptoken');
     const config = {
@@ -1324,7 +1323,7 @@ export const getEmployee = (fromdate, todate, sstudent) => async dispatch => {
   }
 };
 
-export const AddDepartment = (datas, setOpen) => async dispatch => {
+export const Adddepartment = (datas, setOpen) => async dispatch => {
   try {
     let token = await AsyncStorage.getItem('erptoken');
     const config = {
@@ -1367,7 +1366,7 @@ export const AddDepartment = (datas, setOpen) => async dispatch => {
 };
 
 // post add enquiry
-export const UpdateDepartment = (datas, setOpen) => async dispatch => {
+export const UpdateDepartment = (datas) => async dispatch => {
   try {
     let token = await AsyncStorage.getItem('erptoken');
     const config = {
@@ -1420,14 +1419,14 @@ export const deleteDepartment = (deleteid, setOpenalert) => async dispatch => {
         Toast.show({
           type: 'success',
           text1: 'Success',
-          text2: data?.msg,
+          text2: res?.msg,
+        });
+
+        dispatch({
+          type: DELETE_Department_SUCCESS,
+          payload: res,
         });
       }
-
-      dispatch({
-        type: DELETE_Department_SUCCESS,
-        payload: res?.data,
-      });
     });
   } catch (error) {
     dispatch({

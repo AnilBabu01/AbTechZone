@@ -19,11 +19,13 @@ import BatchCoaching from '../Coaching/Masters/Batch/Batch';
 import AddBatchCoaching from '../Coaching/Masters/Batch/AddBatch';
 import UpdateBatchCoaching from '../Coaching/Masters/Batch/UpdateBatch';
 import CategoryCoaching from '../Coaching/Masters/Category/Category';
+import UpdatecategoryCoaching from '../Coaching/Masters/Category/Updatecategory';
 import AddCatehoryCoaching from '../Coaching/Masters/Category/AddCatehory';
 import AddCourseCoaching from '../Coaching/Masters/Course/AddCourse';
 import UpdateCourseCoaching from '../Coaching/Masters/Course/UpdateCourse';
 import CourseCoaching from '../Coaching/Masters/Course/Course';
 import AddDepartmentCoaching from '../Coaching/Masters/Department/AddDepartment';
+import UpdatedepartmentCoaching from '../Coaching/Masters/Department/Updatedepartment';
 import DepartmentCoaching from '../Coaching/Masters/Department/Department';
 import AddDesignationCoaching from '../Coaching/Masters/Designation/AddDesignation';
 import DesignationCoaching from '../Coaching/Masters/Designation/Designation';
@@ -31,7 +33,7 @@ import AddDurationCoaching from '../Coaching/Masters/Duration/AddDuration';
 import DurationCoaching from '../Coaching/Masters/Duration/Duration';
 import AddFeesCoaching from '../Coaching/Masters/Fees/AddFees';
 import FeesCoaching from '../Coaching/Masters/Fees/Fees';
-import Fees from '../Coaching/Masters/Fees/Fees';
+import UpdateAddFeeCoaching from '../Coaching/Masters/Fees/UpdateAddFee';
 import ProfileCoaching from '../Coaching/Profile/Profile';
 import UpdateInstituteCoaching from '../Coaching/Profile/UpdateInstitute';
 import UpdateCredentialCoaching from '../Coaching/Profile/UpdateCredential';
@@ -63,7 +65,9 @@ function StackNavigation() {
         <Stack.Screen name="OnBoarding" component={SplashScreen} />
       )}
       <Stack.Screen name="home" component={HomeScreen} />
-      <Stack.Screen name="Login" component={LoginScreen} 
+      <Stack.Screen
+        name="Login"
+        component={LoginScreen}
         options={{
           headerShown: true,
           title: 'Sign-in',
@@ -186,7 +190,7 @@ function StackNavigation() {
           },
         }}
       />
-       <Stack.Screen
+      <Stack.Screen
         name="UpdateBatchCoaching"
         component={UpdateBatchCoaching}
         options={{
@@ -216,12 +220,12 @@ function StackNavigation() {
           },
         }}
       />
-       <Stack.Screen
+      <Stack.Screen
         name="UpdateCourseCoaching"
         component={UpdateCourseCoaching}
         options={{
           headerShown: true,
-          title: 'Add Course',
+          title: 'Update Course',
           headerStyle: {
             backgroundColor: primary,
           },
@@ -262,7 +266,7 @@ function StackNavigation() {
           },
         }}
       />
-      
+
       <Stack.Screen
         name="DurationCoaching"
         component={DurationCoaching}
@@ -285,6 +289,22 @@ function StackNavigation() {
         options={{
           headerShown: true,
           title: 'Add Category',
+          headerStyle: {
+            backgroundColor: primary,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
+
+      <Stack.Screen
+        name="UpdatecategoryCoaching"
+        component={UpdatecategoryCoaching}
+        options={{
+          headerShown: true,
+          title: 'Update Category',
           headerStyle: {
             backgroundColor: primary,
           },
@@ -324,6 +344,22 @@ function StackNavigation() {
           },
         }}
       />
+
+      <Stack.Screen
+        name="UpdateAddFeeCoaching"
+        component={UpdateAddFeeCoaching}
+        options={{
+          headerShown: true,
+          title: 'Update Fees',
+          headerStyle: {
+            backgroundColor: primary,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
       <Stack.Screen
         name="FeesCoaching"
         component={FeesCoaching}
@@ -346,6 +382,21 @@ function StackNavigation() {
         options={{
           headerShown: true,
           title: 'Add Department',
+          headerStyle: {
+            backgroundColor: primary,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
+       <Stack.Screen
+        name="UpdatedepartmentCoaching"
+        component={UpdatedepartmentCoaching}
+        options={{
+          headerShown: true,
+          title: 'Update Department',
           headerStyle: {
             backgroundColor: primary,
           },

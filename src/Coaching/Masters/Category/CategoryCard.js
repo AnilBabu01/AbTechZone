@@ -5,36 +5,98 @@ import {
   ScrollView,
   Dimensions,
   TouchableOpacity,
-  Image
+  Image,
+  Alert,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {primary} from '../../../utils/Colors';
 import moment from 'moment';
 import {useNavigation} from '@react-navigation/native';
 // import RNHTMLtoPDF from 'react-native-html-to-pdf';
 import Delete from '../../../assets/Delete.png';
 import Edit from '../../../assets/Edit.png';
-const CategoryCard = ({item}) => {
+import {deletecategory, getcategory} from '../../../Redux/action/commanAction';
+import {useDispatch, useSelector} from 'react-redux';
+import Loader from '../../../Component/Loader/Loader';
+
+const CategoryCard = ({data}) => {
+  const dispatch = useDispatch();
   const navigation = useNavigation();
+  const [sms, setsms] = useState('');
+  const [loader, setloader] = useState(false);
+  const {category, error} = useSelector(state => state.deletecategory);
+  const submit = id => {
+    setsms('Deleting...');
+    setloader(true);
+    dispatch(deletecategory(id));
+  };
+
+  useEffect(() => {
+    if (category?.status) {
+      dispatch(getcategory());
+      setsms('');
+      setloader(false);
+    }
+  }, [category]);
+  useEffect(() => {
+    if (error) {
+      if (error?.status === false) {
+        setloader(false);
+        setsms('');
+      }
+    }
+  }, [error]);
+
+  const confirmation = id => {
+    Alert.alert(
+      'Delete',
+      'Do you really want to Delete ?',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'OK',
+          onPress: () => submit(id),
+        },
+      ],
+      {
+        cancelable: false,
+      },
+    );
+    return true;
+  };
 
   return (
-    <ScrollView>
-      <View style={styles.connainer}>
-        <View style={styles.card10}>
-          <View style={styles.viewdel}>
-            <Text>Category</Text>
-            <Text>OBC</Text>
-          </View>
-          <View style={styles.viewdel}>
-            <Text></Text>
-            <View style={styles.mainActionView}>
-              <Image source={Delete} style={styles.actionimg10} />
-              <Image source={Edit} style={styles.actionimg} />
+    <View>
+      <Loader loader={loader} sms={sms} />
+      <ScrollView>
+        <View style={styles.connainer}>
+          <View style={styles.card10}>
+            <View style={styles.viewdel}>
+              <Text>Category</Text>
+              <Text>{data?.category}</Text>
+            </View>
+            <View style={styles.viewdel}>
+              <Text></Text>
+              <View style={styles.mainActionView}>
+                <TouchableOpacity onPress={() => confirmation(data?.id)}>
+                  <Image source={Delete} style={styles.actionimg10} />
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate('UpdatecategoryCoaching', {data})
+                  }>
+                  <Image source={Edit} style={styles.actionimg} />
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
         </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </View>
   );
 };
 
