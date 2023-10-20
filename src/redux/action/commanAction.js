@@ -802,20 +802,24 @@ export const deletefee = (deleteid, setOpenalert) => async dispatch => {
     dispatch({type: DELETE_FEESTRUCTURE_REQUEST});
     serverInstance('comman/fee', 'delete', {
       id: deleteid,
-    }).then(res => {
-      if (res?.status) {
-        Toast.show({
-          type: 'success',
-          text1: 'Success',
-          text2: data?.msg,
-        });
-      }
+    })
+      .then(res => {
+        if (res?.status) {
+          Toast.show({
+            type: 'success',
+            text1: 'Success',
+            text2: data?.msg,
+          });
+        }
 
-      dispatch({
-        type: DELETE_FEESTRUCTURE_SUCCESS,
-        payload: res?.data,
+        dispatch({
+          type: DELETE_FEESTRUCTURE_SUCCESS,
+          payload: res?.data,
+        });
+      })
+      .then(error => {
+        console.log(error);
       });
-    });
   } catch (error) {
     dispatch({
       type: DELETE_FEESTRUCTURE_FAIL,
@@ -1366,7 +1370,7 @@ export const Adddepartment = (datas, setOpen) => async dispatch => {
 };
 
 // post add enquiry
-export const UpdateDepartment = (datas) => async dispatch => {
+export const UpdateDepartment = datas => async dispatch => {
   try {
     let token = await AsyncStorage.getItem('erptoken');
     const config = {

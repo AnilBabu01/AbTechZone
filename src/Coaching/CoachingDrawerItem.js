@@ -174,7 +174,10 @@ const CoachingDrawerItem = ({navigation, setuserData}) => {
             }}
           />
         )}
-        // onPress={() => logout()}
+        onPress={() => {
+          navigation.closeDrawer();
+          navigation.navigate('EmployeeCoaching');
+        }}
         labelStyle={{color: 'black'}}
       />
       <DrawerItem
@@ -222,7 +225,10 @@ const CoachingDrawerItem = ({navigation, setuserData}) => {
             }}
           />
         )}
-        // onPress={() => logout()}
+        onPress={() => {
+          navigation.navigate('TestCoaching');
+          navigation.closeDrawer();
+        }}
         labelStyle={{color: 'black'}}
       />
       <DrawerItem
@@ -237,7 +243,10 @@ const CoachingDrawerItem = ({navigation, setuserData}) => {
             }}
           />
         )}
-        // onPress={() => logout()}
+        onPress={() => {
+          navigation.navigate('TestCoaching');
+          navigation.closeDrawer();
+        }}
         labelStyle={{color: 'black'}}
       />
       <DrawerItem

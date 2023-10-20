@@ -34,12 +34,18 @@ import DurationCoaching from '../Coaching/Masters/Duration/Duration';
 import AddFeesCoaching from '../Coaching/Masters/Fees/AddFees';
 import FeesCoaching from '../Coaching/Masters/Fees/Fees';
 import UpdateAddFeeCoaching from '../Coaching/Masters/Fees/UpdateAddFee';
+import AddTestCoaching from '../Coaching/Test/AddTest';
+import TestCoaching from '../Coaching/Test/Test';
+import UpdateTestCoaching from '../Coaching/Test/UpdateTest';
 import ProfileCoaching from '../Coaching/Profile/Profile';
 import UpdateInstituteCoaching from '../Coaching/Profile/UpdateInstitute';
 import UpdateCredentialCoaching from '../Coaching/Profile/UpdateCredential';
 import UpdateImgaesCoaching from '../Coaching/Profile/UpdateImgaes';
 import UpdateCommunicationCoaching from '../Coaching/Profile/UpdateCommunication';
 import FeeCollectCoaching from '../Coaching/Accounts/FeeCollect';
+import AddEmployeeCoaching from '../Coaching/Staff/AddEmployee';
+import SearchEmployeeCoaching from '../Coaching/Staff/SearchEmployee';
+import EmployeeCoaching from '../Coaching/Staff/Employee';
 import DashboardCollege from '../College/Dashboard/Dashboard';
 import DashboardSchool from '../School/Dashboard/Dashboard';
 import DashboardEmplyee from '../Employee/Dashboard/Dashboard';
@@ -377,6 +383,53 @@ function StackNavigation() {
       />
 
       <Stack.Screen
+        name="AddTestCoaching"
+        component={AddTestCoaching}
+        options={{
+          headerShown: true,
+          title: 'Add Test',
+          headerStyle: {
+            backgroundColor: primary,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
+
+      <Stack.Screen
+        name="UpdateTestCoaching"
+        component={UpdateTestCoaching}
+        options={{
+          headerShown: true,
+          title: 'Update Test',
+          headerStyle: {
+            backgroundColor: primary,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
+      <Stack.Screen
+        name="TestCoaching"
+        component={TestCoaching}
+        options={{
+          headerShown: true,
+          title: 'Test',
+          headerStyle: {
+            backgroundColor: primary,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
+
+      <Stack.Screen
         name="AddDepartmentCoaching"
         component={AddDepartmentCoaching}
         options={{
@@ -391,7 +444,7 @@ function StackNavigation() {
           },
         }}
       />
-       <Stack.Screen
+      <Stack.Screen
         name="UpdatedepartmentCoaching"
         component={UpdatedepartmentCoaching}
         options={{
@@ -504,6 +557,37 @@ function StackNavigation() {
         options={{
           headerShown: true,
           title: 'Edit Communication Credentials ',
+          headerStyle: {
+            backgroundColor: primary,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
+
+      <Stack.Screen
+        name="EmployeeCoaching"
+        component={EmployeeCoaching}
+        options={{
+          headerShown: true,
+          title: 'Add Employee',
+          headerStyle: {
+            backgroundColor: primary,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
+      <Stack.Screen
+        name="SearchEmployeeCoaching"
+        component={SearchEmployeeCoaching}
+        options={{
+          headerShown: true,
+          title: 'Search Employee',
           headerStyle: {
             backgroundColor: primary,
           },

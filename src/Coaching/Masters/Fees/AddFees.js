@@ -11,7 +11,7 @@ import {Height, Width} from '../../../utils/responsive';
 import {primary} from '../../../utils/Colors';
 import {Dropdown} from 'react-native-element-dropdown';
 import {useNavigation} from '@react-navigation/native';
-import {AddFee, getfee,getcourse} from '../../../Redux/action/commanAction';
+import {AddFee, getfee, getcourse} from '../../../Redux/action/commanAction';
 import {useDispatch, useSelector} from 'react-redux';
 import Loader from '../../../Component/Loader/Loader';
 
@@ -27,15 +27,20 @@ const AddFees = () => {
   const [courselist, setcourselist] = useState('');
   const {course} = useSelector(state => state.getcourse);
   const {fee, error} = useSelector(state => state.addfee);
+
   const submit = () => {
+    let last = coursename?.split(' ').pop();
+    var lastIndex = coursename?.lastIndexOf(' ');
+    let first = coursename?.substring(0, lastIndex);
+
     if (regfee && permonthfee && coursename) {
       setloader(true);
       setsms('Adding...');
       const data = {
         Registractionfee: regfee,
         feepermonth: permonthfee,
-        coursename: coursename,
-        courseduration: 2,
+        coursename: first,
+        courseduration: last,
       };
       dispatch(AddFee(data));
     } else {
@@ -103,7 +108,7 @@ const AddFees = () => {
                     courselist &&
                     courselist?.map(item => ({
                       label: `${item?.coursename}`,
-                      value: `${item?.coursename}`,
+                      value: `${item?.coursename} ${item?.courseduration}`,
                     }))
                   }
                   search
