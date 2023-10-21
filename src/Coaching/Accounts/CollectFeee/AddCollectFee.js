@@ -39,7 +39,7 @@ const data = [
   {label: '11:00 PM', value: '11:00 PM'},
   {label: '12:00 PM', value: '12:00 PM'},
 ];
-const AddBatch = () => {
+const AddCollectFee = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const [index, setIndex] = useState(0);
@@ -158,7 +158,7 @@ const AddBatch = () => {
   );
 };
 
-export default AddBatch;
+export default AddCollectFee;
 
 const styles = StyleSheet.create({
   inputview: {

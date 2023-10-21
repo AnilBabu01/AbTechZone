@@ -11,29 +11,29 @@ import React, {useState, useEffect} from 'react';
 import {primary} from '../../../utils/Colors';
 import Delete from '../../../assets/Delete.png';
 import Edit from '../../../assets/Edit.png';
-import {deletefee, getfee} from '../../../Redux/action/commanAction';
+import {deletebatch, getbatch} from '../../../Redux/action/commanAction';
 import {useDispatch, useSelector} from 'react-redux';
 import Loader from '../../../Component/Loader/Loader';
 import {useNavigation} from '@react-navigation/native';
-const FeeCard = ({data}) => {
+const FeeCardCollect = ({data, index}) => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const [sms, setsms] = useState('');
   const [loader, setloader] = useState(false);
-  const {fee, error} = useSelector(state => state.getfee);
+  const {batch, error} = useSelector(state => state.deletebatch);
   const submit = id => {
     setsms('Deleting...');
     setloader(true);
-    dispatch(deletefee(id));
+    dispatch(deletebatch(id));
   };
 
   useEffect(() => {
-    if (fee?.status) {
-      dispatch(getfee());
+    if (batch?.status) {
+      dispatch(getbatch());
       setsms('');
       setloader(false);
     }
-  }, [fee]);
+  }, [batch]);
   useEffect(() => {
     if (error) {
       if (error?.status === false) {
@@ -71,14 +71,12 @@ const FeeCard = ({data}) => {
         <View style={styles.connainer}>
           <View style={styles.card10}>
             <View style={styles.viewdel}>
-              <Text>Course</Text>
-              <Text>Registration Fee</Text>
-              <Text>Per Month Fee</Text>
+              <Text>Batch No : {index + 1}</Text>
+              <Text></Text>
             </View>
             <View style={styles.viewdel}>
-              <Text>{data?.coursename}</Text>
-              <Text>{data?.Registractionfee}</Text>
-              <Text>{data?.feepermonth}</Text>
+              <Text>Start Time : {data?.StartingTime}</Text>
+              <Text>Endi Time : {data?.EndingTime}</Text>
             </View>
             <View style={styles.viewdel}>
               <Text></Text>
@@ -87,9 +85,7 @@ const FeeCard = ({data}) => {
                   <Image source={Delete} style={styles.actionimg10} />
                 </TouchableOpacity>
                 <TouchableOpacity
-                  onPress={() =>
-                    navigation.navigate('UpdateAddFeeCoaching', {data})
-                  }>
+                  onPress={() => navigation.navigate('UpdateBatchCoaching',{data})}>
                   <Image source={Edit} style={styles.actionimg} />
                 </TouchableOpacity>
               </View>
@@ -101,7 +97,7 @@ const FeeCard = ({data}) => {
   );
 };
 
-export default FeeCard;
+export default FeeCardCollect;
 
 const styles = StyleSheet.create({
   card10: {
@@ -116,9 +112,9 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     width: '100%',
+    marginBottom: 10,
     display: 'flex',
     justifyContent: 'space-between',
-    marginBottom: 10,
   },
   viewdelbtn: {
     display: 'flex',

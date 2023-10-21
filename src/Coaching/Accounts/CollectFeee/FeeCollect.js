@@ -9,28 +9,27 @@ import {
 import React, {useState, useEffect} from 'react';
 import {Height, Width} from '../../../utils/responsive';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import Header from '../../../Component/Header/Header';
 import {primary} from '../../../utils/Colors';
-import AddEnquiry from './AddFees';
-import BatchCard from './FeeCard';
-import {getfee} from '../../../Redux/action/commanAction';
+import AddEnquiry from './AddCollectFee';
+import BatchCard from './FeeCardCollect';
+import {getbatch} from '../../../Redux/action/commanAction';
 import {useDispatch, useSelector} from 'react-redux';
-const Fees = ({navigation}) => {
+const FeeCollect= ({navigation}) => {
   const dispatch = useDispatch();
   const [openModel, setopenModel] = useState(false);
-  const [feelist, setfeelist] = useState('');
-  const {fee, error} = useSelector(state => state.getfee);
-  const [index, setIndex] = useState(0);
+  const [batchlist, setbatchlist] = useState('');
+  const {batch} = useSelector(state => state.getbatch);
 
   useEffect(() => {
-    dispatch(getfee());
+    dispatch(getbatch());
   }, []);
 
   useEffect(() => {
-    if (fee) {
-      setfeelist(fee);
+    if (batch) {
+      setbatchlist(batch);
     }
-  }, [fee]);
+  }, [batch]);
+
   return (
     <View>
       <Modal animationType={'fade'} transparent={true} visible={openModel}>
@@ -43,20 +42,35 @@ const Fees = ({navigation}) => {
           <AddEnquiry />
         </View>
       </Modal>
+      {/* <Header /> */}
+      {/* <TouchableOpacity
+          onPress={() => navigation.navigate('SearchEnquiryCoaching')}>
+          <View style={styles.inputview}>
+            <View style={styles.inputsaerch}>
+              <Text style={styles.searchtext}>Search here</Text>
+            </View>
+            <Ionicons
+              name="search-outline"
+              size={Height(22)}
+              style={{marginRight: Width(20)}}
+              color="rgba(0, 0, 0, 0.5)"
+            />
+          </View>
+        </TouchableOpacity> */}
 
       <View style={styles.loginbtndiv}>
         <TouchableOpacity
-          onPress={() => navigation.navigate('AddFeesCoaching')}>
+          onPress={() => navigation.navigate('AddBatchCoaching')}>
           <View style={styles.loginbtn}>
-            <Text style={styles.logintextstyle}>Add Fee</Text>
+            <Text style={styles.logintextstyle}>Add Batch Time</Text>
           </View>
         </TouchableOpacity>
       </View>
       <ScrollView>
         <View style={styles.enquirymainview}>
-          {feelist &&
-            feelist?.map((item,index) => {
-              return <BatchCard key={index} data={item} />;
+          {batchlist &&
+            batchlist?.map((item, index) => {
+              return <BatchCard key={index} data={item} index={index} />;
             })}
         </View>
       </ScrollView>
@@ -64,7 +78,7 @@ const Fees = ({navigation}) => {
   );
 };
 
-export default Fees;
+export default FeeCollect;
 
 const styles = StyleSheet.create({
   dateview: {
@@ -94,6 +108,7 @@ const styles = StyleSheet.create({
   },
   enquirymainview: {
     paddingHorizontal: 10,
+    marginBottom: 50,
   },
 
   loginbtndiv: {
