@@ -14,7 +14,7 @@ import {
   import Ionicons from 'react-native-vector-icons/Ionicons';
   import DateTimePickerModal from 'react-native-modal-datetime-picker';
   import moment from 'moment';
-  import CardEnquiry from './Card';
+  import CardEnquiry from './FeeCardCollect';
   const SearchPendingFee = () => {
     const [index, setIndex] = useState(0);
     const [fromdate, setfromdate] = useState('');

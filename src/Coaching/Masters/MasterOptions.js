@@ -23,15 +23,15 @@ const MasterOptions = () => {
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate('CourseCoaching')}>
           <View style={styles.mainoption}>
-            <Image source={ Option} style={styles.optionimg} />
+            <Image source={Option} style={styles.optionimg} />
             <Text>Course</Text>
           </View>
         </TouchableOpacity>
-      
+
         <TouchableOpacity
           onPress={() => navigation.navigate('CategoryCoaching')}>
           <View style={styles.mainoption}>
-            <Image source={ Option} style={styles.optionimg} />
+            <Image source={Option} style={styles.optionimg} />
             <Text>Category</Text>
           </View>
         </TouchableOpacity>
@@ -39,21 +39,21 @@ const MasterOptions = () => {
       <View style={styles.mainoptionmain}>
         <TouchableOpacity onPress={() => navigation.navigate('FeesCoaching')}>
           <View style={styles.mainoption}>
-            <Image source={ Option} style={styles.optionimg} />
+            <Image source={Option} style={styles.optionimg} />
             <Text>Fees</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => navigation.navigate('DepartmentCoaching')}>
           <View style={styles.mainoption}>
-            <Image source={ Option} style={styles.optionimg} />
+            <Image source={Option} style={styles.optionimg} />
             <Text>Department</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => navigation.navigate('DesignationCoaching')}>
           <View style={styles.mainoption}>
-            <Image source={ Option} style={styles.optionimg} />
+            <Image source={Option} style={styles.optionimg} />
             <Text>Designation</Text>
           </View>
         </TouchableOpacity>

@@ -43,7 +43,6 @@ import UpdateInstituteCoaching from '../Coaching/Profile/UpdateInstitute';
 import UpdateCredentialCoaching from '../Coaching/Profile/UpdateCredential';
 import UpdateImgaesCoaching from '../Coaching/Profile/UpdateImgaes';
 import UpdateCommunicationCoaching from '../Coaching/Profile/UpdateCommunication';
-import FeeCollectCoaching from '../Coaching/Accounts/FeeCollect';
 import AddEmployeeCoaching from '../Coaching/Staff/AddEmployee';
 import SearchEmployeeCoaching from '../Coaching/Staff/SearchEmployee';
 import EmployeeCoaching from '../Coaching/Staff/Employee';
@@ -54,6 +53,12 @@ import DashboardEmplyee from '../Employee/Dashboard/Dashboard';
 import DashboardStudent from '../School/Dashboard/Dashboard';
 import DashboardParent from '../Parent/Dashboard/Dashboard';
 import DashboardOwner from '../Owner/Dashboard/Dashboard';
+import AddCollectFeeCoaching from '../Coaching/Accounts/CollectFeee/AddCollectFee';
+import UpdateCollectFeeCoaching from '../Coaching/Accounts/CollectFeee/UpdateCollectFee';
+import FeeCollectCoaching from '../Coaching/Accounts/CollectFeee/FeeCollect';
+import SearchPaidCoaching from '../Coaching/Accounts/PaidFee/SearchPaid';
+import SearchPendingFeeCoaching from '../Coaching/Accounts/PendingFee/SearchPendingFee';
+import FeeCollectOptionsCoaching from '../Coaching/Accounts/FeeCollectOptions';
 import {primary} from '../utils/Colors';
 const Stack = createNativeStackNavigator();
 
@@ -164,7 +169,7 @@ function StackNavigation() {
           },
         }}
       />
-       <Stack.Screen
+      <Stack.Screen
         name="UpdateEnquiryCoaching"
         component={UpdateEnquiryCoaching}
         options={{
@@ -645,7 +650,85 @@ function StackNavigation() {
           },
         }}
       />
-      <Stack.Screen name="FeeCollectCoaching" component={FeeCollectCoaching} />
+      <Stack.Screen
+        name="FeeCollectOptionsCoaching"
+        component={FeeCollectOptionsCoaching}
+      />
+      <Stack.Screen
+        name="FeeCollectCoaching"
+        component={FeeCollectCoaching}
+        options={{
+          headerShown: true,
+          title: 'Fee',
+          headerStyle: {
+            backgroundColor: primary,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
+      <Stack.Screen
+        name="AddCollectFeeCoaching"
+        component={AddCollectFeeCoaching}
+        options={{
+          headerShown: true,
+          title: 'Collect Fee',
+          headerStyle: {
+            backgroundColor: primary,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
+      <Stack.Screen
+        name="UpdateCollectFeeCoaching"
+        component={UpdateCollectFeeCoaching}
+        options={{
+          headerShown: true,
+          title: 'Update Collect Fee',
+          headerStyle: {
+            backgroundColor: primary,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
+      <Stack.Screen
+        name="SearchPendingFeeCoaching"
+        component={SearchPendingFeeCoaching}
+        options={{
+          headerShown: true,
+          title: 'Search Pending Fee',
+          headerStyle: {
+            backgroundColor: primary,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
+      <Stack.Screen
+        name="SearchPaidCoaching"
+        component={SearchPaidCoaching}
+        options={{
+          headerShown: true,
+          title: 'Search Paid Fee',
+          headerStyle: {
+            backgroundColor: primary,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
       <Stack.Screen name="DashboardCollege" component={DashboardCollege} />
       <Stack.Screen name="DashboardSchool" component={DashboardSchool} />
       <Stack.Screen name="DashboardEmplyee" component={DashboardEmplyee} />

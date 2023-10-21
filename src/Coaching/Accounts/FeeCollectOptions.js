@@ -3,27 +3,29 @@ import React from 'react';
 import Header from '../../Component/Header/Header';
 import Option from '../../assets/option.png';
 import {useNavigation} from '@react-navigation/native';
-const MasterOptions = () => {
+const FeeCollectOptions = () => {
   const navigation = useNavigation();
   return (
     <>
       <Header />
       <View style={styles.mainoptionmain}>
-        <TouchableOpacity onPress={() => navigation.navigate('BatchCoaching')}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('FeeCollectCoaching')}>
           <View style={styles.mainoption}>
             <Image source={Option} style={styles.optionimg} />
             <Text>Collect Fee</Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('CourseCoaching')}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('SearchPendingFeeCoaching')}>
           <View style={styles.mainoption}>
             <Image source={Option} style={styles.optionimg} />
             <Text>Pending Fee</Text>
           </View>
         </TouchableOpacity>
-      
+
         <TouchableOpacity
-          onPress={() => navigation.navigate('CategoryCoaching')}>
+          onPress={() => navigation.navigate('SearchPaidCoaching')}>
           <View style={styles.mainoption}>
             <Image source={Option} style={styles.optionimg} />
             <Text>Paid Fee</Text>
@@ -34,7 +36,7 @@ const MasterOptions = () => {
   );
 };
 
-export default MasterOptions;
+export default FeeCollectOptions;
 
 const styles = StyleSheet.create({
   mainoptionmain: {
