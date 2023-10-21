@@ -14,18 +14,21 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import moment from 'moment';
 import {Dropdown} from 'react-native-element-dropdown';
-import {Addenquiry, getenquiries} from '../../Redux/action/coachingAction';
+import {Updateenquiry, getenquiries} from '../../Redux/action/coachingAction';
 import {getcourse} from '../../Redux/action/commanAction';
 import {useDispatch, useSelector} from 'react-redux';
 import Loader from '../../Component/Loader/Loader';
+import {useNavigation, useRoute} from '@react-navigation/native';
 const data = [
   {label: 'DCA', value: 'DCA'},
   {label: 'ADCA', value: 'ADCA'},
   {label: 'CCC', value: 'CCC'},
   {label: 'O-LEVEL', value: 'O-LEVEL'},
 ];
-const AddEnquiry = () => {
+const UpdateEnquiry = () => {
+  const route = useRoute();
   const dispatch = useDispatch();
+  const [isdata, setisdata] = useState('');
   const [index, setIndex] = useState(0);
   const [sms, setsms] = useState('');
   const [loader, setloader] = useState(false);
@@ -38,16 +41,15 @@ const AddEnquiry = () => {
   const [address, setaddress] = useState('');
   const [comment, setcomment] = useState('');
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-  const {enquiry, error} = useSelector(state => state.addenqury);
+  const {enquiry, error} = useSelector(state => state.updatenequiry);
   const {course} = useSelector(state => state.getcourse);
-
-  console.log('save enquiry data is ', enquiry);
 
   const submit = () => {
     if (fromdate) {
       setloader(true);
-      setsms('Adding...');
+      setsms('Updating...');
       const data = {
+        id: isdata?.id,
         EnquiryDate: fromdate,
         StudentName: studentname,
         StudentNumber: studentPhone,
@@ -56,7 +58,7 @@ const AddEnquiry = () => {
         Course: coursename,
         Comment: comment,
       };
-      dispatch(Addenquiry(data));
+      dispatch(Updateenquiry(data));
     } else {
       setsms('');
       setloader(false);
@@ -99,6 +101,20 @@ const AddEnquiry = () => {
     hideDatePicker();
     setfromdate(date);
   };
+
+  useEffect(() => {
+    if (route.params?.data) {
+      console.log('enqury data from params ', route.params?.data);
+      setisdata(route.params?.data);
+      setfromdate(route.params?.data?.EnquiryDate);
+      setstudentname(route.params?.data?.StudentName);
+      setstudentPhone(route.params?.data?.StudentNumber);
+      setemail(route.params?.data?.StudentEmail);
+      setaddress(route.params?.data?.Address);
+      setcoursename(route.params?.data?.Course);
+      setcomment(route.params?.data?.Comment);
+    }
+  }, []);
 
   return (
     <View>
@@ -343,7 +359,7 @@ const AddEnquiry = () => {
           <View style={styles.loginbtndiv}>
             <TouchableOpacity onPress={() => submit()}>
               <View style={styles.loginbtn}>
-                <Text style={styles.logintextstyle}>Save</Text>
+                <Text style={styles.logintextstyle}>Update</Text>
               </View>
             </TouchableOpacity>
           </View>
@@ -353,7 +369,7 @@ const AddEnquiry = () => {
   );
 };
 
-export default AddEnquiry;
+export default UpdateEnquiry;
 
 const styles = StyleSheet.create({
   inputview: {

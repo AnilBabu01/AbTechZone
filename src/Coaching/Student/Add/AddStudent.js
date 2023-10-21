@@ -10,7 +10,7 @@ import {
   import React, {useState} from 'react';
   import {Height, Width} from '../../../utils/responsive';
   import Ionicons from 'react-native-vector-icons/Ionicons';
-  import CardEnquiry from './Card';
+  import CardEnquiry from '../../Staff/Card';
   import Header from '../../../Component/Header/Header';
   import {primary} from '../../../utils/Colors';
   import AddEnquiry from './Add';

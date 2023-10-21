@@ -14,6 +14,7 @@ import TakeAdmissionCoaching from '../Coaching/Student/admission/TakeAdmission';
 import AddNewStudentCoaching from '../Coaching/Student/Add/AddNewStudent';
 import AttendanceTabCoaching from '../Coaching/Attendance/AttendanceTab';
 import AddEnquiryCoaching from '../Coaching/FrontOffice/AddEnquiry';
+import UpdateEnquiryCoaching from '../Coaching/FrontOffice/UpdateEnquiry';
 import MasterOptionsCoaching from '../Coaching/Masters/MasterOptions';
 import BatchCoaching from '../Coaching/Masters/Batch/Batch';
 import AddBatchCoaching from '../Coaching/Masters/Batch/AddBatch';
@@ -46,6 +47,7 @@ import FeeCollectCoaching from '../Coaching/Accounts/FeeCollect';
 import AddEmployeeCoaching from '../Coaching/Staff/AddEmployee';
 import SearchEmployeeCoaching from '../Coaching/Staff/SearchEmployee';
 import EmployeeCoaching from '../Coaching/Staff/Employee';
+import UpdateEmployeeCoaching from '../Coaching/Staff/UpdateEmployee';
 import DashboardCollege from '../College/Dashboard/Dashboard';
 import DashboardSchool from '../School/Dashboard/Dashboard';
 import DashboardEmplyee from '../Employee/Dashboard/Dashboard';
@@ -153,6 +155,21 @@ function StackNavigation() {
         options={{
           headerShown: true,
           title: 'Add Enquiry',
+          headerStyle: {
+            backgroundColor: primary,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
+       <Stack.Screen
+        name="UpdateEnquiryCoaching"
+        component={UpdateEnquiryCoaching}
+        options={{
+          headerShown: true,
+          title: 'Update Enquiry',
           headerStyle: {
             backgroundColor: primary,
           },
@@ -588,6 +605,37 @@ function StackNavigation() {
         options={{
           headerShown: true,
           title: 'Search Employee',
+          headerStyle: {
+            backgroundColor: primary,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
+      <Stack.Screen
+        name="AddEmployeeCoaching"
+        component={AddEmployeeCoaching}
+        options={{
+          headerShown: true,
+          title: 'Add Employee',
+          headerStyle: {
+            backgroundColor: primary,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
+
+      <Stack.Screen
+        name="UpdateEmployeeCoaching"
+        component={UpdateEmployeeCoaching}
+        options={{
+          headerShown: true,
+          title: 'Update Employee',
           headerStyle: {
             backgroundColor: primary,
           },

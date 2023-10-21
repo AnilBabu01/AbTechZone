@@ -5,34 +5,33 @@ import {
   Modal,
   TouchableOpacity,
   ScrollView,
-  TextInput,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
-import {Height, Width} from '../../utils/responsive';
+import {Height, Width} from '../../../utils/responsive';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import CardEnquiry from './CardEnquiry';
-import Header from '../../Component/Header/Header';
-import {primary} from '../../utils/Colors';
-import AddEnquiry from './AddEnquiry';
-import {Addenquiry, getenquiries} from '../../Redux/action/coachingAction';
-import {getcourse} from '../../Redux/action/commanAction';
+import {primary} from '../../../utils/Colors';
+import AddEnquiry from './AddCourse';
+import BatchCard from './CourseCard';
+import {getcourse} from '../../../Redux/action/commanAction';
 import {useDispatch, useSelector} from 'react-redux';
-const FrontOffice = ({navigation}) => {
-  const dispatch = useDispatch();
+const Course = ({navigation}) => {
   const [openModel, setopenModel] = useState(false);
-  const [enquirylist, setenquirylist] = useState('');
-  const {enquiry} = useSelector(state => state.enquiry);
+  const dispatch = useDispatch();
+  const [index, setIndex] = useState(0);
+  const [sms, setsms] = useState('');
+  const [loader, setloader] = useState(false);
+  const [courselist, setcourselist] = useState('');
+  const {course, error} = useSelector(state => state.getcourse);
 
   useEffect(() => {
-    dispatch(getenquiries());
+    dispatch(getcourse());
   }, []);
 
-
   useEffect(() => {
-    if (enquiry) {
-      setenquirylist(enquiry);
+    if (course) {
+      setcourselist(course);
     }
-  }, [enquiry]);
+  }, [course]);
 
   return (
     <View>
@@ -46,35 +45,20 @@ const FrontOffice = ({navigation}) => {
           <AddEnquiry />
         </View>
       </Modal>
-      <Header />
-      <TouchableOpacity
-        onPress={() => navigation.navigate('SearchEnquiryCoaching')}>
-        <View style={styles.inputview}>
-          <View style={styles.inputsaerch}>
-            <Text style={styles.searchtext}>Search here</Text>
-          </View>
-          <Ionicons
-            name="search-outline"
-            size={Height(22)}
-            style={{marginRight: Width(20)}}
-            color="rgba(0, 0, 0, 0.5)"
-          />
-        </View>
-      </TouchableOpacity>
 
       <View style={styles.loginbtndiv}>
         <TouchableOpacity
-          onPress={() => navigation.navigate('AddEnquiryCoaching')}>
+          onPress={() => navigation.navigate('AddCourseCoaching')}>
           <View style={styles.loginbtn}>
-            <Text style={styles.logintextstyle}>Add Enquiry</Text>
+            <Text style={styles.logintextstyle}>Add Course</Text>
           </View>
         </TouchableOpacity>
       </View>
       <ScrollView>
         <View style={styles.enquirymainview}>
-          {enquirylist &&
-            enquirylist?.map((item, index) => {
-              return <CardEnquiry key={index} data={item} />;
+          {courselist &&
+            courselist?.map((data, index) => {
+              return <BatchCard key={index} data={data} />;
             })}
         </View>
       </ScrollView>
@@ -82,7 +66,7 @@ const FrontOffice = ({navigation}) => {
   );
 };
 
-export default FrontOffice;
+export default Course;
 
 const styles = StyleSheet.create({
   dateview: {

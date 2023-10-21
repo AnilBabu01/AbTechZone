@@ -808,7 +808,7 @@ export const deletefee = (deleteid, setOpenalert) => async dispatch => {
           Toast.show({
             type: 'success',
             text1: 'Success',
-            text2: data?.msg,
+            text2: res?.msg,
           });
         }
 

@@ -47,7 +47,7 @@ import {
         </TouchableOpacity>
   
         <View style={styles.loginbtndiv}>
-          <TouchableOpacity onPress={() => navigation.navigate('AddNewStudent')}>
+          <TouchableOpacity onPress={() => navigation.navigate('AddEmployeeCoaching')}>
             <View style={styles.loginbtn}>
               <Text style={styles.logintextstyle}>Add Employee</Text>
             </View>

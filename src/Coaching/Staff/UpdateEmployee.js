@@ -20,7 +20,7 @@ const data = [
   {label: 'CCC', value: 'CCC'},
   {label: 'O-LEVEL', value: 'O-LEVEL'},
 ];
-const AddEmployee = () => {
+const UpdateEmployee = () => {
   const [index, setIndex] = useState(0);
   const [fromdate, setfromdate] = useState('');
   const [course, setcourse] = useState('');
@@ -446,7 +446,7 @@ const AddEmployee = () => {
   );
 };
 
-export default AddEmployee;
+export default UpdateEmployee;
 
 const styles = StyleSheet.create({
   inputview: {

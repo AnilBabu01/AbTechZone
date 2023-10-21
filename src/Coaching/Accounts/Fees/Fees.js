@@ -5,35 +5,32 @@ import {
   Modal,
   TouchableOpacity,
   ScrollView,
-  TextInput,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
-import {Height, Width} from '../../utils/responsive';
+import {Height, Width} from '../../../utils/responsive';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import CardEnquiry from './CardEnquiry';
-import Header from '../../Component/Header/Header';
-import {primary} from '../../utils/Colors';
-import AddEnquiry from './AddEnquiry';
-import {Addenquiry, getenquiries} from '../../Redux/action/coachingAction';
-import {getcourse} from '../../Redux/action/commanAction';
+import Header from '../../../Component/Header/Header';
+import {primary} from '../../../utils/Colors';
+import AddEnquiry from './AddFees';
+import BatchCard from './FeeCard';
+import {getfee} from '../../../Redux/action/commanAction';
 import {useDispatch, useSelector} from 'react-redux';
-const FrontOffice = ({navigation}) => {
+const Fees = ({navigation}) => {
   const dispatch = useDispatch();
   const [openModel, setopenModel] = useState(false);
-  const [enquirylist, setenquirylist] = useState('');
-  const {enquiry} = useSelector(state => state.enquiry);
+  const [feelist, setfeelist] = useState('');
+  const {fee, error} = useSelector(state => state.getfee);
+  const [index, setIndex] = useState(0);
 
   useEffect(() => {
-    dispatch(getenquiries());
+    dispatch(getfee());
   }, []);
 
-
   useEffect(() => {
-    if (enquiry) {
-      setenquirylist(enquiry);
+    if (fee) {
+      setfeelist(fee);
     }
-  }, [enquiry]);
-
+  }, [fee]);
   return (
     <View>
       <Modal animationType={'fade'} transparent={true} visible={openModel}>
@@ -46,35 +43,20 @@ const FrontOffice = ({navigation}) => {
           <AddEnquiry />
         </View>
       </Modal>
-      <Header />
-      <TouchableOpacity
-        onPress={() => navigation.navigate('SearchEnquiryCoaching')}>
-        <View style={styles.inputview}>
-          <View style={styles.inputsaerch}>
-            <Text style={styles.searchtext}>Search here</Text>
-          </View>
-          <Ionicons
-            name="search-outline"
-            size={Height(22)}
-            style={{marginRight: Width(20)}}
-            color="rgba(0, 0, 0, 0.5)"
-          />
-        </View>
-      </TouchableOpacity>
 
       <View style={styles.loginbtndiv}>
         <TouchableOpacity
-          onPress={() => navigation.navigate('AddEnquiryCoaching')}>
+          onPress={() => navigation.navigate('AddFeesCoaching')}>
           <View style={styles.loginbtn}>
-            <Text style={styles.logintextstyle}>Add Enquiry</Text>
+            <Text style={styles.logintextstyle}>Add Fee</Text>
           </View>
         </TouchableOpacity>
       </View>
       <ScrollView>
         <View style={styles.enquirymainview}>
-          {enquirylist &&
-            enquirylist?.map((item, index) => {
-              return <CardEnquiry key={index} data={item} />;
+          {feelist &&
+            feelist?.map((item,index) => {
+              return <BatchCard key={index} data={item} />;
             })}
         </View>
       </ScrollView>
@@ -82,7 +64,7 @@ const FrontOffice = ({navigation}) => {
   );
 };
 
-export default FrontOffice;
+export default Fees;
 
 const styles = StyleSheet.create({
   dateview: {
@@ -121,7 +103,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   loginbtn: {
-    width: Width(100),
+    width: Width(150),
     height: Height(40),
     backgroundColor: primary,
     borderRadius: 10,

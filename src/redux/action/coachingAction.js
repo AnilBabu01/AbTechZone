@@ -1,7 +1,7 @@
-import axios from "axios";
+import axios from 'axios';
 import Toast from 'react-native-toast-message';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { backendApiUrl } from "../../Config/config";
+import {backendApiUrl} from '../../Config/config';
 import {
   ALL_ENQUIRY_REQUEST,
   ALL_ENQUIRY_SUCCESS,
@@ -24,29 +24,29 @@ import {
   ADD_PAYCOACHINGFEE_REQUEST,
   ADD_PAYCOACHINGFEE_SUCCESS,
   ADD_PAYCOACHINGFEE_FAIL,
-} from "../constants/coachingContants";
-import { serverInstance } from "../../API/ServerInstance";
+} from '../constants/coachingContants';
+import {serverInstance} from '../../API/ServerInstance';
 import {
   ADD_FEESTRUCTURE_FAIL,
   ADD_FEESTRUCTURE_REQUEST,
   ADD_FEESTRUCTURE_SUCCESS,
-} from "../constants/commanConstants";
+} from '../constants/commanConstants';
 // post add enquiry
-export const Addenquiry = (datas, setOpen) => async (dispatch) => {
+export const Addenquiry = datas => async dispatch => {
   try {
     let token = await AsyncStorage.getItem('erptoken');
     const config = {
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         Authorization: `${token}`,
       },
     };
-    dispatch({ type: ADD_ENQUIRY_REQUEST });
+    dispatch({type: ADD_ENQUIRY_REQUEST});
 
-    const { data } = await axios.post(
+    const {data} = await axios.post(
       `${backendApiUrl}coaching/enquiry`,
       datas,
-      config
+      config,
     );
 
     if (data?.status) {
@@ -66,6 +66,7 @@ export const Addenquiry = (datas, setOpen) => async (dispatch) => {
       type: ADD_ENQUIRY_FAIL,
       payload: error?.response?.data?.msg,
     });
+    console.log('data from action', error);
     Toast.show({
       type: 'error',
       text1: 'Error',
@@ -75,21 +76,21 @@ export const Addenquiry = (datas, setOpen) => async (dispatch) => {
 };
 
 // post add enquiry
-export const Updateenquiry = (datas, setOpen) => async (dispatch) => {
+export const Updateenquiry = (datas, setOpen) => async dispatch => {
   try {
     let token = await AsyncStorage.getItem('erptoken');
     const config = {
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         Authorization: `${token}`,
       },
     };
-    dispatch({ type: UPDATE_ENQUIRY_REQUEST });
+    dispatch({type: UPDATE_ENQUIRY_REQUEST});
 
-    const { data } = await axios.put(
+    const {data} = await axios.put(
       `${backendApiUrl}coaching/enquiry`,
       datas,
-      config
+      config,
     );
 
     if (data?.status) {
@@ -118,23 +119,26 @@ export const Updateenquiry = (datas, setOpen) => async (dispatch) => {
 };
 
 // delete  enquiry
-export const deleteenquiry = (deleteid, setOpenalert) => async (dispatch) => {
+export const deleteenquiry = deleteid => async dispatch => {
   try {
-    dispatch({ type: DELETE_ENQUIRY_REQUEST });
-    serverInstance("coaching/enquiry", "delete", {
+    dispatch({type: DELETE_ENQUIRY_REQUEST});
+    serverInstance('coaching/enquiry', 'delete', {
       id: deleteid,
-    }).then((res) => {
+    }).then(res => {
       if (res?.status) {
         Toast.show({
           type: 'success',
           text1: 'Success',
-          text2: data?.msg,
+          text2: res?.msg,
+        });
+
+        dispatch({
+          type: DELETE_ENQUIRY_SUCCESS,
+          payload: res,
         });
       }
-      dispatch({
-        type: DELETE_ENQUIRY_SUCCESS,
-        payload: res?.data,
-      });
+
+      console.log('delete enwuory from action ', res);
     });
   } catch (error) {
     dispatch({
@@ -150,22 +154,22 @@ export const deleteenquiry = (deleteid, setOpenalert) => async (dispatch) => {
 };
 
 // Get all Enquiry
-export const getenquiries = (page, limit, setPage) => async (dispatch) => {
+export const getenquiries = (page, limit, setPage) => async dispatch => {
   try {
     let token = await AsyncStorage.getItem('erptoken');
     const config = {
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         Authorization: `${token}`,
       },
     };
-    dispatch({ type: ALL_ENQUIRY_REQUEST });
+    dispatch({type: ALL_ENQUIRY_REQUEST});
     if (page) {
       setPage(page + 1);
-      const { data } = await axios.get(
+      const {data} = await axios.get(
         `${backendApiUrl}coaching/enquiry?page=${page}&limit=${limit}`,
 
-        config
+        config,
       );
 
       dispatch({
@@ -173,10 +177,10 @@ export const getenquiries = (page, limit, setPage) => async (dispatch) => {
         payload: data?.data,
       });
     } else {
-      const { data } = await axios.get(
+      const {data} = await axios.get(
         `${backendApiUrl}coaching/enquiry`,
 
-        config
+        config,
       );
 
       dispatch({
@@ -194,18 +198,18 @@ export const getenquiries = (page, limit, setPage) => async (dispatch) => {
 
 // Get all Enquiry
 export const getFILTERenquiries =
-  (fromdate, todate, name) => async (dispatch) => {
+  (fromdate, todate, name) => async dispatch => {
     try {
       let token = await AsyncStorage.getItem('erptoken');
       const config = {
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           Authorization: `${token}`,
         },
       };
-      dispatch({ type: FILTER_ENQUIRY_REQUEST });
+      dispatch({type: FILTER_ENQUIRY_REQUEST});
       let url = `${backendApiUrl}coaching/enquiry?fromdate=${fromdate}&todate=${todate}&name=${name}`;
-      const { data } = await axios.get(url, config);
+      const {data} = await axios.get(url, config);
 
       dispatch({
         type: FILTER__ENQUIRY_SUCCESS,
@@ -220,21 +224,21 @@ export const getFILTERenquiries =
   };
 
 // post Update profile
-export const UpdateProfile = (datas, setOpen) => async (dispatch) => {
+export const UpdateProfile = (datas, setOpen) => async dispatch => {
   try {
     let token = await AsyncStorage.getItem('erptoken');
     const config = {
       headers: {
-        "Content-Type": "multipart/form-data",
+        'Content-Type': 'multipart/form-data',
         Authorization: `${token}`,
       },
     };
-    dispatch({ type: UPDATE_PROFILE_REQUEST });
+    dispatch({type: UPDATE_PROFILE_REQUEST});
 
-    const { data } = await axios.put(
+    const {data} = await axios.put(
       `${backendApiUrl}comman/profile`,
       datas,
-      config
+      config,
     );
     if (data?.status) {
       Toast.show({
@@ -261,21 +265,21 @@ export const UpdateProfile = (datas, setOpen) => async (dispatch) => {
   }
 };
 
-export const Addpayfee = (datas, setOpen) => async (dispatch) => {
+export const Addpayfee = (datas, setOpen) => async dispatch => {
   try {
     let token = await AsyncStorage.getItem('erptoken');
     const config = {
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         Authorization: `${token}`,
       },
     };
-    dispatch({ type: ADD_PAYCOACHINGFEE_REQUEST });
+    dispatch({type: ADD_PAYCOACHINGFEE_REQUEST});
 
-    const { data } = await axios.post(
+    const {data} = await axios.post(
       `${backendApiUrl}Student/pacoachingfee`,
       datas,
-      config
+      config,
     );
     if (data?.status) {
       Toast.show({
