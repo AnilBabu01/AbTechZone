@@ -8,8 +8,8 @@ import {
     TextInput,
   } from 'react-native';
   import React, {useState} from 'react';
-  import {Height, Width} from '../../utils/responsive';
-  import {primary} from '../../utils/Colors';
+  import {Height, Width} from '../../../utils/responsive';
+  import {primary} from '../../../utils/Colors';
   import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
   import Ionicons from 'react-native-vector-icons/Ionicons';
   import DateTimePickerModal from 'react-native-modal-datetime-picker';

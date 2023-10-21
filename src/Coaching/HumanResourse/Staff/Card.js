@@ -9,11 +9,11 @@ import {
   Alert,
 } from 'react-native';
 import React, {useState} from 'react';
-import {primary} from '../../utils/Colors';
+import {primary} from '../../../utils/Colors';
 import moment from 'moment';
 import {useNavigation} from '@react-navigation/native';
-import Delete from '../../assets/Delete.png';
-import Edit from '../../assets/Edit.png';
+import Delete from '../../../assets/Delete.png';
+import Edit from '../../../assets/Edit.png';
 // import RNHTMLtoPDF from 'react-native-html-to-pdf';
 
 const Card = ({data}) => {

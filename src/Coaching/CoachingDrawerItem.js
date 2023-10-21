@@ -176,7 +176,7 @@ const CoachingDrawerItem = ({navigation, setuserData}) => {
         )}
         onPress={() => {
           navigation.closeDrawer();
-          navigation.navigate('EmployeeCoaching');
+          navigation.navigate('HumanResourseOptionsCoaching');
         }}
         labelStyle={{color: 'black'}}
       />
@@ -210,10 +210,13 @@ const CoachingDrawerItem = ({navigation, setuserData}) => {
             }}
           />
         )}
-        // onPress={() => logout()}
+        onPress={() => {
+          navigation.navigate('ReportsOptionsCoaching');
+          navigation.closeDrawer();
+        }}
         labelStyle={{color: 'black'}}
       />
-      <DrawerItem
+      {/* <DrawerItem
         style={styles.menu}
         label="Coaching Profile"
         icon={() => (
@@ -230,7 +233,7 @@ const CoachingDrawerItem = ({navigation, setuserData}) => {
           navigation.closeDrawer();
         }}
         labelStyle={{color: 'black'}}
-      />
+      /> */}
       <DrawerItem
         style={styles.menu}
         label="Test"

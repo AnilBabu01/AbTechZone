@@ -43,10 +43,10 @@ import UpdateInstituteCoaching from '../Coaching/Profile/UpdateInstitute';
 import UpdateCredentialCoaching from '../Coaching/Profile/UpdateCredential';
 import UpdateImgaesCoaching from '../Coaching/Profile/UpdateImgaes';
 import UpdateCommunicationCoaching from '../Coaching/Profile/UpdateCommunication';
-import AddEmployeeCoaching from '../Coaching/Staff/AddEmployee';
-import SearchEmployeeCoaching from '../Coaching/Staff/SearchEmployee';
-import EmployeeCoaching from '../Coaching/Staff/Employee';
-import UpdateEmployeeCoaching from '../Coaching/Staff/UpdateEmployee';
+import AddEmployeeCoaching from '../Coaching/HumanResourse/Staff/AddEmployee';
+import SearchEmployeeCoaching from '../Coaching/HumanResourse/Staff/SearchEmployee';
+import EmployeeCoaching from '../Coaching/HumanResourse/Staff/Employee';
+import UpdateEmployeeCoaching from '../Coaching/HumanResourse/Staff/UpdateEmployee';
 import DashboardCollege from '../College/Dashboard/Dashboard';
 import DashboardSchool from '../School/Dashboard/Dashboard';
 import DashboardEmplyee from '../Employee/Dashboard/Dashboard';
@@ -59,6 +59,8 @@ import FeeCollectCoaching from '../Coaching/Accounts/CollectFeee/FeeCollect';
 import SearchPaidCoaching from '../Coaching/Accounts/PaidFee/SearchPaid';
 import SearchPendingFeeCoaching from '../Coaching/Accounts/PendingFee/SearchPendingFee';
 import FeeCollectOptionsCoaching from '../Coaching/Accounts/FeeCollectOptions';
+import HumanResourseOptionsCoaching from '../Coaching/HumanResourse/HumanResourseOptions';
+import ReportsOptionsCoaching from '../Coaching/Reports/ReportsOptions';
 import {primary} from '../utils/Colors';
 const Stack = createNativeStackNavigator();
 
@@ -728,6 +730,14 @@ function StackNavigation() {
             fontWeight: 'bold',
           },
         }}
+      />
+      <Stack.Screen
+        name="HumanResourseOptionsCoaching"
+        component={HumanResourseOptionsCoaching}
+      />
+       <Stack.Screen
+        name="ReportsOptionsCoaching"
+        component={ReportsOptionsCoaching}
       />
       <Stack.Screen name="DashboardCollege" component={DashboardCollege} />
       <Stack.Screen name="DashboardSchool" component={DashboardSchool} />

@@ -8,11 +8,11 @@ import {
     TextInput,
   } from 'react-native';
   import React, {useState} from 'react';
-  import {Height, Width} from '../../utils/responsive';
+  import {Height, Width} from '../../../utils/responsive';
   import Ionicons from 'react-native-vector-icons/Ionicons';
   import CardEnquiry from './Card';
-  import Header from '../../Component/Header/Header';
-  import {primary} from '../../utils/Colors';
+  import Header from '../../../Component/Header/Header';
+  import {primary} from '../../../utils/Colors';
   import AddEnquiry from './AddEmployee';
   const Employee = ({navigation}) => {
     const [openModel, setopenModel] = useState(false);
