@@ -17,7 +17,8 @@ import {
 } from '../../../Redux/action/commanAction';
 import {useDispatch, useSelector} from 'react-redux';
 import Loader from '../../../Component/Loader/Loader';
-
+import {serverInstance} from '../../../API/ServerInstance';
+import Toast from 'react-native-toast-message';
 const AddDesignation = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -34,7 +35,30 @@ const AddDesignation = () => {
       const data = {
         employeetype: departmentname,
       };
-      dispatch(Adddesignation(data));
+      serverInstance('comman/designation', 'post', data).then(res => {
+        if (res?.status) {
+          setloader(false);
+          setsms('');
+          Toast.show({
+            type: 'success',
+            text1: 'Success',
+            text2: res?.msg,
+          });
+          dispatch(getDesignation());
+          navigation.goBack();
+        }
+
+        if (res?.status === false) {
+          setloader(false);
+          setsms('');
+          Toast.show({
+            type: 'error',
+            text1: 'Error',
+            text2: res?.msg,
+          });
+          dispatch(getDesignation());
+        }
+      });
     } else {
       setsms('');
       setloader(false);

@@ -61,6 +61,7 @@ import SearchPendingFeeCoaching from '../Coaching/Accounts/PendingFee/SearchPend
 import FeeCollectOptionsCoaching from '../Coaching/Accounts/FeeCollectOptions';
 import HumanResourseOptionsCoaching from '../Coaching/HumanResourse/HumanResourseOptions';
 import ReportsOptionsCoaching from '../Coaching/Reports/ReportsOptions';
+import UpdateDesignationCoaching from '../Coaching/Masters/Designation/UpdateDesignation';
 import {primary} from '../utils/Colors';
 const Stack = createNativeStackNavigator();
 
@@ -722,6 +723,21 @@ function StackNavigation() {
         options={{
           headerShown: true,
           title: 'Search Paid Fee',
+          headerStyle: {
+            backgroundColor: primary,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
+       <Stack.Screen
+        name="UpdateDesignationCoaching"
+        component={UpdateDesignationCoaching}
+        options={{
+          headerShown: true,
+          title: 'Update Designation',
           headerStyle: {
             backgroundColor: primary,
           },

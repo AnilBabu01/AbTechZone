@@ -7,6 +7,7 @@ import store from './src/Redux/store';
 
 export default function App() {
   const toastConfig = {
+  
     success: props => (
       <BaseToast
         {...props}
@@ -16,6 +17,7 @@ export default function App() {
           fontSize: 15,
           fontWeight: '400',
         }}
+        duration={100}
       />
     ),
 
@@ -30,6 +32,7 @@ export default function App() {
         text2Style={{
           fontSize: 15,
         }}
+        duration={100}
       />
     ),
   };
@@ -41,7 +44,7 @@ export default function App() {
           <AppNavigation />
         </PaperProvider>
       </Provider>
-      <Toast config={toastConfig} />
+      <Toast   config={toastConfig} />
     </>
   );
 }

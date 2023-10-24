@@ -13,6 +13,8 @@ import {useNavigation, useRoute} from '@react-navigation/native';
 import {Updatebatch, getbatch} from '../../../Redux/action/commanAction';
 import {useDispatch, useSelector} from 'react-redux';
 import Loader from '../../../Component/Loader/Loader';
+import Toast from 'react-native-toast-message';
+import {serverInstance} from '../../../API/ServerInstance';
 const data = [
   {label: '01:00 AM', value: '01:00 AM'},
   {label: '02:00 AM', value: '02:00 AM'},
@@ -48,8 +50,10 @@ const UpdateBatch = () => {
   const [loader, setloader] = useState(false);
   const [endtime, setendtime] = useState('');
   const [starttime, setstarttime] = useState('');
+
   const [isData, setisData] = useState('');
   const {error, isUpdated} = useSelector(state => state.editbatch);
+
   const submit = () => {
     if (starttime && endtime) {
       setloader(true);
@@ -59,7 +63,30 @@ const UpdateBatch = () => {
         StartingTime: starttime,
         EndingTime: endtime,
       };
-      dispatch(Updatebatch(data));
+      serverInstance('coaching/batch', 'put', data).then(res => {
+        if (res?.status) {
+          setloader(false);
+          setsms('');
+          Toast.show({
+            type: 'success',
+            text1: 'Success',
+            text2: res?.msg,
+          });
+          dispatch(getbatch());
+          navigation.goBack();
+        }
+
+        if (res?.status === false) {
+          setloader(false);
+          setsms('');
+          Toast.show({
+            type: 'error',
+            text1: 'Error',
+            text2: res?.msg,
+          });
+          dispatch(getbatch());
+        }
+      });
     } else {
       setsms('');
       setloader(false);
@@ -73,6 +100,7 @@ const UpdateBatch = () => {
       setloader(false);
     }
   }, [isUpdated]);
+  
   useEffect(() => {
     if (error) {
       if (error?.status === false) {
@@ -85,8 +113,9 @@ const UpdateBatch = () => {
   useEffect(() => {
     if (route.params?.data) {
       setendtime(route.params?.data?.EndingTime);
-      setstarttime(route.params?.data?.StartingTime);
+      setstarttime(route.params?.data?.StartingTime.toString());
       setisData(route.params?.data);
+      console.log('updatedata is ', route.params?.data?.StartingTime);
     }
   }, []);
 

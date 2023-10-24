@@ -28,7 +28,7 @@ const FeeCard = ({data}) => {
   };
 
   useEffect(() => {
-    if (fee?.status) {
+    if (fee) {
       dispatch(getfee());
       setsms('');
       setloader(false);

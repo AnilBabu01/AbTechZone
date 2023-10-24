@@ -7,14 +7,15 @@ import {
   ScrollView,
   TextInput,
 } from 'react-native';
-import React, {useState,useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Height, Width} from '../../../utils/responsive';
 import {primary} from '../../../utils/Colors';
 import {useNavigation} from '@react-navigation/native';
 import {Adddepartment, getDepartment} from '../../../Redux/action/commanAction';
 import {useDispatch, useSelector} from 'react-redux';
 import Loader from '../../../Component/Loader/Loader';
-
+import {serverInstance} from '../../../API/ServerInstance';
+import Toast from 'react-native-toast-message';
 const AddDepartment = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -31,7 +32,30 @@ const AddDepartment = () => {
       const data = {
         DepartmentName: departmentname,
       };
-      dispatch(Adddepartment(data));
+      serverInstance('comman/department', 'post', data).then(res => {
+        if (res?.status) {
+          setloader(false);
+          setsms('');
+          Toast.show({
+            type: 'success',
+            text1: 'Success',
+            text2: res?.msg,
+          });
+          dispatch(getDepartment());
+          navigation.goBack();
+        }
+
+        if (res?.status === false) {
+          setloader(false);
+          setsms('');
+          Toast.show({
+            type: 'error',
+            text1: 'Error',
+            text2: res?.msg,
+          });
+          dispatch(getDepartment());
+        }
+      });
     } else {
       setsms('');
       setloader(false);

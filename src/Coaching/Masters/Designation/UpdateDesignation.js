@@ -12,67 +12,72 @@ import {Height, Width} from '../../../utils/responsive';
 import {primary} from '../../../utils/Colors';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {
-  UpdateDepartment,
-  getDepartment,
+  Adddesignation,
+  getDesignation,
 } from '../../../Redux/action/commanAction';
 import {useDispatch, useSelector} from 'react-redux';
 import Loader from '../../../Component/Loader/Loader';
 import {serverInstance} from '../../../API/ServerInstance';
 import Toast from 'react-native-toast-message';
-const Updatedepartment = () => {
+const UpdateDesignation = () => {
   const route = useRoute();
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const [index, setIndex] = useState(0);
-  const [departmentname, setdepartmentneme] = useState('');
   const [isData, setisData] = useState('');
+  const [departmentname, setdepartmentneme] = useState('');
   const [sms, setsms] = useState('');
   const [loader, setloader] = useState(false);
-  const {isUpdated, error} = useSelector(state => state.updatedepart);
+  const {designation, error} = useSelector(state => state.adddesignation);
 
   const submit = () => {
-    setloader(true);
-    setsms('Updating...');
-    const data = {
-      id: isData?.id,
-      DepartmentName: departmentname,
-    };
-    serverInstance('comman/department', 'put', data).then(res => {
-      if (res?.status) {
-        setloader(false);
-        setsms('');
-        Toast.show({
-          type: 'success',
-          text1: 'Success',
-          text2: res?.msg,
-        });
-        dispatch(getDepartment());
-        navigation.goBack();
-      }
+    if (departmentname) {
+      setloader(true);
+      setsms('Updating...');
+      const data = {
+        id: isData?.id,
+        employeetype: departmentname,
+      };
+      serverInstance('comman/designation', 'put', data).then(res => {
+        if (res?.status) {
+          setloader(false);
+          setsms('');
+          Toast.show({
+            type: 'success',
+            text1: 'Success',
+            text2: res?.msg,
+          });
+          dispatch(getDesignation());
+          navigation.goBack();
+        }
 
-      if (res?.status === false) {
-        setloader(false);
-        setsms('');
-        Toast.show({
-          type: 'error',
-          text1: 'Error',
-          text2: res?.msg,
-        });
-        dispatch(getDepartment());
-      }
-    });
+        if (res?.status === false) {
+          setloader(false);
+          setsms('');
+          Toast.show({
+            type: 'error',
+            text1: 'Error',
+            text2: res?.msg,
+          });
+          dispatch(getDesignation());
+        }
+      });
+    } else {
+      setsms('');
+      setloader(false);
+    }
   };
 
   useEffect(() => {
-    if (isUpdated?.status) {
-      dispatch(getDepartment());
+    if (designation?.status) {
+      dispatch(getDesignation());
       setsms('');
       setloader(false);
     } else {
       setsms('');
       setloader(false);
     }
-  }, [isUpdated]);
+  }, [designation]);
   useEffect(() => {
     if (error) {
       if (error?.status === false) {
@@ -81,14 +86,12 @@ const Updatedepartment = () => {
       }
     }
   }, [error]);
-
   useEffect(() => {
     if (route.params?.data) {
-      setdepartmentneme(route.params?.data?.DepartmentName);
+      setdepartmentneme(route.params?.data?.employeetype);
       setisData(route.params?.data);
     }
   }, []);
-
   return (
     <View>
       <Loader loader={loader} sms={sms} />
@@ -109,7 +112,7 @@ const Updatedepartment = () => {
               }}
               onStartShouldSetResponder={() => setIndex(7)}>
               <TextInput
-                placeholder="Enter Department Name"
+                placeholder="Enter Designation"
                 placeholderTextColor="rgba(0, 0, 0, 0.6)"
                 style={{
                   width: Width(280),
@@ -140,7 +143,7 @@ const Updatedepartment = () => {
   );
 };
 
-export default Updatedepartment;
+export default UpdateDesignation;
 
 const styles = StyleSheet.create({
   inputview: {

@@ -14,7 +14,8 @@ import {useNavigation, useRoute} from '@react-navigation/native';
 import {Updatefee, getfee, getcourse} from '../../../Redux/action/commanAction';
 import {useDispatch, useSelector} from 'react-redux';
 import Loader from '../../../Component/Loader/Loader';
-
+import {serverInstance} from '../../../API/ServerInstance';
+import Toast from 'react-native-toast-message';
 const UpdateAddFee = () => {
   const route = useRoute();
   const navigation = useNavigation();
@@ -40,7 +41,30 @@ const UpdateAddFee = () => {
         coursename: coursename,
         courseduration: 2,
       };
-      dispatch(Updatefee(data));
+      serverInstance('comman/fee', 'put', data).then(res => {
+        if (res?.status) {
+          setloader(false);
+          setsms('');
+          Toast.show({
+            type: 'success',
+            text1: 'Success',
+            text2: res?.msg,
+          });
+          dispatch(getfee());
+          navigation.goBack();
+        }
+
+        if (res?.status === false) {
+          setloader(false);
+          setsms('');
+          Toast.show({
+            type: 'error',
+            text1: 'Error',
+            text2: res?.msg,
+          });
+          dispatch(getfee());
+        }
+      });
     } else {
       setsms('');
       setloader(false);

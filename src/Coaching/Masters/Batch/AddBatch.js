@@ -13,6 +13,8 @@ import {useNavigation} from '@react-navigation/native';
 import {Addbatch, getbatch} from '../../../Redux/action/commanAction';
 import {useDispatch, useSelector} from 'react-redux';
 import Loader from '../../../Component/Loader/Loader';
+import {serverInstance} from '../../../API/ServerInstance';
+import Toast from 'react-native-toast-message';
 const data = [
   {label: '01:00 AM', value: '01:00 AM'},
   {label: '02:00 AM', value: '02:00 AM'},
@@ -56,7 +58,30 @@ const AddBatch = () => {
         StartingTime: starttime,
         EndingTime: endtime,
       };
-      dispatch(Addbatch(data));
+      serverInstance('coaching/batch', 'post', data).then(res => {
+        if (res?.status) {
+          setloader(false);
+          setsms('');
+          Toast.show({
+            type: 'success',
+            text1: 'Success',
+            text2: res?.msg,
+          });
+          dispatch(getbatch());
+          navigation.goBack();
+        }
+
+        if (res?.status === false) {
+          setloader(false);
+          setsms('');
+          Toast.show({
+            type: 'error',
+            text1: 'Error',
+            text2: res?.msg,
+          });
+          dispatch(getbatch());
+        }
+      });
     } else {
       setsms('');
       setloader(false);

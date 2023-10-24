@@ -13,6 +13,8 @@ import {useNavigation, useRoute} from '@react-navigation/native';
 import {UpdateCategory, getcategory} from '../../../Redux/action/commanAction';
 import {useDispatch, useSelector} from 'react-redux';
 import Loader from '../../../Component/Loader/Loader';
+import {serverInstance} from '../../../API/ServerInstance';
+import Toast from 'react-native-toast-message';
 const Updatecategory = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -31,7 +33,30 @@ const Updatecategory = () => {
         id: isData?.id,
         category: categoryname,
       };
-      dispatch(UpdateCategory(data));
+      serverInstance('comman/studentcategory', 'put', data).then(res => {
+        if (res?.status) {
+          setloader(false);
+          setsms('');
+          Toast.show({
+            type: 'success',
+            text1: 'Success',
+            text2: res?.msg,
+          });
+          dispatch(getcategory());
+          navigation.goBack();
+        }
+
+        if (res?.status === false) {
+          setloader(false);
+          setsms('');
+          Toast.show({
+            type: 'error',
+            text1: 'Error',
+            text2: res?.msg,
+          });
+          dispatch(getcategory());
+        }
+      });
     } else {
       setsms('');
       setloader(false);

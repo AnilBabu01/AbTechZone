@@ -14,7 +14,8 @@ import {useNavigation} from '@react-navigation/native';
 import {AddFee, getfee, getcourse} from '../../../Redux/action/commanAction';
 import {useDispatch, useSelector} from 'react-redux';
 import Loader from '../../../Component/Loader/Loader';
-
+import {serverInstance} from '../../../API/ServerInstance';
+import Toast from 'react-native-toast-message';
 const AddFees = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -42,7 +43,30 @@ const AddFees = () => {
         coursename: first,
         courseduration: last,
       };
-      dispatch(AddFee(data));
+      serverInstance('comman/fee', 'post', data).then(res => {
+        if (res?.status) {
+          setloader(false);
+          setsms('');
+          Toast.show({
+            type: 'success',
+            text1: 'Success',
+            text2: res?.msg,
+          });
+          dispatch(getfee());
+          navigation.goBack();
+        }
+
+        if (res?.status === false) {
+          setloader(false);
+          setsms('');
+          Toast.show({
+            type: 'error',
+            text1: 'Error',
+            text2: res?.msg,
+          });
+          dispatch(getfee());
+        }
+      });
     } else {
       setsms('');
       setloader(false);
@@ -111,6 +135,7 @@ const AddFees = () => {
                       value: `${item?.coursename} ${item?.courseduration}`,
                     }))
                   }
+                  onFocus={() => setIndex(1)}
                   search
                   maxHeight={300}
                   labelField="label"
@@ -165,7 +190,7 @@ const AddFees = () => {
                 alignItems: 'center',
                 borderWidth: 1.5,
                 borderRadius: Width(5),
-                borderColor: index === 7 ? primary : '#a9a9a9',
+                borderColor: index === 8 ? primary : '#a9a9a9',
                 marginTop: Height(10),
               }}
               onStartShouldSetResponder={() => setIndex(7)}>
@@ -183,7 +208,7 @@ const AddFees = () => {
                 value={permonthfee}
                 onChangeText={text => setpermonthfee(text)}
                 // onPressIn={() => setIndex(3)}
-                onFocus={() => setIndex(7)}
+                onFocus={() => setIndex(8)}
               />
             </View>
           </View>

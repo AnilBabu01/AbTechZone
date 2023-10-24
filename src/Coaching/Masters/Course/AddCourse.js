@@ -13,7 +13,8 @@ import {useNavigation} from '@react-navigation/native';
 import {Addcourse, getcourse} from '../../../Redux/action/commanAction';
 import {useDispatch, useSelector} from 'react-redux';
 import Loader from '../../../Component/Loader/Loader';
-
+import {serverInstance} from '../../../API/ServerInstance';
+import Toast from 'react-native-toast-message';
 const AddCourse = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -32,7 +33,30 @@ const AddCourse = () => {
         coursename: coursename,
         courseduration: courseduration,
       };
-      dispatch(Addcourse(data));
+      serverInstance('comman/course', 'post', data).then(res => {
+        if (res?.status) {
+          setloader(false);
+          setsms('');
+          Toast.show({
+            type: 'success',
+            text1: 'Success',
+            text2: res?.msg,
+          });
+          dispatch(getcourse());
+          navigation.goBack();
+        }
+
+        if (res?.status === false) {
+          setloader(false);
+          setsms('');
+          Toast.show({
+            type: 'error',
+            text1: 'Error',
+            text2: res?.msg,
+          });
+          dispatch(getcourse());
+        }
+      });
     } else {
       setsms('');
       setloader(false);

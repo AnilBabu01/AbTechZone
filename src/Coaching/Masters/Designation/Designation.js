@@ -5,9 +5,8 @@ import {
   Modal,
   TouchableOpacity,
   ScrollView,
-  useEffect,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Height, Width} from '../../../utils/responsive';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Header from '../../../Component/Header/Header';
@@ -58,7 +57,7 @@ const Designation = ({navigation}) => {
         <View style={styles.enquirymainview}>
           {departlist &&
             departlist?.map((data, index) => {
-              return <BatchCard key={index} data={data} />;
+              return <BatchCard key={index} data={data}  index={index}/>;
             })}
         </View>
       </ScrollView>
