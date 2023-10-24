@@ -7,7 +7,7 @@ import {
   ScrollView,
   TextInput,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import {Height, Width} from '../../../utils/responsive';
 import {primary, savebtn, resetbtn} from '../../../utils/Colors';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
@@ -16,6 +16,8 @@ import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import moment from 'moment';
 import CardEnquiry from './StudentCard';
 import {Dropdown} from 'react-native-element-dropdown';
+import {getcourse} from '../../../Redux/action/commanAction';
+import {useDispatch, useSelector} from 'react-redux';
 const data = [
   {label: 'DCA', value: 'DCA'},
   {label: 'ADCA', value: 'ADCA'},
@@ -23,10 +25,12 @@ const data = [
   {label: 'O-LEVEL', value: 'O-LEVEL'},
 ];
 const TakeAttendance = () => {
+  const dispatch = useDispatch();
   const [index, setIndex] = useState(0);
   const [fromdate, setfromdate] = useState('');
-  const [todate, settodate] = useState('');
-  const [batch, setbatch] = useState('');
+  const [batchname, setbatchname] = useState('');
+  const [courselist, setcourselist] = useState('');
+  const {batch} = useSelector(state => state.getbatch);
   const [attendancedetails, setattendancedetails] = useState([
     {
       id: '',
@@ -73,20 +77,20 @@ const TakeAttendance = () => {
     setfromdate(date);
   };
 
-  const [isDatePickerVisibleto, setDatePickerVisibilityto] = useState(false);
+ 
 
-  const showDatePickerto = () => {
-    setDatePickerVisibilityto(true);
-  };
+  const [batchlist, setbatchlist] = useState('');
+ 
 
-  const hideDatePickerto = () => {
-    setDatePickerVisibilityto(false);
-  };
+  useEffect(() => {
+    dispatch(getbatch());
+  }, []);
 
-  const handleConfirmto = date => {
-    hideDatePickerto();
-    settodate(date);
-  };
+  useEffect(() => {
+    if (batch) {
+      setbatchlist(batch);
+    }
+  }, [batch]);
 
   return (
     <View>
@@ -146,20 +150,22 @@ const TakeAttendance = () => {
           selectedTextStyle={styles.selectedTextStyle}
           inputSearchStyle={styles.inputSearchStyle}
           iconStyle={styles.iconStyle}
-          data={data}
+          data={courselist &&
+            courselist?.map(item => ({
+              label: `${item?.coursename}`,
+              value: `${item?.coursename} ${item?.courseduration}`,
+            }))}
           search
           maxHeight={300}
           labelField="label"
           valueField="value"
           placeholder="Select Batch"
           searchPlaceholder="Search..."
-          value={batch}
+          value={batchname}
           onChange={item => {
-            setbatch(item.value);
+            setbatchname(item.value);
           }}
-          // renderLeftIcon={() => (
-          //   <AntDesign style={styles.icon} color="black" name="Safety" size={20} />
-          // )}
+        
         />
       </View>
       <View style={styles.loginbtndiv10}>

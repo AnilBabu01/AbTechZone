@@ -57,6 +57,7 @@ import {
   updateCredentialsReducer,
   getStudentTestReducer,
   updateStudentTestReducer,
+  getReceiptFormatReducer,
 } from './commanReducers';
 import {
   getenquiriesReducer,
@@ -134,4 +135,5 @@ export default combineReducers({
   updateCredentials: updateCredentialsReducer,
   getStudentTest: getStudentTestReducer,
   updateStudentTest: updateStudentTestReducer,
+  getReceiptFormat: getReceiptFormatReducer,
 });

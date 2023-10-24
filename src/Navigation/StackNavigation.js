@@ -62,6 +62,9 @@ import FeeCollectOptionsCoaching from '../Coaching/Accounts/FeeCollectOptions';
 import HumanResourseOptionsCoaching from '../Coaching/HumanResourse/HumanResourseOptions';
 import ReportsOptionsCoaching from '../Coaching/Reports/ReportsOptions';
 import UpdateDesignationCoaching from '../Coaching/Masters/Designation/UpdateDesignation';
+import ReceiptPrefixCoaching from '../Coaching/Masters/ReceiptPrefix/ReceiptPrefix';
+import UpdatePrefixCoaching from '../Coaching/Masters/ReceiptPrefix/UpdatePrefix';
+import AddPrefixCoaching from '../Coaching/Masters/ReceiptPrefix/AddPrefix';
 import {primary} from '../utils/Colors';
 const Stack = createNativeStackNavigator();
 
@@ -732,7 +735,7 @@ function StackNavigation() {
           },
         }}
       />
-       <Stack.Screen
+      <Stack.Screen
         name="UpdateDesignationCoaching"
         component={UpdateDesignationCoaching}
         options={{
@@ -748,10 +751,56 @@ function StackNavigation() {
         }}
       />
       <Stack.Screen
+        name="ReceiptPrefixCoaching"
+        component={ReceiptPrefixCoaching}
+        options={{
+          headerShown: true,
+          title: 'Receipt Prefix',
+          headerStyle: {
+            backgroundColor: primary,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
+      <Stack.Screen
+        name="UpdatePrefixCoaching"
+        component={UpdatePrefixCoaching}
+        options={{
+          headerShown: true,
+          title: 'Receipt Prefix',
+          headerStyle: {
+            backgroundColor: primary,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
+
+      <Stack.Screen
+        name="AddPrefixCoaching"
+        component={AddPrefixCoaching}
+        options={{
+          headerShown: true,
+          title: 'Receipt Prefix',
+          headerStyle: {
+            backgroundColor: primary,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
+      <Stack.Screen
         name="HumanResourseOptionsCoaching"
         component={HumanResourseOptionsCoaching}
       />
-       <Stack.Screen
+      <Stack.Screen
         name="ReportsOptionsCoaching"
         component={ReportsOptionsCoaching}
       />

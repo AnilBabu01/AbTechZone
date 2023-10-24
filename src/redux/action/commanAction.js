@@ -161,6 +161,9 @@ import {
   UPDATE_STUDENT_TEST_SUCCESS,
   UPDATE_STUDENT_TEST_RESET_SUCCESS,
   UPDATE_STUDENT_TEST_FAIL,
+  ALL_RECEIPTPREFIX_REQUEST,
+  ALL_RECEIPTPREFIX_SUCCESS,
+  ALL_RECEIPTPREFIX_FAIL,
 } from '../constants/commanConstants';
 
 // Get all College
@@ -420,7 +423,6 @@ export const getbatch = (page, limit, setPage) => async dispatch => {
     });
   }
 };
-
 
 export const Addcourse = datas => async dispatch => {
   try {
@@ -1879,7 +1881,6 @@ export const Adddresult = (datas, setOpen) => async dispatch => {
 // Get all Enquiry
 export const getStudenttest = (page, limit, setPage) => async dispatch => {
   try {
-    let token = await AsyncStorage.getItem('erptoken');
     const config = {
       headers: {
         'Content-Type': 'application/json',
@@ -1902,6 +1903,35 @@ export const getStudenttest = (page, limit, setPage) => async dispatch => {
   } catch (error) {
     dispatch({
       type: ALL_STUDENT_TEST_FAIL,
+      payload: error?.response?.data?.msg,
+    });
+  }
+};
+
+// Get all Enquiry
+export const getReceiptPrefix = (page, limit, setPage) => async dispatch => {
+  try {
+    let token = await AsyncStorage.getItem('erptoken');
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `${token}`,
+      },
+    };
+    dispatch({type: ALL_RECEIPTPREFIX_REQUEST});
+
+    const {data} = await axios.get(
+      `${backendApiUrl}comman/receiptprefix`,
+
+      config,
+    );
+    dispatch({
+      type: ALL_RECEIPTPREFIX_SUCCESS,
+      payload: data?.data,
+    });
+  } catch (error) {
+    dispatch({
+      type: ALL_RECEIPTPREFIX_FAIL,
       payload: error?.response?.data?.msg,
     });
   }

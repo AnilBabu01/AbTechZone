@@ -161,6 +161,9 @@ import {
   UPDATE_STUDENT_TEST_SUCCESS,
   UPDATE_STUDENT_TEST_RESET_SUCCESS,
   UPDATE_STUDENT_TEST_FAIL,
+  ALL_RECEIPTPREFIX_REQUEST,
+  ALL_RECEIPTPREFIX_SUCCESS,
+  ALL_RECEIPTPREFIX_FAIL,
   CLEAR_ERRORS,
 } from '../constants/commanConstants';
 
@@ -1720,6 +1723,42 @@ export const updateStudentTestReducer = (state = {result: []}, action) => {
       return {
         ...state,
         result: null,
+      };
+
+    case CLEAR_ERRORS:
+      return {
+        ...state,
+        error: null,
+      };
+
+    default:
+      return state;
+  }
+};
+
+
+export const getReceiptFormatReducer = (
+  state = { ReceiptFormat: [] },
+  action
+) => {
+  switch (action.type) {
+    case ALL_RECEIPTPREFIX_REQUEST:
+      return {
+        loading: true,
+      };
+
+    case ALL_RECEIPTPREFIX_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        ReceiptFormat: action.payload,
+      };
+
+    case ALL_RECEIPTPREFIX_FAIL:
+      return {
+        loading: false,
+        ReceiptFormat: null,
+        error: action.payload,
       };
 
     case CLEAR_ERRORS:

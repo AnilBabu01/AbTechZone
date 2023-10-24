@@ -9,41 +9,31 @@ import {
 import React, {useState, useEffect} from 'react';
 import {Height, Width} from '../../../utils/responsive';
 import {primary} from '../../../utils/Colors';
-import {Dropdown} from 'react-native-element-dropdown';
-import {useNavigation} from '@react-navigation/native';
-import {AddFee, getfee, getcourse} from '../../../Redux/action/commanAction';
+import {useNavigation, useRoute} from '@react-navigation/native';
+import {UpdateCategory,getReceiptPrefix} from '../../../Redux/action/commanAction';
 import {useDispatch, useSelector} from 'react-redux';
 import Loader from '../../../Component/Loader/Loader';
 import {serverInstance} from '../../../API/ServerInstance';
 import Toast from 'react-native-toast-message';
-const AddFees = () => {
-  const navigation = useNavigation();
+const UpdatePrefix = () => {
   const dispatch = useDispatch();
+  const navigation = useNavigation();
+  const route = useRoute();
   const [index, setIndex] = useState(0);
   const [sms, setsms] = useState('');
   const [loader, setloader] = useState(false);
-  const [coursename, setcoursename] = useState('');
-  const [permonthfee, setpermonthfee] = useState('');
-  const [regfee, setregfee] = useState('');
-  const [courselist, setcourselist] = useState('');
-  const {course} = useSelector(state => state.getcourse);
-  const {fee, error} = useSelector(state => state.addfee);
-
+  const [categoryname, setcategoryname] = useState('');
+  const [isData, setisData] = useState('');
+  const {error, isUpdated} = useSelector(state => state.editcategory);
   const submit = () => {
-    let last = coursename?.split(' ').pop();
-    var lastIndex = coursename?.lastIndexOf(' ');
-    let first = coursename?.substring(0, lastIndex);
-
-    if (regfee && permonthfee && coursename) {
+    if (categoryname) {
       setloader(true);
-      setsms('Adding...');
+      setsms('Updating...');
       const data = {
-        Registractionfee: regfee,
-        feepermonth: permonthfee,
-        coursename: first,
-        courseduration: last,
+        id: isData?.id,
+        receiptPrefix: categoryname,
       };
-      serverInstance('comman/fee', 'post', data).then(res => {
+      serverInstance('comman/receiptprefix', 'put', data).then(res => {
         if (res?.status) {
           setloader(false);
           setsms('');
@@ -52,7 +42,7 @@ const AddFees = () => {
             text1: 'Success',
             text2: res?.msg,
           });
-          dispatch(getfee());
+          dispatch(getReceiptPrefix());
           navigation.goBack();
         }
 
@@ -64,7 +54,7 @@ const AddFees = () => {
             text1: 'Error',
             text2: res?.msg,
           });
-          dispatch(getfee());
+          dispatch(getReceiptPrefix());
         }
       });
     } else {
@@ -74,16 +64,12 @@ const AddFees = () => {
   };
 
   useEffect(() => {
-    if (fee?.status) {
-      dispatch(getfee());
-      setsms('');
-      setloader(false);
-    } else {
+    if (isUpdated) {
+      dispatch(getcategory());
       setsms('');
       setloader(false);
     }
-  }, [fee]);
-
+  }, [isUpdated]);
   useEffect(() => {
     if (error) {
       if (error?.status === false) {
@@ -94,14 +80,12 @@ const AddFees = () => {
   }, [error]);
 
   useEffect(() => {
-    dispatch(getcourse());
-  }, []);
+    if (route.params?.data) {
+      setcategoryname(route.params?.data?.receiptPrefix);
 
-  useEffect(() => {
-    if (course) {
-      setcourselist(course);
+      setisData(route.params?.data);
     }
-  }, [course]);
+  }, []);
 
   return (
     <View>
@@ -109,46 +93,6 @@ const AddFees = () => {
       <ScrollView>
         <View style={styles.enquirymainview}>
           <View style={styles.dateview}>
-            {courselist && (
-              <>
-                <Dropdown
-                  style={{
-                    alignSelf: 'center',
-                    width: Width(360),
-                    height: Height(45),
-                    fontFamily: 'Gilroy-SemiBold',
-                    borderWidth: 1.5,
-                    borderRadius: Width(5),
-                    paddingHorizontal: Width(20),
-                    fontSize: Height(16),
-                    marginTop: Height(10),
-                    borderColor: index === 1 ? primary : '#a9a9a9',
-                  }}
-                  placeholderStyle={styles.placeholderStyle}
-                  selectedTextStyle={styles.selectedTextStyle}
-                  inputSearchStyle={styles.inputSearchStyle}
-                  iconStyle={styles.iconStyle}
-                  data={
-                    courselist &&
-                    courselist?.map(item => ({
-                      label: `${item?.coursename}`,
-                      value: `${item?.coursename} ${item?.courseduration}`,
-                    }))
-                  }
-                  search
-                  maxHeight={300}
-                  labelField="label"
-                  valueField="value"
-                  placeholder="Course"
-                  searchPlaceholder="Search..."
-                  value={coursename}
-                  onChange={item => {
-                    setcoursename(item.value);
-                  }}
-                />
-              </>
-            )}
-
             <View
               style={{
                 width: Width(360),
@@ -163,7 +107,7 @@ const AddFees = () => {
               }}
               onStartShouldSetResponder={() => setIndex(7)}>
               <TextInput
-                placeholder="Enter registration Fee"
+                placeholder="Enter category"
                 placeholderTextColor="rgba(0, 0, 0, 0.6)"
                 style={{
                   width: Width(280),
@@ -173,41 +117,10 @@ const AddFees = () => {
                 }}
                 // secureTextEntry={passwordVisible}
                 // onBlur={() => Validation()}
-                value={regfee}
-                onChangeText={text => setregfee(text)}
+                value={categoryname}
+                onChangeText={text => setcategoryname(text)}
                 // onPressIn={() => setIndex(3)}
                 onFocus={() => setIndex(7)}
-              />
-            </View>
-
-            <View
-              style={{
-                width: Width(360),
-                height: Height(45),
-                alignSelf: 'center',
-                flexDirection: 'row',
-                alignItems: 'center',
-                borderWidth: 1.5,
-                borderRadius: Width(5),
-                borderColor: index === 8 ? primary : '#a9a9a9',
-                marginTop: Height(10),
-              }}
-              onStartShouldSetResponder={() => setIndex(7)}>
-              <TextInput
-                placeholder="Enter per month fee"
-                placeholderTextColor="rgba(0, 0, 0, 0.6)"
-                style={{
-                  width: Width(280),
-                  fontFamily: 'Gilroy-SemiBold',
-                  paddingHorizontal: Width(20),
-                  fontSize: Height(16),
-                }}
-                // secureTextEntry={passwordVisible}
-                // onBlur={() => Validation()}
-                value={permonthfee}
-                onChangeText={text => setpermonthfee(text)}
-                // onPressIn={() => setIndex(3)}
-                onFocus={() => setIndex(8)}
               />
             </View>
           </View>
@@ -215,7 +128,7 @@ const AddFees = () => {
           <View style={styles.loginbtndiv}>
             <TouchableOpacity onPress={() => submit()}>
               <View style={styles.loginbtn}>
-                <Text style={styles.logintextstyle}>Save</Text>
+                <Text style={styles.logintextstyle}>Update</Text>
               </View>
             </TouchableOpacity>
           </View>
@@ -225,7 +138,7 @@ const AddFees = () => {
   );
 };
 
-export default AddFees;
+export default UpdatePrefix;
 
 const styles = StyleSheet.create({
   inputview: {

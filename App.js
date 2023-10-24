@@ -7,7 +7,6 @@ import store from './src/Redux/store';
 
 export default function App() {
   const toastConfig = {
-  
     success: props => (
       <BaseToast
         {...props}
@@ -44,7 +43,12 @@ export default function App() {
           <AppNavigation />
         </PaperProvider>
       </Provider>
-      <Toast   config={toastConfig} />
+      <Toast
+        visibilityTime={900}
+        position={'top'}
+        // bottomOffset={300}
+        config={toastConfig}
+      />
     </>
   );
 }

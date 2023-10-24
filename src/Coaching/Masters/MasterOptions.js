@@ -58,6 +58,13 @@ const MasterOptions = () => {
           </View>
         </TouchableOpacity>
       </View>
+      <TouchableOpacity
+        onPress={() => navigation.navigate('ReceiptPrefixCoaching')}>
+        <View style={styles.mainoption}>
+          <Image source={Option} style={styles.optionimg} />
+          <Text>Receipt Prefix</Text>
+        </View>
+      </TouchableOpacity>
     </>
   );
 };
