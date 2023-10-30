@@ -2,35 +2,26 @@ import {
   StyleSheet,
   Text,
   View,
-  Modal,
   TouchableOpacity,
   ScrollView,
-  TextInput,
 } from 'react-native';
-import React, {useState,useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Height, Width} from '../../../utils/responsive';
 import {primary, savebtn, resetbtn} from '../../../utils/Colors';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import moment from 'moment';
-import CardEnquiry from './StudentCard';
 import {Dropdown} from 'react-native-element-dropdown';
-import {getcourse} from '../../../Redux/action/commanAction';
+import {getcourse, getbatch} from '../../../Redux/action/commanAction';
 import {useDispatch, useSelector} from 'react-redux';
-const data = [
-  {label: 'DCA', value: 'DCA'},
-  {label: 'ADCA', value: 'ADCA'},
-  {label: 'CCC', value: 'CCC'},
-  {label: 'O-LEVEL', value: 'O-LEVEL'},
-];
+
 const TakeAttendance = () => {
   const dispatch = useDispatch();
   const [index, setIndex] = useState(0);
   const [fromdate, setfromdate] = useState('');
   const [batchname, setbatchname] = useState('');
-  const [courselist, setcourselist] = useState('');
   const {batch} = useSelector(state => state.getbatch);
+  const [batchlist, setbatchlist] = useState('');
   const [attendancedetails, setattendancedetails] = useState([
     {
       id: '',
@@ -77,28 +68,24 @@ const TakeAttendance = () => {
     setfromdate(date);
   };
 
- 
-
-  const [batchlist, setbatchlist] = useState('');
- 
-
   useEffect(() => {
+    dispatch(getcourse());
     dispatch(getbatch());
   }, []);
 
   useEffect(() => {
+  
     if (batch) {
       setbatchlist(batch);
     }
   }, [batch]);
-
   return (
     <View>
       <View style={styles.dateview}>
         <TouchableOpacity
           style={{
-            height: Height(40),
-            width: Width(170),
+            height: Height(45),
+            width: Width(360),
             borderWidth: 1.5,
             borderColor: index === 6 ? primary : '#a9a9a9',
             // alignSelf: 'center',
@@ -132,42 +119,46 @@ const TakeAttendance = () => {
           onConfirm={handleConfirm}
           onCancel={hideDatePicker}
         />
-
-        <Dropdown
-          style={{
-            alignSelf: 'center',
-            width: Width(170),
-            height: Height(40),
-            fontFamily: 'Gilroy-SemiBold',
-            borderWidth: 1.5,
-            borderRadius: Width(10),
-            paddingHorizontal: Width(20),
-            fontSize: Height(16),
-            marginTop: Height(10),
-            borderColor: index === 1 ? primary : '#a9a9a9',
-          }}
-          placeholderStyle={styles.placeholderStyle}
-          selectedTextStyle={styles.selectedTextStyle}
-          inputSearchStyle={styles.inputSearchStyle}
-          iconStyle={styles.iconStyle}
-          data={courselist &&
-            courselist?.map(item => ({
-              label: `${item?.coursename}`,
-              value: `${item?.coursename} ${item?.courseduration}`,
-            }))}
-          search
-          maxHeight={300}
-          labelField="label"
-          valueField="value"
-          placeholder="Select Batch"
-          searchPlaceholder="Search..."
-          value={batchname}
-          onChange={item => {
-            setbatchname(item.value);
-          }}
-        
-        />
       </View>
+      {batchlist && (
+        <>
+          <Dropdown
+            style={{
+              alignSelf: 'center',
+              width: Width(360),
+              height: Height(45),
+              fontFamily: 'Gilroy-SemiBold',
+              borderWidth: 1.5,
+              borderRadius: Width(10),
+              paddingHorizontal: Width(20),
+              fontSize: Height(16),
+              marginTop: Height(10),
+              borderColor: index === 1 ? primary : '#a9a9a9',
+            }}
+            placeholderStyle={styles.placeholderStyle}
+            selectedTextStyle={styles.selectedTextStyle}
+            inputSearchStyle={styles.inputSearchStyle}
+            iconStyle={styles.iconStyle}
+            data={
+              batchlist &&
+              batchlist?.map(item => ({
+                label: `${item?.StartingTime} ${item?.EndingTime}`,
+                value: `${item?.StartingTime} ${item?.EndingTime}`,
+              }))
+            }
+            search
+            maxHeight={300}
+            labelField="label"
+            valueField="value"
+            placeholder="Select Batch"
+            searchPlaceholder="Search..."
+            value={batchname}
+            onChange={item => {
+              setbatchname(item.value);
+            }}
+          />
+        </>
+      )}
       <View style={styles.loginbtndiv10}>
         <TouchableOpacity
         // onPress={() => {
@@ -299,7 +290,7 @@ const styles = StyleSheet.create({
   },
   loginbtnsave: {
     width: Width(170),
-    height: Height(40),
+    height: Height(45),
     backgroundColor: savebtn,
     borderRadius: 10,
     display: 'flex',
@@ -309,7 +300,7 @@ const styles = StyleSheet.create({
   },
   loginbtn10: {
     width: Width(170),
-    height: Height(40),
+    height: Height(45),
     backgroundColor: resetbtn,
     borderRadius: 10,
     display: 'flex',
@@ -404,5 +395,25 @@ const styles = StyleSheet.create({
   },
   textcolorwhite: {
     color: 'white',
+  },
+  placeholderStyle: {
+    fontSize: 16,
+    borderColor: primary,
+    borderRadius: 10,
+  },
+  selectedTextStyle: {
+    fontSize: 16,
+    borderColor: primary,
+    borderRadius: 10,
+  },
+  iconStyle: {
+    width: 20,
+    height: 20,
+  },
+  inputSearchStyle: {
+    height: 40,
+    fontSize: 16,
+    borderColor: primary,
+    borderRadius: 5,
   },
 });

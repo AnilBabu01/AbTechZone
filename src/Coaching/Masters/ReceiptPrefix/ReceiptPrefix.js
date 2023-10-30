@@ -23,7 +23,7 @@ const ReceiptPrefix = ({navigation}) => {
   const [loader, setloader] = useState(false);
   const [categorylist, setcategorylist] = useState('');
   const {ReceiptFormat, error} = useSelector(state => state.getReceiptFormat);
-console.log("searching is ",ReceiptFormat)
+
   useEffect(() => {
     dispatch(getReceiptPrefix());
   }, []);

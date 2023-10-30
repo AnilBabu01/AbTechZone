@@ -18,12 +18,9 @@ import {Addenquiry, getenquiries} from '../../Redux/action/coachingAction';
 import {getcourse} from '../../Redux/action/commanAction';
 import {useDispatch, useSelector} from 'react-redux';
 import Loader from '../../Component/Loader/Loader';
-const data = [
-  {label: 'DCA', value: 'DCA'},
-  {label: 'ADCA', value: 'ADCA'},
-  {label: 'CCC', value: 'CCC'},
-  {label: 'O-LEVEL', value: 'O-LEVEL'},
-];
+import {serverInstance} from '../../../API/ServerInstance';
+import Toast from 'react-native-toast-message';
+
 const AddEnquiry = () => {
   const dispatch = useDispatch();
   const [index, setIndex] = useState(0);
@@ -56,7 +53,30 @@ const AddEnquiry = () => {
         Course: coursename,
         Comment: comment,
       };
-      dispatch(Addenquiry(data));
+      serverInstance('coaching/enquiry', 'post', data).then(res => {
+        if (res?.status) {
+          setloader(false);
+          setsms('');
+          Toast.show({
+            type: 'success',
+            text1: 'Success',
+            text2: res?.msg,
+          });
+          dispatch(getbatch());
+          navigation.goBack();
+        }
+
+        if (res?.status === false) {
+          setloader(false);
+          setsms('');
+          Toast.show({
+            type: 'error',
+            text1: 'Error',
+            text2: res?.msg,
+          });
+          dispatch(getbatch());
+        }
+      });
     } else {
       setsms('');
       setloader(false);

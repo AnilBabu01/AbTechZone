@@ -95,7 +95,7 @@ const TodayAttendance = () => {
           style={{
             alignSelf: 'center',
             width: Width(355),
-            height: Height(40),
+            height: Height(45),
             fontFamily: 'Gilroy-SemiBold',
             borderWidth: 1.5,
             borderRadius: Width(10),
@@ -257,7 +257,7 @@ const styles = StyleSheet.create({
   },
   loginbtn10: {
     width: Width(355),
-    height: Height(40),
+    height: Height(45),
     backgroundColor: resetbtn,
     borderRadius: 10,
     display: 'flex',
@@ -352,5 +352,25 @@ const styles = StyleSheet.create({
   },
   textcolorwhite: {
     color: 'white',
+  },
+  placeholderStyle: {
+    fontSize: 16,
+    borderColor: primary,
+    borderRadius: 10,
+  },
+  selectedTextStyle: {
+    fontSize: 16,
+    borderColor: primary,
+    borderRadius: 10,
+  },
+  iconStyle: {
+    width: 20,
+    height: 20,
+  },
+  inputSearchStyle: {
+    height: 40,
+    fontSize: 16,
+    borderColor: primary,
+    borderRadius: 5,
   },
 });
