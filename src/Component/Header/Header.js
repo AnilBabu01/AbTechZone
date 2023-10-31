@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
   },
   logoimg: {
     height: Height(50),
-    width: Width(200),
+    width: Width(50),
   },
   menuimg: {
     height: Height(40),

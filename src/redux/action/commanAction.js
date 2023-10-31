@@ -865,6 +865,35 @@ export const getfee = (page, limit, setPage) => async dispatch => {
   }
 };
 
+// Get all Enquiry
+export const getfeelist = (page, limit, setPage) => async dispatch => {
+  try {
+    let token = await AsyncStorage.getItem('erptoken');
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `${token}`,
+      },
+    };
+    dispatch({type: ALL_FEESTRUCTURE_REQUEST});
+
+    const {data} = await axios.get(
+      `${backendApiUrl}comman/fee`,
+
+      config,
+    );
+    dispatch({
+      type: ALL_FEESTRUCTURE_SUCCESS,
+      payload: data?.data,
+    });
+  } catch (error) {
+    dispatch({
+      type: ALL_FEESTRUCTURE_FAIL,
+      payload: error?.response?.data?.msg,
+    });
+  }
+};
+
 export const Adddesignation = (datas, setOpen) => async dispatch => {
   try {
     let token = await AsyncStorage.getItem('erptoken');
@@ -1014,6 +1043,7 @@ export const getDesignation = (page, limit, setPage) => async dispatch => {
 
 export const Addstudent = datas => async dispatch => {
   try {
+    console.log(datas)
     let token = await AsyncStorage.getItem('erptoken');
     const config = {
       headers: {

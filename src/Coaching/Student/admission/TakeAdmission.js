@@ -8,7 +8,7 @@ import {
   TextInput,
   Image,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Height, Width} from '../../../utils/responsive';
 import {primary} from '../../../utils/Colors';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
@@ -19,23 +19,145 @@ import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {RadioButton} from 'react-native-paper';
 import check from '../../../assets/check1.png';
-const data = [
-  {label: 'DCA', value: 'DCA'},
-  {label: 'ADCA', value: 'ADCA'},
-  {label: 'CCC', value: 'CCC'},
-  {label: 'O-LEVEL', value: 'O-LEVEL'},
-];
+import {serverFormdataInstance} from '../../../API/ServerInstance';
+import {backendApiUrl} from '../../../Config/config';
+import axios from 'axios';
+import Toast from 'react-native-toast-message';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useDispatch, useSelector} from 'react-redux';
+import {
+  getstudent,
+  getbatch,
+  getfeelist,
+  Addstudent,
+} from '../../../Redux/action/commanAction';
+import {useRouter} from 'next/router';
+import {useNavigation} from '@react-navigation/native';
+import Loader from '../../../Component/Loader/Loader';
 const formData = new FormData();
 const TakeAdmission = () => {
+  const navigation = useDispatch();
+  const dispatch = useDispatch();
+  const [sms, setsms] = useState('');
+  const [loader, setloader] = useState(false);
   const [index, setIndex] = useState(0);
-  const [fromdate, setfromdate] = useState('');
-  const [course, setcourse] = useState('');
   const [openModel, setopenModel] = useState(false);
   const [selectedValue, setSelectedValue] = useState('option1');
   const [passportsize, setpassportsize] = useState('');
   const [adharno, setadharno] = useState('');
   const [premarksheet, setpremarksheet] = useState('');
+  const [amount, setamount] = useState('');
+  const [monthlyfee, setmonthlyfee] = useState('');
+  const [getfee, setgetfee] = useState('default');
+  const [isdata, setisData] = useState([]);
+  const [batchs, setbatchs] = useState([]);
+  const [courses, setcourses] = useState('');
+  const [batchname, setbatchname] = useState('');
+  const [studentname, setstudentname] = useState('');
+  const [studentemail, setstudentemail] = useState('');
+  const [studentphone, setstudentphone] = useState('');
+  const [adminssiondate, setadminssiondate] = useState('');
+  const [city, setcity] = useState('');
+  const [state, setstate] = useState('');
+  const [Pincode, setPincode] = useState('');
+  const [pano, setpano] = useState('');
+  const [adharcardno, setadharcardno] = useState('');
+  const [fathersname, setfathersname] = useState('');
+  const [fathersphone, setfathersphone] = useState('');
+  const [studentrollno, setstudentrollno] = useState('');
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  const {fee} = useSelector(state => state.getfee);
+  const {batch} = useSelector(state => state.getbatch);
+  const {user} = useSelector(state => state.auth);
+
+  const { studentaddstatus, student } = useSelector(
+    (state) => state.addstudent
+  );
+
+  let regfee = courses?.split(' ').pop();
+  var lastIndex = courses?.lastIndexOf(' ');
+  let first = courses?.substring(0, lastIndex);
+
+  let perFee = first?.split(' ').pop();
+  var lastIndex = first?.lastIndexOf(' ');
+  let coursein = first?.substring(0, lastIndex);
+  var lastIndex = perFee?.lastIndexOf(' ');
+
+  let Duration = coursein?.split(' ').pop();
+  var lastIndex = coursein?.lastIndexOf(' ');
+  let regcoursein = coursein?.substring(0, lastIndex);
+
+  const submit = async () => {
+    try {
+      formData.append('name', studentname);
+      formData.append('email', studentemail);
+      formData.append('phoneno1', studentphone);
+      formData.append('city', city);
+      formData.append('state', state);
+      formData.append('pincode', Pincode);
+      formData.append('fathersPhoneNo', fathersphone);
+      formData.append('fathersName', fathersname);
+      formData.append('courseorclass', regcoursein);
+      formData.append('rollnumber', studentrollno);
+      formData.append('StudentStatus', 'admission');
+      formData.append('batch', batchname);
+      formData.append('admissionDate', adminssiondate);
+      formData.append('regisgrationfee', amount);
+      formData.append('courseduration', Duration);
+      formData.append('adharno', adharcardno);
+      formData.append('pancardnno', pano);
+      formData.append(
+        'permonthfee',
+        getfee === 'default' ? Number(perFee) : Number(monthlyfee),
+      );
+      formData.append(
+        'studentTotalFee',
+        getfee === 'default'
+          ? Number(perFee) * Number(Duration)
+          : Number(monthlyfee) * Number(Duration),
+      );
+      formData.append(
+        'Studentpassword',
+        user?.data[0]?.Studentpassword
+          ? user?.data[0]?.Studentpassword
+          : 'student',
+      );
+      formData.append(
+        'Parentpassword',
+        user?.data[0]?.Parentpassword
+          ? user?.data[0]?.Parentpassword
+          : 'parent',
+      );
+      setloader(true);
+      setsms('Adding...');
+
+      dispatch(Addstudent(formData));
+    } catch (error) {
+      console.log(error);
+    }
+
+    
+  };
+  console.log('course', isdata);
+  useEffect(() => {
+    if (fee) {
+      setisData(fee);
+    }
+    if (batch) {
+      setbatchs(batch);
+    }
+    if (studentaddstatus) {
+      setshowdownload(true);
+    }
+    // dispatch({
+    //   type: ADD_STUDENT_RESET,
+    // });
+  }, [fee, batch,studentaddstatus]);
+
+  useEffect(() => {
+    dispatch(getbatch());
+    dispatch(getfeelist());
+  }, []);
 
   const showDatePicker = () => {
     setDatePickerVisibility(true);
@@ -47,7 +169,7 @@ const TakeAdmission = () => {
 
   const handleConfirm = date => {
     hideDatePicker();
-    setfromdate(date);
+    setadminssiondate(date);
   };
   const handleChoosePhotoSignature = () => {
     const options = {
@@ -75,7 +197,7 @@ const TakeAdmission = () => {
           type: type,
         };
         if (file != null) {
-          formData.append('sign', file);
+          formData.append('profileurl', file);
         }
       }
     });
@@ -109,7 +231,7 @@ const TakeAdmission = () => {
         };
 
         if (file != null) {
-          formData.append('sign', file);
+          formData.append('profileurl', file);
         }
       }
     });
@@ -141,7 +263,7 @@ const TakeAdmission = () => {
           type: type,
         };
         if (file != null) {
-          formData.append('sign', file);
+          formData.append('adharcard', file);
         }
       }
     });
@@ -175,7 +297,7 @@ const TakeAdmission = () => {
         };
 
         if (file != null) {
-          formData.append('sign', file);
+          formData.append('adharcard', file);
         }
       }
     });
@@ -207,7 +329,7 @@ const TakeAdmission = () => {
           type: type,
         };
         if (file != null) {
-          formData.append('sign', file);
+          formData.append('markSheet', file);
         }
       }
     });
@@ -241,7 +363,7 @@ const TakeAdmission = () => {
         };
 
         if (file != null) {
-          formData.append('sign', file);
+          formData.append('markSheet', file);
         }
       }
     });
@@ -249,6 +371,7 @@ const TakeAdmission = () => {
 
   return (
     <View>
+      {/* <Loader loader={loader} sms={sms} /> */}
       <Modal animationType={'fade'} transparent={true} visible={openModel}>
         <View
           style={{
@@ -272,7 +395,7 @@ const TakeAdmission = () => {
                 </View>
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() => setopenModel(false)}
+                onPress={() => navigation.goBack()}
                 style={styles.okbtn}>
                 <View>
                   <Text style={{color: 'white', fontSize: 16}}>Ok!</Text>
@@ -304,8 +427,8 @@ const TakeAdmission = () => {
                   fontSize: Height(16),
                   marginLeft: Width(20),
                 }}>
-                {fromdate
-                  ? moment(fromdate).format('DD/MM/YYYY')
+                {adminssiondate
+                  ? moment(adminssiondate).format('DD/MM/YYYY')
                   : 'Admission Date'}
               </Text>
             </TouchableOpacity>
@@ -339,8 +462,8 @@ const TakeAdmission = () => {
                 }}
                 // secureTextEntry={passwordVisible}
                 // onBlur={() => Validation()}
-                // value={address}
-                // onChangeText={text => setaddress(text)}
+                value={studentname}
+                onChangeText={text => setstudentname(text)}
                 // onPressIn={() => setIndex(3)}
                 onFocus={() => setIndex(3)}
               />
@@ -370,8 +493,8 @@ const TakeAdmission = () => {
                 }}
                 // secureTextEntry={passwordVisible}
                 // onBlur={() => Validation()}
-                // value={address}
-                // onChangeText={text => setaddress(text)}
+                value={studentphone}
+                onChangeText={text => setstudentphone(text)}
                 // onPressIn={() => setIndex(3)}
                 onFocus={() => setIndex(4)}
               />
@@ -401,8 +524,8 @@ const TakeAdmission = () => {
                 }}
                 // secureTextEntry={passwordVisible}
                 // onBlur={() => Validation()}
-                // value={address}
-                // onChangeText={text => setaddress(text)}
+                value={studentemail}
+                onChangeText={text => setstudentemail(text)}
                 // onPressIn={() => setIndex(3)}
                 onFocus={() => setIndex(5)}
               />
@@ -432,8 +555,8 @@ const TakeAdmission = () => {
                 }}
                 // secureTextEntry={passwordVisible}
                 // onBlur={() => Validation()}
-                // value={address}
-                // onChangeText={text => setaddress(text)}
+                value={fathersphone}
+                onChangeText={text => setfathersphone(text)}
                 // onPressIn={() => setIndex(3)}
                 onFocus={() => setIndex(6)}
               />
@@ -463,8 +586,8 @@ const TakeAdmission = () => {
                 }}
                 // secureTextEntry={passwordVisible}
                 // onBlur={() => Validation()}
-                // value={address}
-                // onChangeText={text => setaddress(text)}
+                value={fathersname}
+                onChangeText={text => setfathersname(text)}
                 // onPressIn={() => setIndex(3)}
                 onFocus={() => setIndex(7)}
               />
@@ -494,8 +617,8 @@ const TakeAdmission = () => {
                 }}
                 // secureTextEntry={passwordVisible}
                 // onBlur={() => Validation()}
-                // value={address}
-                // onChangeText={text => setaddress(text)}
+                value={state}
+                onChangeText={text => setstate(text)}
                 // onPressIn={() => setIndex(3)}
                 onFocus={() => setIndex(8)}
               />
@@ -525,8 +648,8 @@ const TakeAdmission = () => {
                 }}
                 // secureTextEntry={passwordVisible}
                 // onBlur={() => Validation()}
-                // value={address}
-                // onChangeText={text => setaddress(text)}
+                value={city}
+                onChangeText={text => setcity(text)}
                 // onPressIn={() => setIndex(3)}
                 onFocus={() => setIndex(9)}
               />
@@ -555,8 +678,8 @@ const TakeAdmission = () => {
                 }}
                 // secureTextEntry={passwordVisible}
                 // onBlur={() => Validation()}
-                // value={address}
-                // onChangeText={text => setaddress(text)}
+                value={Pincode}
+                onChangeText={text => setPincode(text)}
                 // onPressIn={() => setIndex(3)}
                 onFocus={() => setIndex(10)}
               />
@@ -586,8 +709,8 @@ const TakeAdmission = () => {
                 }}
                 // secureTextEntry={passwordVisible}
                 // onBlur={() => Validation()}
-                // value={address}
-                // onChangeText={text => setaddress(text)}
+                value={pano}
+                onChangeText={text => setpano(text)}
                 // onPressIn={() => setIndex(3)}
                 onFocus={() => setIndex(11)}
               />
@@ -617,8 +740,8 @@ const TakeAdmission = () => {
                 }}
                 // secureTextEntry={passwordVisible}
                 // onBlur={() => Validation()}
-                // value={address}
-                // onChangeText={text => setaddress(text)}
+                value={adharcardno}
+                onChangeText={text => setadharcardno(text)}
                 // onPressIn={() => setIndex(3)}
                 onFocus={() => setIndex(12)}
               />
@@ -648,8 +771,8 @@ const TakeAdmission = () => {
                 }}
                 // secureTextEntry={passwordVisible}
                 // onBlur={() => Validation()}
-                // value={address}
-                // onChangeText={text => setaddress(text)}
+                value={studentrollno}
+                onChangeText={text => setstudentrollno(text)}
                 // onPressIn={() => setIndex(3)}
                 onFocus={() => setIndex(13)}
               />
@@ -749,71 +872,86 @@ const TakeAdmission = () => {
                 )}
               </View>
             </View>
+            {batchs && (
+              <>
+                <Dropdown
+                  style={{
+                    alignSelf: 'center',
+                    width: Width(355),
+                    height: Height(45),
+                    fontFamily: 'Gilroy-SemiBold',
+                    borderWidth: 1.5,
+                    borderRadius: Width(5),
+                    paddingHorizontal: Width(20),
+                    fontSize: 55,
+                    marginTop: Height(10),
+                    borderColor: index === 1 ? primary : '#a9a9a9',
+                  }}
+                  placeholderStyle={styles.placeholderStyle}
+                  selectedTextStyle={styles.selectedTextStyle}
+                  inputSearchStyle={styles.inputSearchStyle}
+                  iconStyle={styles.iconStyle}
+                  data={
+                    batchs &&
+                    batchs?.map(item => ({
+                      label: `${item?.StartingTime} TO ${item?.EndingTime}`,
+                      value: `${item?.StartingTime} TO ${item?.EndingTime}`,
+                    }))
+                  }
+                  search
+                  maxHeight={300}
+                  labelField="label"
+                  valueField="value"
+                  placeholder="Batch"
+                  searchPlaceholder="Search..."
+                  value={batchname}
+                  onChange={item => {
+                    setbatchname(item.value);
+                  }}
+                />
+              </>
+            )}
 
-            <Dropdown
-              style={{
-                alignSelf: 'center',
-                width: Width(355),
-                height: Height(45),
-                fontFamily: 'Gilroy-SemiBold',
-                borderWidth: 1.5,
-                borderRadius: Width(5),
-                paddingHorizontal: Width(20),
-                fontSize: 55,
-                marginTop: Height(10),
-                borderColor: index === 1 ? primary : '#a9a9a9',
-              }}
-              placeholderStyle={styles.placeholderStyle}
-              selectedTextStyle={styles.selectedTextStyle}
-              inputSearchStyle={styles.inputSearchStyle}
-              iconStyle={styles.iconStyle}
-              data={data}
-              search
-              maxHeight={300}
-              labelField="label"
-              valueField="value"
-              placeholder="Batch"
-              searchPlaceholder="Search..."
-              value={course}
-              onChange={item => {
-                setcourse(item.value);
-              }}
-              // renderLeftIcon={() => (
-              //   <AntDesign style={styles.icon} color="black" name="Safety" size={20} />
-              // )}
-            />
-            <Dropdown
-              style={{
-                alignSelf: 'center',
-                width: Width(355),
-                height: Height(45),
-                fontFamily: 'Gilroy-SemiBold',
-                borderWidth: 1.5,
-                borderRadius: Width(5),
-                paddingHorizontal: Width(20),
-                fontSize: 55,
-                marginTop: Height(10),
-                borderColor: index === 1 ? primary : '#a9a9a9',
-              }}
-              placeholderStyle={styles.placeholderStyle}
-              selectedTextStyle={styles.selectedTextStyle}
-              inputSearchStyle={styles.inputSearchStyle}
-              iconStyle={styles.iconStyle}
-              data={data}
-              search
-              maxHeight={300}
-              labelField="label"
-              valueField="value"
-              placeholder="Course"
-              searchPlaceholder="Search..."
-              value={course}
-              onChange={item => {
-                setcourse(item.value);
-              }}
-              // renderLeftIcon={() => (
-              //   <AntDesign style={styles.icon} color="black" name="Safety" size={20} />
-              // )}
-            />
+            {isdata && (
+              <>
+                <Dropdown
+                  style={{
+                    alignSelf: 'center',
+                    width: Width(355),
+                    height: Height(45),
+                    fontFamily: 'Gilroy-SemiBold',
+                    borderWidth: 1.5,
+                    borderRadius: Width(5),
+                    paddingHorizontal: Width(20),
+                    fontSize: 55,
+                    marginTop: Height(10),
+                    borderColor: index === 1 ? primary : '#a9a9a9',
+                  }}
+                  placeholderStyle={styles.placeholderStyle}
+                  selectedTextStyle={styles.selectedTextStyle}
+                  inputSearchStyle={styles.inputSearchStyle}
+                  iconStyle={styles.iconStyle}
+                  data={
+                    isdata &&
+                    isdata?.map(item => ({
+                      label: `${item?.coursename}`,
+                      value: `${item?.coursename} ${item?.courseduration} ${item?.feepermonth} ${item?.Registractionfee}`,
+                    }))
+                  }
+                  search
+                  maxHeight={300}
+                  labelField="label"
+                  valueField="value"
+                  placeholder="Course"
+                  searchPlaceholder="Search..."
+                  value={courses}
+                  onChange={item => {
+                    setcourses(item.value);
+                  }}
+                />
+              </>
+            )}
+
             <View
               style={{
                 width: Width(355),
@@ -884,9 +1022,8 @@ const TakeAdmission = () => {
                     }}
                     // secureTextEntry={passwordVisible}
                     // onBlur={() => Validation()}
-                    value={'200'}
-                    // onChangeText={text => setaddress(text)}
-                    // onPressIn={() => setIndex(3)}
+                    value={regfee}
+                    onChangeText={text => setamount(text)}
                     onFocus={() => setIndex(5)}
                   />
                 </View>
@@ -904,22 +1041,15 @@ const TakeAdmission = () => {
                     marginTop: Height(10),
                   }}
                   onStartShouldSetResponder={() => setIndex(5)}>
-                  <TextInput
-                    placeholder="Monthly Fee"
-                    placeholderTextColor="rgba(0, 0, 0, 0.6)"
+                  <Text
                     style={{
                       width: Width(280),
                       fontFamily: 'Gilroy-SemiBold',
                       paddingHorizontal: Width(20),
                       fontSize: Height(16),
-                    }}
-                    // secureTextEntry={passwordVisible}
-                    // onBlur={() => Validation()}
-                    value={'400'}
-                    // onChangeText={text => setaddress(text)}
-                    // onPressIn={() => setIndex(3)}
-                    onFocus={() => setIndex(5)}
-                  />
+                    }}>
+                    {perFee ? perFee : '0'}
+                  </Text>
                 </View>
                 <Text style={styles.inputLabel}>Total Fee</Text>
                 <View
@@ -935,22 +1065,15 @@ const TakeAdmission = () => {
                     marginTop: Height(10),
                   }}
                   onStartShouldSetResponder={() => setIndex(5)}>
-                  <TextInput
-                    placeholder="Total Fee"
-                    placeholderTextColor="rgba(0, 0, 0, 0.6)"
+                  <Text
                     style={{
                       width: Width(280),
                       fontFamily: 'Gilroy-SemiBold',
                       paddingHorizontal: Width(20),
                       fontSize: Height(16),
-                    }}
-                    // secureTextEntry={passwordVisible}
-                    // onBlur={() => Validation()}
-                    value={'4000'}
-                    // onChangeText={text => setaddress(text)}
-                    // onPressIn={() => setIndex(3)}
-                    onFocus={() => setIndex(5)}
-                  />
+                    }}>
+                    {Number(perFee) * Number(Duration)}
+                  </Text>
                 </View>
               </>
             )}
@@ -993,9 +1116,8 @@ const TakeAdmission = () => {
                     }}
                     // secureTextEntry={passwordVisible}
                     // onBlur={() => Validation()}
-                    value={'200'}
-                    // onChangeText={text => setaddress(text)}
-                    // onPressIn={() => setIndex(3)}
+                    value={amount}
+                    onChangeText={text => setamount(text)}
                     onFocus={() => setIndex(5)}
                   />
                 </View>
@@ -1024,9 +1146,9 @@ const TakeAdmission = () => {
                     }}
                     // secureTextEntry={passwordVisible}
                     // onBlur={() => Validation()}
-                    value={'400'}
-                    // onChangeText={text => setaddress(text)}
-                    // onPressIn={() => setIndex(3)}
+                    value={monthlyfee}
+                    onChangeText={text => setmonthlyfee(text)}
+                    onPressIn={() => setIndex(3)}
                     onFocus={() => setIndex(5)}
                   />
                 </View>
@@ -1044,28 +1166,21 @@ const TakeAdmission = () => {
                     marginTop: Height(10),
                   }}
                   onStartShouldSetResponder={() => setIndex(5)}>
-                  <TextInput
-                    placeholder="Total Fee"
-                    placeholderTextColor="rgba(0, 0, 0, 0.6)"
+                  <Text
                     style={{
                       width: Width(280),
                       fontFamily: 'Gilroy-SemiBold',
                       paddingHorizontal: Width(20),
                       fontSize: Height(16),
-                    }}
-                    // secureTextEntry={passwordVisible}
-                    // onBlur={() => Validation()}
-                    value={'4000'}
-                    // onChangeText={text => setaddress(text)}
-                    // onPressIn={() => setIndex(3)}
-                    onFocus={() => setIndex(5)}
-                  />
+                    }}>
+                    {Number(monthlyfee) * Number(Duration)}
+                  </Text>
                 </View>
               </>
             )}
           </View>
           <View style={styles.loginbtndiv}>
-            <TouchableOpacity onPress={() => setopenModel(true)}>
+            <TouchableOpacity onPress={() => submit()}>
               <View style={styles.loginbtn}>
                 <Text style={styles.logintextstyle}>Save</Text>
               </View>

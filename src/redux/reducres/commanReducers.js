@@ -958,7 +958,7 @@ export const deletefeeReducer = (state = {fee: []}, action) => {
   }
 };
 
-export const addstudentReducer = (state = {student: []}, action) => {
+export const addstudentReducer = (state = { student: [] }, action) => {
   switch (action.type) {
     case ADD_STUDENT_REQUEST:
       return {

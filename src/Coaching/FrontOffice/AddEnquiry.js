@@ -18,7 +18,7 @@ import {Addenquiry, getenquiries} from '../../Redux/action/coachingAction';
 import {getcourse} from '../../Redux/action/commanAction';
 import {useDispatch, useSelector} from 'react-redux';
 import Loader from '../../Component/Loader/Loader';
-import {serverInstance} from '../../../API/ServerInstance';
+import {serverInstance} from '../../API/ServerInstance';
 import Toast from 'react-native-toast-message';
 
 const AddEnquiry = () => {
