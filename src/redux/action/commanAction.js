@@ -1043,11 +1043,10 @@ export const getDesignation = (page, limit, setPage) => async dispatch => {
 
 export const Addstudent = datas => async dispatch => {
   try {
-    console.log(datas)
     let token = await AsyncStorage.getItem('erptoken');
     const config = {
       headers: {
-        'Content-Type': 'multipart/form-data',
+        'Content-Type': 'application/json',
         Authorization: `${token}`,
       },
     };
@@ -1059,6 +1058,8 @@ export const Addstudent = datas => async dispatch => {
       config,
     );
 
+    console.log('res from action', data);
+    
     if (data?.status) {
       Toast.show({
         type: 'success',
@@ -1081,6 +1082,8 @@ export const Addstudent = datas => async dispatch => {
       text1: 'Error',
       text2: error?.response?.data?.msg,
     });
+
+    console.log('from action', error?.response?.data);
   }
 };
 
