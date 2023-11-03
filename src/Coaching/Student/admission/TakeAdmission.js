@@ -19,7 +19,10 @@ import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {RadioButton} from 'react-native-paper';
 import check from '../../../assets/check1.png';
-import {serverFormdataInstance,serverInstance} from '../../../API/ServerInstance';
+import {
+  serverFormdataInstance,
+  serverInstance,
+} from '../../../API/ServerInstance';
 import {backendApiUrl} from '../../../Config/config';
 import axios from 'axios';
 import Toast from 'react-native-toast-message';
@@ -94,72 +97,76 @@ const TakeAdmission = () => {
 
   const submit = async () => {
     try {
-      const datas = {
-        name: studentname,
-        email: studentemail,
-        phoneno1: studentphone,
-        city: city,
-        state: state,
-        pincode: Pincode,
-        fathersPhoneNo: fathersphone,
-        fathersName: fathersname,
-        courseorclass: regcoursein,
-        rollnumber: studentrollno,
-        StudentStatus: 'Active',
-        batch: batchname,
-        admissionDate: adminssiondate,
-        regisgrationfee: amount,
-        courseduration: Duration,
-        adharno: adharcardno,
-        pancardnno: pano,
-        markSheet: passmarksheet,
-        adharcard: passadharcard,
-        profileurl: passProfile,
-        permonthfee: getfee === 'default' ? Number(perFee) : Number(monthlyfee),
-        studentTotalFee:
-          getfee === 'default'
-            ? Number(perFee) * Number(Duration)
-            : Number(monthlyfee) * Number(Duration),
-
-        Studentpassword: user?.data[0]?.Studentpassword
+      formData.append('name', studentname);
+      formData.append('email', studentemail);
+      formData.append('phoneno1', studentphone);
+      formData.append('city', city);
+      formData.append('state', state);
+      formData.append('pincode', Pincode);
+      formData.append('fathersPhoneNo', fathersphone);
+      formData.append('fathersName', fathersname);
+      formData.append('courseorclass', regcoursein);
+      formData.append('rollnumber', studentrollno);
+      formData.append('StudentStatus', 'admission');
+      formData.append('batch', batchname);
+      formData.append('admissionDate', adminssiondate);
+      formData.append('regisgrationfee', amount);
+      formData.append('courseduration', Duration);
+      formData.append('adharno', adharcardno);
+      formData.append('pancardnno', pano);
+      formData.append(
+        'permonthfee',
+        getfee === 'default' ? Number(perFee) : Number(monthlyfee),
+      );
+      formData.append(
+        'studentTotalFee',
+        getfee === 'default'
+          ? Number(perFee) * Number(Duration)
+          : Number(monthlyfee) * Number(Duration),
+      );
+      formData.append(
+        'Studentpassword',
+        user?.data[0]?.Studentpassword
           ? user?.data[0]?.Studentpassword
           : 'student',
-
-        Parentpassword: user?.data[0]?.Parentpassword
+      );
+      formData.append(
+        'Parentpassword',
+        user?.data[0]?.Parentpassword
           ? user?.data[0]?.Parentpassword
           : 'parent',
-      };
+      );
 
       setloader(true);
       setsms('Adding...');
+      console.log(formData);
+      serverFormdataInstance('student/addstudent', 'post', formData).then(
+        res => {
+          if (res?.status) {
+            setloader(false);
+            setsms('');
+            Toast.show({
+              type: 'success',
+              text1: 'Success',
+              text2: res?.msg,
+            });
+            // dispatch(getstudent());
+            navigation.goBack();
+          }
 
-      serverInstance('student/addstudent', 'post', datas).then(res => {
-
-        console.log(res);
-
-        if (res?.status) {
-          setloader(false);
-          setsms('');
-          Toast.show({
-            type: 'success',
-            text1: 'Success',
-            text2: res?.msg,
-          });
-          dispatch(getstudent());
-          navigation.goBack();
-        }
-
-        if (res?.status === false) {
-          setloader(false);
-          setsms('');
-          Toast.show({
-            type: 'error',
-            text1: 'Error',
-            text2: res?.msg,
-          });
-          dispatch(getstudent());
-        }
-      });
+          if (res?.status === false) {
+            setloader(false);
+            setsms('');
+            Toast.show({
+              type: 'error',
+              text1: 'Error',
+              text2: res?.msg,
+            });
+            console.log(res);
+            // dispatch(getstudent());
+          }
+        },
+      );
     } catch (error) {
       console.log(error);
     }
