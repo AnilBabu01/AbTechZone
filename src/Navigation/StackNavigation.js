@@ -66,6 +66,7 @@ import ReceiptPrefixCoaching from '../Coaching/Masters/ReceiptPrefix/ReceiptPref
 import UpdatePrefixCoaching from '../Coaching/Masters/ReceiptPrefix/UpdatePrefix';
 import AddPrefixCoaching from '../Coaching/Masters/ReceiptPrefix/AddPrefix';
 import {primary} from '../utils/Colors';
+
 const Stack = createNativeStackNavigator();
 
 function StackNavigation() {
