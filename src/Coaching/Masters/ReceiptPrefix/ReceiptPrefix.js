@@ -13,7 +13,7 @@ import Header from '../../../Component/Header/Header';
 import {primary} from '../../../utils/Colors';
 import AddEnquiry from './AddPrefix';
 import BatchCard from './ReceiptCard';
-import {getReceiptPrefix} from '../../../Redux/action/commanAction';
+import {getReceiptPrefix} from '../../../redux/action/commanAction';
 import {useDispatch, useSelector} from 'react-redux';
 const ReceiptPrefix = ({navigation}) => {
   const dispatch = useDispatch();

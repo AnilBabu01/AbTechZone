@@ -12,7 +12,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {primary} from '../../../utils/Colors';
 import AddEnquiry from './AddCollectFee';
 import BatchCard from './FeeCardCollect';
-import {getbatch} from '../../../Redux/action/commanAction';
+import {getbatch} from '../../../redux/action/commanAction';
 import {useDispatch, useSelector} from 'react-redux';
 const FeeCollect= ({navigation}) => {
   const dispatch = useDispatch();

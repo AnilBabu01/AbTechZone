@@ -12,7 +12,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {primary} from '../../../utils/Colors';
 import AddEnquiry from './AddCourse';
 import BatchCard from './CourseCard';
-import {getcourse} from '../../../Redux/action/commanAction';
+import {getcourse} from '../../../redux/action/commanAction';
 import {useDispatch, useSelector} from 'react-redux';
 const Course = ({navigation}) => {
   const [openModel, setopenModel] = useState(false);

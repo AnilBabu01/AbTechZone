@@ -10,7 +10,7 @@ import {Height, Width} from '../../../utils/responsive';
 import {primary} from '../../../utils/Colors';
 import {Dropdown} from 'react-native-element-dropdown';
 import {useNavigation, useRoute} from '@react-navigation/native';
-import {Updatebatch, getbatch} from '../../../Redux/action/commanAction';
+import {Updatebatch, getbatch} from '../../../redux/action/commanAction';
 import {useDispatch, useSelector} from 'react-redux';
 import Loader from '../../../Component/Loader/Loader';
 const data = [

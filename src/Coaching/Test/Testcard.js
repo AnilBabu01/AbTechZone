@@ -13,7 +13,7 @@ import Edit from '../../assets/Edit.png';
 import {
   deleteDepartment,
   getDepartment,
-} from '../../Redux/action/commanAction';
+} from '../../redux/action/commanAction';
 import React, {useState, useEffect} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';

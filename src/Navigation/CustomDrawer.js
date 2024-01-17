@@ -10,7 +10,7 @@ import ParentDrawerItem from '../Parent/ParentDrawerItem';
 import CollegeDrawerItem from '../College/CollegeDrawerItem';
 import AdminDrawerItem from '../Owner/AdminDrawerItem';
 import {useDispatch, useSelector} from 'react-redux';
-import {loadUser} from '../Redux/action/authActions';
+import {loadUser} from '../redux/action/authActions';
 function CustomDrawer(props) {
   const {navigation} = props;
   const dispatch = useDispatch();
@@ -27,6 +27,7 @@ function CustomDrawer(props) {
     }
   }, [user, userData]);
 
+  
   return (
     <DrawerContentScrollView
       style={{backgroundColor: primary, color: 'black'}}

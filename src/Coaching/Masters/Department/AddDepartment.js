@@ -11,7 +11,7 @@ import React, {useState, useEffect} from 'react';
 import {Height, Width} from '../../../utils/responsive';
 import {primary} from '../../../utils/Colors';
 import {useNavigation} from '@react-navigation/native';
-import {Adddepartment, getDepartment} from '../../../Redux/action/commanAction';
+import {Adddepartment, getDepartment} from '../../../redux/action/commanAction';
 import {useDispatch, useSelector} from 'react-redux';
 import Loader from '../../../Component/Loader/Loader';
 import {serverInstance} from '../../../API/ServerInstance';

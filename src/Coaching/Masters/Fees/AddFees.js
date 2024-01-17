@@ -11,7 +11,7 @@ import {Height, Width} from '../../../utils/responsive';
 import {primary} from '../../../utils/Colors';
 import {Dropdown} from 'react-native-element-dropdown';
 import {useNavigation} from '@react-navigation/native';
-import {AddFee, getfee, getcourse} from '../../../Redux/action/commanAction';
+import {AddFee, getfee, getcourse} from '../../../redux/action/commanAction';
 import {useDispatch, useSelector} from 'react-redux';
 import Loader from '../../../Component/Loader/Loader';
 import {serverInstance} from '../../../API/ServerInstance';

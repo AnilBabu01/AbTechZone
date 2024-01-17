@@ -12,7 +12,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {primary} from '../../../utils/Colors';
 import AddEnquiry from './AddBatch';
 import BatchCard from './BatchCard';
-import {getbatch} from '../../../Redux/action/commanAction';
+import {getbatch} from '../../../redux/action/commanAction';
 import {useDispatch, useSelector} from 'react-redux';
 const Batch = ({navigation}) => {
   const dispatch = useDispatch();

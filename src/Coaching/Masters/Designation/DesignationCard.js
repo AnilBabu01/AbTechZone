@@ -15,7 +15,7 @@ import Edit from '../../../assets/Edit.png';
 import {
   deleteDesignation,
   getDesignation,
-} from '../../../Redux/action/commanAction';
+} from '../../../redux/action/commanAction';
 import {useDispatch, useSelector} from 'react-redux';
 import Loader from '../../../Component/Loader/Loader';
 import {serverInstance} from '../../../API/ServerInstance';

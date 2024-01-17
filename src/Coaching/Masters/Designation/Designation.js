@@ -13,7 +13,7 @@ import Header from '../../../Component/Header/Header';
 import {primary} from '../../../utils/Colors';
 import AddEnquiry from './AddDesignation';
 import BatchCard from './DesignationCard';
-import {getDesignation} from '../../../Redux/action/commanAction';
+import {getDesignation} from '../../../redux/action/commanAction';
 import {useDispatch, useSelector} from 'react-redux';
 const Designation = ({navigation}) => {
   const dispatch = useDispatch();

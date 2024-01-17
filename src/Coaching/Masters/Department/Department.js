@@ -12,7 +12,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {primary} from '../../../utils/Colors';
 import AddEnquiry from './AddDepartment';
 import BatchCard from './DepartmentCard';
-import {getDepartment} from '../../../Redux/action/commanAction';
+import {getDepartment} from '../../../redux/action/commanAction';
 import {useDispatch, useSelector} from 'react-redux';
 const Department = ({navigation}) => {
   const dispatch = useDispatch();

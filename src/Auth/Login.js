@@ -16,13 +16,13 @@ import loginicon from '../assets/newphonelogo.png';
 import {Height, Width} from '../utils/responsive';
 import {Dropdown} from 'react-native-element-dropdown';
 import {useDispatch, useSelector} from 'react-redux';
-import {login, loadUser} from '../Redux/action/authActions';
+import {login, loadUser} from '../redux/action/authActions';
 import {
   alCoaching,
   allCollege,
   allschool,
   allClient,
-} from '../Redux/action/commanAction';
+} from '../redux/action/commanAction';
 import {useNavigation} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Loader from '../Component/Loader/Loader';

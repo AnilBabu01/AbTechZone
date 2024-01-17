@@ -12,7 +12,7 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import moment from 'moment';
 import {Dropdown} from 'react-native-element-dropdown';
-import {getcourse, getbatch} from '../../../Redux/action/commanAction';
+import {getcourse, getbatch} from '../../../redux/action/commanAction';
 import {useDispatch, useSelector} from 'react-redux';
 
 const TakeAttendance = () => {

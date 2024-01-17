@@ -811,7 +811,7 @@ function StackNavigation() {
       <Stack.Screen name="DashboardStudent" component={DashboardStudent} />
       <Stack.Screen name="DashboardParent" component={DashboardParent} />
       <Stack.Screen name="DashboardOwner" component={DashboardOwner} />
-      <Stack.Screen name="drawer" component={DrawerNavigation} />
+     
     </Stack.Navigator>
   );
 }

@@ -13,7 +13,7 @@ import Header from '../../../Component/Header/Header';
 import {primary} from '../../../utils/Colors';
 import AddEnquiry from './AddCatehory';
 import BatchCard from './CategoryCard';
-import {getcategory} from '../../../Redux/action/commanAction';
+import {getcategory} from '../../../redux/action/commanAction';
 import {useDispatch, useSelector} from 'react-redux';
 const Category = ({navigation}) => {
   

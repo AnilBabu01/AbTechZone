@@ -12,7 +12,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {primary} from '../../utils/Colors';
 import AddEnquiry from './AddTest';
 import BatchCard from './Testcard';
-import {getcourse,getbatch} from '../../Redux/action/commanAction';
+import {getcourse,getbatch} from '../../redux/action/commanAction';
 import {useDispatch, useSelector} from 'react-redux';
 const Test = ({navigation}) => {
   const dispatch = useDispatch();

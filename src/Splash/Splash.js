@@ -3,7 +3,7 @@ import React, {useEffect} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import logo1 from '../assets/phonelogo.png';
 import {useDispatch} from 'react-redux';
-import {loadUser} from '../Redux/action/authActions';
+import {loadUser} from '../redux/action/authActions';
 
 const Splash = ({navigation}) => {
   const dispatch = useDispatch();

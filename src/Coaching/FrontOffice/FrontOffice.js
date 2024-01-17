@@ -14,7 +14,7 @@ import CardEnquiry from './CardEnquiry';
 import Header from '../../Component/Header/Header';
 import {primary} from '../../utils/Colors';
 import AddEnquiry from './AddEnquiry';
-import {Addenquiry, getenquiries} from '../../Redux/action/coachingAction';
+import {Addenquiry, getenquiries} from '../../redux/action/coachingAction';
 import {getcourse} from '../../Redux/action/commanAction';
 import {useDispatch, useSelector} from 'react-redux';
 const FrontOffice = ({navigation}) => {

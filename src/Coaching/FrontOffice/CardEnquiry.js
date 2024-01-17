@@ -14,7 +14,7 @@ import moment from 'moment';
 import {useNavigation} from '@react-navigation/native';
 import Delete from '../../assets/Delete.png';
 import Edit from '../../assets/Edit.png';
-import {deleteenquiry, getenquiries} from '../../Redux/action/coachingAction';
+import {deleteenquiry, getenquiries} from '../../redux/action/commanAction';
 import {useDispatch, useSelector} from 'react-redux';
 import Loader from '../../Component/Loader/Loader';
 

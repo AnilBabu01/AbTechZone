@@ -11,7 +11,7 @@ import React, {useState, useEffect} from 'react';
 import {primary} from '../../../utils/Colors';
 import Delete from '../../../assets/Delete.png';
 import Edit from '../../../assets/Edit.png';
-import {deletebatch, getbatch} from '../../../Redux/action/commanAction';
+import {deletebatch, getbatch} from '../../../redux/action/commanAction';
 import {useDispatch, useSelector} from 'react-redux';
 import Loader from '../../../Component/Loader/Loader';
 import {useNavigation} from '@react-navigation/native';

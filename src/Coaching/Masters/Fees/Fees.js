@@ -13,7 +13,7 @@ import Header from '../../../Component/Header/Header';
 import {primary} from '../../../utils/Colors';
 import AddEnquiry from './AddFees';
 import BatchCard from './FeeCard';
-import {getfee} from '../../../Redux/action/commanAction';
+import {getfee} from '../../../redux/action/commanAction';
 import {useDispatch, useSelector} from 'react-redux';
 const Fees = ({navigation}) => {
   const dispatch = useDispatch();

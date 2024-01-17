@@ -14,7 +14,7 @@ import {useNavigation, useRoute} from '@react-navigation/native';
 import {
   UpdateDepartment,
   getDepartment,
-} from '../../../Redux/action/commanAction';
+} from '../../../redux/action/commanAction';
 import {useDispatch, useSelector} from 'react-redux';
 import Loader from '../../../Component/Loader/Loader';
 import {serverInstance} from '../../../API/ServerInstance';

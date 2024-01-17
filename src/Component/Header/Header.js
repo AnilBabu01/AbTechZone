@@ -33,7 +33,7 @@ const Header = () => {
           }}>
           <Image source={hamburger} style={styles.menuimg} />
         </TouchableOpacity>
-        {user?.data?.CredentailsData?.logourl ? (
+        {/* {user?.data?.CredentailsData?.logourl ? (
           <>
             <Image
               source={{
@@ -46,7 +46,7 @@ const Header = () => {
           <>
             <Image source={logoblue1} style={styles.logoimg} />
           </>
-        )}
+        )} */}
 
         {user ? (
           <>

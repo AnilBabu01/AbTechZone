@@ -33,7 +33,7 @@ import {
   getbatch,
   getfeelist,
   Addstudent,
-} from '../../../Redux/action/commanAction';
+} from '../../../redux/action/commanAction';
 import {useRouter} from 'next/router';
 import {useNavigation} from '@react-navigation/native';
 import Loader from '../../../Component/Loader/Loader';

@@ -10,7 +10,7 @@ import React, {useState, useEffect} from 'react';
 import {Height, Width} from '../../../utils/responsive';
 import {primary} from '../../../utils/Colors';
 import {useNavigation, useRoute} from '@react-navigation/native';
-import {UpdateCategory, getcategory} from '../../../Redux/action/commanAction';
+import {UpdateCategory, getcategory} from '../../../redux/action/commanAction';
 import {useDispatch, useSelector} from 'react-redux';
 import Loader from '../../../Component/Loader/Loader';
 import {serverInstance} from '../../../API/ServerInstance';

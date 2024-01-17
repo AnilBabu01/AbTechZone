@@ -16,7 +16,7 @@ import reports from '../assets/reports.png';
 import coaching from '../assets/coaching.png';
 import test from '../assets/test.png';
 import {useDispatch, useSelector} from 'react-redux';
-import {loadUser} from '../Redux/action/authActions';
+import {loadUser} from '../redux/action/authActions';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Loader from '../Component/Loader/Loader';
 import {backendUrl} from '../Config/config';

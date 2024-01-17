@@ -15,7 +15,7 @@ import {useNavigation} from '@react-navigation/native';
 // import RNHTMLtoPDF from 'react-native-html-to-pdf';
 import Delete from '../../../assets/Delete.png';
 import Edit from '../../../assets/Edit.png';
-import {deletecategory, getcategory} from '../../../Redux/action/commanAction';
+import {deletecategory, getcategory} from '../../../redux/action/commanAction';
 import {useDispatch, useSelector} from 'react-redux';
 import Loader from '../../../Component/Loader/Loader';
 
