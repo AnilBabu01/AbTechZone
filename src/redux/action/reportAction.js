@@ -56,10 +56,11 @@ export const getCoachingMonthlyFee =
 export const getPrintReceipt =
   (fromdate, scoursename, sstudent, rollnumber) => async (dispatch) => {
     try {
+     let token = await AsyncStorage.getItem('erptoken');
       const config = {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `${localStorage.getItem("erptoken")}`,
+          Authorization: `${token}`,
         },
       };
       if (fromdate || scoursename || sstudent || rollnumber) {

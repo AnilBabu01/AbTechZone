@@ -74,8 +74,9 @@ import {
   GetCurrentSessionReducer,
   GetYearReducer,
   getReceiptCoachingPrintReducer,
-  GetCoachingStudentReducer
+  GetCoachingStudentReducer,
 } from './commanReducers';
+
 import {
   getenquiriesReducer,
   addenquiryReducer,
@@ -88,10 +89,26 @@ import {
   MarkAttendanceReducer,
   DoneAttendanceReducer,
   MonthlyAttendanceReducer,
+  getHolidayReducer,
 } from './attendanceReducers';
-import {getfee} from './commanReducers';
-
-
+import {getChoachingMonthlyFeeReducer} from './reportReducers';
+import {GetBooks} from './libraryReducers';
+import {
+  GetCategory,
+  GetHostel,
+  GetRoom,
+  GetFacility,
+  GetCheckin,
+} from './hostelReducers';
+import {GetRoute, GetVehicle, GetVehicleType} from './transportReducers';
+import {GetPayRoll} from './payrollReducers';
+import {
+  GetAssetTypReducer,
+  GetAssetReducer,
+  GetExpensesTypeReducer,
+  GetExpensesReducer,
+  GetAmountTransferReducer,
+} from './expensesReducers';
 export default combineReducers({
   auth: authReducer,
   user: userReducer,
@@ -107,6 +124,8 @@ export default combineReducers({
   updatenequiry: updateenquiryReducer,
   deleteenqury: deletequiryReducer,
   editprofile: updateprofileReducer,
+  getReceiptPrint: getReceiptPrintReducer,
+  getChoachingMonthlyFee: getChoachingMonthlyFeeReducer,
   addbatch: addbatchReducer,
   getbatch: getebatchReducer,
   deletebatch: deletebatchReducer,
@@ -165,11 +184,26 @@ export default combineReducers({
   GetStream: GetStreamReducer,
   GetCurrentSession: GetCurrentSessionReducer,
   GetYear: GetYearReducer,
-  getReceiptCoachingPrint:getReceiptCoachingPrintReducer,
-  GetCoachingStudent:GetCoachingStudentReducer,
+  getReceiptCoachingPrint: getReceiptCoachingPrintReducer,
+  GetCoachingStudent: GetCoachingStudentReducer,
   updateStudentTest: updateStudentTestReducer,
   addReceiptFormat: addReceiptFormatReducer,
   getReceiptFormat: getReceiptFormatReducer,
   updateReceiptFormat: updateReceiptFormatReducer,
-  getReceiptPrint: getReceiptPrintReducer,
+  getHoliday: getHolidayReducer,
+  GetCategory: GetCategory,
+  GetHostel: GetHostel,
+  GetRoom: GetRoom,
+  GetFacility: GetFacility,
+  GetCheckin: GetCheckin,
+  GetRoute: GetRoute,
+  GetVehicle: GetVehicle,
+  GetVehicleType: GetVehicleType,
+  GetPayRoll: GetPayRoll,
+  GetAssetType: GetAssetTypReducer,
+  GetAsset: GetAssetReducer,
+  GetExpensesType: GetExpensesTypeReducer,
+  GetExpenses: GetExpensesReducer,
+  GetAmountTransfer: GetAmountTransferReducer,
+  GetBookslist: GetBooks,
 });

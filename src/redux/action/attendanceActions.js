@@ -1,7 +1,7 @@
 import axios from "axios";
-import Toast from 'react-native-toast-message';
+import { toast } from "react-toastify";
+import { backendApiUrl } from "../../config/config";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { backendApiUrl } from "../../Config/config";
 import {
   MARK_ATTENDANCE_REQUEST,
   MARK_ATTENDANCE_SUCCESS,
@@ -11,10 +11,13 @@ import {
   MONTHLY_ATTENDANCE_REQUEST,
   MONTHLY__ATTENDANCE_SUCCESS,
   MONTHLY__ATTENDANCE_FAIL,
+  ALL_HOLIDAY_REQUEST,
+  ALL_HOLIDAY_ATTENDANCE_SUCCESS,
+  ALL_HOLIDAY_ATTENDANCE_FAIL,
   DONE_ATTENDANCE_FAIL,
 } from "../constants/attendanceConstants";
 
-export const MarkStudentAttendance = (date, batch) => async (dispatch) => {
+export const MarkStudentAttendance = (date, batch,classname,sectionname) => async (dispatch) => {
   try {
     let token = await AsyncStorage.getItem('erptoken');
     const config = {
@@ -29,16 +32,16 @@ export const MarkStudentAttendance = (date, batch) => async (dispatch) => {
       {
         Attendancedate: date,
         batch: batch,
+        classname:classname,
+        sectionname:sectionname
       },
       config
     );
 
     console.log("search", date, batch);
     if (data?.status) {
-      Toast.show({
-        type: 'success',
-        text1: 'Success',
-        text2: data?.msg,
+      toast.success(data?.msg, {
+        autoClose: 1000,
       });
     }
 
@@ -51,17 +54,13 @@ export const MarkStudentAttendance = (date, batch) => async (dispatch) => {
       type: MARK_ATTENDANCE_FAIL,
       payload: error?.response?.data?.msg,
     });
-    Toast.show({
-      type: 'error',
-      text1: 'Error',
-      text2: error?.response?.data?.msg,
-    });
+    toast.error(error?.response?.data?.msg, { autoClose: 1000 });
   }
 };
 
 export const DoneStudentAttendance = (udata) => async (dispatch) => {
   try {
-    let token = await AsyncStorage.getItem('erptoken');
+  let token = await AsyncStorage.getItem('erptoken');
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -78,10 +77,8 @@ export const DoneStudentAttendance = (udata) => async (dispatch) => {
     );
     console.log("Done Attendance is ", data);
     if (data?.status) {
-      Toast.show({
-        type: 'success',
-        text1: 'Success',
-        text2: data?.msg,
+      toast.success(data?.msg, {
+        autoClose: 1000,
       });
     }
 
@@ -94,54 +91,81 @@ export const DoneStudentAttendance = (udata) => async (dispatch) => {
       type: DONE_ATTENDANCE_FAIL,
       payload: error?.response?.data?.msg,
     });
-    Toast.show({
-      type: 'error',
-      text1: 'Error',
-      text2: error?.response?.data?.msg,
-    });
+    toast.error(error?.response?.data?.msg, { autoClose: 1000 });
   }
 };
 
-export const MonthlyStudentAttendance = (udata, months) => async (dispatch) => {
-  try {
+export const MonthlyStudentAttendance =
+  (udata, months, rollname, studentname,status, classname,sectionname) => async (dispatch) => {
+    try {
     let token = await AsyncStorage.getItem('erptoken');
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `${token}`,
+        },
+      };
+      dispatch({ type: MONTHLY_ATTENDANCE_REQUEST });
+      const { data } = await axios.post(
+        `${backendApiUrl}attendanceatudent/analysisattendance`,
+        {
+          batch: udata,
+          month: months,
+          rollname: rollname,
+          studentname: studentname,
+          status:status,
+          classname: classname,
+          sectionname:sectionname
+        },
+        config
+      );
+
+      if (data?.status) {
+        toast.success(data?.msg, {
+          autoClose: 1000,
+        });
+      }
+
+      dispatch({
+        type: MONTHLY__ATTENDANCE_SUCCESS,
+        payload: data?.data,
+      });
+    } catch (error) {
+      dispatch({
+        type: MONTHLY__ATTENDANCE_FAIL,
+        payload: error?.response?.data?.msg,
+      });
+      toast.error(error?.response?.data?.msg, { autoClose: 1000 });
+    }
+  };
+
+// Get all Enquiry
+export const getHolidays = (month) => async (dispatch) => {
+  try {
+  let token = await AsyncStorage.getItem('erptoken');
     const config = {
       headers: {
         "Content-Type": "application/json",
         Authorization: `${token}`,
       },
     };
-    dispatch({ type: MONTHLY_ATTENDANCE_REQUEST });
+    dispatch({ type: ALL_HOLIDAY_REQUEST });
+
     const { data } = await axios.post(
-      `${backendApiUrl}attendanceatudent/analysisattendance`,
+      `${backendApiUrl}attendanceatudent/getholidy`,
       {
-        batch: udata,
-        month: months,
+        month:Number(month),
       },
       config
     );
-
-    if (data?.status) {
-      Toast.show({
-        type: 'success',
-        text1: 'Success',
-        text2: data?.msg,
-      });
-    }
-
     dispatch({
-      type: MONTHLY__ATTENDANCE_SUCCESS,
+      type: ALL_HOLIDAY_ATTENDANCE_SUCCESS,
       payload: data?.data,
     });
   } catch (error) {
     dispatch({
-      type: MONTHLY__ATTENDANCE_FAIL,
+      type: ALL_HOLIDAY_ATTENDANCE_FAIL,
       payload: error?.response?.data?.msg,
-    });
-    Toast.show({
-      type: 'error',
-      text1: 'Error',
-      text2: error?.response?.data?.msg,
     });
   }
 };

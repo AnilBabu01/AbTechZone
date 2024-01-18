@@ -67,7 +67,7 @@ export const GetCategory = (categoryname) => async (dispatch) => {
 // Get all Facility
 export const GetFacility = (facilityname) => async (dispatch) => {
   try {
-    let token = await AsyncStorage.getItem('erptoken');
+   let token = await AsyncStorage.getItem('erptoken');
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -109,7 +109,7 @@ export const GetFacility = (facilityname) => async (dispatch) => {
 // Get all Facility
 export const GetHostel = (hostelname) => async (dispatch) => {
   try {
-    let token = await AsyncStorage.getItem('erptoken');
+   let token = await AsyncStorage.getItem('erptoken');
     const config = {
       headers: {
         "Content-Type": "application/json",

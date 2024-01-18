@@ -65,7 +65,7 @@ export const GetAssetType =
 export const GetAsset =
   (fromdate, todate, assettypename) => async (dispatch) => {
     try {
-      let token = await AsyncStorage.getItem('erptoken');
+    let token = await AsyncStorage.getItem('erptoken');
       const config = {
         headers: {
           "Content-Type": "application/json",
@@ -108,7 +108,7 @@ export const GetAsset =
 export const GetExpensesType =
   (courseorclass, BookId, auther) => async (dispatch) => {
     try {
-      let token = await AsyncStorage.getItem('erptoken');
+    let token = await AsyncStorage.getItem('erptoken');
       const config = {
         headers: {
           "Content-Type": "application/json",
@@ -152,7 +152,7 @@ export const GetExpenses =
   (fromdate, todate, Expensestype, PayOption, sessionname) =>
   async (dispatch) => {
     try {
-      let token = await AsyncStorage.getItem('erptoken');
+    let token = await AsyncStorage.getItem('erptoken');
       const config = {
         headers: {
           "Content-Type": "application/json",
@@ -199,7 +199,7 @@ export const GetExpenses =
 export const GetTransferAmmount =
   (fromdate, todate, Transfer_Mode, sessionname) => async (dispatch) => {
     try {
-      let token = await AsyncStorage.getItem('erptoken');
+    let token = await AsyncStorage.getItem('erptoken');
       const config = {
         headers: {
           "Content-Type": "application/json",
