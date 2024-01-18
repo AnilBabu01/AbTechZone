@@ -7,64 +7,83 @@ import {
   ScrollView,
   TextInput,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Height, Width} from '../../../utils/responsive';
 import {primary} from '../../../utils/Colors';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import DateTimePickerModal from 'react-native-modal-datetime-picker';
-import moment from 'moment';
-import {Dropdown} from 'react-native-element-dropdown';
 import {useNavigation} from '@react-navigation/native';
-const data = [
-  {label: '01:00 AM', value: '01:00 AM'},
-  {label: '02:00 AM', value: '02:00 AM'},
-  {label: '03:00 AM', value: '03:00 AM'},
-  {label: '04:00 AM', value: '04:00 AM'},
-  {label: '05:00 AM', value: '05:00 AM'},
-  {label: '06:00 AM', value: '06:00 AM'},
-  {label: '07:00 AM', value: '07:00 AM'},
-  {label: '08:00 AM', value: '08:00 AM'},
-  {label: '09:00 AM', value: '09:00 AM'},
-  {label: '10:00 AM', value: '10:00 AM'},
-  {label: '11:00 AM', value: '11:00 AM'},
-  {label: '12:00 AM', value: '12:00 AM'},
-  {label: '01:00 PM', value: '01:00 PM'},
-  {label: '02:00 PM', value: '02:00 PM'},
-  {label: '03:00 PM', value: '03:00 PM'},
-  {label: '04:00 PM', value: '04:00 PM'},
-  {label: '05:00 PM', value: '05:00 PM'},
-  {label: '06:00 PM', value: '06:00 PM'},
-  {label: '07:00 PM', value: '07:00 PM'},
-  {label: '08:00 PM', value: '08:00 PM'},
-  {label: '09:00 PM', value: '09:00 PM'},
-  {label: '10:00 PM', value: '10:00 PM'},
-  {label: '11:00 PM', value: '11:00 PM'},
-  {label: '12:00 PM', value: '12:00 PM'},
-];
+import {Adddepartment, getDepartment} from '../../../redux/action/commanAction';
+import {useDispatch, useSelector} from 'react-redux';
+import Loader from '../../../Component/Loader/Loader';
+import {serverInstance} from '../../../API/ServerInstance';
+import Toast from 'react-native-toast-message';
 const AddDepartment = () => {
+  const dispatch = useDispatch();
   const navigation = useNavigation();
   const [index, setIndex] = useState(0);
-  const [fromdate, setfromdate] = useState('');
-  const [endtime, setendtime] = useState('');
-  const [starttime, setstarttime] = useState('');
-  const [course, setcourse] = useState('');
-  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  const [departmentname, setdepartmentneme] = useState('');
+  const [sms, setsms] = useState('');
+  const [loader, setloader] = useState(false);
+  const {department, error} = useSelector(state => state.adddepart);
 
-  const showDatePicker = () => {
-    setDatePickerVisibility(true);
+  const submit = () => {
+    if (departmentname) {
+      setloader(true);
+      setsms('Adding...');
+      const data = {
+        DepartmentName: departmentname,
+      };
+      serverInstance('comman/department', 'post', data).then(res => {
+        if (res?.status) {
+          setloader(false);
+          setsms('');
+          Toast.show({
+            type: 'success',
+            text1: 'Success',
+            text2: res?.msg,
+          });
+          dispatch(getDepartment());
+          navigation.goBack();
+        }
+
+        if (res?.status === false) {
+          setloader(false);
+          setsms('');
+          Toast.show({
+            type: 'error',
+            text1: 'Error',
+            text2: res?.msg,
+          });
+          dispatch(getDepartment());
+        }
+      });
+    } else {
+      setsms('');
+      setloader(false);
+    }
   };
 
-  const hideDatePicker = () => {
-    setDatePickerVisibility(false);
-  };
-
-  const handleConfirm = date => {
-    hideDatePicker();
-    setfromdate(date);
-  };
+  useEffect(() => {
+    if (department?.status) {
+      dispatch(getDepartment());
+      setsms('');
+      setloader(false);
+    } else {
+      setsms('');
+      setloader(false);
+    }
+  }, [department]);
+  useEffect(() => {
+    if (error) {
+      if (error?.status === false) {
+        setloader(false);
+        setsms('');
+      }
+    }
+  }, [error]);
 
   return (
     <View>
+      <Loader loader={loader} sms={sms} />
       <ScrollView>
         <View style={styles.enquirymainview}>
           <View style={styles.dateview}>
@@ -92,8 +111,8 @@ const AddDepartment = () => {
                 }}
                 // secureTextEntry={passwordVisible}
                 // onBlur={() => Validation()}
-                // value={address}
-                // onChangeText={text => setaddress(text)}
+                value={departmentname}
+                onChangeText={text => setdepartmentneme(text)}
                 // onPressIn={() => setIndex(3)}
                 onFocus={() => setIndex(7)}
               />
@@ -101,8 +120,7 @@ const AddDepartment = () => {
           </View>
 
           <View style={styles.loginbtndiv}>
-            <TouchableOpacity
-              onPress={() => navigation.navigate('BatchCoaching')}>
+            <TouchableOpacity onPress={() => submit()}>
               <View style={styles.loginbtn}>
                 <Text style={styles.logintextstyle}>Save</Text>
               </View>

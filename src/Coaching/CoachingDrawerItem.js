@@ -45,7 +45,7 @@ const CoachingDrawerItem = ({navigation, setuserData}) => {
             <>
               <Image
                 source={{
-                  uri: `${backendUrl}public/upload/${user?.data?.CredentailsData?.profileurl}`,
+                  uri: `${user?.data?.CredentailsData?.profileurl}`,
                 }}
                 style={{
                   width: 80,
@@ -84,7 +84,7 @@ const CoachingDrawerItem = ({navigation, setuserData}) => {
           />
         )}
         onPress={() => {
-          navigation.closeDrawer();
+        
           navigation.navigate('DashboardCoaching');
         }}
         labelStyle={{color: 'black'}}
@@ -103,7 +103,7 @@ const CoachingDrawerItem = ({navigation, setuserData}) => {
         )}
         onPress={() => {
           navigation.navigate('FrontOfficeCoaching');
-          navigation.closeDrawer();
+         
         }}
         labelStyle={{color: 'black'}}
       />
@@ -122,7 +122,7 @@ const CoachingDrawerItem = ({navigation, setuserData}) => {
         )}
         onPress={() => {
           navigation.navigate('StudentTabCoaching');
-          navigation.closeDrawer();
+         
         }}
         labelStyle={{color: 'black'}}
       />
@@ -140,7 +140,7 @@ const CoachingDrawerItem = ({navigation, setuserData}) => {
         )}
         onPress={() => {
           navigation.navigate('AttendanceTabCoaching');
-          navigation.closeDrawer();
+        
         }}
         labelStyle={{color: 'black'}}
       />
@@ -157,7 +157,7 @@ const CoachingDrawerItem = ({navigation, setuserData}) => {
           />
         )}
         onPress={() => {
-          navigation.closeDrawer();
+         
           navigation.navigate('FeeCollectOptionsCoaching');
         }}
         labelStyle={{color: 'black'}}
@@ -175,7 +175,7 @@ const CoachingDrawerItem = ({navigation, setuserData}) => {
           />
         )}
         onPress={() => {
-          navigation.closeDrawer();
+        
           navigation.navigate('HumanResourseOptionsCoaching');
         }}
         labelStyle={{color: 'black'}}
@@ -194,7 +194,7 @@ const CoachingDrawerItem = ({navigation, setuserData}) => {
         )}
         onPress={() => {
           navigation.navigate('MasterOptionsCoaching');
-          navigation.closeDrawer();
+         
         }}
         labelStyle={{color: 'black'}}
       />
@@ -212,7 +212,7 @@ const CoachingDrawerItem = ({navigation, setuserData}) => {
         )}
         onPress={() => {
           navigation.navigate('ReportsOptionsCoaching');
-          navigation.closeDrawer();
+         
         }}
         labelStyle={{color: 'black'}}
       />
@@ -248,7 +248,7 @@ const CoachingDrawerItem = ({navigation, setuserData}) => {
         )}
         onPress={() => {
           navigation.navigate('TestCoaching');
-          navigation.closeDrawer();
+         
         }}
         labelStyle={{color: 'black'}}
       />

@@ -3,8 +3,15 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import LoginScreen from '../Auth/Login';
 import SplashScreen from '../Splash/Splash';
 import HomeScreen from '../Owner/Home';
-import DrawerNavigation from './DrawerNavigation';
 import DashboardCoaching from '../Coaching/Dashboard/Dashboard';
+import DashboardCollege from '../College/Dashboard/Dashboard';
+import DashboardSchool from '../School/Dashboard/Dashboard';
+import DashboardEmplyee from '../Employee/Dashboard/Dashboard';
+import DashboardStudent from '../School/Dashboard/Dashboard';
+import DashboardParent from '../Parent/Dashboard/Dashboard';
+import DashboardOwner from '../Owner/Dashboard/Dashboard';
+///Coaching screens
+
 import FrontOfficeCoaching from '../Coaching/FrontOffice/FrontOffice';
 import SearchEnquiryCoaching from '../Coaching/FrontOffice/SearchEnquiry';
 import StudentTabCoaching from '../Coaching/Student/StudentTab';
@@ -47,12 +54,6 @@ import AddEmployeeCoaching from '../Coaching/HumanResourse/Staff/AddEmployee';
 import SearchEmployeeCoaching from '../Coaching/HumanResourse/Staff/SearchEmployee';
 import EmployeeCoaching from '../Coaching/HumanResourse/Staff/Employee';
 import UpdateEmployeeCoaching from '../Coaching/HumanResourse/Staff/UpdateEmployee';
-import DashboardCollege from '../College/Dashboard/Dashboard';
-import DashboardSchool from '../School/Dashboard/Dashboard';
-import DashboardEmplyee from '../Employee/Dashboard/Dashboard';
-import DashboardStudent from '../School/Dashboard/Dashboard';
-import DashboardParent from '../Parent/Dashboard/Dashboard';
-import DashboardOwner from '../Owner/Dashboard/Dashboard';
 import AddCollectFeeCoaching from '../Coaching/Accounts/CollectFeee/AddCollectFee';
 import UpdateCollectFeeCoaching from '../Coaching/Accounts/CollectFeee/UpdateCollectFee';
 import FeeCollectCoaching from '../Coaching/Accounts/CollectFeee/FeeCollect';
@@ -65,6 +66,64 @@ import UpdateDesignationCoaching from '../Coaching/Masters/Designation/UpdateDes
 import ReceiptPrefixCoaching from '../Coaching/Masters/ReceiptPrefix/ReceiptPrefix';
 import UpdatePrefixCoaching from '../Coaching/Masters/ReceiptPrefix/UpdatePrefix';
 import AddPrefixCoaching from '../Coaching/Masters/ReceiptPrefix/AddPrefix';
+
+
+///School screens
+
+import FrontOfficeSchool from '../School/FrontOffice/FrontOffice';
+import SearchEnquirySchool from '../School/FrontOffice/SearchEnquiry';
+import StudentTabSchool from '../School/Student/StudentTab';
+import SearchaddSchool from '../School/Student/Add/Search';
+import SearchadminssionSchool from '../School/Student/admission/Search';
+import TakeAdmissionSchool from '../School/Student/admission/TakeAdmission';
+import AddNewStudentSchool from '../School/Student/Add/AddNewStudent';
+import AttendanceTabSchool from '../School/Attendance/AttendanceTab';
+import AddEnquirySchool from '../School/FrontOffice/AddEnquiry';
+import UpdateEnquirySchool from '../School/FrontOffice/UpdateEnquiry';
+import MasterOptionsSchool from '../School/Masters/MasterOptions';
+import BatchSchool from '../School/Masters/Batch/Batch';
+import AddBatchSchool from '../School/Masters/Batch/AddBatch';
+import UpdateBatchSchool from '../School/Masters/Batch/UpdateBatch';
+import CategorySchool from '../School/Masters/Category/Category';
+import UpdatecategorySchool from '../School/Masters/Category/Updatecategory';
+import AddCatehorySchool from '../School/Masters/Category/AddCatehory';
+import AddCourseSchool from '../School/Masters/Course/AddCourse';
+import UpdateCourseSchool from '../School/Masters/Course/UpdateCourse';
+import CourseSchool from '../School/Masters/Course/Course';
+import AddDepartmentSchool from '../School/Masters/Department/AddDepartment';
+import UpdatedepartmentSchool from '../School/Masters/Department/Updatedepartment';
+import DepartmentSchool from '../School/Masters/Department/Department';
+import AddDesignationSchool from '../School/Masters/Designation/AddDesignation';
+import DesignationSchool from '../School/Masters/Designation/Designation';
+import AddDurationSchool from '../School/Masters/Duration/AddDuration';
+import DurationSchool from '../School/Masters/Duration/Duration';
+import AddFeesSchool from '../School/Masters/Fees/AddFees';
+import FeesSchool from '../School/Masters/Fees/Fees';
+import UpdateAddFeeSchool from '../School/Masters/Fees/UpdateAddFee';
+import AddTestSchool from '../School/Test/AddTest';
+import TestSchool from '../School/Test/Test';
+import UpdateTestSchool from '../School/Test/UpdateTest';
+import ProfileSchool from '../School/Profile/Profile';
+import UpdateInstituteSchool from '../School/Profile/UpdateInstitute';
+import UpdateCredentialSchool from '../School/Profile/UpdateCredential';
+import UpdateImgaesSchool from '../School/Profile/UpdateImgaes';
+import UpdateCommunicationSchool from '../School/Profile/UpdateCommunication';
+import AddEmployeeSchool from '../School/HumanResourse/Staff/AddEmployee';
+import SearchEmployeeSchool from '../School/HumanResourse/Staff/SearchEmployee';
+import EmployeeSchool from '../School/HumanResourse/Staff/Employee';
+import UpdateEmployeeSchool from '../School/HumanResourse/Staff/UpdateEmployee';
+import AddCollectFeeSchool from '../School/Accounts/CollectFeee/AddCollectFee';
+import UpdateCollectFeeSchool from '../School/Accounts/CollectFeee/UpdateCollectFee';
+import FeeCollectSchool from '../School/Accounts/CollectFeee/FeeCollect';
+import SearchPaidSchool from '../School/Accounts/PaidFee/SearchPaid';
+import SearchPendingFeeSchool from '../School/Accounts/PendingFee/SearchPendingFee';
+import FeeCollectOptionsSchool from '../School/Accounts/FeeCollectOptions';
+import HumanResourseOptionsSchool from '../School/HumanResourse/HumanResourseOptions';
+import ReportsOptionsSchool from '../School/Reports/ReportsOptions';
+import UpdateDesignationSchool from '../School/Masters/Designation/UpdateDesignation';
+import ReceiptPrefixSchool from '../School/Masters/ReceiptPrefix/ReceiptPrefix';
+import UpdatePrefixSchool from '../School/Masters/ReceiptPrefix/UpdatePrefix';
+import AddPrefixSchool from '../School/Masters/ReceiptPrefix/AddPrefix';
 import {primary} from '../utils/Colors';
 
 const Stack = createNativeStackNavigator();
@@ -100,8 +159,11 @@ function StackNavigation() {
           },
         }}
       />
+    {/* Coaching routes */}
+
       <Stack.Screen name="DashboardCoaching" component={DashboardCoaching} />
       <Stack.Screen name="StudentTabCoaching" component={StudentTabCoaching} />
+
       <Stack.Screen
         name="MasterOptionsCoaching"
         component={MasterOptionsCoaching}
@@ -805,6 +867,719 @@ function StackNavigation() {
         name="ReportsOptionsCoaching"
         component={ReportsOptionsCoaching}
       />
+
+{/* End Coching Routes */}
+
+
+{/* Start School Routes */}
+
+      <Stack.Screen name="StudentTabSchool" component={StudentTabSchool} />
+
+      <Stack.Screen
+        name="MasterOptionsSchool"
+        component={MasterOptionsSchool}
+      />
+      <Stack.Screen
+        name="FrontOfficeSchool"
+        component={FrontOfficeSchool}
+      />
+      <Stack.Screen name="SearchaddSchool" component={SearchaddSchool} />
+      <Stack.Screen
+        name="SearchadminssionSchool"
+        component={SearchadminssionSchool}
+      />
+      <Stack.Screen
+        name="TakeAdmissionSchool"
+        component={TakeAdmissionSchool}
+        options={{
+          headerShown: true,
+          title: 'Add Admission',
+          headerStyle: {
+            backgroundColor: primary,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
+
+      <Stack.Screen
+        name="AddNewStudentSchool"
+        component={AddNewStudentSchool}
+        options={{
+          headerShown: true,
+          title: 'Add New Student',
+          headerStyle: {
+            backgroundColor: primary,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
+      <Stack.Screen
+        name="SearchEnquirySchool"
+        component={SearchEnquirySchool}
+        options={{
+          headerShown: true,
+          title: 'Search Enquiry',
+          headerStyle: {
+            backgroundColor: primary,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
+      <Stack.Screen
+        name="AddEnquirySchool"
+        component={AddEnquirySchool}
+        options={{
+          headerShown: true,
+          title: 'Add Enquiry',
+          headerStyle: {
+            backgroundColor: primary,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
+      <Stack.Screen
+        name="UpdateEnquirySchool"
+        component={UpdateEnquirySchool}
+        options={{
+          headerShown: true,
+          title: 'Update Enquiry',
+          headerStyle: {
+            backgroundColor: primary,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
+      <Stack.Screen
+        name="AttendanceTabSchool"
+        component={AttendanceTabSchool}
+      />
+      <Stack.Screen
+        name="AddBatchSchool"
+        component={AddBatchSchool}
+        options={{
+          headerShown: true,
+          title: 'Add Batch Time',
+          headerStyle: {
+            backgroundColor: primary,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
+      <Stack.Screen
+        name="BatchSchool"
+        component={BatchSchool}
+        options={{
+          headerShown: true,
+          title: 'Batch Time',
+          headerStyle: {
+            backgroundColor: primary,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
+      <Stack.Screen
+        name="UpdateBatchSchool"
+        component={UpdateBatchSchool}
+        options={{
+          headerShown: true,
+          title: 'Update Batch Time',
+          headerStyle: {
+            backgroundColor: primary,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
+      <Stack.Screen
+        name="AddCourseSchool"
+        component={AddCourseSchool}
+        options={{
+          headerShown: true,
+          title: 'Add Course',
+          headerStyle: {
+            backgroundColor: primary,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
+      <Stack.Screen
+        name="UpdateCourseSchool"
+        component={UpdateCourseSchool}
+        options={{
+          headerShown: true,
+          title: 'Update Course',
+          headerStyle: {
+            backgroundColor: primary,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
+      <Stack.Screen
+        name="CourseSchool"
+        component={CourseSchool}
+        options={{
+          headerShown: true,
+          title: 'Course',
+          headerStyle: {
+            backgroundColor: primary,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
+
+      <Stack.Screen
+        name="AddDurationSchool"
+        component={AddDurationSchool}
+        options={{
+          headerShown: true,
+          title: 'Add Course Duration',
+          headerStyle: {
+            backgroundColor: primary,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
+
+      <Stack.Screen
+        name="DurationSchool"
+        component={DurationSchool}
+        options={{
+          headerShown: true,
+          title: 'Course Duration',
+          headerStyle: {
+            backgroundColor: primary,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
+
+      <Stack.Screen
+        name="AddCatehorySchool"
+        component={AddCatehorySchool}
+        options={{
+          headerShown: true,
+          title: 'Add Category',
+          headerStyle: {
+            backgroundColor: primary,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
+
+      <Stack.Screen
+        name="UpdatecategorySchool"
+        component={UpdatecategorySchool}
+        options={{
+          headerShown: true,
+          title: 'Update Category',
+          headerStyle: {
+            backgroundColor: primary,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
+      <Stack.Screen
+        name="CategorySchool"
+        component={CategorySchool}
+        options={{
+          headerShown: true,
+          title: 'Category',
+          headerStyle: {
+            backgroundColor: primary,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
+      <Stack.Screen
+        name="AddFeesSchool"
+        component={AddFeesSchool}
+        options={{
+          headerShown: true,
+          title: 'Add Fees',
+          headerStyle: {
+            backgroundColor: primary,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
+
+      <Stack.Screen
+        name="UpdateAddFeeSchool"
+        component={UpdateAddFeeSchool}
+        options={{
+          headerShown: true,
+          title: 'Update Fees',
+          headerStyle: {
+            backgroundColor: primary,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
+      <Stack.Screen
+        name="FeesSchool"
+        component={FeesSchool}
+        options={{
+          headerShown: true,
+          title: 'Category',
+          headerStyle: {
+            backgroundColor: primary,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
+
+      <Stack.Screen
+        name="AddTestSchool"
+        component={AddTestSchool}
+        options={{
+          headerShown: true,
+          title: 'Add Test',
+          headerStyle: {
+            backgroundColor: primary,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
+
+      <Stack.Screen
+        name="UpdateTestSchool"
+        component={UpdateTestSchool}
+        options={{
+          headerShown: true,
+          title: 'Update Test',
+          headerStyle: {
+            backgroundColor: primary,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
+      <Stack.Screen
+        name="TestSchool"
+        component={TestSchool}
+        options={{
+          headerShown: true,
+          title: 'Test',
+          headerStyle: {
+            backgroundColor: primary,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
+
+      <Stack.Screen
+        name="AddDepartmentSchool"
+        component={AddDepartmentSchool}
+        options={{
+          headerShown: true,
+          title: 'Add Department',
+          headerStyle: {
+            backgroundColor: primary,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
+      <Stack.Screen
+        name="UpdatedepartmentSchool"
+        component={UpdatedepartmentSchool}
+        options={{
+          headerShown: true,
+          title: 'Update Department',
+          headerStyle: {
+            backgroundColor: primary,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
+      <Stack.Screen
+        name="DepartmentSchool"
+        component={DepartmentSchool}
+        options={{
+          headerShown: true,
+          title: 'Department',
+          headerStyle: {
+            backgroundColor: primary,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
+
+      <Stack.Screen
+        name="AddDesignationSchool"
+        component={AddDesignationSchool}
+        options={{
+          headerShown: true,
+          title: 'Add Designation',
+          headerStyle: {
+            backgroundColor: primary,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
+      <Stack.Screen
+        name="DesignationSchool"
+        component={DesignationSchool}
+        options={{
+          headerShown: true,
+          title: 'Designation',
+          headerStyle: {
+            backgroundColor: primary,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
+      <Stack.Screen name="ProfileSchool" component={ProfileSchool} />
+      <Stack.Screen
+        name="UpdateInstituteSchool"
+        component={UpdateInstituteSchool}
+        options={{
+          headerShown: true,
+          title: 'Edit Institute Details',
+          headerStyle: {
+            backgroundColor: primary,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
+      <Stack.Screen
+        name="UpdateImgaesSchool"
+        component={UpdateImgaesSchool}
+        options={{
+          headerShown: true,
+          title: 'Edit Images',
+          headerStyle: {
+            backgroundColor: primary,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
+      <Stack.Screen
+        name="UpdateCredentialSchool"
+        component={UpdateCredentialSchool}
+        options={{
+          headerShown: true,
+          title: 'Edit Credentials',
+          headerStyle: {
+            backgroundColor: primary,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
+      <Stack.Screen
+        name="UpdateCommunicationSchool"
+        component={UpdateCommunicationSchool}
+        options={{
+          headerShown: true,
+          title: 'Edit Communication Credentials ',
+          headerStyle: {
+            backgroundColor: primary,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
+
+      <Stack.Screen
+        name="EmployeeSchool"
+        component={EmployeeSchool}
+        options={{
+          headerShown: true,
+          title: 'Add Employee',
+          headerStyle: {
+            backgroundColor: primary,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
+      <Stack.Screen
+        name="SearchEmployeeSchool"
+        component={SearchEmployeeSchool}
+        options={{
+          headerShown: true,
+          title: 'Search Employee',
+          headerStyle: {
+            backgroundColor: primary,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
+      <Stack.Screen
+        name="AddEmployeeSchool"
+        component={AddEmployeeSchool}
+        options={{
+          headerShown: true,
+          title: 'Add Employee',
+          headerStyle: {
+            backgroundColor: primary,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
+
+      <Stack.Screen
+        name="UpdateEmployeeSchool"
+        component={UpdateEmployeeSchool}
+        options={{
+          headerShown: true,
+          title: 'Update Employee',
+          headerStyle: {
+            backgroundColor: primary,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
+      <Stack.Screen
+        name="FeeCollectOptionsSchool"
+        component={FeeCollectOptionsSchool}
+      />
+      <Stack.Screen
+        name="FeeCollectSchool"
+        component={FeeCollectSchool}
+        options={{
+          headerShown: true,
+          title: 'Fee',
+          headerStyle: {
+            backgroundColor: primary,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
+      <Stack.Screen
+        name="AddCollectFeeSchool"
+        component={AddCollectFeeSchool}
+        options={{
+          headerShown: true,
+          title: 'Collect Fee',
+          headerStyle: {
+            backgroundColor: primary,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
+      <Stack.Screen
+        name="UpdateCollectFeeSchool"
+        component={UpdateCollectFeeSchool}
+        options={{
+          headerShown: true,
+          title: 'Update Collect Fee',
+          headerStyle: {
+            backgroundColor: primary,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
+      <Stack.Screen
+        name="SearchPendingFeeSchool"
+        component={SearchPendingFeeSchool}
+        options={{
+          headerShown: true,
+          title: 'Search Pending Fee',
+          headerStyle: {
+            backgroundColor: primary,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
+      <Stack.Screen
+        name="SearchPaidSchool"
+        component={SearchPaidSchool}
+        options={{
+          headerShown: true,
+          title: 'Search Paid Fee',
+          headerStyle: {
+            backgroundColor: primary,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
+      <Stack.Screen
+        name="UpdateDesignationSchool"
+        component={UpdateDesignationSchool}
+        options={{
+          headerShown: true,
+          title: 'Update Designation',
+          headerStyle: {
+            backgroundColor: primary,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
+      <Stack.Screen
+        name="ReceiptPrefixSchool"
+        component={ReceiptPrefixSchool}
+        options={{
+          headerShown: true,
+          title: 'Receipt Prefix',
+          headerStyle: {
+            backgroundColor: primary,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
+      <Stack.Screen
+        name="UpdatePrefixSchool"
+        component={UpdatePrefixSchool}
+        options={{
+          headerShown: true,
+          title: 'Receipt Prefix',
+          headerStyle: {
+            backgroundColor: primary,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
+
+      <Stack.Screen
+        name="AddPrefixSchool"
+        component={AddPrefixSchool}
+        options={{
+          headerShown: true,
+          title: 'Receipt Prefix',
+          headerStyle: {
+            backgroundColor: primary,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
+      <Stack.Screen
+        name="HumanResourseOptionsSchool"
+        component={HumanResourseOptionsSchool}
+      />
+      <Stack.Screen
+        name="ReportsOptionsSchool"
+        component={ReportsOptionsSchool}
+      />
+
+
       <Stack.Screen name="DashboardCollege" component={DashboardCollege} />
       <Stack.Screen name="DashboardSchool" component={DashboardSchool} />
       <Stack.Screen name="DashboardEmplyee" component={DashboardEmplyee} />

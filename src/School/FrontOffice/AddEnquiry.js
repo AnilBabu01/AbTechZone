@@ -1,272 +1,243 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  Modal,
-  TouchableOpacity,
-  ScrollView,
-  TextInput,
-} from 'react-native';
-import React, {useState} from 'react';
+import {StyleSheet, View, ScrollView, TextInput, Text} from 'react-native';
+import React, {useState, useEffect} from 'react';
 import {Height, Width} from '../../utils/responsive';
-import {primary} from '../../utils/Colors';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import DateTimePickerModal from 'react-native-modal-datetime-picker';
-import moment from 'moment';
 import {Dropdown} from 'react-native-element-dropdown';
-const data = [
-  {label: 'DCA', value: 'DCA'},
-  {label: 'ADCA', value: 'ADCA'},
-  {label: 'CCC', value: 'CCC'},
-  {label: 'O-LEVEL', value: 'O-LEVEL'},
-];
+import {getenquiries} from '../../redux/action/coachingAction';
+import {getcourse} from '../../redux/action/commanAction';
+import {useDispatch, useSelector} from 'react-redux';
+import Loader from '../../Component/Loader/Loader';
+import {serverInstance} from '../../API/ServerInstance';
+import Toast from 'react-native-toast-message';
+import RNButton from '../../Component/RNButton';
+import RNInputField from '../../Component/RNInputField';
+import RNDatePicker from '../../Component/RNDatePicker';
+import {handleDate, getTodaysDate} from '../../utils/functions';
+import {Colors} from '../../utils/Colors';
+import {deviceHeight, deviceWidth} from '../../utils/constant';
+import {FlexRowWrapper} from '../../Component/FlexRowWrapper';
+import { useNavigation } from '@react-navigation/native';
+import moment from 'moment';
 const AddEnquiry = () => {
-  const [index, setIndex] = useState(0);
-  const [fromdate, setfromdate] = useState('');
-  const [course, setcourse] = useState('');
-  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  const dispatch = useDispatch();
+  const navigation = useNavigation()
+  const [sms, setsms] = useState('');
+  const [loader, setloader] = useState(false);
+  const [enquirydate, setenquirydate] = useState(getTodaysDate());
+  const [coursename, setcoursename] = useState('');
+  const [courselist, setcourselist] = useState([{label: null, value: ''}]);
+  const [studentname, setstudentname] = useState('');
+  const [studentPhone, setstudentPhone] = useState('');
+  const [email, setemail] = useState('');
+  const [address, setaddress] = useState('');
+  const [comment, setcomment] = useState('');
+  const {enquiry, error} = useSelector(state => state.addenqury);
+  const {course} = useSelector(state => state.getcourse);
 
-  const showDatePicker = () => {
-    setDatePickerVisibility(true);
+  const submit = () => {
+    if (enquirydate) {
+      setloader(true);
+      setsms('Adding...');
+      const data = {
+        EnquiryDate:  moment(enquirydate, 'YYYY-MM-DD'),
+        StudentName: studentname,
+        StudentNumber: studentPhone,
+        StudentEmail: email,
+        Address: address,
+        Course: coursename,
+        Comment: comment,
+      };
+      serverInstance('coaching/enquiry', 'post', data).then(res => {
+        if (res?.status) {
+          setloader(false);
+          setsms('');
+          Toast.show({
+            type: 'success',
+            text1: 'Success',
+            text2: res?.msg,
+          });
+          dispatch(getenquiries());
+          navigation.goBack();
+        }
+
+        if (res?.status === false) {
+          setloader(false);
+          setsms('');
+          Toast.show({
+            type: 'error',
+            text1: 'Error',
+            text2: res?.msg,
+          });
+          dispatch(getenquiries());
+        }
+      });
+    } else {
+      setsms('');
+      setloader(false);
+    }
   };
 
-  const hideDatePicker = () => {
-    setDatePickerVisibility(false);
-  };
+  useEffect(() => {
+    if (enquiry) {
+      dispatch(getenquiries());
+      setsms('');
+      setloader(false);
+    }
+  }, [enquiry]);
+  useEffect(() => {
+    dispatch(getcourse());
+  }, []);
 
-  const handleConfirm = date => {
-    hideDatePicker();
-    setfromdate(date);
-  };
+  useEffect(() => {
+    if (course) {
+      setcourselist(course);
+    }
+  }, [course]);
+
+  useEffect(() => {
+    if (error) {
+      setloader(false);
+      setsms('');
+    }
+  }, [error]);
 
   return (
     <View>
+      <Loader loader={loader} sms={sms} />
       <ScrollView>
         <View style={styles.enquirymainview}>
           <View style={styles.dateview}>
-            <TouchableOpacity
-              style={styles.addinput}
-              onPress={() => {
-                setIndex(6), showDatePicker();
+            <View
+              style={{
+                marginHorizontal: deviceWidth * 0.04,
+                position: 'relative',
               }}>
-              <FontAwesome5
-                name="calendar"
-                size={Height(20)}
-                color="#666666"
-                style={{marginLeft: Width(10)}}
+              <RNDatePicker
+                title="Enquiry Date"
+                value={enquirydate}
+                onDateChange={date => setenquirydate(handleDate(date))}
               />
+            </View>
+            <FlexRowWrapper>
+              <View style={{width: '45%'}}>
+                <RNInputField
+                  label="Student Name"
+                  placeholder="Enter Name"
+                  value={studentname}
+                  onChangeText={data => setstudentname(data)}
+                />
+              </View>
+              <View style={{width: '45%'}}>
+                <RNInputField
+                  label="Student Mobile No"
+                  placeholder="Enter Mobile No"
+                  value={studentPhone}
+                  onChangeText={data => setstudentPhone(data)}
+                  keyboardType="number-pad"
+                />
+              </View>
+            </FlexRowWrapper>
+            <FlexRowWrapper>
+              <View style={{width: '45%'}}>
+                <RNInputField
+                  label="Student Email"
+                  placeholder="Enter Email"
+                  value={email}
+                  onChangeText={data => setemail(data)}
+                />
+              </View>
+              <View style={{width: '45%'}}>
+                <View style={{marginHorizontal: deviceWidth * 0.01}}>
+                  <Text
+                    style={{fontSize: 14, fontWeight: '600', lineHeight: 19}}>
+                    Class
+                  </Text>
+                  <Dropdown
+                    style={styles.dropstyle}
+                    placeholderStyle={styles.placeholderStyle}
+                    selectedTextStyle={styles.selectedTextStyle}
+                    inputSearchStyle={styles.inputSearchStyle}
+                    iconStyle={styles.iconStyle}
+                    data={
+                      courselist &&
+                      courselist?.map(item => ({
+                        label: `${item?.coursename}`,
+                        value: `${item?.coursename}`,
+                      }))
+                    }
+                    search
+                    maxHeight={300}
+                    labelField="label"
+                    valueField="value"
+                    placeholder="Please Select"
+                    searchPlaceholder="Search..."
+                    value={coursename}
+                    onChange={item => {
+                      setcoursename(item.value);
+                    }}
+                  />
+                </View>
+              </View>
+            </FlexRowWrapper>
+
+            <View
+              style={{
+                marginHorizontal: deviceWidth * 0.04,
+                position: 'relative',
+              }}>
               <Text
                 style={{
-                  textAlign: 'center',
-                  fontFamily: 'Gilroy-SemiBold',
-                  fontSize: Height(16),
-                  marginLeft: Width(20),
+                  textAlign: 'right',
+                  fontWeight: '800',
+                  position: 'absolute',
+                  right: deviceWidth * 0.05,
                 }}>
-                {fromdate
-                  ? moment(fromdate).format('DD/MM/YYYY')
-                  : 'Enquiry Date'}
+                {address.length} / 500
               </Text>
-            </TouchableOpacity>
-            <DateTimePickerModal
-              isVisible={isDatePickerVisible}
-              mode="date"
-              onConfirm={handleConfirm}
-              onCancel={hideDatePicker}
-            />
-            <View
-              style={{
-                width: Width(360),
-                height: Height(45),
-                alignSelf: 'center',
-                flexDirection: 'row',
-                alignItems: 'center',
-                borderWidth: 1.5,
-                borderRadius: Width(5),
-                borderColor: index === 3 ? primary : '#a9a9a9',
-                marginTop: Height(10),
-              }}
-              onStartShouldSetResponder={() => setIndex(3)}>
-              <TextInput
-                placeholder="Student Name"
-                placeholderTextColor="rgba(0, 0, 0, 0.6)"
-                style={{
-                  width: Width(280),
-                  fontFamily: 'Gilroy-SemiBold',
-                  paddingHorizontal: Width(20),
-                  fontSize: Height(16),
-                }}
-                // secureTextEntry={passwordVisible}
-                // onBlur={() => Validation()}
-                // value={address}
-                // onChangeText={text => setaddress(text)}
-                // onPressIn={() => setIndex(3)}
-                onFocus={() => setIndex(3)}
+              <RNInputField
+                style={{backgroundColor: Colors.fadeGray, paddingTop: 10}}
+                label="address"
+                value={address}
+                onChangeText={data => setaddress(data)}
+                placeholder="Enter Address"
+                multiline
+                numberOfLines={5}
+                maxLength={500}
               />
             </View>
 
             <View
               style={{
-                width: Width(360),
-                height: Height(45),
-                alignSelf: 'center',
-                flexDirection: 'row',
-                alignItems: 'center',
-                borderWidth: 1.5,
-                borderRadius: Width(5),
-                borderColor: index === 4 ? primary : '#a9a9a9',
-                marginTop: Height(10),
-              }}
-              onStartShouldSetResponder={() => setIndex(4)}>
-              <TextInput
-                placeholder="Student Number"
-                placeholderTextColor="rgba(0, 0, 0, 0.6)"
+                marginHorizontal: deviceWidth * 0.04,
+                position: 'relative',
+              }}>
+              <Text
                 style={{
-                  width: Width(280),
-                  fontFamily: 'Gilroy-SemiBold',
-                  paddingHorizontal: Width(20),
-                  fontSize: Height(16),
-                }}
-                // secureTextEntry={passwordVisible}
-                // onBlur={() => Validation()}
-                // value={address}
-                // onChangeText={text => setaddress(text)}
-                // onPressIn={() => setIndex(3)}
-                onFocus={() => setIndex(4)}
+                  textAlign: 'right',
+                  fontWeight: '800',
+                  position: 'absolute',
+                  right: deviceWidth * 0.05,
+                }}>
+                {comment.length} / 500
+              </Text>
+              <RNInputField
+                style={{backgroundColor: Colors.fadeGray, paddingTop: 10}}
+                label="Comment"
+                value={comment}
+                onChangeText={data => setcomment(data)}
+                placeholder="Enter Comment"
+                multiline
+                numberOfLines={5}
+                maxLength={500}
               />
             </View>
-
-            <View
-              style={{
-                width: Width(360),
-                height: Height(45),
-                alignSelf: 'center',
-                flexDirection: 'row',
-                alignItems: 'center',
-                borderWidth: 1.5,
-                borderRadius: Width(5),
-                borderColor: index === 5 ? primary : '#a9a9a9',
-                marginTop: Height(10),
-              }}
-              onStartShouldSetResponder={() => setIndex(5)}>
-              <TextInput
-                placeholder="Student Email"
-                placeholderTextColor="rgba(0, 0, 0, 0.6)"
-                style={{
-                  width: Width(280),
-                  fontFamily: 'Gilroy-SemiBold',
-                  paddingHorizontal: Width(20),
-                  fontSize: Height(16),
-                }}
-                // secureTextEntry={passwordVisible}
-                // onBlur={() => Validation()}
-                // value={address}
-                // onChangeText={text => setaddress(text)}
-                // onPressIn={() => setIndex(3)}
-                onFocus={() => setIndex(5)}
-              />
-            </View>
-
-            <View
-              style={{
-                width: Width(360),
-                height: Height(45),
-                alignSelf: 'center',
-                flexDirection: 'row',
-                alignItems: 'center',
-                borderWidth: 1.5,
-                borderRadius: Width(5),
-                borderColor: index === 6 ? primary : '#a9a9a9',
-                marginTop: Height(10),
-              }}
-              onStartShouldSetResponder={() => setIndex(6)}>
-              <TextInput
-                placeholder="Address"
-                placeholderTextColor="rgba(0, 0, 0, 0.6)"
-                style={{
-                  width: Width(280),
-                  fontFamily: 'Gilroy-SemiBold',
-                  paddingHorizontal: Width(20),
-                  fontSize: Height(16),
-                }}
-                // secureTextEntry={passwordVisible}
-                // onBlur={() => Validation()}
-                // value={address}
-                // onChangeText={text => setaddress(text)}
-                // onPressIn={() => setIndex(3)}
-                onFocus={() => setIndex(6)}
-              />
-            </View>
-            <Dropdown
-              style={{
-                alignSelf: 'center',
-                width: Width(360),
-                height: Height(45),
-                fontFamily: 'Gilroy-SemiBold',
-                borderWidth: 1.5,
-                borderRadius: Width(5),
-                paddingHorizontal: Width(20),
-                fontSize: Height(16),
-                marginTop: Height(10),
-                borderColor: index === 1 ? primary : '#a9a9a9',
-              }}
-              placeholderStyle={styles.placeholderStyle}
-              selectedTextStyle={styles.selectedTextStyle}
-              inputSearchStyle={styles.inputSearchStyle}
-              iconStyle={styles.iconStyle}
-              data={data}
-              search
-              maxHeight={300}
-              labelField="label"
-              valueField="value"
-              placeholder="Please Select"
-              searchPlaceholder="Search..."
-              value={course}
-              onChange={item => {
-                setcourse(item.value);
-              }}
-              // renderLeftIcon={() => (
-              //   <AntDesign style={styles.icon} color="black" name="Safety" size={20} />
-              // )}
-            />
-            <View
-              style={{
-                width: Width(360),
-                height: Height(45),
-                alignSelf: 'center',
-                flexDirection: 'row',
-                alignItems: 'center',
-                borderWidth: 1.5,
-                borderRadius: Width(5),
-                borderColor: index === 7 ? primary : '#a9a9a9',
-                marginTop: Height(10),
-              }}
-              onStartShouldSetResponder={() => setIndex(7)}>
-              <TextInput
-                placeholder="Comment"
-                placeholderTextColor="rgba(0, 0, 0, 0.6)"
-                style={{
-                  width: Width(280),
-                  fontFamily: 'Gilroy-SemiBold',
-                  paddingHorizontal: Width(20),
-                  fontSize: Height(16),
-                }}
-                // secureTextEntry={passwordVisible}
-                // onBlur={() => Validation()}
-                // value={address}
-                // onChangeText={text => setaddress(text)}
-                // onPressIn={() => setIndex(3)}
-                onFocus={() => setIndex(7)}
-              />
-            </View>
+            
           </View>
 
-          <View style={styles.loginbtndiv}>
-            <TouchableOpacity onPress={() => setopenModel(true)}>
-              <View style={styles.loginbtn}>
-                <Text style={styles.logintextstyle}>Save</Text>
-              </View>
-            </TouchableOpacity>
-          </View>
+          <RNButton
+            onPress={submit}
+            style={{marginHorizontal: 20, marginTop: 20}}>
+            Save & Next
+          </RNButton>
         </View>
       </ScrollView>
     </View>
@@ -276,83 +247,19 @@ const AddEnquiry = () => {
 export default AddEnquiry;
 
 const styles = StyleSheet.create({
-  inputview: {
-    width: Width(360),
-    height: Height(50),
-    backgroundColor: '#E9EAEC',
-    alignSelf: 'center',
-    borderRadius: Width(5),
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginTop: Height(10),
-  },
-  inputsaerch: {
-    paddingLeft: Width(30),
-    fontFamily: 'Gilroy-SemiBold',
-    color: 'black',
-    fontSize: Height(16),
-    width: Width(260),
-  },
   enquirymainview: {
-    paddingHorizontal: 2,
+    paddingTop: deviceHeight * 0.01,
   },
-  baseinput: {
-    width: Width(310),
-    height: Height(40),
+  dropstyle: {
     alignSelf: 'center',
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderWidth: 1.5,
-    borderRadius: Width(10),
-    // borderColor: index === 3 ? primary: '#a9a9a9',
+    width: Width(170),
+    height: Height(52),
+    fontFamily: 'Gilroy-SemiBold',
+    borderRadius: Width(15),
+    paddingHorizontal: Width(20),
+    fontSize: Height(16),
     marginTop: Height(10),
-  },
-
-  addinput: {
-    height: Height(45),
-    width: Width(360),
-    borderWidth: 1.5,
-    // borderColor: index === 7 ? primary : '#a9a9a9',
-    alignSelf: 'center',
-    borderRadius: Width(5),
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: Height(10),
-  },
-  loginbtndiv: {
-    alignSelf: 'center',
-    display: 'flex',
-    justifyContent: 'flex-end',
-    flexDirection: 'row',
-  },
-  loginbtn: {
-    width: Width(360),
-    height: Height(45),
-    backgroundColor: primary,
-    borderRadius: 10,
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 10,
-  },
-  logintextstyle: {
+    backgroundColor: Colors.fadeGray,
     color: 'white',
-    // fontWeight: 700,
-    fontSize: 16,
-  },
-  placeholderStyle: {
-    fontSize: 16,
-  },
-  selectedTextStyle: {
-    fontSize: 16,
-  },
-  iconStyle: {
-    width: 20,
-    height: 20,
-  },
-  inputSearchStyle: {
-    height: 40,
-    fontSize: 16,
   },
 });

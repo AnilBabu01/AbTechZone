@@ -7,25 +7,42 @@ import {
   ScrollView,
   TextInput,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Height, Width} from '../../utils/responsive';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import CardEnquiry from './CardEnquiry';
 import Header from '../../Component/Header/Header';
 import {primary} from '../../utils/Colors';
 import AddEnquiry from './AddEnquiry';
+import {getenquiries} from '../../redux/action/coachingAction';
+import {AnimatedFAB} from 'react-native-paper';
+import {Colors} from '../../utils/Colors';
+import {useDispatch, useSelector} from 'react-redux';
+
 const FrontOffice = ({navigation}) => {
+  const dispatch = useDispatch();
   const [openModel, setopenModel] = useState(false);
-  const [index, setIndex] = useState(0);
+  const [enquirylist, setenquirylist] = useState('');
+  const {enquiry} = useSelector(state => state.enquiry);
+
+  useEffect(() => {
+    dispatch(getenquiries());
+  }, []);
+
+  useEffect(() => {
+    if (enquiry) {
+      setenquirylist(enquiry);
+    }
+  }, [enquiry]);
+  const {secondaryTitle, accordionTitle, filterBtnContainer, fabStyle} = styles;
   return (
-    <View>
+    <View style={{flex: 1}}>
       <Modal animationType={'fade'} transparent={true} visible={openModel}>
         <View style={[styles.modal, styles.elevation]}>
           <View style={styles.cancalView}>
             <Text style={styles.canceltext} onPress={() => setopenModel(false)}>
               <Ionicons name="close-outline" size={40} />
             </Text>
-            
           </View>
           <AddEnquiry />
         </View>
@@ -46,18 +63,23 @@ const FrontOffice = ({navigation}) => {
         </View>
       </TouchableOpacity>
 
-      <View style={styles.loginbtndiv}>
-        <TouchableOpacity onPress={() => navigation.navigate('AddEnquiryCoaching')}>
-          <View style={styles.loginbtn}>
-            <Text style={styles.logintextstyle}>Add Enquiry</Text>
-          </View>
-        </TouchableOpacity>
-      </View>
       <ScrollView>
         <View style={styles.enquirymainview}>
-          <CardEnquiry />
+          {enquirylist &&
+            enquirylist?.map((item, index) => {
+              return <CardEnquiry key={index} data={item} />;
+            })}
         </View>
       </ScrollView>
+
+      <AnimatedFAB
+        icon={'plus'}
+        onPress={() => navigation.navigate('AddEnquirySchool')}
+        label="Add"
+        extended={false}
+        color={Colors.white}
+        style={[fabStyle]}
+      />
     </View>
   );
 };
@@ -77,7 +99,7 @@ const styles = StyleSheet.create({
     height: Height(50),
     backgroundColor: '#E9EAEC',
     alignSelf: 'center',
-    borderRadius: Width(10),
+    borderRadius: Width(20),
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -147,5 +169,39 @@ const styles = StyleSheet.create({
     borderRadius: Width(10),
     // borderColor: index === 3 ? primary: '#a9a9a9',
     marginTop: Height(10),
+  },
+  headerTitleContainer: {
+    backgroundColor: Colors.fadeGray,
+    flexDirection: 'row',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  secondaryTitle: {
+    fontSize: 17,
+    fontWeight: '600',
+    lineHeight: 20,
+    color: Colors.primary,
+  },
+  accordionTitle: {
+    color: Colors.primary,
+    fontSize: 17,
+    fontWeight: '700',
+    lineHeight: 20,
+  },
+  filterBtnContainer: {
+    padding: 9,
+    borderRadius: 10,
+  },
+  contentContainerStyle: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  fabStyle: {
+    bottom: 16,
+    right: 16,
+    position: 'absolute',
+    backgroundColor: primary,
   },
 });

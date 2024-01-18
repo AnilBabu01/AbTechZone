@@ -18,7 +18,6 @@ import {
   UPDATE_BATCH_REQUEST,
   UPDATE_BATCH_SUCCESS,
   UPDATE_BATCH_FAIL,
-  UPDATE_BATCH_RESET,
   DELETE_BATCH_REQUEST,
   DELETE_BATCH_SUCCESS,
   DELETE_BATCH_FAIL,
@@ -31,7 +30,6 @@ import {
   UPDATE_COURSE_REQUEST,
   UPDATE_COURSE_SUCCESS,
   UPDATE_COURSE_FAIL,
-  DELETE_COURSE_RESET,
   ALL_COURSE_REQUEST,
   ALL_COURSE_SUCCESS,
   ALL_COURSE_FAIL,
@@ -44,7 +42,6 @@ import {
   UPDATE_CATEGORY_REQUEST,
   UPDATE_CATEGORY_SUCCESS,
   UPDATE_CATEGORY_FAIL,
-  UPDATE_CATEGORY_RESET,
   DELETE_CATEGORY_REQUEST,
   DELETE_CATEGORY_SUCCESS,
   DELETE_CATEGORY_FAIL,
@@ -117,7 +114,6 @@ import {
   ADD_Department_FAIL,
   UPDATE_Department_REQUEST,
   UPDATE_Department_SUCCESS,
-  UPDATE_Department_RESET,
   UPDATE_Department_FAIL,
   ALL_Department_REQUEST,
   ALL_Department_SUCCESS,
@@ -161,9 +157,57 @@ import {
   UPDATE_STUDENT_TEST_SUCCESS,
   UPDATE_STUDENT_TEST_RESET_SUCCESS,
   UPDATE_STUDENT_TEST_FAIL,
+  ADD_RECEIPTPREFIX_REQUEST,
+  ADD_RECEIPTPREFIX_SUCCESS,
+  ADD_RECEIPTPREFIX_FAIL,
+  UPDATE_RECEIPTPREFIX_REQUEST,
+  UPDATE_RECEIPTPREFIX_SUCCESS,
+  UPDATE_RECEIPTPREFIX_FAIL,
   ALL_RECEIPTPREFIX_REQUEST,
   ALL_RECEIPTPREFIX_SUCCESS,
   ALL_RECEIPTPREFIX_FAIL,
+  ALL_RECEIPTDATA_REQUEST,
+  ALL_RECEIPTDATA_SUCCESS,
+  GET_SECTION_REQUEST,
+  GET_SECTION__SUCCESS,
+  GET_SECTION__FAIL,
+  GET_SESSION_REQUEST,
+  GET_SESSION_SUCCESS,
+  GET_SESSION_FAIL,
+  ALL_RECEIPTDATA_FAIL,
+  GET_OTHERFEE_REQUEST,
+  GET_OTHERFEE_SUCCESS,
+  GET_OTHERFEE_FAIL,
+  GET_SUBJECT_REQUEST,
+  GET_SUBJECT_SUCCESS,
+  GET_SUBJECT_FAIL,
+  GET_CLASS_SUBJECT_REQUEST,
+  GET_CLASS_SUBJECT_SUCCESS,
+  GET_CLASS_SUBJECT_FAIL,
+  GET_FOOTERDETAILS_REQUEST,
+  GET_FOOTERDETAILS_SUCCESS,
+  GET_FOOTERDETAILS_FAIL,
+  GET_NOTIC_REQUEST,
+  GET_NOTIC_SUCCESS,
+  GET_NOTIC_FAIL,
+  GET_SLIDER_REQUEST,
+  GET_SLIDER_SUCCESS,
+  GET_SLIDER_FAIL,
+  GET_STREAM_REQUEST,
+  GET_STREAM_SUCCESS,
+  GET_STREAM_FAIL,
+  GET_CURRENTSESSION_REQUEST,
+  GET_CURRENTSESSION_SUCCESS,
+  GET_CURRENTSESSION_FAIL,
+  GET_YEAR_REQUEST,
+  GET_YEAR_SUCCESS,
+  GET_YEAR_FAIL,
+  ALL_COACHINGSTUDENT_REQUEST,
+  ALL_COACHINGSTUDENT_SUCCESS,
+  ALL_COACHINGSTUDENT_FAIL,
+  ALL_COACHINGRECEIPTDATA_REQUEST,
+  ALL_COACHINGRECEIPTDATA_SUCCESS,
+  ALL_COACHINGRECEIPTDATA_FAIL,
   CLEAR_ERRORS,
 } from '../constants/commanConstants';
 
@@ -338,20 +382,14 @@ export const updatebatchReducer = (state = {batch: []}, action) => {
       return {
         ...state,
         loading: false,
-        isUpdated: action.payload,
+        batch: action.payload,
       };
-    case UPDATE_BATCH_RESET:
-      setTimeout(() => {
-        return {
-          ...state,
-          isUpdated: false,
-        };
-      }, 1000);
+
     case UPDATE_BATCH_FAIL:
       return {
         loading: false,
         batch: null,
-        isUpdated: action.payload,
+        error: action.payload,
       };
 
     case CLEAR_ERRORS:
@@ -472,15 +510,8 @@ export const updatecourseReducer = (state = {course: []}, action) => {
       return {
         ...state,
         loading: false,
-        isUpdated: action.payload,
+        course: action.payload,
       };
-    case UPDATE_BATCH_RESET:
-      setTimeout(() => {
-        return {
-          ...state,
-          isUpdated: false,
-        };
-      }, 1000);
 
     case UPDATE_COURSE_FAIL:
       return {
@@ -607,15 +638,8 @@ export const updatecategoryReducer = (state = {category: []}, action) => {
       return {
         ...state,
         loading: false,
-        isUpdated: action.payload,
+        category: action.payload,
       };
-    case UPDATE_CATEGORY_RESET:
-      setTimeout(() => {
-        return {
-          ...state,
-          isUpdated: false,
-        };
-      }, 1000);
 
     case UPDATE_CATEGORY_FAIL:
       return {
@@ -958,10 +982,8 @@ export const deletefeeReducer = (state = {fee: []}, action) => {
   }
 };
 
-export const addstudentReducer = (state = { student: [] }, action) => {
-  
+export const addstudentReducer = (state = {student: []}, action) => {
   switch (action.type) {
-    
     case ADD_STUDENT_REQUEST:
       return {
         loading: true,
@@ -1265,21 +1287,13 @@ export const updateDepartmentReducer = (state = {department: []}, action) => {
       return {
         ...state,
         loading: false,
-        isUpdated: action.payload,
+        department: action.payload,
       };
 
-    case UPDATE_Department_RESET:
-      setTimeout(() => {
-        return {
-          ...state,
-          isUpdated: false,
-        };
-      }, 1000);
     case UPDATE_Department_FAIL:
       return {
         loading: false,
         department: null,
-        isUpdated: false,
         error: action.payload,
       };
 
@@ -1699,6 +1713,7 @@ export const getStudentTestReducer = (state = {test: []}, action) => {
 };
 
 export const updateStudentTestReducer = (state = {result: []}, action) => {
+  console.log('data from addresult action', action.payload);
   switch (action.type) {
     case UPDATE_STUDENT_TEST_REQUEST:
       return {
@@ -1738,10 +1753,79 @@ export const updateStudentTestReducer = (state = {result: []}, action) => {
   }
 };
 
+export const addReceiptFormatReducer = (
+  state = {ReceiptFormat: []},
+  action,
+) => {
+  switch (action.type) {
+    case ADD_RECEIPTPREFIX_REQUEST:
+      return {
+        loading: true,
+      };
+
+    case ADD_RECEIPTPREFIX_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        ReceiptFormat: action.payload,
+      };
+
+    case ADD_RECEIPTPREFIX_FAIL:
+      return {
+        loading: false,
+        ReceiptFormat: null,
+        error: action.payload,
+      };
+
+    case CLEAR_ERRORS:
+      return {
+        ...state,
+        error: null,
+      };
+
+    default:
+      return state;
+  }
+};
+
+export const updateReceiptFormatReducer = (
+  state = {ReceiptFormat: []},
+  action,
+) => {
+  switch (action.type) {
+    case UPDATE_RECEIPTPREFIX_REQUEST:
+      return {
+        loading: true,
+      };
+
+    case UPDATE_RECEIPTPREFIX_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        ReceiptFormat: action.payload,
+      };
+
+    case UPDATE_RECEIPTPREFIX_FAIL:
+      return {
+        loading: false,
+        ReceiptFormat: null,
+        error: action.payload,
+      };
+
+    case CLEAR_ERRORS:
+      return {
+        ...state,
+        error: null,
+      };
+
+    default:
+      return state;
+  }
+};
 
 export const getReceiptFormatReducer = (
-  state = { ReceiptFormat: [] },
-  action
+  state = {ReceiptFormat: []},
+  action,
 ) => {
   switch (action.type) {
     case ALL_RECEIPTPREFIX_REQUEST:
@@ -1760,6 +1844,498 @@ export const getReceiptFormatReducer = (
       return {
         loading: false,
         ReceiptFormat: null,
+        error: action.payload,
+      };
+
+    case CLEAR_ERRORS:
+      return {
+        ...state,
+        error: null,
+      };
+
+    default:
+      return state;
+  }
+};
+
+export const getReceiptPrintReducer = (state = {receiptdata: []}, action) => {
+  switch (action.type) {
+    case ALL_RECEIPTDATA_REQUEST:
+      return {
+        loading: true,
+      };
+
+    case ALL_RECEIPTDATA_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        receiptdata: action.payload,
+      };
+
+    case ALL_RECEIPTDATA_FAIL:
+      return {
+        loading: false,
+        receiptdata: null,
+        error: action.payload,
+      };
+
+    case CLEAR_ERRORS:
+      return {
+        ...state,
+        error: null,
+      };
+
+    default:
+      return state;
+  }
+};
+
+export const getChoachingMonthlyFeeReducer = (
+  state = {receiptdata: []},
+  action,
+) => {
+  switch (action.type) {
+    case ALL_RECEIPTDATA_REQUEST:
+      return {
+        loading: true,
+      };
+
+    case ALL_RECEIPTDATA_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        receiptdata: action.payload,
+      };
+
+    case ALL_RECEIPTDATA_FAIL:
+      return {
+        loading: false,
+        receiptdata: null,
+        error: action.payload,
+      };
+
+    case CLEAR_ERRORS:
+      return {
+        ...state,
+        error: null,
+      };
+
+    default:
+      return state;
+  }
+};
+
+export const GetSection = (state = {sections: {}}, action) => {
+  switch (action.type) {
+    case GET_SECTION_REQUEST:
+      return {
+        loading: true,
+      };
+
+    case GET_SECTION__SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        sections: action.payload,
+      };
+
+    case GET_SECTION__FAIL:
+      return {
+        loading: false,
+        sections: null,
+        error: action.payload,
+      };
+
+    case CLEAR_ERRORS:
+      return {
+        ...state,
+        error: null,
+      };
+
+    default:
+      return state;
+  }
+};
+
+export const GetSession = (state = {Sessions: {}}, action) => {
+  switch (action.type) {
+    case GET_SESSION_REQUEST:
+      return {
+        loading: true,
+      };
+
+    case GET_SESSION_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        Sessions: action.payload,
+      };
+
+    case GET_SESSION_FAIL:
+      return {
+        loading: false,
+        Sessions: null,
+        error: action.payload,
+      };
+
+    case CLEAR_ERRORS:
+      return {
+        ...state,
+        error: null,
+      };
+
+    default:
+      return state;
+  }
+};
+
+export const GetOtherFeeReducer = (state = {otherfee: {}}, action) => {
+  switch (action.type) {
+    case GET_OTHERFEE_REQUEST:
+      return {
+        loading: true,
+      };
+
+    case GET_OTHERFEE_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        otherfee: action.payload,
+      };
+
+    case GET_OTHERFEE_FAIL:
+      return {
+        loading: false,
+        otherfee: null,
+        error: action.payload,
+      };
+
+    case CLEAR_ERRORS:
+      return {
+        ...state,
+        error: null,
+      };
+
+    default:
+      return state;
+  }
+};
+
+export const GetSubjectReducer = (state = {subject: {}}, action) => {
+  switch (action.type) {
+    case GET_SUBJECT_REQUEST:
+      return {
+        loading: true,
+      };
+
+    case GET_SUBJECT_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        subject: action.payload,
+      };
+
+    case GET_SUBJECT_FAIL:
+      return {
+        loading: false,
+        subject: null,
+        error: action.payload,
+      };
+
+    case CLEAR_ERRORS:
+      return {
+        ...state,
+        error: null,
+      };
+
+    default:
+      return state;
+  }
+};
+
+export const GetClassSubjectReducer = (state = {Classsubject: {}}, action) => {
+  switch (action.type) {
+    case GET_CLASS_SUBJECT_REQUEST:
+      return {
+        loading: true,
+      };
+
+    case GET_CLASS_SUBJECT_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        Classsubject: action.payload,
+      };
+
+    case GET_CLASS_SUBJECT_FAIL:
+      return {
+        loading: false,
+        Classsubject: null,
+        error: action.payload,
+      };
+
+    case CLEAR_ERRORS:
+      return {
+        ...state,
+        error: null,
+      };
+
+    default:
+      return state;
+  }
+};
+
+export const GetSliderReducer = (state = {slider: {}}, action) => {
+  switch (action.type) {
+    case GET_SLIDER_REQUEST:
+      return {
+        loading: true,
+      };
+
+    case GET_SLIDER_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        slider: action.payload,
+      };
+
+    case GET_SLIDER_FAIL:
+      return {
+        loading: false,
+        slider: null,
+        error: action.payload,
+      };
+
+    case CLEAR_ERRORS:
+      return {
+        ...state,
+        error: null,
+      };
+
+    default:
+      return state;
+  }
+};
+
+export const GetNoticReducer = (state = {notic: {}}, action) => {
+  switch (action.type) {
+    case GET_NOTIC_REQUEST:
+      return {
+        loading: true,
+      };
+
+    case GET_NOTIC_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        notic: action.payload,
+      };
+
+    case GET_NOTIC_FAIL:
+      return {
+        loading: false,
+        notic: null,
+        error: action.payload,
+      };
+
+    case CLEAR_ERRORS:
+      return {
+        ...state,
+        error: null,
+      };
+
+    default:
+      return state;
+  }
+};
+
+export const GetFooterDetailsReducer = (
+  state = {footerdetails: {}},
+  action,
+) => {
+  switch (action.type) {
+    case GET_FOOTERDETAILS_REQUEST:
+      return {
+        loading: true,
+      };
+
+    case GET_FOOTERDETAILS_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        footerdetails: action.payload,
+      };
+
+    case GET_FOOTERDETAILS_FAIL:
+      return {
+        loading: false,
+        footerdetails: null,
+        error: action.payload,
+      };
+
+    case CLEAR_ERRORS:
+      return {
+        ...state,
+        error: null,
+      };
+
+    default:
+      return state;
+  }
+};
+
+export const GetStreamReducer = (state = {Stream: {}}, action) => {
+  switch (action.type) {
+    case GET_STREAM_REQUEST:
+      return {
+        loading: true,
+      };
+
+    case GET_STREAM_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        Stream: action.payload,
+      };
+
+    case GET_STREAM_FAIL:
+      return {
+        loading: false,
+        Stream: null,
+        error: action.payload,
+      };
+
+    case CLEAR_ERRORS:
+      return {
+        ...state,
+        error: null,
+      };
+
+    default:
+      return state;
+  }
+};
+
+export const GetCurrentSessionReducer = (
+  state = {CURRENTSESSION: {}},
+  action,
+) => {
+  switch (action.type) {
+    case GET_CURRENTSESSION_REQUEST:
+      return {
+        loading: true,
+      };
+
+    case GET_CURRENTSESSION_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        CURRENTSESSION: action.payload,
+      };
+
+    case GET_CURRENTSESSION_FAIL:
+      return {
+        loading: false,
+        CURRENTSESSION: null,
+        error: action.payload,
+      };
+
+    case CLEAR_ERRORS:
+      return {
+        ...state,
+        error: null,
+      };
+
+    default:
+      return state;
+  }
+};
+
+export const GetYearReducer = (state = {curentyear: {}}, action) => {
+  switch (action.type) {
+    case GET_YEAR_REQUEST:
+      return {
+        loading: true,
+      };
+
+    case GET_YEAR_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        curentyear: action.payload,
+      };
+
+    case GET_YEAR_FAIL:
+      return {
+        loading: false,
+        curentyear: null,
+        error: action.payload,
+      };
+
+    case CLEAR_ERRORS:
+      return {
+        ...state,
+        error: null,
+      };
+
+    default:
+      return state;
+  }
+};
+
+export const GetCoachingStudentReducer = (state = {student: {}}, action) => {
+  switch (action.type) {
+    case ALL_COACHINGSTUDENT_REQUEST:
+      return {
+        loading: true,
+      };
+
+    case ALL_COACHINGSTUDENT_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        student: action.payload,
+      };
+
+    case ALL_COACHINGSTUDENT_FAIL:
+      return {
+        loading: false,
+        student: null,
+        error: action.payload,
+      };
+
+    case CLEAR_ERRORS:
+      return {
+        ...state,
+        error: null,
+      };
+
+    default:
+      return state;
+  }
+};
+
+export const getReceiptCoachingPrintReducer = (
+  state = {receiptdata: []},
+  action,
+) => {
+  switch (action.type) {
+    case ALL_COACHINGRECEIPTDATA_REQUEST:
+      return {
+        loading: true,
+      };
+
+    case ALL_COACHINGRECEIPTDATA_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        receiptdata: action.payload,
+      };
+
+    case ALL_COACHINGRECEIPTDATA_FAIL:
+      return {
+        loading: false,
+        receiptdata: null,
         error: action.payload,
       };
 

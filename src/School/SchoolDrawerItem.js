@@ -49,7 +49,7 @@ const SchoolDrawerItem = ({navigation, setuserData}) => {
             <>
               <Image
                 source={{
-                  uri: `${backendUrl}public/upload/${user?.data?.CredentailsData?.profileurl}`,
+                  uri: `${user?.data?.CredentailsData?.profileurl}`,
                 }}
                 style={{
                   width: 80,
@@ -88,8 +88,7 @@ const SchoolDrawerItem = ({navigation, setuserData}) => {
           />
         )}
         onPress={() => {
-          navigation.closeDrawer();
-          //   navigation.navigate('Profiles', {user});
+          navigation.navigate('DashboardSchool');
         }}
         labelStyle={{color: 'black'}}
       />
@@ -106,8 +105,7 @@ const SchoolDrawerItem = ({navigation, setuserData}) => {
           />
         )}
         onPress={() => {
-          //   navigation.navigate('Home');
-          navigation.closeDrawer();
+          navigation.navigate('FrontOfficeSchool');
         }}
         labelStyle={{color: 'black'}}
       />
@@ -125,8 +123,7 @@ const SchoolDrawerItem = ({navigation, setuserData}) => {
           />
         )}
         onPress={() => {
-          //   navigation.navigate('login');
-          navigation.closeDrawer();
+          navigation.navigate('StudentTabSchool');
         }}
         labelStyle={{color: 'black'}}
       />
@@ -144,7 +141,6 @@ const SchoolDrawerItem = ({navigation, setuserData}) => {
         )}
         onPress={() => {
           //   navigation.navigate('login');
-          navigation.closeDrawer();
         }}
         labelStyle={{color: 'black'}}
       />
@@ -161,8 +157,7 @@ const SchoolDrawerItem = ({navigation, setuserData}) => {
           />
         )}
         onPress={() => {
-          //   navigation.navigate('Changepassword');
-          navigation.closeDrawer();
+          navigation.navigate('AttendanceTabSchool');
         }}
         labelStyle={{color: 'black'}}
       />
@@ -179,8 +174,7 @@ const SchoolDrawerItem = ({navigation, setuserData}) => {
           />
         )}
         onPress={() => {
-          navigation.closeDrawer();
-          //   navigation.navigate('login');
+          navigation.navigate('FeeCollectOptionsSchool');
         }}
         labelStyle={{color: 'black'}}
       />
@@ -196,7 +190,7 @@ const SchoolDrawerItem = ({navigation, setuserData}) => {
             }}
           />
         )}
-        // onPress={() => logout()}
+        onPress={() => navigation.navigate('HumanResourseOptionsSchool')}
         labelStyle={{color: 'black'}}
       />
       <DrawerItem
@@ -257,7 +251,9 @@ const SchoolDrawerItem = ({navigation, setuserData}) => {
             }}
           />
         )}
-        // onPress={() => logout()}
+        onPress={() => {
+          navigation.navigate('MasterOptionsSchool');
+        }}
         labelStyle={{color: 'black'}}
       />
       <DrawerItem
@@ -272,24 +268,12 @@ const SchoolDrawerItem = ({navigation, setuserData}) => {
             }}
           />
         )}
-        // onPress={() => logout()}
+        onPress={() => {
+          navigation.navigate('ReportsOptionsSchool');
+        }}
         labelStyle={{color: 'black'}}
       />
-      <DrawerItem
-        style={styles.menu}
-        label="School Profile"
-        icon={() => (
-          <Image
-            source={coaching}
-            style={{
-              width: 30,
-              height: 30,
-            }}
-          />
-        )}
-        // onPress={() => logout()}
-        labelStyle={{color: 'black'}}
-      />
+
       <DrawerItem
         style={styles.menu}
         label="Test"
@@ -302,7 +286,9 @@ const SchoolDrawerItem = ({navigation, setuserData}) => {
             }}
           />
         )}
-        // onPress={() => logout()}
+        onPress={() => {
+          navigation.navigate('TestSchool');
+        }}
         labelStyle={{color: 'black'}}
       />
       <DrawerItem

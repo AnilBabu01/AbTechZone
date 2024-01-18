@@ -15,15 +15,13 @@ import {
   ALL_SCHOOL_FAIL,
   ALL_CLIENT_REQUEST,
   ALL_CLIENT_SUCCESS,
-  UPDATE_PROFILE_REQUEST,
-  UPDATE_PROFILE_SUCCESS,
-  UPDATE_PROFILE_FAIL,
   ADD_BATCH_REQUEST,
   ADD_BATCH_SUCCESS,
   ADD_BATCH_FAIL,
   UPDATE_BATCH_REQUEST,
   UPDATE_BATCH_SUCCESS,
   UPDATE_BATCH_FAIL,
+  UPDATE_BATCH_RESET,
   DELETE_BATCH_REQUEST,
   DELETE_BATCH_SUCCESS,
   DELETE_BATCH_FAIL,
@@ -48,6 +46,7 @@ import {
   UPDATE_CATEGORY_REQUEST,
   UPDATE_CATEGORY_SUCCESS,
   UPDATE_CATEGORY_FAIL,
+  UPDATE_CATEGORY_RESET,
   DELETE_CATEGORY_REQUEST,
   DELETE_CATEGORY_SUCCESS,
   DELETE_CATEGORY_FAIL,
@@ -78,21 +77,10 @@ import {
   ALL_EMPLOYEETYPE_REQUEST,
   ALL_EMPLOYEETYPE_SUCCESS,
   ALL_EMPLOYEETYPE_FAIL,
-  // ADD_BRANCH_REQUEST,
-  // ADD_BRANCH_SUCCESS,
-  // ADD_BRANCH_FAIL,
-  // UPDATE_BRANCH_REQUEST,
-  // UPDATE_BRANCH_SUCCESS,
-  // UPDATE_BRANCH_FAIL,
-  // DELETE_BRANCH_REQUEST,
-  // DELETE_BRANCH_SUCCESS,
-  // DELETE_BRANCH_FAIL,
-  // ALL_BRANCH_REQUEST,
-  // ALL_BRANCH_SUCCESS,
-  // ALL_BRANCH_FAIL,
   ADD_STUDENT_REQUEST,
   ADD_STUDENT_SUCCESS,
   ADD_STUDENT_FAIL,
+  ADD_STUDENT_RESET,
   UPDATE_STUDENT_REQUEST,
   UPDATE_STUDENT_SUCCESS,
   UPDATE_STUDENT_FAIL,
@@ -120,6 +108,7 @@ import {
   UPDATE_Department_REQUEST,
   UPDATE_Department_SUCCESS,
   UPDATE_Department_FAIL,
+  UPDATE_Department_RESET,
   ALL_Department_REQUEST,
   ALL_Department_SUCCESS,
   ALL_Department_FAIL,
@@ -161,9 +150,57 @@ import {
   UPDATE_STUDENT_TEST_SUCCESS,
   UPDATE_STUDENT_TEST_RESET_SUCCESS,
   UPDATE_STUDENT_TEST_FAIL,
+  ADD_RECEIPTPREFIX_REQUEST,
+  ADD_RECEIPTPREFIX_SUCCESS,
+  ADD_RECEIPTPREFIX_FAIL,
+  UPDATE_RECEIPTPREFIX_REQUEST,
+  UPDATE_RECEIPTPREFIX_SUCCESS,
+  UPDATE_RECEIPTPREFIX_FAIL,
   ALL_RECEIPTPREFIX_REQUEST,
   ALL_RECEIPTPREFIX_SUCCESS,
   ALL_RECEIPTPREFIX_FAIL,
+  ALL_RECEIPTDATA_REQUEST,
+  ALL_RECEIPTDATA_SUCCESS,
+  ALL_RECEIPTDATA_FAIL,
+  GET_SECTION_REQUEST,
+  GET_SECTION__SUCCESS,
+  GET_SESSION_REQUEST,
+  GET_SESSION_SUCCESS,
+  GET_SESSION_FAIL,
+  GET_OTHERFEE_REQUEST,
+  GET_OTHERFEE_SUCCESS,
+  GET_OTHERFEE_FAIL,
+  GET_SUBJECT_REQUEST,
+  GET_SUBJECT_SUCCESS,
+  GET_SUBJECT_FAIL,
+  GET_CLASS_SUBJECT_REQUEST,
+  GET_CLASS_SUBJECT_SUCCESS,
+  GET_CLASS_SUBJECT_FAIL,
+  GET_FOOTERDETAILS_REQUEST,
+  GET_FOOTERDETAILS_SUCCESS,
+  GET_FOOTERDETAILS_FAIL,
+  GET_NOTIC_REQUEST,
+  GET_NOTIC_SUCCESS,
+  GET_NOTIC_FAIL,
+  GET_SLIDER_REQUEST,
+  GET_SLIDER_SUCCESS,
+  GET_SLIDER_FAIL,
+  GET_STREAM_REQUEST,
+  GET_STREAM_SUCCESS,
+  GET_STREAM_FAIL,
+  GET_CURRENTSESSION_REQUEST,
+  GET_CURRENTSESSION_SUCCESS,
+  GET_CURRENTSESSION_FAIL,
+  GET_YEAR_REQUEST,
+  GET_YEAR_SUCCESS,
+  GET_YEAR_FAIL,
+  ALL_COACHINGSTUDENT_REQUEST,
+  ALL_COACHINGSTUDENT_SUCCESS,
+  ALL_COACHINGSTUDENT_FAIL,
+  ALL_COACHINGRECEIPTDATA_REQUEST,
+  ALL_COACHINGRECEIPTDATA_SUCCESS,
+  ALL_COACHINGRECEIPTDATA_FAIL,
+  CLEAR_ERRORS
 } from '../constants/commanConstants';
 
 // Get all College
@@ -1914,6 +1951,7 @@ export const Adddresult = (datas, setOpen) => async dispatch => {
 // Get all Enquiry
 export const getStudenttest = (page, limit, setPage) => async dispatch => {
   try {
+    let token = await AsyncStorage.getItem('erptoken');
     const config = {
       headers: {
         'Content-Type': 'application/json',
@@ -1969,3 +2007,552 @@ export const getReceiptPrefix = (page, limit, setPage) => async dispatch => {
     });
   }
 };
+
+
+
+// Get all Facility
+export const GetSection = (stopName) => async (dispatch) => {
+  try {
+    let token = await AsyncStorage.getItem('erptoken');
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `${token}`,
+      },
+    };
+    dispatch({ type: GET_SECTION_REQUEST });
+
+    if (stopName) {
+      const { data } = await axios.get(
+        `${backendApiUrl}comman/section?stopName=${stopName}`,
+        config
+      );
+
+      dispatch({
+        type: GET_SECTION__SUCCESS,
+        payload: data?.data,
+      });
+    } else {
+      dispatch({ type: GET_SECTION_REQUEST });
+      const { data } = await axios.get(
+        `${backendApiUrl}comman/section`,
+        config
+      );
+
+      dispatch({
+        type: GET_SECTION__SUCCESS,
+        payload: data?.data,
+      });
+    }
+  } catch (error) {
+    dispatch({
+      type: GET_SESSION_FAIL,
+      payload: error?.response?.data?.msg,
+    });
+  }
+};
+
+// Get all Facility
+export const GeOtherFees =
+  (scoursename, datedues, sessionname, sectionname) => async (dispatch) => {
+    try {
+      let token = await AsyncStorage.getItem('erptoken');
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `${token}`,
+        },
+      };
+      dispatch({ type: GET_OTHERFEE_REQUEST });
+
+      if ((scoursename, datedues, sessionname, sectionname)) {
+        const { data } = await axios.get(
+          `${backendApiUrl}student/otherfee?courseorclass=${scoursename}&sessionname=${sessionname}&sectionname=${sectionname}&date=${datedues}`,
+          config
+        );
+
+        dispatch({
+          type: GET_OTHERFEE_SUCCESS,
+          payload: data?.data,
+        });
+      } else {
+        let date = new Date();
+        let fullyear = date.getFullYear();
+        let lastyear = date.getFullYear() - 1;
+        let session = `${lastyear}-${fullyear}`;
+        dispatch({ type: GET_OTHERFEE_REQUEST });
+        const { data } = await axios.get(
+          `${backendApiUrl}student/otherfee?sessionname=${session}`,
+          config
+        );
+
+        dispatch({
+          type: GET_OTHERFEE_SUCCESS,
+          payload: data?.data,
+        });
+      }
+    } catch (error) {
+      dispatch({
+        type: GET_OTHERFEE_FAIL,
+        payload: error?.response?.data?.msg,
+      });
+    }
+  };
+
+// Get all Facility
+export const GetsSubject = (classId, empID, dayname) => async (dispatch) => {
+  try {
+    let token = await AsyncStorage.getItem('erptoken');
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `${token}`,
+      },
+    };
+    dispatch({ type: GET_SUBJECT_REQUEST });
+
+    if (classId || empID || dayname) {
+      const { data } = await axios.get(
+        `${backendApiUrl}comman/subject?classId=${classId}&empID=${empID}&dayname=${dayname}`,
+        config
+      );
+
+      dispatch({
+        type: GET_SUBJECT_SUCCESS,
+        payload: data?.data,
+      });
+    } else {
+      dispatch({ type: GET_SUBJECT_REQUEST });
+      const { data } = await axios.get(
+        `${backendApiUrl}comman/subject`,
+        config
+      );
+
+      dispatch({
+        type: GET_SUBJECT_SUCCESS,
+        payload: data?.data,
+      });
+    }
+  } catch (error) {
+    dispatch({
+      type: GET_SUBJECT_FAIL,
+      payload: error?.response?.data?.msg,
+    });
+  }
+};
+
+// Get all Facility
+
+export const GetClassSubject = (classId, empID) => async (dispatch) => {
+  try {
+    let token = await AsyncStorage.getItem('erptoken');
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `${token}`,
+      },
+    };
+    dispatch({ type: GET_CLASS_SUBJECT_REQUEST });
+
+    if (classId || empID) {
+      const { data } = await axios.get(
+        `${backendApiUrl}comman/classsubject?classId=${classId}&empID=${empID}`,
+        config
+      );
+
+      dispatch({
+        type: GET_CLASS_SUBJECT_SUCCESS,
+        payload: data?.data,
+      });
+    } else {
+      dispatch({ type: GET_CLASS_SUBJECT_REQUEST });
+      const { data } = await axios.get(
+        `${backendApiUrl}comman/classsubject`,
+        config
+      );
+
+      dispatch({
+        type: GET_CLASS_SUBJECT_SUCCESS,
+        payload: data?.data,
+      });
+    }
+  } catch (error) {
+    dispatch({
+      type: GET_CLASS_SUBJECT_FAIL,
+      payload: error?.response?.data?.msg,
+    });
+  }
+};
+
+// Get all Facility
+
+export const GetNotic = (classId, empID) => async (dispatch) => {
+  try {
+   let token = await AsyncStorage.getItem('erptoken');
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `${token}`,
+      },
+    };
+    dispatch({ type: GET_NOTIC_REQUEST });
+
+    if (classId || empID) {
+      const { data } = await axios.get(
+        `${backendApiUrl}comman/notes?classId=${classId}&empID=${empID}`,
+        config
+      );
+
+      dispatch({
+        type: GET_NOTIC_SUCCESS,
+        payload: data?.data,
+      });
+    } else {
+      dispatch({ type: GET_NOTIC_REQUEST });
+      const { data } = await axios.get(`${backendApiUrl}comman/notes`, config);
+
+      dispatch({
+        type: GET_NOTIC_SUCCESS,
+        payload: data?.data,
+      });
+    }
+  } catch (error) {
+    dispatch({
+      type: GET_NOTIC_FAIL,
+      payload: error?.response?.data?.msg,
+    });
+  }
+};
+
+// Get all Facility
+
+export const GetFooterDetails = (classId, empID) => async (dispatch) => {
+  try {
+   let token = await AsyncStorage.getItem('erptoken');
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `${token}`,
+      },
+    };
+    dispatch({ type: GET_FOOTERDETAILS_REQUEST });
+
+    if (classId || empID) {
+      const { data } = await axios.get(
+        `${backendApiUrl}comman/footer?classId=${classId}&empID=${empID}`,
+        config
+      );
+
+      dispatch({
+        type: GET_FOOTERDETAILS_SUCCESS,
+        payload: data?.data,
+      });
+    } else {
+      dispatch({ type: GET_FOOTERDETAILS_REQUEST });
+      const { data } = await axios.get(`${backendApiUrl}comman/footer`, config);
+
+      dispatch({
+        type: GET_FOOTERDETAILS_SUCCESS,
+        payload: data?.data,
+      });
+    }
+  } catch (error) {
+    dispatch({
+      type: GET_FOOTERDETAILS_FAIL,
+      payload: error?.response?.data?.msg,
+    });
+  }
+};
+
+// Get all Facility
+
+export const GetSlider = (classId, empID) => async (dispatch) => {
+  try {
+   let token = await AsyncStorage.getItem('erptoken');
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `${token}`,
+      },
+    };
+    dispatch({ type: GET_SLIDER_REQUEST });
+
+    if (classId || empID) {
+      const { data } = await axios.get(
+        `${backendApiUrl}comman/slider?classId=${classId}&empID=${empID}`,
+        config
+      );
+
+      dispatch({
+        type: GET_SLIDER_SUCCESS,
+        payload: data?.data,
+      });
+    } else {
+      dispatch({ type: GET_SLIDER_REQUEST });
+      const { data } = await axios.get(`${backendApiUrl}comman/slider`, config);
+
+      dispatch({
+        type: GET_SLIDER_SUCCESS,
+        payload: data?.data,
+      });
+    }
+  } catch (error) {
+    dispatch({
+      type: GET_SLIDER_FAIL,
+      payload: error?.response?.data?.msg,
+    });
+  }
+};
+
+// Get all Facility
+
+export const GetStream = (scoursename, stream) => async (dispatch) => {
+  try {
+   let token = await AsyncStorage.getItem('erptoken');
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `${token}`,
+      },
+    };
+    dispatch({ type: GET_STREAM_REQUEST });
+
+    if (scoursename || stream) {
+      const { data } = await axios.get(
+        `${backendApiUrl}comman/stream?scoursename=${scoursename}&stream=${stream}`,
+        config
+      );
+
+      dispatch({
+        type: GET_STREAM_SUCCESS,
+        payload: data?.data,
+      });
+    } else {
+      dispatch({ type: GET_STREAM_REQUEST });
+      const { data } = await axios.get(`${backendApiUrl}comman/stream`, config);
+
+      dispatch({
+        type: GET_STREAM_SUCCESS,
+        payload: data?.data,
+      });
+    }
+  } catch (error) {
+    dispatch({
+      type: GET_STREAM_FAIL,
+      payload: error?.response?.data?.msg,
+    });
+  }
+};
+
+// Get all Facility
+export const GetSession = (stopName) => async (dispatch) => {
+  try {
+    let token = await AsyncStorage.getItem('erptoken');
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `${token}`,
+      },
+    };
+    dispatch({ type: GET_SESSION_REQUEST });
+
+    if (stopName) {
+      const { data } = await axios.get(
+        `${backendApiUrl}comman/session?stopName=${stopName}`,
+        config
+      );
+
+      dispatch({
+        type: GET_SESSION_SUCCESS,
+        payload: data?.data,
+      });
+    } else {
+      dispatch({ type: GET_SESSION_REQUEST });
+      const { data } = await axios.get(
+        `${backendApiUrl}comman/session`,
+        config
+      );
+
+      dispatch({
+        type: GET_SESSION_SUCCESS,
+        payload: data?.data,
+      });
+    }
+  } catch (error) {
+    dispatch({
+      type: GET_SESSION_FAIL,
+      payload: error?.response?.data?.msg,
+    });
+  }
+};
+
+// Get all Enquiry
+export const getcurrentsession = () => async (dispatch) => {
+  try {
+   let token = await AsyncStorage.getItem('erptoken');
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `${token}`,
+      },
+    };
+    dispatch({ type: GET_CURRENTSESSION_REQUEST });
+
+    const { data } = await axios.get(
+      `${backendApiUrl}school/getsession`,
+      config
+    );
+
+    dispatch({
+      type: GET_CURRENTSESSION_SUCCESS,
+      payload: data?.data,
+    });
+  } catch (error) {
+    dispatch({
+      type: GET_CURRENTSESSION_FAIL,
+      payload: error?.response?.data?.msg,
+    });
+  }
+};
+
+// Get all Enquiry
+export const getcurrentYear = () => async (dispatch) => {
+  try {
+   let token = await AsyncStorage.getItem('erptoken');
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `${token}`,
+      },
+    };
+    dispatch({ type: GET_YEAR_REQUEST });
+
+    const { data } = await axios.get(
+      `${backendApiUrl}coaching/getcurrentyear`,
+      config
+    );
+
+    dispatch({
+      type: GET_YEAR_SUCCESS,
+      payload: data?.data,
+    });
+  } catch (error) {
+    dispatch({
+      type: GET_YEAR_FAIL,
+      payload: error?.response?.data?.msg,
+    });
+  }
+};
+
+// Get all Enquiry
+export const getstudentCoaching =
+  (
+    fromdate,
+    todate,
+    scoursename,
+    sbatch,
+    sstudent,
+    sfathers,
+    rollnumber,
+    status,
+    categoryname
+    // library,
+    // sessionname,
+    // sectionname,
+    // seno,
+    // stream
+  ) =>
+  async (dispatch) => {
+   let token = await AsyncStorage.getItem('erptoken');
+    try {
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `${token}`,
+        },
+      };
+      if (
+        fromdate ||
+        todate ||
+        scoursename ||
+        sbatch ||
+        sfathers ||
+        sstudent ||
+        rollnumber ||
+        status ||
+        categoryname
+        // library ||
+        // sectionname ||
+        // sessionname ||
+        // seno ||
+        // stream
+      ) {
+        dispatch({ type: ALL_COACHINGSTUDENT_REQUEST });
+        const { data } = await axios.get(
+          `${backendApiUrl}student/getAllStudentCoaching?name=${scoursename}&batch=${sbatch}&fromdate=${fromdate}&todate=${todate}&fathers=${sfathers}&studentname=${sstudent}&rollnumber=${rollnumber}&status=${status}&categoryname=${categoryname}`,
+          config
+        );
+        dispatch({
+          type: ALL_COACHINGSTUDENT_SUCCESS,
+          payload: data?.data,
+        });
+      } else {
+        dispatch({ type: ALL_COACHINGSTUDENT_REQUEST });
+        const { data } = await axios.get(
+          `${backendApiUrl}student/getAllStudentCoaching`,
+
+          config
+        );
+        dispatch({
+          type: ALL_COACHINGSTUDENT_SUCCESS,
+          payload: data?.data,
+        });
+      }
+    } catch (error) {
+      dispatch({
+        type: ALL_COACHINGSTUDENT_FAIL,
+        payload: error?.response?.data?.msg,
+      });
+    }
+  };
+
+// Get all Enquiry
+export const getPrintReceiptCoaching =
+  (fromdate, scoursename, sstudent, rollnumber, todate) => async (dispatch) => {
+    try {
+     let token = await AsyncStorage.getItem('erptoken');
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `${token}`,
+        },
+      };
+      if (fromdate || scoursename || sstudent || rollnumber || todate) {
+        dispatch({ type: ALL_COACHINGRECEIPTDATA_REQUEST });
+        const { data } = await axios.get(
+          `${backendApiUrl}student/getReceiptCoaching?name=${scoursename}&fromdate=${fromdate}&studentname=${sstudent}&rollnumber=${rollnumber}&todate=${todate}`,
+          config
+        );
+        dispatch({
+          type: ALL_COACHINGRECEIPTDATA_REQUEST,
+          payload: data?.data,
+        });
+      } else {
+        dispatch({ type: ALL_COACHINGRECEIPTDATA_REQUEST });
+        const { data } = await axios.get(
+          `${backendApiUrl}student/getReceiptCoaching`,
+
+          config
+        );
+        dispatch({
+          type: ALL_COACHINGRECEIPTDATA_SUCCESS,
+          payload: data?.data,
+        });
+      }
+    } catch (error) {
+      dispatch({
+        type: ALL_COACHINGRECEIPTDATA_FAIL,
+        payload: error?.response?.data?.msg,
+      });
+    }
+  };

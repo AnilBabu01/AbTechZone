@@ -6,17 +6,84 @@ import {
   ScrollView,
   TextInput,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Height, Width} from '../../../utils/responsive';
 import {primary} from '../../../utils/Colors';
 import {useNavigation} from '@react-navigation/native';
-
+import {Addcourse, getcourse} from '../../../redux/action/commanAction';
+import {useDispatch, useSelector} from 'react-redux';
+import Loader from '../../../Component/Loader/Loader';
+import {serverInstance} from '../../../API/ServerInstance';
+import Toast from 'react-native-toast-message';
 const AddCourse = () => {
+  const dispatch = useDispatch();
   const navigation = useNavigation();
   const [index, setIndex] = useState(0);
+  const [sms, setsms] = useState('');
+  const [loader, setloader] = useState(false);
+  const [coursename, setcoursename] = useState('');
+  const [courseduration, setcourseduration] = useState('');
+  const {course, error} = useSelector(state => state.addcourse);
 
+  const submit = () => {
+    if (coursename && courseduration) {
+      setloader(true);
+      setsms('Adding...');
+      const data = {
+        coursename: coursename,
+        courseduration: courseduration,
+      };
+      serverInstance('comman/course', 'post', data).then(res => {
+        if (res?.status) {
+          setloader(false);
+          setsms('');
+          Toast.show({
+            type: 'success',
+            text1: 'Success',
+            text2: res?.msg,
+          });
+          dispatch(getcourse());
+          navigation.goBack();
+        }
+
+        if (res?.status === false) {
+          setloader(false);
+          setsms('');
+          Toast.show({
+            type: 'error',
+            text1: 'Error',
+            text2: res?.msg,
+          });
+          dispatch(getcourse());
+        }
+      });
+    } else {
+      setsms('');
+      setloader(false);
+    }
+  };
+
+  useEffect(() => {
+    if (course?.status) {
+      dispatch(getcourse());
+      setsms('');
+      setloader(false);
+    } else {
+      setsms('');
+      setloader(false);
+    }
+  }, [course]);
+  useEffect(() => {
+    if (error) {
+      if (error?.status === false) {
+        setloader(false);
+        setsms('');
+      }
+    }
+  }, [error]);
   return (
     <View>
+      <Loader loader={loader} sms={sms} />
       <ScrollView>
         <View style={styles.enquirymainview}>
           <View style={styles.dateview}>
@@ -29,7 +96,7 @@ const AddCourse = () => {
                 alignItems: 'center',
                 borderWidth: 1.5,
                 borderRadius: Width(5),
-                borderColor: index === 7 ? primary : '#a9a9a9',
+                borderColor: index === 8 ? primary : '#a9a9a9',
                 marginTop: Height(10),
               }}
               onStartShouldSetResponder={() => setIndex(7)}>
@@ -42,12 +109,11 @@ const AddCourse = () => {
                   paddingHorizontal: Width(20),
                   fontSize: Height(16),
                 }}
-                // secureTextEntry={passwordVisible}
                 // onBlur={() => Validation()}
-                // value={address}
-                // onChangeText={text => setaddress(text)}
+                value={coursename}
+                onChangeText={text => setcoursename(text)}
                 // onPressIn={() => setIndex(3)}
-                onFocus={() => setIndex(7)}
+                onFocus={() => setIndex(8)}
               />
             </View>
             <View
@@ -59,7 +125,7 @@ const AddCourse = () => {
                 alignItems: 'center',
                 borderWidth: 1.5,
                 borderRadius: Width(5),
-                borderColor: index === 7 ? primary : '#a9a9a9',
+                borderColor: index === 9 ? primary : '#a9a9a9',
                 marginTop: Height(10),
               }}
               onStartShouldSetResponder={() => setIndex(7)}>
@@ -74,17 +140,16 @@ const AddCourse = () => {
                 }}
                 // secureTextEntry={passwordVisible}
                 // onBlur={() => Validation()}
-                // value={address}
-                // onChangeText={text => setaddress(text)}
+                value={courseduration}
+                onChangeText={text => setcourseduration(text)}
                 // onPressIn={() => setIndex(3)}
-                onFocus={() => setIndex(7)}
+                onFocus={() => setIndex(9)}
               />
             </View>
           </View>
 
           <View style={styles.loginbtndiv}>
-            <TouchableOpacity
-              onPress={() => navigation.navigate('BatchCoaching')}>
+            <TouchableOpacity onPress={() => submit()}>
               <View style={styles.loginbtn}>
                 <Text style={styles.logintextstyle}>Save</Text>
               </View>

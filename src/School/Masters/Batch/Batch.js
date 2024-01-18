@@ -5,18 +5,31 @@ import {
   Modal,
   TouchableOpacity,
   ScrollView,
-  TextInput,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Height, Width} from '../../../utils/responsive';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import Header from '../../../Component/Header/Header';
 import {primary} from '../../../utils/Colors';
 import AddEnquiry from './AddBatch';
 import BatchCard from './BatchCard';
+import {getbatch} from '../../../redux/action/commanAction';
+import {useDispatch, useSelector} from 'react-redux';
 const Batch = ({navigation}) => {
+  const dispatch = useDispatch();
   const [openModel, setopenModel] = useState(false);
-  const [index, setIndex] = useState(0);
+  const [batchlist, setbatchlist] = useState('');
+  const {batch} = useSelector(state => state.getbatch);
+
+  useEffect(() => {
+    dispatch(getbatch());
+  }, []);
+
+  useEffect(() => {
+    if (batch) {
+      setbatchlist(batch);
+    }
+  }, [batch]);
+
   return (
     <View>
       <Modal animationType={'fade'} transparent={true} visible={openModel}>
@@ -55,7 +68,10 @@ const Batch = ({navigation}) => {
       </View>
       <ScrollView>
         <View style={styles.enquirymainview}>
-          <BatchCard />
+          {batchlist &&
+            batchlist?.map((item, index) => {
+              return <BatchCard key={index} data={item} index={index} />;
+            })}
         </View>
       </ScrollView>
     </View>
@@ -92,6 +108,7 @@ const styles = StyleSheet.create({
   },
   enquirymainview: {
     paddingHorizontal: 10,
+    marginBottom: 50,
   },
 
   loginbtndiv: {

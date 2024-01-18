@@ -1,26 +1,100 @@
-import {StyleSheet, Text, View, ScrollView,Image} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  Image,
+  TouchableOpacity,
+  Alert,
+} from 'react-native';
 import {primary} from '../../../utils/Colors';
 import Delete from '../../../assets/Delete.png';
 import Edit from '../../../assets/Edit.png';
-const DepartmentCard = ({item}) => {
+import {
+  deleteDepartment,
+  getDepartment,
+} from '../../../redux/action/commanAction';
+import React, {useState, useEffect} from 'react';
+import {useNavigation} from '@react-navigation/native';
+import {useDispatch, useSelector} from 'react-redux';
+import Loader from '../../../Component/Loader/Loader';
+const DepartmentCard = ({data}) => {
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
+  const [sms, setsms] = useState('');
+  const [loader, setloader] = useState(false);
+  const {department, error} = useSelector(state => state.deletedepart);
+  const submit = id => {
+    setsms('Deleting...');
+    setloader(true);
+    dispatch(deleteDepartment(id));
+  };
+
+  useEffect(() => {
+    if (department?.status) {
+      dispatch(getDepartment());
+      setsms('');
+      setloader(false);
+    }
+  }, [department]);
+  useEffect(() => {
+    if (error) {
+      if (error?.status === false) {
+        setloader(false);
+        setsms('');
+      }
+    }
+  }, [error]);
+
+  const confirmation = id => {
+    Alert.alert(
+      'Delete',
+      'Do you really want to Delete ?',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'OK',
+          onPress: () => submit(id),
+        },
+      ],
+      {
+        cancelable: false,
+      },
+    );
+    return true;
+  };
+
   return (
-    <ScrollView>
-      <View style={styles.connainer}>
-        <View style={styles.card10}>
-          <View style={styles.viewdel}>
-            <Text>Department</Text>
-            <Text>Front Office</Text>
-          </View>
-          <View style={styles.viewdel}>
-            <Text></Text>
-            <View style={styles.mainActionView}>
-              <Image source={Delete} style={styles.actionimg10} />
-              <Image source={Edit} style={styles.actionimg} />
+    <View>
+      <Loader loader={loader} sms={sms} />
+      <ScrollView>
+        <View style={styles.connainer}>
+          <View style={styles.card10}>
+            <View style={styles.viewdel}>
+              <Text>Department</Text>
+              <Text>{data?.DepartmentName}</Text>
+            </View>
+            <View style={styles.viewdel}>
+              <Text></Text>
+              <View style={styles.mainActionView}>
+                <TouchableOpacity onPress={() => confirmation(data?.id)}>
+                  <Image source={Delete} style={styles.actionimg10} />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate('UpdatedepartmentCoaching', {data})
+                  }>
+                  <Image source={Edit} style={styles.actionimg} />
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
         </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </View>
   );
 };
 

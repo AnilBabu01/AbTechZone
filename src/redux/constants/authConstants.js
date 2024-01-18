@@ -49,11 +49,4 @@ export const DELETE_USER_FAIL = "DELETE_USER_FAIL";
 export const LOGOUT_SUCCESS = "LOGOUT_SUCCESS";
 export const LOGOUT_FAIL = "LOGOUT_FAIL";
 
-export const LOADING = 'LOADING';
-export const AUTH_LOGIN = 'AUTH_LOGIN';
-export const AUTH_SIGNUP = 'AUTH_SIGNUP';
-export const USER_ALLDONATION = 'USER_ALLDONATION';
-
-
-
 export const CLEAR_ERRORS = "CLEAR_ERRORS";

@@ -38,7 +38,7 @@ const ParentDrawerItem = ({navigation, setuserData}) => {
             <>
               <Image
                 source={{
-                  uri: `${backendUrl}public/upload/${user?.data?.CredentailsData?.profileurl}`,
+                  uri: `${user?.data?.CredentailsData?.profileurl}`,
                 }}
                 style={{
                   width: 80,

@@ -9,6 +9,7 @@ import {
   allUsersReducer,
   userDetailsReducer,
 } from './authReducers';
+
 import {
   getCoachingReducer,
   getSchoolReducer,
@@ -57,7 +58,23 @@ import {
   updateCredentialsReducer,
   getStudentTestReducer,
   updateStudentTestReducer,
+  addReceiptFormatReducer,
   getReceiptFormatReducer,
+  updateReceiptFormatReducer,
+  getReceiptPrintReducer,
+  GetSection,
+  GetSession,
+  GetOtherFeeReducer,
+  GetSubjectReducer,
+  GetClassSubjectReducer,
+  GetFooterDetailsReducer,
+  GetNoticReducer,
+  GetSliderReducer,
+  GetStreamReducer,
+  GetCurrentSessionReducer,
+  GetYearReducer,
+  getReceiptCoachingPrintReducer,
+  GetCoachingStudentReducer
 } from './commanReducers';
 import {
   getenquiriesReducer,
@@ -73,6 +90,8 @@ import {
   MonthlyAttendanceReducer,
 } from './attendanceReducers';
 import {getfee} from './commanReducers';
+
+
 export default combineReducers({
   auth: authReducer,
   user: userReducer,
@@ -135,5 +154,22 @@ export default combineReducers({
   updateCredentials: updateCredentialsReducer,
   getStudentTest: getStudentTestReducer,
   updateStudentTest: updateStudentTestReducer,
+  GetSection: GetSection,
+  GetSession: GetSession,
+  GetOtherFee: GetOtherFeeReducer,
+  GetSubject: GetSubjectReducer,
+  GetClassSubject: GetClassSubjectReducer,
+  GetFooterDetails: GetFooterDetailsReducer,
+  GetNotic: GetNoticReducer,
+  GetSlider: GetSliderReducer,
+  GetStream: GetStreamReducer,
+  GetCurrentSession: GetCurrentSessionReducer,
+  GetYear: GetYearReducer,
+  getReceiptCoachingPrint:getReceiptCoachingPrintReducer,
+  GetCoachingStudent:GetCoachingStudentReducer,
+  updateStudentTest: updateStudentTestReducer,
+  addReceiptFormat: addReceiptFormatReducer,
   getReceiptFormat: getReceiptFormatReducer,
+  updateReceiptFormat: updateReceiptFormatReducer,
+  getReceiptPrint: getReceiptPrintReducer,
 });

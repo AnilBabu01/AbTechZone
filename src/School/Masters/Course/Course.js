@@ -6,16 +6,33 @@ import {
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Height, Width} from '../../../utils/responsive';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
 import {primary} from '../../../utils/Colors';
 import AddEnquiry from './AddCourse';
 import BatchCard from './CourseCard';
+import {getcourse} from '../../../redux/action/commanAction';
+import {useDispatch, useSelector} from 'react-redux';
 const Course = ({navigation}) => {
   const [openModel, setopenModel] = useState(false);
+  const dispatch = useDispatch();
   const [index, setIndex] = useState(0);
+  const [sms, setsms] = useState('');
+  const [loader, setloader] = useState(false);
+  const [courselist, setcourselist] = useState('');
+  const {course, error} = useSelector(state => state.getcourse);
+
+  useEffect(() => {
+    dispatch(getcourse());
+  }, []);
+
+  useEffect(() => {
+    if (course) {
+      setcourselist(course);
+    }
+  }, [course]);
+
   return (
     <View>
       <Modal animationType={'fade'} transparent={true} visible={openModel}>
@@ -39,7 +56,10 @@ const Course = ({navigation}) => {
       </View>
       <ScrollView>
         <View style={styles.enquirymainview}>
-          <BatchCard />
+          {courselist &&
+            courselist?.map((data, index) => {
+              return <BatchCard key={index} data={data} />;
+            })}
         </View>
       </ScrollView>
     </View>

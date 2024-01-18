@@ -1,6 +1,12 @@
 import {StyleSheet, Image, View, Text, TouchableOpacity} from 'react-native';
 import React from 'react';
 import Header from '../../Component/Header/Header';
+import batch from '../../assets/batchicon.png';
+import course from '../../assets/course.png';
+import categoryies from '../../assets/category.png';
+import feeicon from '../../assets/Feeicon.png';
+import depart from '../../assets/department.png';
+import design from '../../assets/designation.png';
 import Option from '../../assets/option.png';
 import {useNavigation} from '@react-navigation/native';
 const MasterOptions = () => {
@@ -21,12 +27,7 @@ const MasterOptions = () => {
             <Text>Course</Text>
           </View>
         </TouchableOpacity>
-        {/* <TouchableOpacity onPress={() => navigation.navigate('DurationCoaching')}>
-          <View style={styles.mainoption}>
-            <Image source={Option} style={styles.optionimg} />
-            <Text>Duration</Text>
-          </View>
-        </TouchableOpacity> */}
+
         <TouchableOpacity
           onPress={() => navigation.navigate('CategoryCoaching')}>
           <View style={styles.mainoption}>
@@ -57,6 +58,13 @@ const MasterOptions = () => {
           </View>
         </TouchableOpacity>
       </View>
+      <TouchableOpacity
+        onPress={() => navigation.navigate('ReceiptPrefixCoaching')}>
+        <View style={styles.mainoption}>
+          <Image source={Option} style={styles.optionimg} />
+          <Text>Receipt Prefix</Text>
+        </View>
+      </TouchableOpacity>
     </>
   );
 };
@@ -70,9 +78,12 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     flexWrap: 'wrap',
     paddingHorizontal: 20,
-    paddingRight:30
+    paddingRight: 30,
   },
-  optionimg: {},
+  optionimg: {
+    width: 80,
+    height: 80,
+  },
   mainoption: {
     display: 'flex',
     alignItems: 'center',

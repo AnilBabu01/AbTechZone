@@ -57,7 +57,7 @@ const Header = () => {
                   <>
                     <Image
                       source={{
-                        uri: `${backendUrl}public/upload/${user?.data?.CredentailsData?.profileurl}`,
+                        uri: `${user?.data?.CredentailsData?.profileurl}`,
                       }}
                       style={styles.avator}
                     />
