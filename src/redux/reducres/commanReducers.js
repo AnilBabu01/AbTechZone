@@ -1007,6 +1007,7 @@ export const addstudentReducer = (state = {student: []}, action) => {
         loading: false,
         student: null,
         error: action.payload,
+        studentaddstatus: false,
       };
 
     case CLEAR_ERRORS:
@@ -1713,7 +1714,7 @@ export const getStudentTestReducer = (state = {test: []}, action) => {
 };
 
 export const updateStudentTestReducer = (state = {result: []}, action) => {
-  console.log('data from addresult action', action.payload);
+
   switch (action.type) {
     case UPDATE_STUDENT_TEST_REQUEST:
       return {

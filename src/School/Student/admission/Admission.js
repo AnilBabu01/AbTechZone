@@ -5,7 +5,7 @@ import {
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
-import React,{useEffect} from 'react';
+import React, {useEffect} from 'react';
 import {Height, Width} from '../../../utils/responsive';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import CardEnquiry from './Card';
@@ -21,7 +21,13 @@ import {
   GetSection,
   getcurrentsession,
 } from '../../../redux/action/commanAction';
-import {useDispatch, useSelector} from 'react-redux';
+import {
+  GetHostel,
+  GetFacility,
+  GetCategory,
+} from '../../../redux/action/hostelActions';
+import {GetRoute} from '../../../redux/action/transportActions';
+import {useDispatch} from 'react-redux';
 const Admission = ({navigation}) => {
   const dispatch = useDispatch();
 
@@ -34,6 +40,10 @@ const Admission = ({navigation}) => {
     dispatch(GetSession());
     dispatch(GetSection());
     dispatch(getcurrentsession());
+    dispatch(GetHostel());
+    dispatch(GetFacility());
+    dispatch(GetCategory());
+    dispatch(GetRoute());
   }, []);
 
   return (

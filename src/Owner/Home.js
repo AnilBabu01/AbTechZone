@@ -4,19 +4,16 @@ import {
   View,
   ScrollView,
   StatusBar,
-  TouchableOpacity,
   Image,
 } from 'react-native';
 import React from 'react';
 import Header from '../Component/Header/Header';
-import {primary, secondary, hightlight} from '../utils/Colors';
-import {Width, Height} from '../utils/responsive';
+import {primary, hightlight} from '../utils/Colors';
+import {Height} from '../utils/responsive';
 import erp from '../assets/erp1.webp';
 import admission from '../assets/admission.png';
 import assign from '../assets/assign.jpg';
 import fee from '../assets/fee.jpg';
-import iment3 from '../assets/iment3.jpg';
-import libray from '../assets/libray.jpg';
 import trans from '../assets/trans.jpg';
 const Home = () => {
   return (

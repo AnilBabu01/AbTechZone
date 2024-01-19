@@ -10,16 +10,12 @@ import {
 import React, {useState, useEffect} from 'react';
 import {Height, Width} from '../../../utils/responsive';
 import {primary} from '../../../utils/Colors';
-import moment from 'moment';
 import {Dropdown} from 'react-native-element-dropdown';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {RadioButton} from 'react-native-paper';
 import check from '../../../assets/check1.png';
-import {
-  serverFormdataInstance,
-  serverInstance,
-} from '../../../API/ServerInstance';
+import {serverInstance} from '../../../API/ServerInstance';
 import {backendApiUrl} from '../../../Config/config';
 import axios from 'axios';
 import Toast from 'react-native-toast-message';
@@ -30,9 +26,7 @@ import {
   getfeelist,
   Addstudent,
 } from '../../../redux/action/commanAction';
-import {useRouter} from 'next/router';
 import {useNavigation} from '@react-navigation/native';
-import Loader from '../../../Component/Loader/Loader';
 import RNButton from '../../../Component/RNButton';
 import RNInputField from '../../../Component/RNInputField';
 import RNDatePicker from '../../../Component/RNDatePicker';
@@ -41,6 +35,8 @@ import {handleDate, getTodaysDate} from '../../../utils/functions';
 import {deviceHeight, deviceWidth} from '../../../utils/constant';
 import {Colors} from '../../../utils/Colors';
 import {ADD_STUDENT_RESET} from '../../../redux/constants/commanConstants';
+import moment from 'moment';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const studentStatus = [
   {label: 'Active', value: 'Active'},
   {label: 'On Leave', value: 'On Leave'},
@@ -56,8 +52,12 @@ const TakeAdmission = () => {
   const [loader, setloader] = useState(false);
   const [index, setIndex] = useState(0);
   const [openModel, setopenModel] = useState(false);
+  const [setshowdownload, setsetshowdownload] = useState(false);
   const [stream, setstream] = useState('NONE');
-  const [DateOfBirth, setDateOfBirth] = useState('');
+  const [DateOfBirth, setDateOfBirth] = useState(getTodaysDate());
+  const [islibrary, setislibrary] = useState(false);
+  const [ishostel, setishostel] = useState(false);
+  const [istransport, setistransport] = useState(false);
   const [SrNumber, setSrNumber] = useState('');
   const [sessionname, setsessionname] = useState('');
   const [sectionname, setsectionname] = useState('');
@@ -77,7 +77,6 @@ const TakeAdmission = () => {
   const [studentemail, setstudentemail] = useState('');
   const [studentphone, setstudentphone] = useState('');
   const [adminssiondate, setadminssiondate] = useState(getTodaysDate());
-  const [dateofbirth, setdateofbirth] = useState(getTodaysDate());
   const [passProfile, setpassProfile] = useState('');
   const [passadharcard, setpassadharcard] = useState('');
   const [passmarksheet, setpassmarksheet] = useState('');
@@ -98,22 +97,37 @@ const TakeAdmission = () => {
   const [hostelfacilitylist, sethostelfacilitylist] = useState([]);
   const [routelist, setroutelist] = useState([]);
   const [sessionList, setsessionList] = useState([]);
+  const [hostelname, sethostelname] = useState('');
+  const [hostelcategoryname, sethostelcategoryname] = useState('');
+  const [hostlefacility, sethostlefacility] = useState('');
+  const [hosteldefaultfee, sethosteldefaultfee] = useState(0);
+  const [hosteldefaultfeepermonth, sethosteldefaultfeepermonth] =
+    useState(true);
+  const [transportdefaultfee, settransportdefaultfee] = useState(true);
+  const [hostelmanualpermonthfee, sethostelmanualpermonthfee] = useState('0');
+  const [onlyHostelFee, setonlyHostelFee] = useState('');
+  const [hostelfeeperMonth, sethostelfeeperMonth] = useState('');
+  const [fromroute, setfromroute] = useState('');
+  const [toroute, settoroute] = useState('');
+  const [onlyTransport, setonlyTransport] = useState('');
+  const [TransportFeePermonth, setTransportFeePermonth] = useState('');
+  const [loading1, setloading1] = useState(false);
+  const [loading2, setloading2] = useState(false);
+  const [annualfee, setannualfee] = useState('');
   const {fee} = useSelector(state => state.getfee);
   const {batch} = useSelector(state => state.getbatch);
   const {user} = useSelector(state => state.auth);
   const {category} = useSelector(state => state.getcategory);
-  // const {hostel} = useSelector(state => state.GetHostel);
-  // const {roomcategory} = useSelector(state => state.GetCategory);
-  // const {roomfacility} = useSelector(state => state.GetFacility);
-  // const {route} = useSelector(state => state.GetRoute);
+  const {hostel} = useSelector(state => state.GetHostel);
+  const {roomcategory} = useSelector(state => state.GetCategory);
+  const {roomfacility} = useSelector(state => state.GetFacility);
+  const {route} = useSelector(state => state.GetRoute);
   const {sections} = useSelector(state => state.GetSection);
-  const {studentaddstatus, student, loading} = useSelector(
+  const {studentaddstatus, student, loading, error} = useSelector(
     state => state.addstudent,
   );
   const {CURRENTSESSION} = useSelector(state => state.GetCurrentSession);
   const {Sessions} = useSelector(state => state.GetSession);
-
-  console.log('session and section', batch);
 
   let regfee = courses?.split(' ').pop();
   var lastIndex = courses?.lastIndexOf(' ');
@@ -124,38 +138,95 @@ const TakeAdmission = () => {
   let coursein = first?.substring(0, lastIndex);
   var lastIndex = perFee?.lastIndexOf(' ');
 
-  let Duration = coursein?.split(' ').pop();
   var lastIndex = coursein?.lastIndexOf(' ');
   let regcoursein = coursein?.substring(0, lastIndex);
-
   const submit = async () => {
     try {
+      let token = await AsyncStorage.getItem('erptoken');
+      var momentDate = moment(adminssiondate, 'DD/MM/YYYY');
+      var newadminssiondate = momentDate.format('YYYY-MM-DD');
+      var momentDateOfBirth = moment(DateOfBirth, 'DD/MM/YYYY');
+      var newDateOfBirth = momentDateOfBirth.format('YYYY-MM-DD');
       formData.append('name', studentname);
       formData.append('email', studentemail);
-      formData.append('phoneno1', studentphone);
+      formData.append('phoneno1', '7505786956');
       formData.append('city', city);
       formData.append('state', state);
       formData.append('pincode', Pincode);
+      formData.append('profileurl', passProfile);
+      formData.append('adharcard', passProfile);
+      formData.append('markSheet', passProfile);
+      formData.append('othersdoc', '');
+      formData.append('BirthDocument', '');
       formData.append('fathersPhoneNo', fathersphone);
       formData.append('fathersName', fathersname);
       formData.append('courseorclass', regcoursein);
       formData.append('rollnumber', studentrollno);
-      formData.append('StudentStatus', 'admission');
+      formData.append('StudentStatus', studentstatus);
       formData.append('batch', batchname);
-      formData.append('admissionDate', adminssiondate);
-      formData.append('regisgrationfee', amount);
-      formData.append('courseduration', Duration);
+      formData.append('admissionDate', newadminssiondate);
+      formData.append(
+        'regisgrationfee',
+        selectedValue === 'option1' ? Number(regfee) : Number(amount),
+      );
+      formData.append('courseduration', '');
       formData.append('adharno', adharcardno);
       formData.append('pancardnno', pano);
+      formData.append('whatsappNo', fathersphone);
+      formData.append('markSheetname', '');
+      formData.append('othersdocName', '');
+      formData.append('Status', studentaddstatus);
+      formData.append('Transport', istransport);
+      formData.append('FromRoute', '');
+      formData.append('ToRoute', '');
+      formData.append('BusNumber', '');
+      formData.append('Library', islibrary);
+      formData.append('hostal', ishostel);
+      formData.append('AnnualFee', annualfee);
+      formData.append('Section', sectionname);
+      formData.append('Session', sessionname);
+      formData.append('SrNumber', SrNumber);
+      formData.append('hostelname', hostelname);
+      formData.append('Category', hostelcategoryname);
+      formData.append('Facility', hostlefacility);
+      formData.append('DateOfBirth', newDateOfBirth);
+      formData.append('StudentCategory', categoryname);
+      formData.append('stream', stream);
       formData.append(
-        'permonthfee',
-        getfee === 'default' ? Number(perFee) : Number(monthlyfee),
+        'HostelPerMonthFee',
+        hosteldefaultfeepermonth === true
+          ? Number(hostelfeeperMonth)
+          : Number(onlyHostelFee),
       );
       formData.append(
+        'TotalHostelFee',
+        hosteldefaultfeepermonth === true
+          ? Number(hostelfeeperMonth) * 12
+          : Number(onlyHostelFee) * 12,
+      );
+      formData.append(
+        'TransportPerMonthFee',
+        transportdefaultfee === true
+          ? Number(TransportFeePermonth)
+          : Number(onlyTransport),
+      );
+      formData.append(
+        'TransportTotalHostelFee',
+        transportdefaultfee === true
+          ? Number(TransportFeePermonth) * 12
+          : Number(onlyTransport) * 12,
+      );
+
+      formData.append(
+        'permonthfee',
+        selectedValue === 'option1' ? Number(perFee) : Number(monthlyfee),
+      );
+
+      formData.append(
         'studentTotalFee',
-        getfee === 'default'
-          ? Number(perFee) * Number(Duration)
-          : Number(monthlyfee) * Number(Duration),
+        selectedValue === 'option1'
+          ? Number(perFee) * 12
+          : Number(monthlyfee) * 12,
       );
       formData.append(
         'Studentpassword',
@@ -172,34 +243,8 @@ const TakeAdmission = () => {
 
       setloader(true);
       setsms('Adding...');
-      console.log(formData);
-      serverFormdataInstance('student/addstudent', 'post', formData).then(
-        res => {
-          if (res?.status) {
-            setloader(false);
-            setsms('');
-            Toast.show({
-              type: 'success',
-              text1: 'Success',
-              text2: res?.msg,
-            });
-            // dispatch(getstudent());
-            navigation.goBack();
-          }
 
-          if (res?.status === false) {
-            setloader(false);
-            setsms('');
-            Toast.show({
-              type: 'error',
-              text1: 'Error',
-              text2: res?.msg,
-            });
-            console.log(res);
-            // dispatch(getstudent());
-          }
-        },
-      );
+      dispatch(Addstudent(formData));
     } catch (error) {
       console.log(error);
     }
@@ -212,13 +257,25 @@ const TakeAdmission = () => {
     if (batch) {
       setbatchs(batch);
     }
-    if (studentaddstatus) {
-      setshowdownload(true);
+    if (studentaddstatus === true) {
+      // dispatch(getstudent());
+      // navigation.goBack();
     }
     if (category) {
       setcategorylist(category);
     }
-
+    if (hostel) {
+      sethostellist(hostel);
+    }
+    if (roomcategory) {
+      sethostelcategorylist(roomcategory);
+    }
+    if (roomfacility) {
+      sethostelfacilitylist(roomfacility);
+    }
+    if (route) {
+      setroutelist(route);
+    }
     if (sections) {
       const newArray = [...sections, {section: 'NONE', section: 'NONE'}];
       setsectionlist(newArray);
@@ -233,6 +290,10 @@ const TakeAdmission = () => {
       setsessionList(Sessions);
     }
   }, [
+    roomcategory,
+    roomfacility,
+    hostel,
+    route,
     fee,
     batch,
     studentaddstatus,
@@ -460,6 +521,53 @@ const TakeAdmission = () => {
     });
   };
 
+  const gethostelFee = () => {
+    try {
+      serverInstance('hostel/gethostelfee', 'post', {
+        hostelname: hostelname,
+        Category: hostelcategoryname,
+        Facility: hostlefacility,
+      }).then(res => {
+        if (res?.status === true) {
+          toast.success(res?.msg, {
+            autoClose: 1000,
+          });
+          setloading1(false);
+          sethostelfeeperMonth(res?.data?.PermonthFee);
+          setonlyHostelFee(res?.data?.PermonthFee);
+        }
+      });
+    } catch (error) {
+      setloading1(false);
+    }
+  };
+
+  const gettransportFee = () => {
+    try {
+      setloading2(true);
+      serverInstance('transport/gettransportfee', 'post', {
+        FromRoute: toroute,
+        ToRoute: fromroute,
+      }).then(res => {
+        if (res?.status === true) {
+          console.log('transport fee is', res);
+          // toast.success(res?.msg, {
+          //   autoClose: 1000,
+          // });
+          setloading2(false);
+
+          setTransportFeePermonth(res?.data?.BusRentPermonth);
+          setonlyTransport(res?.data?.BusRentPermonth);
+        }
+        if (res?.status === false) {
+          setloading2(false);
+          console.log('clicked', res);
+        }
+      });
+    } catch (error) {
+      setloading2(false);
+    }
+  };
   return (
     <View>
       {/* <Loader loader={loader} sms={sms} /> */}
@@ -638,8 +746,8 @@ const TakeAdmission = () => {
               <View style={{width: '45%', marginBottom: deviceHeight * 0.02}}>
                 <RNDatePicker
                   title="Date Of Birth"
-                  value={dateofbirth}
-                  onDateChange={date => setdateofbirth(handleDate(date))}
+                  value={DateOfBirth}
+                  onDateChange={date => setDateOfBirth(handleDate(date))}
                 />
               </View>
             </FlexRowWrapper>
@@ -650,6 +758,7 @@ const TakeAdmission = () => {
                   placeholder="Enter Mobile No"
                   value={studentphone}
                   onChangeText={data => setstudentphone(data)}
+                  keyboardType="number-pad"
                 />
               </View>
               <View style={{width: '45%'}}>
@@ -720,7 +829,7 @@ const TakeAdmission = () => {
             </FlexRowWrapper>
 
             <FlexRowWrapper>
-              <View style={{width: '95%'}}>
+              <View style={{width: '45%'}}>
                 <RNInputField
                   label="Adhar Card No"
                   placeholder="Enter Adhar Card No"
@@ -728,102 +837,15 @@ const TakeAdmission = () => {
                   onChangeText={data => setadharcardno(data)}
                 />
               </View>
+              <View style={{width: '45%'}}>
+                <RNInputField
+                  label="Annual Fee"
+                  placeholder="Enter Annual Fee"
+                  value={annualfee}
+                  onChangeText={data => setannualfee(data)}
+                />
+              </View>
             </FlexRowWrapper>
-
-            <View style={{paddingHorizontal: 10}}>
-              <Text style={{fontSize: 20, marginBottom: 10, marginTop: 8}}>
-                Password Size Photo
-              </Text>
-              <View>
-                {passportsize ? (
-                  <>
-                    <Image
-                      source={{uri: passportsize}}
-                      style={styles.imgprestyle}
-                    />
-                  </>
-                ) : (
-                  <>
-                    <View style={styles.imgpreview}>
-                      <TouchableOpacity
-                        onPress={() => handleTakePhotoSignature()}>
-                        <View>
-                          <Ionicons name="camera" size={50} />
-                          {/* <Text>Camera</Text> */}
-                        </View>
-                      </TouchableOpacity>
-                      <TouchableOpacity
-                        onPress={() => handleChoosePhotoSignature()}>
-                        <View>
-                          <Ionicons name="image" size={50} />
-                          {/* <Text>Gallery</Text> */}
-                        </View>
-                      </TouchableOpacity>
-                    </View>
-                  </>
-                )}
-              </View>
-              <Text style={{fontSize: 20, marginBottom: 10, marginTop: 8}}>
-                Adhar Card
-              </Text>
-              <View>
-                {adharno ? (
-                  <>
-                    <Image source={{uri: adharno}} style={styles.imgprestyle} />
-                  </>
-                ) : (
-                  <>
-                    <View style={styles.imgpreview}>
-                      <TouchableOpacity onPress={() => handleTakePhotoAdhar()}>
-                        <View>
-                          <Ionicons name="camera" size={50} />
-                          {/* <Text>Camera</Text> */}
-                        </View>
-                      </TouchableOpacity>
-                      <TouchableOpacity
-                        onPress={() => handleChoosePhotoAdhar()}>
-                        <View>
-                          <Ionicons name="image" size={50} />
-                          {/* <Text>Gallery</Text> */}
-                        </View>
-                      </TouchableOpacity>
-                    </View>
-                  </>
-                )}
-              </View>
-              <Text style={{fontSize: 20, marginBottom: 10, marginTop: 8}}>
-                Previous MarkSheet
-              </Text>
-              <View>
-                {premarksheet ? (
-                  <>
-                    <Image
-                      source={{uri: premarksheet}}
-                      style={styles.imgprestyle}
-                    />
-                  </>
-                ) : (
-                  <>
-                    <View style={styles.imgpreview}>
-                      <TouchableOpacity
-                        onPress={() => handleTakePhotoMarksheet()}>
-                        <View>
-                          <Ionicons name="camera" size={50} />
-                          {/* <Text>Camera</Text> */}
-                        </View>
-                      </TouchableOpacity>
-                      <TouchableOpacity
-                        onPress={() => handleChoosePhotoMarksheet()}>
-                        <View>
-                          <Ionicons name="image" size={50} />
-                          {/* <Text>Gallery</Text> */}
-                        </View>
-                      </TouchableOpacity>
-                    </View>
-                  </>
-                )}
-              </View>
-            </View>
 
             <FlexRowWrapper>
               <View style={{width: '45%'}}>
@@ -922,6 +944,7 @@ const TakeAdmission = () => {
                     position: 'relative',
                   }}>
                   <RNInputField
+                    disabled
                     style={{backgroundColor: Colors.fadeGray}}
                     label="Registration Fee"
                     value={regfee}
@@ -936,6 +959,7 @@ const TakeAdmission = () => {
                     position: 'relative',
                   }}>
                   <RNInputField
+                    disabled
                     style={{backgroundColor: Colors.fadeGray}}
                     label="Monthly Fee"
                     value={perFee}
@@ -957,7 +981,7 @@ const TakeAdmission = () => {
                       style={{
                         width: Width(280),
                         fontFamily: 'Gilroy-SemiBold',
-                        paddingHorizontal: Width(20),
+                        paddingHorizontal: Width(15),
                         fontSize: Height(16),
                       }}>
                       {Number(perFee) * Number(12)}
@@ -1021,7 +1045,531 @@ const TakeAdmission = () => {
             )}
           </View>
 
+          <FlexRowWrapper>
+            <View style={styles.radioButton}>
+              <RadioButton.Android
+                value={false}
+                status={islibrary === true ? 'checked' : 'unchecked'}
+                onPress={() => setislibrary(!islibrary)}
+                color="#007BFF"
+              />
+              <Text style={styles.radioLabel}>Library</Text>
+            </View>
+            <View style={styles.radioButton}>
+              <RadioButton.Android
+                value={false}
+                status={ishostel === true ? 'checked' : 'unchecked'}
+                onPress={() => setishostel(!ishostel)}
+                color="#007BFF"
+              />
+              <Text style={styles.radioLabel}>Hostel</Text>
+            </View>
+
+            <View style={styles.radioButton}>
+              <RadioButton.Android
+                value={false}
+                status={istransport === true ? 'checked' : 'unchecked'}
+                onPress={() => setistransport(!istransport)}
+                color="#007BFF"
+              />
+              <Text style={styles.radioLabel}>Transport</Text>
+            </View>
+          </FlexRowWrapper>
+
+          {ishostel && (
+            <>
+              <FlexRowWrapper>
+                <View style={{width: '45%'}}>
+                  <View style={{marginHorizontal: deviceWidth * 0.01}}>
+                    <Text
+                      style={{fontSize: 14, fontWeight: '600', lineHeight: 19}}>
+                      Hostel Name
+                    </Text>
+                    <Dropdown
+                      style={styles.dropstyle}
+                      placeholderStyle={styles.placeholderStyle}
+                      selectedTextStyle={styles.selectedTextStyle}
+                      inputSearchStyle={styles.inputSearchStyle}
+                      iconStyle={styles.iconStyle}
+                      data={
+                        hostellist &&
+                        hostellist?.map(item => ({
+                          label: `${item?.HostelName}`,
+                          value: `${item?.HostelName}`,
+                        }))
+                      }
+                      search
+                      maxHeight={300}
+                      labelField="label"
+                      valueField="value"
+                      placeholder="Select Hostel"
+                      searchPlaceholder="Search..."
+                      value={hostelname}
+                      onChange={item => {
+                        sethostelname(item.value);
+                      }}
+                    />
+                  </View>
+                </View>
+                <View style={{width: '45%', marginBottom: deviceHeight * 0.02}}>
+                  <View style={{marginHorizontal: deviceWidth * 0.01}}>
+                    <Text
+                      style={{fontSize: 14, fontWeight: '600', lineHeight: 19}}>
+                      Category
+                    </Text>
+                    <Dropdown
+                      style={styles.dropstyle}
+                      placeholderStyle={styles.placeholderStyle}
+                      selectedTextStyle={styles.selectedTextStyle}
+                      inputSearchStyle={styles.inputSearchStyle}
+                      iconStyle={styles.iconStyle}
+                      data={
+                        hostelcategorylist &&
+                        hostelcategorylist?.map(item => ({
+                          label: `${item?.roomCategory}`,
+                          value: `${item?.roomCategory}`,
+                        }))
+                      }
+                      search
+                      maxHeight={300}
+                      labelField="label"
+                      valueField="value"
+                      placeholder="Select Category"
+                      searchPlaceholder="Search..."
+                      value={hostelcategoryname}
+                      onChange={item => {
+                        sethostelcategoryname(item.value);
+                      }}
+                    />
+                  </View>
+                </View>
+              </FlexRowWrapper>
+              <View style={styles.getfeeview}>
+                <View style={{width: '45%'}}>
+                  <Text
+                    style={{fontSize: 14, fontWeight: '600', lineHeight: 19}}>
+                    Facility
+                  </Text>
+                  <Dropdown
+                    style={styles.dropstyle}
+                    placeholderStyle={styles.placeholderStyle}
+                    selectedTextStyle={styles.selectedTextStyle}
+                    inputSearchStyle={styles.inputSearchStyle}
+                    iconStyle={styles.iconStyle}
+                    data={
+                      hostelfacilitylist &&
+                      hostelfacilitylist?.map(item => ({
+                        label: `${item?.roomFacility}`,
+                        value: `${item?.roomFacility}`,
+                      }))
+                    }
+                    search
+                    maxHeight={300}
+                    labelField="label"
+                    valueField="value"
+                    placeholder="Select Facility"
+                    searchPlaceholder="Search..."
+                    value={hostlefacility}
+                    onChange={item => {
+                      sethostlefacility(item.value);
+                    }}
+                  />
+                </View>
+
+                <View style={{width: '50%'}}>
+                  <RNButton loading={loading1} onPress={gethostelFee}>
+                    Get Fee
+                  </RNButton>
+                </View>
+              </View>
+              <FlexRowWrapper>
+                <View style={styles.radioButton}>
+                  <RadioButton.Android
+                    value={true}
+                    status={
+                      transportdefaultfee === true ? 'checked' : 'unchecked'
+                    }
+                    onPress={() => settransportdefaultfee(true)}
+                    color="#007BFF"
+                  />
+                  <Text style={styles.radioLabel}>Default Fee</Text>
+                </View>
+
+                <View style={styles.radioButton}>
+                  <RadioButton.Android
+                    value={false}
+                    status={
+                      transportdefaultfee === false ? 'checked' : 'unchecked'
+                    }
+                    onPress={() => settransportdefaultfee(false)}
+                    color="#007BFF"
+                  />
+                  <Text style={styles.radioLabel}>Manual Fee</Text>
+                </View>
+              </FlexRowWrapper>
+
+              {transportdefaultfee === true ? (
+                <>
+                  <View
+                    style={{
+                      marginHorizontal: deviceWidth * 0.04,
+                      position: 'relative',
+                    }}>
+                    <Text style={styles.inputLabel}>Per Month Fee</Text>
+                    <View
+                      style={styles.totalamountstyle}
+                      onStartShouldSetResponder={() => setIndex(5)}>
+                      <Text
+                        style={{
+                          width: Width(280),
+                          fontFamily: 'Gilroy-SemiBold',
+                          paddingHorizontal: Width(15),
+                          fontSize: Height(16),
+                        }}>
+                        {hostelfeeperMonth}
+                      </Text>
+                    </View>
+                  </View>
+                  <View
+                    style={{
+                      marginHorizontal: deviceWidth * 0.04,
+                      position: 'relative',
+                    }}>
+                    <Text style={styles.inputLabel}>Total Fee</Text>
+                    <View
+                      style={styles.totalamountstyle}
+                      onStartShouldSetResponder={() => setIndex(5)}>
+                      <Text
+                        style={{
+                          width: Width(280),
+                          fontFamily: 'Gilroy-SemiBold',
+                          paddingHorizontal: Width(15),
+                          fontSize: Height(16),
+                        }}>
+                        {Number(hostelfeeperMonth) * Number(12)}
+                      </Text>
+                    </View>
+                  </View>
+                </>
+              ) : (
+                <>
+                  <View
+                    style={{
+                      marginHorizontal: deviceWidth * 0.04,
+                      position: 'relative',
+                    }}>
+                    <RNInputField
+                      style={{backgroundColor: Colors.fadeGray}}
+                      label="Per Month Fee"
+                      value={onlyHostelFee}
+                      onChangeText={data => setonlyHostelFee(data)}
+                      placeholder="0"
+                    />
+                  </View>
+
+                  <View
+                    style={{
+                      marginHorizontal: deviceWidth * 0.04,
+                      position: 'relative',
+                    }}>
+                    <Text style={styles.inputLabel}>Total Fee</Text>
+                    <View
+                      style={styles.totalamountstyle}
+                      onStartShouldSetResponder={() => setIndex(5)}>
+                      <Text
+                        style={{
+                          width: Width(280),
+                          fontFamily: 'Gilroy-SemiBold',
+                          paddingHorizontal: Width(20),
+                          fontSize: Height(16),
+                        }}>
+                        {Number(onlyHostelFee) * Number(12)}
+                      </Text>
+                    </View>
+                  </View>
+                </>
+              )}
+            </>
+          )}
+
+          {istransport && (
+            <>
+              <FlexRowWrapper>
+                <View style={{width: '45%'}}>
+                  <View style={{marginHorizontal: deviceWidth * 0.01}}>
+                    <Text
+                      style={{fontSize: 14, fontWeight: '600', lineHeight: 19}}>
+                      From Route
+                    </Text>
+                    <Dropdown
+                      style={styles.dropstyle}
+                      placeholderStyle={styles.placeholderStyle}
+                      selectedTextStyle={styles.selectedTextStyle}
+                      inputSearchStyle={styles.inputSearchStyle}
+                      iconStyle={styles.iconStyle}
+                      data={
+                        routelist &&
+                        routelist?.map(item => ({
+                          label: `${item?.routeName?.FromRoute}`,
+                          value: `${item?.routeName?.FromRoute}`,
+                        }))
+                      }
+                      search
+                      maxHeight={300}
+                      labelField="label"
+                      valueField="value"
+                      placeholder="Select Route"
+                      searchPlaceholder="Search..."
+                      value={toroute}
+                      onChange={item => {
+                        settoroute(item.value);
+                      }}
+                    />
+                  </View>
+                </View>
+                <View style={{width: '45%', marginBottom: deviceHeight * 0.02}}>
+                  <View style={{marginHorizontal: deviceWidth * 0.01}}>
+                    <Text
+                      style={{fontSize: 14, fontWeight: '600', lineHeight: 19}}>
+                      To Route
+                    </Text>
+                    <Dropdown
+                      style={styles.dropstyle}
+                      placeholderStyle={styles.placeholderStyle}
+                      selectedTextStyle={styles.selectedTextStyle}
+                      inputSearchStyle={styles.inputSearchStyle}
+                      iconStyle={styles.iconStyle}
+                      data={
+                        routelist &&
+                        routelist?.map(item => ({
+                          label: `${item?.routeName?.ToRoute}`,
+                          value: `${item?.routeName?.ToRoute}`,
+                        }))
+                      }
+                      search
+                      maxHeight={300}
+                      labelField="label"
+                      valueField="value"
+                      placeholder="Selec Route"
+                      searchPlaceholder="Search..."
+                      value={fromroute}
+                      onChange={item => {
+                        value = {fromroute};
+                        setfromroute(item.value);
+                      }}
+                    />
+                  </View>
+                </View>
+              </FlexRowWrapper>
+              <View style={styles.getfeeview}>
+                <View style={{width: '100%'}}>
+                  <RNButton loading={loading2} onPress={gettransportFee}>
+                    Get Fee
+                  </RNButton>
+                </View>
+              </View>
+              <FlexRowWrapper>
+                <View style={styles.radioButton}>
+                  <RadioButton.Android
+                    value={true}
+                    status={
+                      hosteldefaultfeepermonth === true
+                        ? 'checked'
+                        : 'unchecked'
+                    }
+                    onPress={() => sethosteldefaultfeepermonth(true)}
+                    color="#007BFF"
+                  />
+                  <Text style={styles.radioLabel}>Default Fee</Text>
+                </View>
+
+                <View style={styles.radioButton}>
+                  <RadioButton.Android
+                    value={false}
+                    status={
+                      hosteldefaultfeepermonth === false
+                        ? 'checked'
+                        : 'unchecked'
+                    }
+                    onPress={() => sethosteldefaultfeepermonth(false)}
+                    color="#007BFF"
+                  />
+                  <Text style={styles.radioLabel}>Manual Fee</Text>
+                </View>
+              </FlexRowWrapper>
+
+              {hosteldefaultfeepermonth === true ? (
+                <>
+                  <View
+                    style={{
+                      marginHorizontal: deviceWidth * 0.04,
+                      position: 'relative',
+                    }}>
+                    <Text style={styles.inputLabel}>Total Fee</Text>
+                    <View
+                      style={styles.totalamountstyle}
+                      onStartShouldSetResponder={() => setIndex(5)}>
+                      <Text
+                        style={{
+                          width: Width(280),
+                          fontFamily: 'Gilroy-SemiBold',
+                          paddingHorizontal: Width(15),
+                          fontSize: Height(16),
+                        }}>
+                        {Number(hostelfeeperMonth)}
+                      </Text>
+                    </View>
+                  </View>
+                  <View
+                    style={{
+                      marginHorizontal: deviceWidth * 0.04,
+                      position: 'relative',
+                    }}>
+                    <Text style={styles.inputLabel}>Total Fee</Text>
+                    <View
+                      style={styles.totalamountstyle}
+                      onStartShouldSetResponder={() => setIndex(5)}>
+                      <Text
+                        style={{
+                          width: Width(280),
+                          fontFamily: 'Gilroy-SemiBold',
+                          paddingHorizontal: Width(15),
+                          fontSize: Height(16),
+                        }}>
+                        {Number(hostelfeeperMonth) * Number(12)}
+                      </Text>
+                    </View>
+                  </View>
+                </>
+              ) : (
+                <>
+                  <View
+                    style={{
+                      marginHorizontal: deviceWidth * 0.04,
+                      position: 'relative',
+                    }}>
+                    <RNInputField
+                      style={{backgroundColor: Colors.fadeGray}}
+                      label="Per Month Fee"
+                      value={onlyTransport}
+                      onChangeText={data => setonlyTransport(data)}
+                      placeholder="0"
+                    />
+                  </View>
+
+                  <View
+                    style={{
+                      marginHorizontal: deviceWidth * 0.04,
+                      position: 'relative',
+                    }}>
+                    <Text style={styles.inputLabel}>Total Fee</Text>
+                    <View
+                      style={styles.totalamountstyle}
+                      onStartShouldSetResponder={() => setIndex(5)}>
+                      <Text
+                        style={{
+                          width: Width(280),
+                          fontFamily: 'Gilroy-SemiBold',
+                          paddingHorizontal: Width(20),
+                          fontSize: Height(16),
+                        }}>
+                        {Number(onlyTransport) * Number(12)}
+                      </Text>
+                    </View>
+                  </View>
+                </>
+              )}
+            </>
+          )}
+          <View style={{paddingHorizontal: 10}}>
+            <Text style={{fontSize: 20, marginBottom: 10, marginTop: 8}}>
+              Password Size Photo
+            </Text>
+            <View>
+              {passportsize ? (
+                <>
+                  <Image
+                    source={{uri: passportsize}}
+                    style={styles.imgprestyle}
+                  />
+                </>
+              ) : (
+                <>
+                  <View style={styles.imgpreview}>
+                    <TouchableOpacity
+                      onPress={() => handleTakePhotoSignature()}>
+                      <View>
+                        <Ionicons name="camera" size={50} />
+                      </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => handleChoosePhotoSignature()}>
+                      <View>
+                        <Ionicons name="image" size={50} />
+                      </View>
+                    </TouchableOpacity>
+                  </View>
+                </>
+              )}
+            </View>
+            <Text style={{fontSize: 20, marginBottom: 10, marginTop: 8}}>
+              Adhar Card
+            </Text>
+            <View>
+              {adharno ? (
+                <>
+                  <Image source={{uri: adharno}} style={styles.imgprestyle} />
+                </>
+              ) : (
+                <>
+                  <View style={styles.imgpreview}>
+                    <TouchableOpacity onPress={() => handleTakePhotoAdhar()}>
+                      <View>
+                        <Ionicons name="camera" size={50} />
+                      </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => handleChoosePhotoAdhar()}>
+                      <View>
+                        <Ionicons name="image" size={50} />
+                      </View>
+                    </TouchableOpacity>
+                  </View>
+                </>
+              )}
+            </View>
+            <Text style={{fontSize: 20, marginBottom: 10, marginTop: 8}}>
+              Previous MarkSheet
+            </Text>
+            <View>
+              {premarksheet ? (
+                <>
+                  <Image
+                    source={{uri: premarksheet}}
+                    style={styles.imgprestyle}
+                  />
+                </>
+              ) : (
+                <>
+                  <View style={styles.imgpreview}>
+                    <TouchableOpacity
+                      onPress={() => handleTakePhotoMarksheet()}>
+                      <View>
+                        <Ionicons name="camera" size={50} />
+                      </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => handleChoosePhotoMarksheet()}>
+                      <View>
+                        <Ionicons name="image" size={50} />
+                      </View>
+                    </TouchableOpacity>
+                  </View>
+                </>
+              )}
+            </View>
+          </View>
           <RNButton
+            loading={loading}
             onPress={submit}
             style={{marginHorizontal: 20, marginTop: 20}}>
             Save & Next
@@ -1035,6 +1583,13 @@ const TakeAdmission = () => {
 export default TakeAdmission;
 
 const styles = StyleSheet.create({
+  getfeeview: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-end',
+    marginHorizontal: deviceWidth * 0.04,
+  },
   inputview: {
     width: Width(355),
     height: Height(50),

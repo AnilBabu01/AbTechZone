@@ -31,7 +31,7 @@ export default function App() {
         text2Style={{
           fontSize: 15,
         }}
-        duration={100}
+        duration={3000}
       />
     ),
   };

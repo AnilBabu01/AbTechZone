@@ -200,7 +200,7 @@ import {
   ALL_COACHINGRECEIPTDATA_REQUEST,
   ALL_COACHINGRECEIPTDATA_SUCCESS,
   ALL_COACHINGRECEIPTDATA_FAIL,
-  CLEAR_ERRORS
+  CLEAR_ERRORS,
 } from '../constants/commanConstants';
 
 // Get all College
@@ -372,8 +372,6 @@ export const Updatebatch = datas => async dispatch => {
       config,
     );
 
-    console.log('res data from batch ', data);
-
     if (data?.status) {
       Toast.show({
         type: 'success',
@@ -463,7 +461,6 @@ export const getbatch = (page, limit, setPage) => async dispatch => {
 
 export const Addcourse = datas => async dispatch => {
   try {
-    console.log('course  data is ', datas);
     let token = await AsyncStorage.getItem('erptoken');
     const config = {
       headers: {
@@ -507,7 +504,6 @@ export const Addcourse = datas => async dispatch => {
 // post add enquiry
 export const Updatecourse = datas => async dispatch => {
   try {
-    console.log('data is ', datas);
     let token = await AsyncStorage.getItem('erptoken');
     const config = {
       headers: {
@@ -858,7 +854,7 @@ export const deletefee = (deleteid, setOpenalert) => async dispatch => {
         });
       })
       .then(error => {
-        console.log(error);
+        // console.log(error);
       });
   } catch (error) {
     dispatch({
@@ -1078,12 +1074,17 @@ export const getDesignation = (page, limit, setPage) => async dispatch => {
   }
 };
 
+const newboundary = () => {
+  let newdate = new Date();
+  return newdate;
+};
+
 export const Addstudent = datas => async dispatch => {
   try {
     let token = await AsyncStorage.getItem('erptoken');
     const config = {
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': `multipart/form-data;`,
         Authorization: `${token}`,
       },
     };
@@ -1095,8 +1096,6 @@ export const Addstudent = datas => async dispatch => {
       config,
     );
 
-    console.log('res from action', data);
-    
     if (data?.status) {
       Toast.show({
         type: 'success',
@@ -1112,15 +1111,13 @@ export const Addstudent = datas => async dispatch => {
   } catch (error) {
     dispatch({
       type: ADD_STUDENT_FAIL,
-      payload: error?.response?.data?.msg,
+      payload: error?.response?.data?.status,
     });
     Toast.show({
       type: 'error',
       text1: 'Error',
       text2: error?.response?.data?.msg,
     });
-
-    console.log('from action', error?.response?.data);
   }
 };
 
@@ -1532,8 +1529,6 @@ export const getDepartment = (page, limit, setPage) => async dispatch => {
 
     const {data} = await axios.get(`${backendApiUrl}comman/department`, config);
 
-    console.log('data from department', data?.data);
-
     dispatch({
       type: ALL_Department_SUCCESS,
       payload: data?.data,
@@ -1681,8 +1676,6 @@ export const getCourseDuration = (page, limit, setPage) => async dispatch => {
       `${backendApiUrl}comman/courseduration`,
       config,
     );
-
-    console.log('data from course', data?.data);
 
     dispatch({
       type: ALL_CourseDuration_SUCCESS,
@@ -1965,8 +1958,6 @@ export const getStudenttest = (page, limit, setPage) => async dispatch => {
       config,
     );
 
-    console.log('data from course', data?.data);
-
     dispatch({
       type: ALL_STUDENT_TEST_SUCCESS,
       payload: data?.data,
@@ -2008,24 +1999,22 @@ export const getReceiptPrefix = (page, limit, setPage) => async dispatch => {
   }
 };
 
-
-
 // Get all Facility
-export const GetSection = (stopName) => async (dispatch) => {
+export const GetSection = stopName => async dispatch => {
   try {
     let token = await AsyncStorage.getItem('erptoken');
     const config = {
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         Authorization: `${token}`,
       },
     };
-    dispatch({ type: GET_SECTION_REQUEST });
+    dispatch({type: GET_SECTION_REQUEST});
 
     if (stopName) {
-      const { data } = await axios.get(
+      const {data} = await axios.get(
         `${backendApiUrl}comman/section?stopName=${stopName}`,
-        config
+        config,
       );
 
       dispatch({
@@ -2033,11 +2022,8 @@ export const GetSection = (stopName) => async (dispatch) => {
         payload: data?.data,
       });
     } else {
-      dispatch({ type: GET_SECTION_REQUEST });
-      const { data } = await axios.get(
-        `${backendApiUrl}comman/section`,
-        config
-      );
+      dispatch({type: GET_SECTION_REQUEST});
+      const {data} = await axios.get(`${backendApiUrl}comman/section`, config);
 
       dispatch({
         type: GET_SECTION__SUCCESS,
@@ -2054,21 +2040,21 @@ export const GetSection = (stopName) => async (dispatch) => {
 
 // Get all Facility
 export const GeOtherFees =
-  (scoursename, datedues, sessionname, sectionname) => async (dispatch) => {
+  (scoursename, datedues, sessionname, sectionname) => async dispatch => {
     try {
       let token = await AsyncStorage.getItem('erptoken');
       const config = {
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           Authorization: `${token}`,
         },
       };
-      dispatch({ type: GET_OTHERFEE_REQUEST });
+      dispatch({type: GET_OTHERFEE_REQUEST});
 
       if ((scoursename, datedues, sessionname, sectionname)) {
-        const { data } = await axios.get(
+        const {data} = await axios.get(
           `${backendApiUrl}student/otherfee?courseorclass=${scoursename}&sessionname=${sessionname}&sectionname=${sectionname}&date=${datedues}`,
-          config
+          config,
         );
 
         dispatch({
@@ -2080,10 +2066,10 @@ export const GeOtherFees =
         let fullyear = date.getFullYear();
         let lastyear = date.getFullYear() - 1;
         let session = `${lastyear}-${fullyear}`;
-        dispatch({ type: GET_OTHERFEE_REQUEST });
-        const { data } = await axios.get(
+        dispatch({type: GET_OTHERFEE_REQUEST});
+        const {data} = await axios.get(
           `${backendApiUrl}student/otherfee?sessionname=${session}`,
-          config
+          config,
         );
 
         dispatch({
@@ -2100,21 +2086,21 @@ export const GeOtherFees =
   };
 
 // Get all Facility
-export const GetsSubject = (classId, empID, dayname) => async (dispatch) => {
+export const GetsSubject = (classId, empID, dayname) => async dispatch => {
   try {
     let token = await AsyncStorage.getItem('erptoken');
     const config = {
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         Authorization: `${token}`,
       },
     };
-    dispatch({ type: GET_SUBJECT_REQUEST });
+    dispatch({type: GET_SUBJECT_REQUEST});
 
     if (classId || empID || dayname) {
-      const { data } = await axios.get(
+      const {data} = await axios.get(
         `${backendApiUrl}comman/subject?classId=${classId}&empID=${empID}&dayname=${dayname}`,
-        config
+        config,
       );
 
       dispatch({
@@ -2122,11 +2108,8 @@ export const GetsSubject = (classId, empID, dayname) => async (dispatch) => {
         payload: data?.data,
       });
     } else {
-      dispatch({ type: GET_SUBJECT_REQUEST });
-      const { data } = await axios.get(
-        `${backendApiUrl}comman/subject`,
-        config
-      );
+      dispatch({type: GET_SUBJECT_REQUEST});
+      const {data} = await axios.get(`${backendApiUrl}comman/subject`, config);
 
       dispatch({
         type: GET_SUBJECT_SUCCESS,
@@ -2143,21 +2126,21 @@ export const GetsSubject = (classId, empID, dayname) => async (dispatch) => {
 
 // Get all Facility
 
-export const GetClassSubject = (classId, empID) => async (dispatch) => {
+export const GetClassSubject = (classId, empID) => async dispatch => {
   try {
     let token = await AsyncStorage.getItem('erptoken');
     const config = {
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         Authorization: `${token}`,
       },
     };
-    dispatch({ type: GET_CLASS_SUBJECT_REQUEST });
+    dispatch({type: GET_CLASS_SUBJECT_REQUEST});
 
     if (classId || empID) {
-      const { data } = await axios.get(
+      const {data} = await axios.get(
         `${backendApiUrl}comman/classsubject?classId=${classId}&empID=${empID}`,
-        config
+        config,
       );
 
       dispatch({
@@ -2165,10 +2148,10 @@ export const GetClassSubject = (classId, empID) => async (dispatch) => {
         payload: data?.data,
       });
     } else {
-      dispatch({ type: GET_CLASS_SUBJECT_REQUEST });
-      const { data } = await axios.get(
+      dispatch({type: GET_CLASS_SUBJECT_REQUEST});
+      const {data} = await axios.get(
         `${backendApiUrl}comman/classsubject`,
-        config
+        config,
       );
 
       dispatch({
@@ -2186,21 +2169,21 @@ export const GetClassSubject = (classId, empID) => async (dispatch) => {
 
 // Get all Facility
 
-export const GetNotic = (classId, empID) => async (dispatch) => {
+export const GetNotic = (classId, empID) => async dispatch => {
   try {
-   let token = await AsyncStorage.getItem('erptoken');
+    let token = await AsyncStorage.getItem('erptoken');
     const config = {
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         Authorization: `${token}`,
       },
     };
-    dispatch({ type: GET_NOTIC_REQUEST });
+    dispatch({type: GET_NOTIC_REQUEST});
 
     if (classId || empID) {
-      const { data } = await axios.get(
+      const {data} = await axios.get(
         `${backendApiUrl}comman/notes?classId=${classId}&empID=${empID}`,
-        config
+        config,
       );
 
       dispatch({
@@ -2208,8 +2191,8 @@ export const GetNotic = (classId, empID) => async (dispatch) => {
         payload: data?.data,
       });
     } else {
-      dispatch({ type: GET_NOTIC_REQUEST });
-      const { data } = await axios.get(`${backendApiUrl}comman/notes`, config);
+      dispatch({type: GET_NOTIC_REQUEST});
+      const {data} = await axios.get(`${backendApiUrl}comman/notes`, config);
 
       dispatch({
         type: GET_NOTIC_SUCCESS,
@@ -2226,21 +2209,21 @@ export const GetNotic = (classId, empID) => async (dispatch) => {
 
 // Get all Facility
 
-export const GetFooterDetails = (classId, empID) => async (dispatch) => {
+export const GetFooterDetails = (classId, empID) => async dispatch => {
   try {
-   let token = await AsyncStorage.getItem('erptoken');
+    let token = await AsyncStorage.getItem('erptoken');
     const config = {
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         Authorization: `${token}`,
       },
     };
-    dispatch({ type: GET_FOOTERDETAILS_REQUEST });
+    dispatch({type: GET_FOOTERDETAILS_REQUEST});
 
     if (classId || empID) {
-      const { data } = await axios.get(
+      const {data} = await axios.get(
         `${backendApiUrl}comman/footer?classId=${classId}&empID=${empID}`,
-        config
+        config,
       );
 
       dispatch({
@@ -2248,8 +2231,8 @@ export const GetFooterDetails = (classId, empID) => async (dispatch) => {
         payload: data?.data,
       });
     } else {
-      dispatch({ type: GET_FOOTERDETAILS_REQUEST });
-      const { data } = await axios.get(`${backendApiUrl}comman/footer`, config);
+      dispatch({type: GET_FOOTERDETAILS_REQUEST});
+      const {data} = await axios.get(`${backendApiUrl}comman/footer`, config);
 
       dispatch({
         type: GET_FOOTERDETAILS_SUCCESS,
@@ -2266,21 +2249,21 @@ export const GetFooterDetails = (classId, empID) => async (dispatch) => {
 
 // Get all Facility
 
-export const GetSlider = (classId, empID) => async (dispatch) => {
+export const GetSlider = (classId, empID) => async dispatch => {
   try {
-   let token = await AsyncStorage.getItem('erptoken');
+    let token = await AsyncStorage.getItem('erptoken');
     const config = {
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         Authorization: `${token}`,
       },
     };
-    dispatch({ type: GET_SLIDER_REQUEST });
+    dispatch({type: GET_SLIDER_REQUEST});
 
     if (classId || empID) {
-      const { data } = await axios.get(
+      const {data} = await axios.get(
         `${backendApiUrl}comman/slider?classId=${classId}&empID=${empID}`,
-        config
+        config,
       );
 
       dispatch({
@@ -2288,8 +2271,8 @@ export const GetSlider = (classId, empID) => async (dispatch) => {
         payload: data?.data,
       });
     } else {
-      dispatch({ type: GET_SLIDER_REQUEST });
-      const { data } = await axios.get(`${backendApiUrl}comman/slider`, config);
+      dispatch({type: GET_SLIDER_REQUEST});
+      const {data} = await axios.get(`${backendApiUrl}comman/slider`, config);
 
       dispatch({
         type: GET_SLIDER_SUCCESS,
@@ -2306,21 +2289,21 @@ export const GetSlider = (classId, empID) => async (dispatch) => {
 
 // Get all Facility
 
-export const GetStream = (scoursename, stream) => async (dispatch) => {
+export const GetStream = (scoursename, stream) => async dispatch => {
   try {
-   let token = await AsyncStorage.getItem('erptoken');
+    let token = await AsyncStorage.getItem('erptoken');
     const config = {
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         Authorization: `${token}`,
       },
     };
-    dispatch({ type: GET_STREAM_REQUEST });
+    dispatch({type: GET_STREAM_REQUEST});
 
     if (scoursename || stream) {
-      const { data } = await axios.get(
+      const {data} = await axios.get(
         `${backendApiUrl}comman/stream?scoursename=${scoursename}&stream=${stream}`,
-        config
+        config,
       );
 
       dispatch({
@@ -2328,8 +2311,8 @@ export const GetStream = (scoursename, stream) => async (dispatch) => {
         payload: data?.data,
       });
     } else {
-      dispatch({ type: GET_STREAM_REQUEST });
-      const { data } = await axios.get(`${backendApiUrl}comman/stream`, config);
+      dispatch({type: GET_STREAM_REQUEST});
+      const {data} = await axios.get(`${backendApiUrl}comman/stream`, config);
 
       dispatch({
         type: GET_STREAM_SUCCESS,
@@ -2345,21 +2328,21 @@ export const GetStream = (scoursename, stream) => async (dispatch) => {
 };
 
 // Get all Facility
-export const GetSession = (stopName) => async (dispatch) => {
+export const GetSession = stopName => async dispatch => {
   try {
     let token = await AsyncStorage.getItem('erptoken');
     const config = {
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         Authorization: `${token}`,
       },
     };
-    dispatch({ type: GET_SESSION_REQUEST });
+    dispatch({type: GET_SESSION_REQUEST});
 
     if (stopName) {
-      const { data } = await axios.get(
+      const {data} = await axios.get(
         `${backendApiUrl}comman/session?stopName=${stopName}`,
-        config
+        config,
       );
 
       dispatch({
@@ -2367,11 +2350,8 @@ export const GetSession = (stopName) => async (dispatch) => {
         payload: data?.data,
       });
     } else {
-      dispatch({ type: GET_SESSION_REQUEST });
-      const { data } = await axios.get(
-        `${backendApiUrl}comman/session`,
-        config
-      );
+      dispatch({type: GET_SESSION_REQUEST});
+      const {data} = await axios.get(`${backendApiUrl}comman/session`, config);
 
       dispatch({
         type: GET_SESSION_SUCCESS,
@@ -2387,21 +2367,18 @@ export const GetSession = (stopName) => async (dispatch) => {
 };
 
 // Get all Enquiry
-export const getcurrentsession = () => async (dispatch) => {
+export const getcurrentsession = () => async dispatch => {
   try {
-   let token = await AsyncStorage.getItem('erptoken');
+    let token = await AsyncStorage.getItem('erptoken');
     const config = {
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         Authorization: `${token}`,
       },
     };
-    dispatch({ type: GET_CURRENTSESSION_REQUEST });
+    dispatch({type: GET_CURRENTSESSION_REQUEST});
 
-    const { data } = await axios.get(
-      `${backendApiUrl}school/getsession`,
-      config
-    );
+    const {data} = await axios.get(`${backendApiUrl}school/getsession`, config);
 
     dispatch({
       type: GET_CURRENTSESSION_SUCCESS,
@@ -2416,20 +2393,20 @@ export const getcurrentsession = () => async (dispatch) => {
 };
 
 // Get all Enquiry
-export const getcurrentYear = () => async (dispatch) => {
+export const getcurrentYear = () => async dispatch => {
   try {
-   let token = await AsyncStorage.getItem('erptoken');
+    let token = await AsyncStorage.getItem('erptoken');
     const config = {
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         Authorization: `${token}`,
       },
     };
-    dispatch({ type: GET_YEAR_REQUEST });
+    dispatch({type: GET_YEAR_REQUEST});
 
-    const { data } = await axios.get(
+    const {data} = await axios.get(
       `${backendApiUrl}coaching/getcurrentyear`,
-      config
+      config,
     );
 
     dispatch({
@@ -2455,19 +2432,19 @@ export const getstudentCoaching =
     sfathers,
     rollnumber,
     status,
-    categoryname
+    categoryname,
     // library,
     // sessionname,
     // sectionname,
     // seno,
     // stream
   ) =>
-  async (dispatch) => {
-   let token = await AsyncStorage.getItem('erptoken');
+  async dispatch => {
+    let token = await AsyncStorage.getItem('erptoken');
     try {
       const config = {
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           Authorization: `${token}`,
         },
       };
@@ -2487,21 +2464,21 @@ export const getstudentCoaching =
         // seno ||
         // stream
       ) {
-        dispatch({ type: ALL_COACHINGSTUDENT_REQUEST });
-        const { data } = await axios.get(
+        dispatch({type: ALL_COACHINGSTUDENT_REQUEST});
+        const {data} = await axios.get(
           `${backendApiUrl}student/getAllStudentCoaching?name=${scoursename}&batch=${sbatch}&fromdate=${fromdate}&todate=${todate}&fathers=${sfathers}&studentname=${sstudent}&rollnumber=${rollnumber}&status=${status}&categoryname=${categoryname}`,
-          config
+          config,
         );
         dispatch({
           type: ALL_COACHINGSTUDENT_SUCCESS,
           payload: data?.data,
         });
       } else {
-        dispatch({ type: ALL_COACHINGSTUDENT_REQUEST });
-        const { data } = await axios.get(
+        dispatch({type: ALL_COACHINGSTUDENT_REQUEST});
+        const {data} = await axios.get(
           `${backendApiUrl}student/getAllStudentCoaching`,
 
-          config
+          config,
         );
         dispatch({
           type: ALL_COACHINGSTUDENT_SUCCESS,
@@ -2518,31 +2495,31 @@ export const getstudentCoaching =
 
 // Get all Enquiry
 export const getPrintReceiptCoaching =
-  (fromdate, scoursename, sstudent, rollnumber, todate) => async (dispatch) => {
+  (fromdate, scoursename, sstudent, rollnumber, todate) => async dispatch => {
     try {
-     let token = await AsyncStorage.getItem('erptoken');
+      let token = await AsyncStorage.getItem('erptoken');
       const config = {
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           Authorization: `${token}`,
         },
       };
       if (fromdate || scoursename || sstudent || rollnumber || todate) {
-        dispatch({ type: ALL_COACHINGRECEIPTDATA_REQUEST });
-        const { data } = await axios.get(
+        dispatch({type: ALL_COACHINGRECEIPTDATA_REQUEST});
+        const {data} = await axios.get(
           `${backendApiUrl}student/getReceiptCoaching?name=${scoursename}&fromdate=${fromdate}&studentname=${sstudent}&rollnumber=${rollnumber}&todate=${todate}`,
-          config
+          config,
         );
         dispatch({
           type: ALL_COACHINGRECEIPTDATA_REQUEST,
           payload: data?.data,
         });
       } else {
-        dispatch({ type: ALL_COACHINGRECEIPTDATA_REQUEST });
-        const { data } = await axios.get(
+        dispatch({type: ALL_COACHINGRECEIPTDATA_REQUEST});
+        const {data} = await axios.get(
           `${backendApiUrl}student/getReceiptCoaching`,
 
-          config
+          config,
         );
         dispatch({
           type: ALL_COACHINGRECEIPTDATA_SUCCESS,

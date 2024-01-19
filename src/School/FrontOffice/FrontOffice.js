@@ -5,7 +5,6 @@ import {
   Modal,
   TouchableOpacity,
   ScrollView,
-  TextInput,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import {Height, Width} from '../../utils/responsive';
@@ -18,13 +17,13 @@ import {getenquiries} from '../../redux/action/coachingAction';
 import {AnimatedFAB} from 'react-native-paper';
 import {Colors} from '../../utils/Colors';
 import {useDispatch, useSelector} from 'react-redux';
-
+import DashboardPlaceholderLoader from '../../Component/DashboardPlaceholderLoader';
 const FrontOffice = ({navigation}) => {
   const dispatch = useDispatch();
   const [openModel, setopenModel] = useState(false);
   const [enquirylist, setenquirylist] = useState('');
-  const {enquiry} = useSelector(state => state.enquiry);
-
+  const {enquiry, loading} = useSelector(state => state.enquiry);
+  const [loadering, setloadering] = useState(true);
   useEffect(() => {
     dispatch(getenquiries());
   }, []);
@@ -34,7 +33,7 @@ const FrontOffice = ({navigation}) => {
       setenquirylist(enquiry);
     }
   }, [enquiry]);
-  const {secondaryTitle, accordionTitle, filterBtnContainer, fabStyle} = styles;
+  const {fabStyle} = styles;
   return (
     <View style={{flex: 1}}>
       <Modal animationType={'fade'} transparent={true} visible={openModel}>
@@ -49,7 +48,7 @@ const FrontOffice = ({navigation}) => {
       </Modal>
       <Header />
       <TouchableOpacity
-        onPress={() => navigation.navigate('SearchEnquiryCoaching')}>
+        onPress={() => navigation.navigate('SearchEnquirySchool')}>
         <View style={styles.inputview}>
           <View style={styles.inputsaerch}>
             <Text style={styles.searchtext}>Search here</Text>
@@ -64,12 +63,20 @@ const FrontOffice = ({navigation}) => {
       </TouchableOpacity>
 
       <ScrollView>
-        <View style={styles.enquirymainview}>
-          {enquirylist &&
-            enquirylist?.map((item, index) => {
-              return <CardEnquiry key={index} data={item} />;
-            })}
-        </View>
+        {loading ? (
+          <>
+            <DashboardPlaceholderLoader type="datacard" />
+          </>
+        ) : (
+          <>
+            <View style={styles.enquirymainview}>
+              {enquirylist &&
+                enquirylist?.map((item, index) => {
+                  return <CardEnquiry key={index} data={item} />;
+                })}
+            </View>
+          </>
+        )}
       </ScrollView>
 
       <AnimatedFAB
