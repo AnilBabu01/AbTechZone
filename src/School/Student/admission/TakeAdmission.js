@@ -149,7 +149,7 @@ const TakeAdmission = () => {
       var newDateOfBirth = momentDateOfBirth.format('YYYY-MM-DD');
       formData.append('name', studentname);
       formData.append('email', studentemail);
-      formData.append('phoneno1', '7505786956');
+      formData.append('phoneno1', studentphone);
       formData.append('city', city);
       formData.append('state', state);
       formData.append('pincode', Pincode);
@@ -164,11 +164,14 @@ const TakeAdmission = () => {
       formData.append('rollnumber', studentrollno);
       formData.append('StudentStatus', studentstatus);
       formData.append('batch', batchname);
+
       formData.append('admissionDate', newadminssiondate);
+
       formData.append(
         'regisgrationfee',
         selectedValue === 'option1' ? Number(regfee) : Number(amount),
       );
+
       formData.append('courseduration', '');
       formData.append('adharno', adharcardno);
       formData.append('pancardnno', pano);
@@ -192,6 +195,7 @@ const TakeAdmission = () => {
       formData.append('DateOfBirth', newDateOfBirth);
       formData.append('StudentCategory', categoryname);
       formData.append('stream', stream);
+
       formData.append(
         'HostelPerMonthFee',
         hosteldefaultfeepermonth === true
@@ -204,6 +208,7 @@ const TakeAdmission = () => {
           ? Number(hostelfeeperMonth) * 12
           : Number(onlyHostelFee) * 12,
       );
+
       formData.append(
         'TransportPerMonthFee',
         transportdefaultfee === true
@@ -234,6 +239,7 @@ const TakeAdmission = () => {
           ? user?.data[0]?.Studentpassword
           : 'student',
       );
+
       formData.append(
         'Parentpassword',
         user?.data[0]?.Parentpassword
@@ -242,6 +248,7 @@ const TakeAdmission = () => {
       );
 
       setloader(true);
+
       setsms('Adding...');
 
       dispatch(Addstudent(formData));
@@ -258,8 +265,8 @@ const TakeAdmission = () => {
       setbatchs(batch);
     }
     if (studentaddstatus === true) {
-      // dispatch(getstudent());
-      // navigation.goBack();
+      dispatch(getstudent());
+      navigation.goBack();
     }
     if (category) {
       setcategorylist(category);
@@ -529,8 +536,10 @@ const TakeAdmission = () => {
         Facility: hostlefacility,
       }).then(res => {
         if (res?.status === true) {
-          toast.success(res?.msg, {
-            autoClose: 1000,
+          Toast.show({
+            type: 'success',
+            text1: 'Success',
+            text2: res?.msg,
           });
           setloading1(false);
           sethostelfeeperMonth(res?.data?.PermonthFee);
@@ -550,10 +559,11 @@ const TakeAdmission = () => {
         ToRoute: fromroute,
       }).then(res => {
         if (res?.status === true) {
-          console.log('transport fee is', res);
-          // toast.success(res?.msg, {
-          //   autoClose: 1000,
-          // });
+          Toast.show({
+            type: 'success',
+            text1: 'Success',
+            text2: res?.msg,
+          });
           setloading2(false);
 
           setTransportFeePermonth(res?.data?.BusRentPermonth);

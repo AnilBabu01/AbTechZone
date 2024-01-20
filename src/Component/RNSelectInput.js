@@ -1,30 +1,20 @@
-import {StyleSheet, Text, View, Pressable, StyleProp, ViewStyle} from 'react-native';
+import {StyleSheet, Text, View, Pressable} from 'react-native';
 import React from 'react';
-import RNInputField from './RNInputField';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import {Colors} from '../utils/colors';
-import {
-  Divider,
-  Menu,
-  Modal,
-  PaperProvider,
-  TextInput,
-} from 'react-native-paper';
+import {Colors} from '../utils/Colors';
+import {Divider, Menu} from 'react-native-paper';
 import {deviceHeight, deviceWidth} from '../utils/constant';
 
-type Props = {
-  title: string;
-  placeholder: string;
-  items: Array<{value: string; label: string}>;
-  outterContainerStyle?: StyleProp<ViewStyle>;
-  onChangeSelect?:(data:any) => void
-  value?:any
-};
-
-const RNSelectInput = (props: Props) => {
+const RNSelectInput = (
+  items,
+  placeholder,
+  title,
+  outterContainerStyle,
+  onChangeSelect,
+  value,
+) => {
   const [showModal, setShowModal] = React.useState(false);
   const {container, labelText} = styles;
-  const {items, placeholder, title, outterContainerStyle, onChangeSelect, value} = props;
 
   return (
     <View style={outterContainerStyle}>
@@ -36,7 +26,9 @@ const RNSelectInput = (props: Props) => {
         contentStyle={{backgroundColor: Colors.white}}
         anchor={
           <Pressable style={container} onPress={() => setShowModal(true)}>
-            <Text style={{width : '85%'}} numberOfLines={1}>{value?.label ?? placeholder}</Text>
+            <Text style={{width: '85%'}} numberOfLines={1}>
+              {value?.label ?? placeholder}
+            </Text>
             <MaterialIcons
               name="keyboard-arrow-down"
               size={25}
@@ -44,12 +36,17 @@ const RNSelectInput = (props: Props) => {
             />
           </Pressable>
         }>
-        {items.map((itm, index) => (
+        {items?.map((itm, index) => (
           <View style={{}} key={index}>
-            <Pressable onPress={() => {
-              onChangeSelect && onChangeSelect(itm)
-              setShowModal(false)
-            }} style={{paddingVertical: deviceHeight * 0.015, paddingHorizontal: deviceWidth * 0.03}}>
+            <Pressable
+              onPress={() => {
+                onChangeSelect && onChangeSelect(itm);
+                setShowModal(false);
+              }}
+              style={{
+                paddingVertical: deviceHeight * 0.015,
+                paddingHorizontal: deviceWidth * 0.03,
+              }}>
               <Text>{itm.label}</Text>
             </Pressable>
             <Divider />

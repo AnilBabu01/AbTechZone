@@ -1,4 +1,11 @@
-import {Pressable, StyleProp, StyleSheet, View, ViewProps, ViewStyle} from 'react-native';
+import {
+  Pressable,
+  StyleProp,
+  StyleSheet,
+  View,
+  ViewProps,
+  ViewStyle,
+} from 'react-native';
 import React from 'react';
 import {
   Modal,
@@ -9,22 +16,20 @@ import {
   ModalProps,
 } from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {Colors} from '../utils/colors';
-import {deviceWidth} from '../utils/constant';
-import { ScrollView } from 'react-native';
+import {Colors} from '../utils/Colors';
+import {deviceWidth} from '../utils/Colors';
+import {ScrollView} from 'react-native';
 
-type Props = {
-  visible: boolean;
-  setVisible: (val: boolean) => void;
-  modalProps?: ModalProps;
-  title:string;
-  children: React.ReactNode;
-  innnerContainerStyle?: StyleProp<ViewStyle>
-  childContainerStyle?:  StyleProp<ViewStyle>
-};
-
-const RNModal = (props: Props) => {
-  const {setVisible, visible, children, title, innnerContainerStyle, childContainerStyle, ...modalProps} = props;
+const RNModal = (
+  setVisible,
+  visible,
+  children,
+  title,
+  innnerContainerStyle,
+  childContainerStyle,
+  ...modalProps
+) => {
+ 
   const showModal = () => setVisible(true);
   const hideModal = () => setVisible(false);
 
@@ -35,7 +40,7 @@ const RNModal = (props: Props) => {
       visible={visible}
       onDismiss={hideModal}
       contentContainerStyle={container}
-      {...modalProps}>
+     >
       <View style={[innerContainer, innnerContainerStyle]}>
         <Text
           style={{
@@ -65,8 +70,8 @@ const styles = StyleSheet.create({
     marginHorizontal: 15,
     marginVertical: 30,
     borderRadius: 20,
-    position:'relative',
-    zIndex:9999
+    position: 'relative',
+    zIndex: 9999,
   },
   innerContainer: {
     backgroundColor: Colors.primary,
@@ -74,9 +79,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    overflow:'hidden',
-    borderTopLeftRadius:20,
-    borderTopRightRadius:20
+    overflow: 'hidden',
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
   },
   childContainer: {
     marginHorizontal: deviceWidth * 0.04,

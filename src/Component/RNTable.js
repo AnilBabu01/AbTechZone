@@ -1,15 +1,13 @@
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import React from 'react';
 import {deviceWidth} from '../utils/constant';
-import {Colors} from '../utils/colors';
-import {TripProps} from '../type';
-import {useNavigation, NavigationProp} from '@react-navigation/native';
-import {RootStackParamList} from '../../Main';
+import {Colors} from '../utils/Colors';
+
+import {useNavigation} from '@react-navigation/native';
 const RNTable = ({isFirst, data, theme, isBorderCurve}) => {
- 
   const navigation = useNavigation();
 
-  const nav = (data) => {
+  const nav = data => {
     navigation.navigate(data.redirect, {
       editdata: data.allDetails,
     });

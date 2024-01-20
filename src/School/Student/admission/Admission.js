@@ -2,12 +2,18 @@ import {
   StyleSheet,
   Text,
   View,
-  TouchableOpacity,
   ScrollView,
+  Pressable,
+  Image,
+  Modal,
+  TouchableOpacity,
 } from 'react-native';
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Height, Width} from '../../../utils/responsive';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
+import Cardview from '../../../assets/cardview.png';
+import tableview from '../../../assets/tableview.png';
 import CardEnquiry from './Card';
 import {primary, Colors} from '../../../utils/Colors';
 import {AnimatedFAB} from 'react-native-paper';
@@ -27,9 +33,18 @@ import {
   GetCategory,
 } from '../../../redux/action/hostelActions';
 import {GetRoute} from '../../../redux/action/transportActions';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
+import DashboardPlaceholderLoader from '../../../Component/DashboardPlaceholderLoader';
+import StudentFilter from '../../../Component/school/StudentFilter';
+import {Divider} from 'react-native-paper';
+import {deviceHeight, deviceWidth} from '../../../utils/constant';
 const Admission = ({navigation}) => {
   const dispatch = useDispatch();
+  const [isdata, setisdata] = useState([]);
+  const [viewdata, setviewdata] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [showDocOptions, setShowDocOptions] = useState(false);
+  const {loading, student} = useSelector(state => state.getstudent);
 
   useEffect(() => {
     dispatch(getcourse());
@@ -46,37 +61,91 @@ const Admission = ({navigation}) => {
     dispatch(GetRoute());
   }, []);
 
-  return (
-    <View style={{flex: 1}}>
-      <TouchableOpacity
-        onPress={() => navigation.navigate('SearchEnquirySchool')}>
-        <View style={styles.inputview}>
-          <View style={styles.inputsaerch}>
-            <Text style={styles.searchtext}>Search here</Text>
-          </View>
-          <Ionicons
-            name="search-outline"
-            size={Height(22)}
-            style={{marginRight: Width(20)}}
-            color="rgba(0, 0, 0, 0.5)"
-          />
-        </View>
-      </TouchableOpacity>
-      <ScrollView>
-        <View style={styles.enquirymainview}>
-          <CardEnquiry />
-        </View>
-      </ScrollView>
+  useEffect(() => {
+    if (student) {
+      setisdata(student);
+    }
+  }, [student]);
 
-      <AnimatedFAB
-        icon={'plus'}
-        onPress={() => navigation.navigate('TakeAdmissionSchool')}
-        label="Add"
-        extended={false}
-        color={Colors.white}
-        style={styles.fabStyle}
-      />
-    </View>
+  const handlefilter = () => {
+    console.log('cliecked on filters');
+  };
+
+  return (
+    <>
+      <Modal visible={showModal} contentContainerStyle={styles.container}>
+        <StudentFilter
+          setShowModal={setShowModal}
+          showModal={showModal}
+          onSubmit={handlefilter}
+        />
+      </Modal>
+
+      <View style={{flex: 1}}>
+        <View style={styles.headerTitleContainer}>
+          <View>
+            <Text style={styles.secondaryTitle}>Road Tripvvv Management</Text>
+          </View>
+          <View style={{flexDirection: 'row', gap: 10}}>
+            <Pressable
+              onPress={() => setShowDocOptions(true)}
+              style={styles.filterBtnContainer}>
+              <FontAwesome6 name="file-pdf" color={Colors.primary} size={25} />
+            </Pressable>
+            <Pressable
+              onPress={() => setShowModal(true)}
+              style={styles.filterBtnContainer}>
+              <Ionicons name="filter" color={Colors.primary} size={25} />
+            </Pressable>
+            <Pressable
+              onPress={() => setviewdata(!viewdata)}
+              style={styles.filterBtnContainer}>
+              {viewdata ? (
+                <>
+                  <Image
+                    source={tableview}
+                    style={{width: 25, height: 25}}
+                    resizeMode="contain"
+                  />
+                </>
+              ) : (
+                <>
+                  <Image
+                    source={Cardview}
+                    style={{width: 25, height: 25}}
+                    resizeMode="contain"
+                  />
+                </>
+              )}
+            </Pressable>
+          </View>
+        </View>
+        <ScrollView>
+          {loading ? (
+            <>
+              <DashboardPlaceholderLoader type="datacard" />
+            </>
+          ) : (
+            <>
+              <View style={styles.enquirymainview}>
+                {isdata?.map((item, index) => {
+                  return <CardEnquiry key={index} data={item} />;
+                })}
+              </View>
+            </>
+          )}
+        </ScrollView>
+
+        <AnimatedFAB
+          icon={'plus'}
+          onPress={() => navigation.navigate('TakeAdmissionSchool')}
+          label="Add"
+          extended={false}
+          color={Colors.white}
+          style={styles.fabStyle}
+        />
+      </View>
+    </>
   );
 };
 
@@ -137,5 +206,57 @@ const styles = StyleSheet.create({
     right: 16,
     position: 'absolute',
     backgroundColor: primary,
+  },
+  headerTitleContainer: {
+    backgroundColor: Colors.fadeGray,
+    flexDirection: 'row',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  secondaryTitle: {
+    fontSize: 17,
+    fontWeight: '600',
+    lineHeight: 20,
+    color: Colors.primary,
+  },
+  accordionTitle: {
+    color: Colors.primary,
+    fontSize: 17,
+    fontWeight: '700',
+    lineHeight: 20,
+  },
+  filterBtnContainer: {
+    padding: 2,
+    borderRadius: 10,
+  },
+  contentContainerStyle: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  container: {
+    flex: 1,
+    justifyContent: 'flex-start',
+    backgroundColor: '#fff',
+    marginHorizontal: 1,
+    marginVertical: 300,
+    borderRadius: 20,
+    position: 'relative',
+  },
+  innerContainer: {
+    backgroundColor: Colors.primary,
+    padding: 15,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    overflow: 'hidden',
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+  },
+  childContainer: {
+    marginHorizontal: deviceWidth * 0.04,
+    marginTop: deviceWidth * 0.045,
+    marginBottom: deviceWidth * 0.06,
   },
 });
