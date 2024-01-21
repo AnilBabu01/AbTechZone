@@ -123,6 +123,7 @@ const TakeAdmission = () => {
   const {roomfacility} = useSelector(state => state.GetFacility);
   const {route} = useSelector(state => state.GetRoute);
   const {sections} = useSelector(state => state.GetSection);
+  
   const {studentaddstatus, student, loading, error} = useSelector(
     state => state.addstudent,
   );

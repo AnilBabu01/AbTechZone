@@ -10,9 +10,9 @@ const DashboardPlaceholderLoader = ({type}) => {
       {type === 'table' && (
         <>
           <View style={{width: '100%', marginBottom: 6}}>
-            <ShimmerPlaceHolder width={deviceWidth * 0.9} height={40} />
+            <ShimmerPlaceHolder width={deviceWidth * 1} height={40} />
           </View>
-          <View style={{flexDirection: 'row', gap: deviceWidth * 0.02}}>
+          <View style={{width: '100%',display: 'flex', justifyContent: 'space-between',flexDirection:"row"}}>
             <View style={{height: deviceHeight * 0.41}}>
               <ShimmerPlaceHolder
                 width={deviceWidth * 0.28}

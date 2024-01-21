@@ -5,8 +5,6 @@ import {
   ScrollView,
   Pressable,
   Image,
-  Modal,
-  TouchableOpacity,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {Height, Width} from '../../../utils/responsive';
@@ -38,9 +36,12 @@ import DashboardPlaceholderLoader from '../../../Component/DashboardPlaceholderL
 import StudentFilter from '../../../Component/school/StudentFilter';
 import {Divider} from 'react-native-paper';
 import {deviceHeight, deviceWidth} from '../../../utils/constant';
+import RNTable from '../../../Component/RNTable';
+import DownloadStudentData from '../../../Component/school/DownloadStudentData';
 const Admission = ({navigation}) => {
   const dispatch = useDispatch();
   const [isdata, setisdata] = useState([]);
+  const [Tabledata, setTabledata] = useState([]);
   const [viewdata, setviewdata] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [showDocOptions, setShowDocOptions] = useState(false);
@@ -61,8 +62,174 @@ const Admission = ({navigation}) => {
     dispatch(GetRoute());
   }, []);
 
+  const StudentTableList = [
+    {
+      title: 'Sr.No',
+      items: [],
+      width: 0.33,
+      align: 'center',
+    },
+    {
+      title: 'Session',
+      items: [],
+      width: 0.33,
+      align: 'center',
+    },
+    {
+      title: 'SNO',
+      items: [],
+      width: 0.33,
+      align: 'center',
+    },
+    {
+      title: 'Roll_No',
+      items: [],
+      width: 0.33,
+      align: 'center',
+    },
+    {
+      title: 'Roll_No',
+      items: [],
+      width: 0.33,
+      align: 'center',
+    },
+    {
+      title: 'Section',
+      items: [],
+      width: 0.33,
+      align: 'center',
+    },
+    {
+      title: 'Stream',
+      items: [],
+      width: 0.33,
+      align: 'center',
+    },
+    {
+      title: 'Student_Name',
+      items: [],
+      width: 0.33,
+      align: 'center',
+    },
+    {
+      title: 'Student_Email',
+      items: [],
+      width: 0.33,
+      align: 'center',
+    },
+    {
+      title: 'Student_Phone',
+      items: [],
+      width: 0.33,
+      align: 'center',
+    },
+    {
+      title: 'Adminssion_Date',
+      items: [],
+      width: 0.33,
+      align: 'center',
+    },
+    {
+      title: 'Class',
+      items: [],
+      width: 0.33,
+      align: 'center',
+    },
+    {
+      title: 'Class',
+      items: [],
+      width: 0.33,
+      align: 'center',
+    },
+    {
+      title: 'Category',
+      items: [],
+      width: 0.33,
+      align: 'center',
+    },
+    {
+      title: 'Student_Status',
+      items: [],
+      width: 0.33,
+      align: 'center',
+    },
+    {
+      title: 'Action',
+      items: [],
+      width: 0.33,
+      align: 'center',
+    },
+  ];
+
+  const convertdata = async () => {
+    if (StudentTableList?.length > 13) {
+      await Promise.all(
+        student?.length > 0 &&
+          student?.map((item, index) => {
+            StudentTableList[0].items.push({id: index, value: index + 1});
+            StudentTableList[1].items.push({id: index, value: item.Session});
+            StudentTableList[2].items.push({id: index, value: item.SrNumber});
+            StudentTableList[3].items.push({
+              id: index,
+              value: item.rollnumber,
+            });
+            StudentTableList[4].items.push({
+              id: index,
+              value: item.Section,
+            });
+            StudentTableList[5].items.push({
+              id: index,
+              value: item.Stream,
+            });
+            StudentTableList[6].items.push({
+              id: index,
+              value: item.name,
+            });
+            StudentTableList[7].items.push({
+              id: index,
+              value: item.email,
+            });
+            StudentTableList[8].items.push({
+              id: index,
+              value: item.phoneno1,
+            });
+            StudentTableList[9].items.push({
+              id: index,
+              value: item.admissionDate,
+            });
+            StudentTableList[10].items.push({
+              id: index,
+              value: item.courseorclass,
+            });
+            StudentTableList[11].items.push({
+              id: index,
+              value: item.StudentCategory,
+            });
+            StudentTableList[12].items.push({
+              id: index,
+              value: item.Status,
+            });
+            StudentTableList[13].items.push({
+              id: index,
+              value: (
+                <Ionicons
+                  name="create-outline"
+                  color={Colors.primary}
+                  size={18.3}
+                />
+              ),
+              allDetails: item,
+              redirect: 'EditDistrct',
+            });
+          }),
+      );
+      setTabledata(StudentTableList);
+    }
+  };
+
   useEffect(() => {
     if (student) {
+      convertdata(student);
       setisdata(student);
     }
   }, [student]);
@@ -73,24 +240,16 @@ const Admission = ({navigation}) => {
 
   return (
     <>
-      <Modal visible={showModal} contentContainerStyle={styles.container}>
-        <StudentFilter
-          setShowModal={setShowModal}
-          showModal={showModal}
-          onSubmit={handlefilter}
-        />
-      </Modal>
-
       <View style={{flex: 1}}>
         <View style={styles.headerTitleContainer}>
           <View>
-            <Text style={styles.secondaryTitle}>Road Tripvvv Management</Text>
+            <Text style={styles.secondaryTitle}>Admission Management</Text>
           </View>
           <View style={{flexDirection: 'row', gap: 10}}>
             <Pressable
               onPress={() => setShowDocOptions(true)}
               style={styles.filterBtnContainer}>
-              <FontAwesome6 name="file-pdf" color={Colors.primary} size={25} />
+              <FontAwesome6 name="download" color={Colors.primary} size={25} />
             </Pressable>
             <Pressable
               onPress={() => setShowModal(true)}
@@ -123,18 +282,43 @@ const Admission = ({navigation}) => {
         <ScrollView>
           {loading ? (
             <>
-              <DashboardPlaceholderLoader type="datacard" />
+              <DashboardPlaceholderLoader type="table" />
             </>
           ) : (
             <>
-              <View style={styles.enquirymainview}>
-                {isdata?.map((item, index) => {
-                  return <CardEnquiry key={index} data={item} />;
-                })}
-              </View>
+              {viewdata ? (
+                <>
+                  <View style={styles.enquirymainview}>
+                    {isdata?.length > 0 &&
+                      isdata?.map((item, index) => {
+                        return <CardEnquiry key={index} data={item} />;
+                      })}
+                  </View>
+                </>
+              ) : (
+                <>
+                  <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                    <RNTable theme="primary" data={Tabledata} />
+                  </ScrollView>
+                </>
+              )}
             </>
           )}
         </ScrollView>
+        {showModal && (
+          <>
+            <StudentFilter
+              setShowModal={setShowModal}
+              showModal={showModal}
+              onSubmit={handlefilter}
+            />
+          </>
+        )}
+
+        <DownloadStudentData
+          visible={showDocOptions}
+          hideModal={setShowDocOptions}
+        />
 
         <AnimatedFAB
           icon={'plus'}

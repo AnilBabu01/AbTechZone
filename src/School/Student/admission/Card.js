@@ -19,6 +19,8 @@ import {serverInstance} from '../../../API/ServerInstance';
 import Toast from 'react-native-toast-message';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {Height, Width} from '../../../utils/responsive';
+import {deviceHeight, deviceWidth} from '../../../utils/constant';
+import {Colors} from '../../../utils/Colors';
 const Card = ({data}) => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -97,61 +99,94 @@ const Card = ({data}) => {
       <Loader loader={loader} sms={sms} />
       <ScrollView>
         <View style={styles.connainer}>
-          <View style={styles.card10}>
-            <View style={styles.viewdel}>
-              <Text>{moment(data?.EnquiryDate).format('DD/MM/YYYY')}</Text>
+          <View style={styles.card}>
+            <View style={styles.headerarray}>
+              <Text style={{color: Colors.white}}>
+                Sr No : {data?.SrNumber}
+              </Text>
               <TouchableOpacity onPress={() => setshowinfo(!showinfo)}>
                 <Ionicons
                   name={showinfo ? 'arrow-down' : 'arrow-up'}
                   size={Height(22)}
-                  color="rgba(0, 0, 0, 0.5)"
+                  color={Colors.white}
                 />
               </TouchableOpacity>
             </View>
-            <View style={styles.viewdel}>
-              <Text>Student Number</Text>
-              <Text>{data?.StudentNumber}</Text>
-            </View>
 
-            {showinfo && (
-              <>
-                <View style={styles.viewdel}>
-                  <Text>Student Email</Text>
-                  <Text>{data?.StudentEmail}</Text>
-                </View>
-                <View style={styles.viewdel}>
-                  <Text>Address</Text>
-                  <Text>{data?.Address}</Text>
-                </View>
-                <View style={styles.viewdel}>
-                  <Text>Course</Text>
-                  <Text>{data?.Course}</Text>
-                </View>
-                <View style={styles.viewdel}>
-                  <Text>Comment</Text>
-                  <Text></Text>
-                </View>
-                <Text>{data?.Comment}</Text>
-                <View style={styles.viewdel}>
-                  <Text>Action</Text>
-                  <View style={styles.mainActionView}>
-                    <TouchableOpacity onPress={() => confirmation(data?.id)}>
-                      <Ionicons name="trash" size={Height(22)} color="red" />
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      onPress={() =>
-                        navigation.navigate('UpdateEnquirySchool', {data})
-                      }>
-                      <Ionicons
-                        name="create"
-                        size={Height(22)}
-                        color="rgba(0, 0, 0, 0.5)"
-                      />
-                    </TouchableOpacity>
+            <View style={styles.cardonnear}>
+              <View style={styles.viewdel}>
+                <Text>Student Roll No</Text>
+                <Text>{data?.rollnumber}</Text>
+              </View>
+              <View style={styles.viewdel}>
+                <Text>Student Class</Text>
+                <Text>{data?.courseorclass}</Text>
+              </View>
+              <View style={styles.viewdel}>
+                <Text>Section</Text>
+                <Text>{data?.Section}</Text>
+              </View>
+              <View style={styles.viewdel}>
+                <Text>Stream</Text>
+                <Text>{data?.Stream}</Text>
+              </View>
+
+              {showinfo && (
+                <>
+                  <View style={styles.viewdel}>
+                    <Text>Student Name</Text>
+                    <Text>{data?.name}</Text>
                   </View>
-                </View>
-              </>
-            )}
+                  <View style={styles.viewdel}>
+                    <Text>Student Number</Text>
+                    <Text>{data?.phoneno1}</Text>
+                  </View>
+                  <View style={styles.viewdel}>
+                    <Text>Student Email</Text>
+                    <Text>{data?.email}</Text>
+                  </View>
+                  <View style={styles.viewdel}>
+                    <Text>Admission Date</Text>
+                    <Text>
+                      {moment(data?.admissionDate).format('DD/MM/YYYY')}
+                    </Text>
+                  </View>
+                  <View style={styles.viewdel}>
+                    <Text>DOB</Text>
+                    <Text>
+                      {moment(data?.DateOfBirth).format('DD/MM/YYYY')}
+                    </Text>
+                  </View>
+                  <View style={styles.viewdel}>
+                    <Text>Caste</Text>
+                    <Text>{data?.StudentCategory}</Text>
+                  </View>
+                  <View style={styles.viewdel}>
+                    <Text>Status</Text>
+                    <Text>{data?.StudentStatus}</Text>
+                  </View>
+                  <Text>{data?.Comment}</Text>
+                  <View style={styles.viewdel}>
+                    <Text>Action</Text>
+                    <View style={styles.mainActionView}>
+                      <TouchableOpacity onPress={() => confirmation(data?.id)}>
+                        <Ionicons name="trash" size={Height(22)} color="red" />
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        onPress={() =>
+                          navigation.navigate('UpdateEnquirySchool', {data})
+                        }>
+                        <Ionicons
+                          name="create"
+                          size={Height(22)}
+                          color={Colors.primary}
+                        />
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                </>
+              )}
+            </View>
           </View>
         </View>
       </ScrollView>
@@ -167,16 +202,19 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignContent: 'center',
-    width: '20%',
+    width: '16%',
     justifyContent: 'space-between',
   },
-  card10: {
+
+  card: {
     backgroundColor: 'white',
     borderRadius: 8,
-    width: '100%',
+    width: Width(357),
     marginVertical: 10,
-    paddingVertical: 20,
-    paddingHorizontal: 20,
+  },
+  cardonnear: {
+    paddingVertical: deviceWidth * 0.02,
+    paddingHorizontal: deviceWidth * 0.02,
   },
   viewdel: {
     display: 'flex',
@@ -185,6 +223,20 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     display: 'flex',
     justifyContent: 'space-between',
+  },
+
+  headerarray: {
+    display: 'flex',
+    flexDirection: 'row',
+    width: '100%',
+    marginBottom: 10,
+    display: 'flex',
+    justifyContent: 'space-between',
+    backgroundColor: Colors.primary,
+    borderTopLeftRadius: deviceWidth * 0.02,
+    borderTopRightRadius: deviceWidth * 0.02,
+    paddingVertical: deviceWidth * 0.02,
+    paddingHorizontal: deviceWidth * 0.02,
   },
   viewdelbtn: {
     display: 'flex',

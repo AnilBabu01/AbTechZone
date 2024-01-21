@@ -1,7 +1,7 @@
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import React from 'react';
 import {deviceWidth} from '../utils/constant';
-import {Colors} from '../utils/Colors';
+import {Colors,primary} from '../utils/Colors';
 
 import {useNavigation} from '@react-navigation/native';
 const RNTable = ({isFirst, data, theme, isBorderCurve}) => {
@@ -16,8 +16,8 @@ const RNTable = ({isFirst, data, theme, isBorderCurve}) => {
   };
   return (
     <View style={{flexDirection: 'row'}}>
-      {data &&
-        data.map((item, index) => (
+      {data?.length>0&&
+        data?.map((item, index) => (
           <View key={index} style={{width: deviceWidth * item.width}}>
             <View
               style={[
@@ -37,10 +37,10 @@ const RNTable = ({isFirst, data, theme, isBorderCurve}) => {
                 style={{
                   color: theme === 'primary' ? Colors.white : Colors.black,
                 }}>
-                {item.title}
+                {item?.title}
               </Text>
             </View>
-            {item.items.map((data, index) => (
+            {item?.items.map((data, index) => (
               <View
                 key={index}
                 style={[
@@ -54,7 +54,7 @@ const RNTable = ({isFirst, data, theme, isBorderCurve}) => {
                 ]}>
                 <TouchableOpacity onPress={() => nav(data)}>
                   <Text numberOfLines={1} style={{}}>
-                    {data.value}
+                    {data?.value}
                   </Text>
                 </TouchableOpacity>
               </View>

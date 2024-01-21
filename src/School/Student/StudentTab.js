@@ -13,7 +13,7 @@ function StudentTab({navigation}) {
         screenOptions={{
           header: ({navigation}) => <Header navigation={navigation} />,
         }}>
-        <Tab.Screen name="Admisssion" component={Admission} />
+        <Tab.Screen name="Admission" component={Admission} />
         <Tab.Screen name="Add Student" component={AddStudent} />
       </Tab.Navigator>
     </>
