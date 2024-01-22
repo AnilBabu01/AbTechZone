@@ -10,13 +10,14 @@ import React, {useState, useEffect} from 'react';
 import {deviceHeight, deviceWidth} from '../../utils/constant';
 import RNInputField from '../RNInputField';
 import RNDatePicker from '../RNDatePicker';
-import {FlexRowWrapper} from '../FlexRowWrapper';
 import RNButton from '../RNButton';
 import {Colors} from '../../utils/Colors';
 import {Height, Width} from '../../utils/responsive';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import {Dropdown} from 'react-native-element-dropdown';
+import {handleDate}  from '../../utils/functions';
+import {getstudent} from '../../redux/action/commanAction';
 const studentStatus = [
   {label: 'Active', value: 'Active'},
   {label: 'On Leave', value: 'On Leave'},
@@ -31,7 +32,10 @@ const StreamList = [
   {label: 'COMMERCE', value: 'COMMERCE'},
   {label: 'SCIENCE', value: 'SCIENCE'},
 ];
-const StudentFilter = ({showModal, setShowModal, onSubmit}) => {
+const StudentFilter = ({showModal, setShowModal}) => {
+  const dispatch = useDispatch();
+  const [fromdate, setfromdate] = useState('');
+  const [todate, settodate] = useState('');
   const [srno, setsrno] = useState('');
   const [rollnumber, setrollnumber] = useState('');
   const [sessionname, setsessionname] = useState('');
@@ -70,6 +74,42 @@ const StudentFilter = ({showModal, setShowModal, onSubmit}) => {
       setcategorylist(category);
     }
   }, [sections, CURRENTSESSION, Sessions, course, category]);
+
+  const onSubmit = () => {
+    // console.log('cliecked on filters');
+    // dispatch(
+    //   getstudent(
+    //     fromdate,
+    //     todate,
+    //     scoursename,
+    //     sbatch,
+    //     sstudent,
+    //     sfathers,
+    //     rollnumber,
+    //     status,
+    //     categoryname,
+    //     "",
+    //     sessionname,
+    //     sectionname,
+    //     "",
+    //     stream
+    //   )
+    // );
+  };
+
+  const reset = () => {
+    // setstream("");
+    // setsstudent("");
+    // setsfathers("");
+    // setfromdate("");
+    // settodate("");
+    // setscoursename("");
+    // setsbatch("");
+    // setcategoryname("");
+    // setsessionname(CURRENTSESSION);
+    // setsectionname("");
+    // dispatch(getstudent());
+  };
   return (
     <>
       <Modal
@@ -110,6 +150,22 @@ const StudentFilter = ({showModal, setShowModal, onSubmit}) => {
                   gap: deviceWidth * 0.04,
                   marginTop: deviceHeight * 0.02,
                 }}>
+                <View style={styles.rowwrapper}>
+                  <View style={{width: '49.3%'}}>
+                    <RNDatePicker
+                      title="From Date"
+                      value={fromdate}
+                      onDateChange={date => setfromdate(handleDate(date))}
+                    />
+                  </View>
+                  <View style={{width: '49.3%'}}>
+                    <RNDatePicker
+                      title="To Date"
+                      value={todate}
+                      onDateChange={date => settodate(handleDate(date))}
+                    />
+                  </View>
+                </View>
                 <View style={styles.rowwrapper}>
                   <View style={{width: '45%'}}>
                     <View style={{marginHorizontal: deviceWidth * 0.01}}>

@@ -91,6 +91,7 @@ import {
   UPDATE_STUDENT_REQUEST,
   UPDATE_STUDENT_SUCCESS,
   UPDATE_STUDENT_FAIL,
+  UPDATE_STUDENT_RESET,
   ALL_STUDENT_REQUEST,
   ALL_STUDENT_SUCCESS,
   ALL_STUDENT_FAIL,
@@ -1033,6 +1034,12 @@ export const updatestudentReducer = (state = {student: []}, action) => {
         ...state,
         loading: false,
         student: action.payload,
+        updateStatus: true,
+      };
+
+    case UPDATE_STUDENT_RESET:
+      return {
+        updateStatus: false,
       };
 
     case UPDATE_STUDENT_FAIL:
@@ -1040,6 +1047,7 @@ export const updatestudentReducer = (state = {student: []}, action) => {
         loading: false,
         student: null,
         error: action.payload,
+        updateStatus: false,
       };
 
     case CLEAR_ERRORS:
@@ -1714,7 +1722,6 @@ export const getStudentTestReducer = (state = {test: []}, action) => {
 };
 
 export const updateStudentTestReducer = (state = {result: []}, action) => {
-
   switch (action.type) {
     case UPDATE_STUDENT_TEST_REQUEST:
       return {

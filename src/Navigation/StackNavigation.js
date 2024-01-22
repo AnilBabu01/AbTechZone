@@ -67,14 +67,13 @@ import ReceiptPrefixCoaching from '../Coaching/Masters/ReceiptPrefix/ReceiptPref
 import UpdatePrefixCoaching from '../Coaching/Masters/ReceiptPrefix/UpdatePrefix';
 import AddPrefixCoaching from '../Coaching/Masters/ReceiptPrefix/AddPrefix';
 
-
 ///School screens
 
 import FrontOfficeSchool from '../School/FrontOffice/FrontOffice';
 import SearchEnquirySchool from '../School/FrontOffice/SearchEnquiry';
 import StudentTabSchool from '../School/Student/StudentTab';
 import SearchaddSchool from '../School/Student/Add/Search';
-import SearchadminssionSchool from '../School/Student/admission/Search';
+import UpdateAdmission from '../School/Student/admission/UpdateAdmission';
 import TakeAdmissionSchool from '../School/Student/admission/TakeAdmission';
 import AddNewStudentSchool from '../School/Student/Add/AddNewStudent';
 import AttendanceTabSchool from '../School/Attendance/AttendanceTab';
@@ -159,7 +158,7 @@ function StackNavigation() {
           },
         }}
       />
-    {/* Coaching routes */}
+      {/* Coaching routes */}
 
       <Stack.Screen name="DashboardCoaching" component={DashboardCoaching} />
       <Stack.Screen name="StudentTabCoaching" component={StudentTabCoaching} />
@@ -868,26 +867,33 @@ function StackNavigation() {
         component={ReportsOptionsCoaching}
       />
 
-{/* End Coching Routes */}
+      {/* End Coching Routes */}
 
-
-{/* Start School Routes */}
+      {/* Start School Routes */}
 
       <Stack.Screen name="StudentTabSchool" component={StudentTabSchool} />
-
+      <Stack.Screen
+        options={{
+          headerShown: true,
+          title: 'Update Admission',
+          headerStyle: {
+            backgroundColor: primary,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+        name="UpdateAdmission"
+        component={UpdateAdmission}
+      />
       <Stack.Screen
         name="MasterOptionsSchool"
         component={MasterOptionsSchool}
       />
-      <Stack.Screen
-        name="FrontOfficeSchool"
-        component={FrontOfficeSchool}
-      />
+      <Stack.Screen name="FrontOfficeSchool" component={FrontOfficeSchool} />
       <Stack.Screen name="SearchaddSchool" component={SearchaddSchool} />
-      <Stack.Screen
-        name="SearchadminssionSchool"
-        component={SearchadminssionSchool}
-      />
+
       <Stack.Screen
         name="TakeAdmissionSchool"
         component={TakeAdmissionSchool}
@@ -1579,14 +1585,12 @@ function StackNavigation() {
         component={ReportsOptionsSchool}
       />
 
-
       <Stack.Screen name="DashboardCollege" component={DashboardCollege} />
       <Stack.Screen name="DashboardSchool" component={DashboardSchool} />
       <Stack.Screen name="DashboardEmplyee" component={DashboardEmplyee} />
       <Stack.Screen name="DashboardStudent" component={DashboardStudent} />
       <Stack.Screen name="DashboardParent" component={DashboardParent} />
       <Stack.Screen name="DashboardOwner" component={DashboardOwner} />
-     
     </Stack.Navigator>
   );
 }

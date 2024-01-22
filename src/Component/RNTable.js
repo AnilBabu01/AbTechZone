@@ -9,7 +9,7 @@ const RNTable = ({isFirst, data, theme, isBorderCurve}) => {
 
   const nav = data => {
     navigation.navigate(data.redirect, {
-      editdata: data.allDetails,
+      data: data.allDetails,
     });
 
     console.log('dd', data.redirect);

@@ -6,23 +6,27 @@ import {
   TouchableOpacity,
   Dimensions,
 } from 'react-native';
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import hamburger from '../../assets/hamburger.png';
 import logoblue1 from '../../assets/whitelogo.png';
 import {primary, hightlight} from '../../utils/Colors';
 import {Height, Width} from '../../utils/responsive';
 import profileimg from '../../assets/profileimg.jpg';
 import {useNavigation} from '@react-navigation/native';
-import {useDispatch, useSelector} from 'react-redux';
-import {backendUrl} from '../../Config/config';
+import {useSelector} from 'react-redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const windowWidth = Dimensions.get('window').width;
 const Header = () => {
-  const dispatch = useDispatch();
   const navigation = useNavigation();
   const {user} = useSelector(state => state.auth);
+  const [istoken, setistoken] = useState('');
+  const getToken = async () => {
+    let token = await AsyncStorage.getItem('erptoken');
+    setistoken(token);
+  };
   useEffect(() => {
-    // dispatch(loadUser());
-  }, [user]);
+    getToken();
+  }, []);
 
   return (
     <View>
@@ -48,7 +52,7 @@ const Header = () => {
           </>
         )} */}
 
-        {user ? (
+        {istoken ? (
           <>
             <View style={styles.profile}>
               <TouchableOpacity

@@ -25,8 +25,9 @@ import {
   getbatch,
   getfeelist,
   Addstudent,
+  Updatestudent,
 } from '../../../redux/action/commanAction';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import RNButton from '../../../Component/RNButton';
 import RNInputField from '../../../Component/RNInputField';
 import RNDatePicker from '../../../Component/RNDatePicker';
@@ -34,9 +35,8 @@ import {FlexRowWrapper} from '../../../Component/FlexRowWrapper';
 import {handleDate, getTodaysDate} from '../../../utils/functions';
 import {deviceHeight, deviceWidth} from '../../../utils/constant';
 import {Colors} from '../../../utils/Colors';
-import {ADD_STUDENT_RESET} from '../../../redux/constants/commanConstants';
+import {UPDATE_STUDENT_RESET} from '../../../redux/constants/commanConstants';
 import moment from 'moment';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const streamlist = [
   {label: 'NONE', value: 'NONE'},
@@ -52,15 +52,18 @@ const studentStatus = [
   {label: 'Unknown', value: 'Unknown'},
 ];
 let formData = new FormData();
-const TakeAdmission = () => {
+const UpdateAdmission = () => {
+  const newroute = useRoute();
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const [sms, setsms] = useState('');
   const [loader, setloader] = useState(false);
   const [index, setIndex] = useState(0);
+  const [updatedata, setupdatedata] = useState('');
   const [openModel, setopenModel] = useState(false);
   const [whatsaapnumber, setwhatsaapnumber] = useState('');
   const [stream, setstream] = useState('NONE');
+  const [noofMonth, setnoofMonth] = useState('');
   const [DateOfBirth, setDateOfBirth] = useState(getTodaysDate());
   const [datecertificatePreview, setdatecertificatePreview] = useState('');
   const [islibrary, setislibrary] = useState(false);
@@ -75,7 +78,6 @@ const TakeAdmission = () => {
   const [adharno, setadharno] = useState('');
   const [amount, setamount] = useState('');
   const [monthlyfee, setmonthlyfee] = useState('');
-  const [getfee, setgetfee] = useState('default');
   const [isdata, setisData] = useState([]);
   const [batchs, setbatchs] = useState([]);
   const [courses, setcourses] = useState('');
@@ -84,7 +86,6 @@ const TakeAdmission = () => {
   const [studentemail, setstudentemail] = useState('');
   const [studentphone, setstudentphone] = useState('');
   const [adminssiondate, setadminssiondate] = useState(getTodaysDate());
-  const [passProfile, setpassProfile] = useState('');
   const [premarksheet, setpremarksheet] = useState('');
   const [passmarksheet, setpassmarksheet] = useState('');
   const [marksheetName, setmarksheetName] = useState('');
@@ -92,9 +93,7 @@ const TakeAdmission = () => {
   const [birth, setbirth] = useState('');
   const [adharcard, setadharcard] = useState('');
   const [others, setothers] = useState('');
-  const [profileimg, setprofileimg] = useState('');
-  const [marksheetimg, setmarksheetimg] = useState('');
-  const [passadharcard, setpassadharcard] = useState('');
+  const [marksheet, setmarksheet] = useState('');
   const [otherspreview, setotherspreview] = useState('');
   const [othersname, setothersname] = useState('');
   const [photo, setphoto] = useState('');
@@ -104,23 +103,25 @@ const TakeAdmission = () => {
   const [state, setstate] = useState('');
   const [Pincode, setPincode] = useState('');
   const [pano, setpano] = useState('');
-  const [courseorclass, setcourseorclass] = useState('');
   const [studentstatus, setstudentstatus] = useState('Active');
+  const [status, setstatus] = useState('Active');
   const [adharcardno, setadharcardno] = useState('');
   const [fathersname, setfathersname] = useState('');
   const [fathersphone, setfathersphone] = useState('');
   const [studentrollno, setstudentrollno] = useState('');
   const [categoryname, setcategoryname] = useState('');
   const [categorylist, setcategorylist] = useState([]);
+  const [hostelcategory, sethostelcategory] = useState('');
+  const [hostenname, sethostenname] = useState('');
+  const [hostelfacility, sethostelfacility] = useState('');
   const [hostellist, sethostellist] = useState([]);
-  const [hostelcategorylist, sethostelcategorylist] = useState([]);
-  const [hostelfacilitylist, sethostelfacilitylist] = useState([]);
   const [routelist, setroutelist] = useState([]);
   const [sessionList, setsessionList] = useState([]);
   const [hostelname, sethostelname] = useState('');
   const [hostelcategoryname, sethostelcategoryname] = useState('');
   const [hostlefacility, sethostlefacility] = useState('');
-  const [hosteldefaultfee, sethosteldefaultfee] = useState(0);
+  const [hostelcategorylist, sethostelcategorylist] = useState([]);
+  const [hostelfacilitylist, sethostelfacilitylist] = useState([]);
   const [hosteldefaultfeepermonth, sethosteldefaultfeepermonth] =
     useState(true);
   const [transportdefaultfee, settransportdefaultfee] = useState(true);
@@ -134,6 +135,11 @@ const TakeAdmission = () => {
   const [loading1, setloading1] = useState(false);
   const [loading2, setloading2] = useState(false);
   const [annualfee, setannualfee] = useState('');
+  const [profile64, setprofile64] = useState('');
+  const [adhar64, setadhar64] = useState('');
+  const [markSheet64, setmarkSheet64] = useState('');
+  const [birth64, setbirth64] = useState('');
+  const [other64, setother64] = useState('');
   const {fee} = useSelector(state => state.getfee);
   const {batch} = useSelector(state => state.getbatch);
   const {user} = useSelector(state => state.auth);
@@ -144,15 +150,15 @@ const TakeAdmission = () => {
   const {route} = useSelector(state => state.GetRoute);
   const {sections} = useSelector(state => state.GetSection);
 
-  const {studentaddstatus, student, loading, error} = useSelector(
-    state => state.addstudent,
+  const {updateStatus, student, loading, error} = useSelector(
+    state => state.editstudent,
   );
   const {CURRENTSESSION} = useSelector(state => state.GetCurrentSession);
   const {Sessions} = useSelector(state => state.GetSession);
-
-  let regfee = courses?.split(' ').pop();
-  var lastIndex = courses?.lastIndexOf(' ');
-  let first = courses?.substring(0, lastIndex);
+  const [classfee, setclassfee] = useState('');
+  let regfee = classfee?.split(' ').pop();
+  var lastIndex = classfee?.lastIndexOf(' ');
+  let first = classfee?.substring(0, lastIndex);
 
   let perFee = first?.split(' ').pop();
   var lastIndex = first?.lastIndexOf(' ');
@@ -161,12 +167,14 @@ const TakeAdmission = () => {
 
   var lastIndex = coursein?.lastIndexOf(' ');
   let regcoursein = coursein?.substring(0, lastIndex);
+
   const submit = async () => {
     try {
       var momentDate = moment(adminssiondate, 'DD/MM/YYYY');
       var newadminssiondate = momentDate.format('YYYY-MM-DD');
       var momentDateOfBirth = moment(DateOfBirth, 'DD/MM/YYYY');
       var newDateOfBirth = momentDateOfBirth.format('YYYY-MM-DD');
+      formData.append('id', updatedata?.id);
       formData.append('name', studentname);
       formData.append('email', studentemail);
       formData.append('phoneno1', studentphone);
@@ -174,16 +182,25 @@ const TakeAdmission = () => {
       formData.append('state', state);
       formData.append('pincode', Pincode);
 
-      formData.append('profileurl', '');
-      formData.append('adharcard', '');
-      formData.append('markSheet', '');
-      formData.append('othersdoc', '');
-      formData.append('BirthDocument', '');
+      formData.append(
+        'profileurl',
+        profile64 ? profile64 : updatedata?.profileurl,
+      );
+      formData.append('adharcard', adhar64 ? adhar64 : updatedata?.adharcard);
+      formData.append(
+        'markSheet',
+        markSheet64 ? markSheet64 : updatedata?.markSheet,
+      );
+      formData.append('othersdoc', other64 ? other64 : updatedata?.othersdoc);
+      formData.append(
+        'BirthDocument',
+        birth64 ? birth64 : updatedata?.BirthDocument,
+      );
 
       formData.append('fathersPhoneNo', fathersphone);
       formData.append('fathersName', fathersname);
       formData.append('courseorclass', regcoursein);
-      formData.append('rollnumber', studentrollno);
+      formData.append('rollnumber', Number(studentrollno));
       formData.append('StudentStatus', studentstatus);
       formData.append('batch', batchname);
 
@@ -195,12 +212,12 @@ const TakeAdmission = () => {
       );
 
       formData.append('courseduration', '');
-      formData.append('adharno', adharcardno);
+      formData.append('adharno', Number(adharcardno));
       formData.append('pancardnno', pano);
       formData.append('whatsappNo', fathersphone);
       formData.append('markSheetname', marksheetName);
       formData.append('othersdocName', othersname);
-      formData.append('Status', studentaddstatus);
+      // formData.append('Status', studentStatus);
       formData.append('Transport', istransport);
       formData.append('FromRoute', '');
       formData.append('ToRoute', '');
@@ -274,11 +291,75 @@ const TakeAdmission = () => {
 
       setsms('Adding...');
 
-      dispatch(Addstudent(formData));
+      dispatch(Updatestudent(formData));
     } catch (error) {
       console.log(error);
     }
   };
+  console.log('erroe form data is ', updatedata?.adharcard);
+  useEffect(() => {
+    if (newroute?.params?.data) {
+      let feeob = fee?.find(({coursename}) => coursename === courses);
+      setclassfee(
+        `${feeob?.coursename} ${feeob?.courseduration} ${feeob?.feepermonth} ${feeob?.Registractionfee}`,
+      );
+
+      setupdatedata(newroute.params.data);
+      setSrNumber(updatedata?.SrNumber?.toString());
+      setstudentrollno(updatedata?.rollnumber?.toString());
+      setstudentemail(updatedata?.email);
+      setstudentname(updatedata?.name);
+      setstudentphone(updatedata?.phoneno1);
+      setfathersname(updatedata?.fathersName);
+      setfathersphone(updatedata?.fathersPhoneNo);
+      setpano(updatedata?.pancardnno);
+      setadharcardno(updatedata?.adharno?.toString());
+      setstate(updatedata?.state);
+      setcity(updatedata?.city);
+      setstate(updatedata?.state);
+      // setbatchname(updatedata?.batch);
+      setcourses(updatedata?.courseorclass);
+      setadminssiondate(moment(updatedata?.admissionDate).format('DD/MM/YYYY'));
+
+      console.log(
+        'date from edig admission',
+        moment(updatedata?.admissionDate).format('DD/MM/YYYY'),
+      );
+
+      setPincode(updatedata?.pincode);
+      setwhatsaapnumber(updatedata?.whatsappNo);
+      setothersname(updatedata?.othersdocName);
+      setmarksheetName(updatedata?.markSheetname);
+      setbirth(updatedata?.BirthDocument);
+      setmarksheet(updatedata?.markSheet);
+      setadharcard(updatedata?.adharno);
+      setothers(updatedata?.othersdoc);
+      setphoto(updatedata?.profileurl);
+      setstatus(updatedata?.Status);
+      setnoofMonth(updatedata?.courseduration);
+      setamount(updatedata?.regisgrationfee?.toString());
+      setmonthlyfee(updatedata?.permonthfee?.toString());
+      setonlyshowmonthfee(updatedata?.permonthfee?.toString());
+      setonlyshowrefee(updatedata?.regisgrationfee)?.toString();
+      setistransport(updatedata?.Transport);
+      setislibrary(updatedata?.Library);
+      setishostel(updatedata?.hostal);
+      setTransportFeePermonth(updatedata?.TransportPerMonthFee?.toString());
+      sethostelfeeperMonth(updatedata?.HostelPerMonthFee?.toString());
+      setannualfee(updatedata?.AnnualFee?.toString());
+      setsessionname(updatedata?.Session);
+      setsectionname(updatedata?.Section);
+      sethostelfacility(updatedata?.Facility);
+      sethostenname(updatedata?.hostelname);
+      sethostelcategory(updatedata?.Category);
+      setfromroute(updatedata?.FromRoute);
+      settoroute(updatedata?.ToRoute);
+      setpano(updatedata?.pancardnno?.toString());
+      setDateOfBirth(moment(updatedata?.DateOfBirth).format('DD/MM/YYYY'));
+      setcategoryname(updatedata?.StudentCategory);
+      setstream(updatedata?.Stream);
+    }
+  }, [updatedata, fee]);
 
   useEffect(() => {
     if (fee) {
@@ -287,7 +368,7 @@ const TakeAdmission = () => {
     if (batch) {
       setbatchs(batch);
     }
-    if (studentaddstatus === true) {
+    if (updateStatus === true) {
       dispatch(getstudent());
       navigation.goBack();
     }
@@ -311,7 +392,7 @@ const TakeAdmission = () => {
       setsectionlist(newArray);
     }
     dispatch({
-      type: ADD_STUDENT_RESET,
+      type: UPDATE_STUDENT_RESET,
     });
     if (CURRENTSESSION) {
       setsessionname(CURRENTSESSION);
@@ -326,7 +407,7 @@ const TakeAdmission = () => {
     route,
     fee,
     batch,
-    studentaddstatus,
+    updateStatus,
     category,
     sections,
     CURRENTSESSION,
@@ -364,10 +445,9 @@ const TakeAdmission = () => {
           name: name,
           type: type,
         };
-        const imageBase64 = `data:${Response.assets[0].type};base64,${Response?.assets[0]?.base64}`;
 
         if (file != null) {
-          formData.append('profileurl', file);
+          setprofile64(file);
         }
       }
     });
@@ -399,10 +479,9 @@ const TakeAdmission = () => {
           name: name,
           type: type,
         };
-        const imageBase64 = `data:${Response.assets[0].type};base64,${Response?.assets[0]?.base64}`;
 
         if (file != null) {
-          formData.append('profileurl', file);
+          setprofile64(file);
         }
       }
     });
@@ -433,10 +512,9 @@ const TakeAdmission = () => {
           name: name,
           type: type,
         };
-        const imageBase64 = `data:${Response.assets[0].type};base64,${Response?.assets[0]?.base64}`;
 
         if (file != null) {
-          formData.append('adharcard', file);
+          setadhar64(file);
         }
       }
     });
@@ -468,10 +546,8 @@ const TakeAdmission = () => {
           name: name,
           type: type,
         };
-        const imageBase64 = `data:${Response.assets[0].type};base64,${Response?.assets[0]?.base64}`;
-
         if (file != null) {
-          formData.append('adharcard', file);
+          setadhar64(file);
         }
       }
     });
@@ -502,10 +578,8 @@ const TakeAdmission = () => {
           name: name,
           type: type,
         };
-        const imageBase64 = `data:${Response.assets[0].type};base64,${Response?.assets[0]?.base64}`;
-
         if (file != null) {
-          formData.append('markSheet', file);
+          setmarkSheet64(file);
         }
       }
     });
@@ -537,10 +611,8 @@ const TakeAdmission = () => {
           name: name,
           type: type,
         };
-        const imageBase64 = `data:${Response.assets[0].type};base64,${Response?.assets[0]?.base64}`;
-
         if (file != null) {
-          formData.append('markSheet', file);
+          setmarkSheet64(file);
         }
       }
     });
@@ -571,10 +643,8 @@ const TakeAdmission = () => {
           name: name,
           type: type,
         };
-        const imageBase64 = `data:${Response.assets[0].type};base64,${Response?.assets[0]?.base64}`;
-
         if (file != null) {
-          formData.append('BirthDocument', file);
+          setprofile64(file);
         }
       }
     });
@@ -606,10 +676,8 @@ const TakeAdmission = () => {
           name: name,
           type: type,
         };
-        const imageBase64 = `data:${Response.assets[0].type};base64,${Response?.assets[0]?.base64}`;
-
         if (file != null) {
-          formData.append('BirthDocument', file);
+          setprofile64(file);
         }
       }
     });
@@ -640,10 +708,8 @@ const TakeAdmission = () => {
           name: name,
           type: type,
         };
-        const imageBase64 = `data:${Response.assets[0].type};base64,${Response?.assets[0]?.base64}`;
-
         if (file != null) {
-          formData.append('othersdoc', file);
+          setother64(file);
         }
       }
     });
@@ -675,10 +741,8 @@ const TakeAdmission = () => {
           name: name,
           type: type,
         };
-        const imageBase64 = `data:${Response.assets[0].type};base64,${Response?.assets[0]?.base64}`;
-
         if (file != null) {
-          formData.append('othersdoc', file);
+          setother64(file);
         }
       }
     });
@@ -734,6 +798,7 @@ const TakeAdmission = () => {
       setloading2(false);
     }
   };
+
   return (
     <View>
       <Modal animationType={'fade'} transparent={true} visible={openModel}>
@@ -1066,7 +1131,7 @@ const TakeAdmission = () => {
                       isdata &&
                       isdata?.map(item => ({
                         label: `${item?.coursename}`,
-                        value: `${item?.coursename} ${item?.courseduration} ${item?.feepermonth} ${item?.Registractionfee}`,
+                        value: `${item?.coursename}`,
                       }))
                     }
                     search
@@ -1428,7 +1493,7 @@ const TakeAdmission = () => {
                           paddingHorizontal: Width(15),
                           fontSize: Height(16),
                         }}>
-                        {onlyTransport}
+                        {hostelfeeperMonth}
                       </Text>
                     </View>
                   </View>
@@ -1448,7 +1513,7 @@ const TakeAdmission = () => {
                           paddingHorizontal: Width(15),
                           fontSize: Height(16),
                         }}>
-                        {Number(onlyTransport) * Number(12)}
+                        {Number(hostelfeeperMonth) * Number(12)}
                       </Text>
                     </View>
                   </View>
@@ -1463,8 +1528,8 @@ const TakeAdmission = () => {
                     <RNInputField
                       style={{backgroundColor: Colors.fadeGray}}
                       label="Per Month Fee"
-                      value={TransportFeePermonth}
-                      onChangeText={data => setTransportFeePermonth(data)}
+                      value={onlyHostelFee}
+                      onChangeText={data => setonlyHostelFee(data)}
                       placeholder="0"
                     />
                   </View>
@@ -1485,7 +1550,7 @@ const TakeAdmission = () => {
                           paddingHorizontal: Width(20),
                           fontSize: Height(16),
                         }}>
-                        {Number(TransportFeePermonth) * Number(12)}
+                        {Number(onlyHostelFee) * Number(12)}
                       </Text>
                     </View>
                   </View>
@@ -1607,7 +1672,7 @@ const TakeAdmission = () => {
                       marginHorizontal: deviceWidth * 0.04,
                       position: 'relative',
                     }}>
-                    <Text style={styles.inputLabel}>Total Fee</Text>
+                    <Text style={styles.inputLabel}>Per Month Fee</Text>
                     <View
                       style={styles.totalamountstyle}
                       onStartShouldSetResponder={() => setIndex(5)}>
@@ -1618,7 +1683,7 @@ const TakeAdmission = () => {
                           paddingHorizontal: Width(15),
                           fontSize: Height(16),
                         }}>
-                        {Number(hostelfeeperMonth)}
+                        {Number(TransportFeePermonth)}
                       </Text>
                     </View>
                   </View>
@@ -1638,7 +1703,7 @@ const TakeAdmission = () => {
                           paddingHorizontal: Width(15),
                           fontSize: Height(16),
                         }}>
-                        {Number(hostelfeeperMonth) * Number(12)}
+                        {Number(TransportFeePermonth) * Number(12)}
                       </Text>
                     </View>
                   </View>
@@ -1653,8 +1718,8 @@ const TakeAdmission = () => {
                     <RNInputField
                       style={{backgroundColor: Colors.fadeGray}}
                       label="Per Month Fee"
-                      value={onlyTransport}
-                      onChangeText={data => setonlyTransport(data)}
+                      value={TransportFeePermonth}
+                      onChangeText={data => setTransportFeePermonth(data)}
                       placeholder="0"
                     />
                   </View>
@@ -1675,7 +1740,7 @@ const TakeAdmission = () => {
                           paddingHorizontal: Width(20),
                           fontSize: Height(16),
                         }}>
-                        {Number(onlyTransport) * Number(12)}
+                        {Number(TransportFeePermonth) * Number(12)}
                       </Text>
                     </View>
                   </View>
@@ -1687,8 +1752,9 @@ const TakeAdmission = () => {
             <Text style={{fontSize: 20, marginBottom: 10, marginTop: 8}}>
               Password Size Photo
             </Text>
+
             <View>
-              {passportsize ? (
+              {updatedata?.profileurl || passportsize ? (
                 <>
                   <View style={{position: 'relative'}}>
                     <View
@@ -1712,7 +1778,11 @@ const TakeAdmission = () => {
                       </TouchableOpacity>
                     </View>
                     <Image
-                      source={{uri: passportsize}}
+                      source={{
+                        uri: passportsize
+                          ? passportsize
+                          : updatedata?.profileurl,
+                      }}
                       style={styles.imgprestyle}
                     />
                   </View>
@@ -1740,7 +1810,7 @@ const TakeAdmission = () => {
               Adhar Card
             </Text>
             <View>
-              {adharno ? (
+              {updatedata?.adharcard || adharno ? (
                 <>
                   <View style={{position: 'relative'}}>
                     <View
@@ -1762,7 +1832,10 @@ const TakeAdmission = () => {
                         </View>
                       </TouchableOpacity>
                     </View>
-                    <Image source={{uri: adharno}} style={styles.imgprestyle} />
+                    <Image
+                      source={{uri: adharno ? adharno : updatedata?.adharcard}}
+                      style={styles.imgprestyle}
+                    />
                   </View>
                 </>
               ) : (
@@ -1803,7 +1876,7 @@ const TakeAdmission = () => {
               </View>
             </View>
             <View>
-              {premarksheet ? (
+              {updatedata?.markSheet || premarksheet ? (
                 <>
                   <View style={{position: 'relative'}}>
                     <View
@@ -1825,7 +1898,12 @@ const TakeAdmission = () => {
                         </View>
                       </TouchableOpacity>
                     </View>
-                    <Image source={{uri: adharno}} style={styles.imgprestyle} />
+                    <Image
+                      source={{
+                        uri: marksheet ? marksheet : updatedata?.markSheet,
+                      }}
+                      style={styles.imgprestyle}
+                    />
                   </View>
                 </>
               ) : (
@@ -1853,7 +1931,7 @@ const TakeAdmission = () => {
             </Text>
 
             <View>
-              {datecertificatePreview ? (
+              {updatedata?.BirthDocument || datecertificatePreview ? (
                 <>
                   <View style={{position: 'relative'}}>
                     <View
@@ -1877,7 +1955,11 @@ const TakeAdmission = () => {
                       </TouchableOpacity>
                     </View>
                     <Image
-                      source={{uri: datecertificatePreview}}
+                      source={{
+                        uri: datecertificatePreview
+                          ? datecertificatePreview
+                          : updatedata?.BirthDocument,
+                      }}
                       style={styles.imgprestyle}
                     />
                   </View>
@@ -1923,7 +2005,7 @@ const TakeAdmission = () => {
               </View>
             </View>
             <View>
-              {otherspreview ? (
+              {updatedata?.othersdoc || otherspreview ? (
                 <>
                   <View style={{position: 'relative'}}>
                     <View
@@ -1947,7 +2029,11 @@ const TakeAdmission = () => {
                       </TouchableOpacity>
                     </View>
                     <Image
-                      source={{uri: otherspreview}}
+                      source={{
+                        uri: otherspreview
+                          ? otherspreview
+                          : updatedata?.othersdoc,
+                      }}
                       style={styles.imgprestyle}
                     />
                   </View>
@@ -1976,7 +2062,7 @@ const TakeAdmission = () => {
             loading={loading}
             onPress={submit}
             style={{marginHorizontal: 20, marginTop: 20}}>
-            Save & Next
+            Update & Next
           </RNButton>
         </View>
       </ScrollView>
@@ -1984,7 +2070,7 @@ const TakeAdmission = () => {
   );
 };
 
-export default TakeAdmission;
+export default UpdateAdmission;
 
 const styles = StyleSheet.create({
   getfeeview: {

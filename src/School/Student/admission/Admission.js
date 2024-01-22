@@ -87,12 +87,7 @@ const Admission = ({navigation}) => {
       width: 0.33,
       align: 'center',
     },
-    {
-      title: 'Roll_No',
-      items: [],
-      width: 0.33,
-      align: 'center',
-    },
+
     {
       title: 'Section',
       items: [],
@@ -129,12 +124,7 @@ const Admission = ({navigation}) => {
       width: 0.33,
       align: 'center',
     },
-    {
-      title: 'Class',
-      items: [],
-      width: 0.33,
-      align: 'center',
-    },
+
     {
       title: 'Class',
       items: [],
@@ -207,7 +197,7 @@ const Admission = ({navigation}) => {
             });
             StudentTableList[12].items.push({
               id: index,
-              value: item.Status,
+              value: item.StudentStatus,
             });
             StudentTableList[13].items.push({
               id: index,
@@ -219,7 +209,7 @@ const Admission = ({navigation}) => {
                 />
               ),
               allDetails: item,
-              redirect: 'EditDistrct',
+              redirect: 'UpdateAdmission',
             });
           }),
       );
@@ -233,10 +223,6 @@ const Admission = ({navigation}) => {
       setisdata(student);
     }
   }, [student]);
-
-  const handlefilter = () => {
-    console.log('cliecked on filters');
-  };
 
   return (
     <>
@@ -261,19 +247,11 @@ const Admission = ({navigation}) => {
               style={styles.filterBtnContainer}>
               {viewdata ? (
                 <>
-                  <Image
-                    source={tableview}
-                    style={{width: 25, height: 25}}
-                    resizeMode="contain"
-                  />
+                  <Ionicons name="card" color={Colors.primary} size={25} />
                 </>
               ) : (
                 <>
-                  <Image
-                    source={Cardview}
-                    style={{width: 25, height: 25}}
-                    resizeMode="contain"
-                  />
+                  <FontAwesome6 name="table" color={Colors.primary} size={25} />
                 </>
               )}
             </Pressable>
@@ -307,11 +285,7 @@ const Admission = ({navigation}) => {
         </ScrollView>
         {showModal && (
           <>
-            <StudentFilter
-              setShowModal={setShowModal}
-              showModal={showModal}
-              onSubmit={handlefilter}
-            />
+            <StudentFilter setShowModal={setShowModal} showModal={showModal} />
           </>
         )}
 

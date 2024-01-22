@@ -1127,7 +1127,7 @@ export const Updatestudent = (datas, setOpen) => async dispatch => {
     let token = await AsyncStorage.getItem('erptoken');
     const config = {
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': `multipart/form-data;`,
         Authorization: `${token}`,
       },
     };
@@ -1154,7 +1154,7 @@ export const Updatestudent = (datas, setOpen) => async dispatch => {
   } catch (error) {
     dispatch({
       type: UPDATE_STUDENT_FAIL,
-      payload: error?.response?.data?.msg,
+      payload: error?.response?.data,
     });
     Toast.show({
       type: 'error',

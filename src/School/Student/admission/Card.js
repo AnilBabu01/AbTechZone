@@ -174,7 +174,7 @@ const Card = ({data}) => {
                       </TouchableOpacity>
                       <TouchableOpacity
                         onPress={() =>
-                          navigation.navigate('UpdateEnquirySchool', {data})
+                          navigation.navigate('UpdateAdmission', {data})
                         }>
                         <Ionicons
                           name="create"
