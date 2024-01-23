@@ -453,8 +453,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
-    // marginHorizontal: deviceWidth * 0.01,
-    // marginTop: deviceWidth * 0.04,
+  
   },
   dropstyle: {
     width: Width(160),

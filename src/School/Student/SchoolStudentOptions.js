@@ -8,110 +8,100 @@ import {Colors} from '../../utils/Colors';
 import {deviceHeight, deviceWidth} from '../../utils/constant';
 import {Height, Width} from '../../utils/responsive';
 
-const MasterOptions = () => {
+const SchoolStudentOptions = () => {
   const navigation = useNavigation();
   return (
     <>
-      <BackHeader title={'Master Management'} icon={'circle-info'} />
+      <BackHeader title={'Student Management'} icon={'school'} />
       <View style={styles.mainview}>
-        <TouchableOpacity onPress={() => navigation.navigate('BatchCoaching')}>
+        <TouchableOpacity onPress={() => navigation.navigate('Admission')}>
           <View style={styles.mainoption}>
-            <FontAwesome6 name="calendar" color={Colors.primary} size={30} />
-            <Text style={styles.titlestyle}>Add Session</Text>
+            <FontAwesome6 name="user-plus" color={Colors.primary} size={30} />
+            <Text style={styles.titlestyle}>Admission</Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('CourseCoaching')}>
+        <TouchableOpacity onPress={() => navigation.navigate('Add')}>
           <View style={styles.mainoption}>
-            <FontAwesome6 name="computer" color={Colors.primary} size={30} />
-            <Text style={styles.titlestyle}>Add Class</Text>
+            <FontAwesome6 name="user-plus" color={Colors.primary} size={30} />
+            <Text style={styles.titlestyle}>Add</Text>
           </View>
         </TouchableOpacity>
 
         <TouchableOpacity
           onPress={() => navigation.navigate('CategoryCoaching')}>
           <View style={styles.mainoption}>
-            <FontAwesome6 name="section" color={Colors.primary} size={30} />
-            <Text style={styles.titlestyle}>Add Section</Text>
+            <FontAwesome6 name="database" color={Colors.primary} size={30} />
+            <Text style={styles.titlestyle}>Attendance</Text>
           </View>
         </TouchableOpacity>
 
         <TouchableOpacity onPress={() => navigation.navigate('FeesCoaching')}>
           <View style={styles.mainoption}>
-            <FontAwesome6
-              name="creative-commons-sampling-plus"
-              color={Colors.primary}
-              size={30}
-            />
-            <Text style={styles.titlestyle}>Add Stream</Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('FeesCoaching')}>
-          <View style={styles.mainoption}>
-            <FontAwesome6 name="book" color={Colors.primary} size={30} />
-            <Text style={styles.titlestyle}>Add Subjects</Text>
+            <FontAwesome6 name="certificate" color={Colors.primary} size={30} />
+            <Text style={styles.titlestyle}>TC</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => navigation.navigate('DepartmentCoaching')}>
           <View style={styles.mainoption}>
             <FontAwesome6 name="certificate" color={Colors.primary} size={30} />
-            <Text style={styles.titlestyle}>Caste</Text>
+            <Text style={styles.titlestyle}>CC</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => navigation.navigate('DesignationCoaching')}>
           <View style={styles.mainoption}>
-            <FontAwesome6
-              name="indian-rupee-sign"
-              color={Colors.primary}
-              size={30}
-            />
-            <Text style={styles.titlestyle}>Fee Structure</Text>
+            <FontAwesome6 name="comment-sms" color={Colors.primary} size={30} />
+            <Text style={styles.titlestyle}>Send SMS</Text>
           </View>
         </TouchableOpacity>
 
         <TouchableOpacity onPress={() => navigation.navigate('FeesCoaching')}>
           <View style={styles.mainoption}>
             <FontAwesome6
-              name="building-user"
+              name="indian-rupee-sign"
               color={Colors.primary}
               size={30}
             />
-            <Text style={styles.titlestyle}>Deparment</Text>
+            <Text style={styles.titlestyle}>Add Other Fee</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => navigation.navigate('DepartmentCoaching')}>
           <View style={styles.mainoption}>
-            <FontAwesome6 name="compass" color={Colors.primary} size={30} />
-            <Text style={styles.titlestyle}>Designation</Text>
+            <FontAwesome6 name="calendar" color={Colors.primary} size={30} />
+            <Text style={styles.titlestyle}>Time Table</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => navigation.navigate('DesignationCoaching')}>
           <View style={styles.mainoption}>
-            <FontAwesome6 name="shoe-prints" color={Colors.primary} size={30} />
-            <Text style={styles.titlestyle}>Footer Details</Text>
+            <FontAwesome6 name="database" color={Colors.primary} size={30} />
+            <Text style={styles.titlestyle}>Send Email</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate('FeesCoaching')}>
           <View style={styles.mainoption}>
-            <FontAwesome6 name="circle-info" color={Colors.primary} size={30} />
-            <Text style={styles.titlestyle}>Add Notic</Text>
+            <FontAwesome6
+              name="indian-rupee-sign"
+              color={Colors.primary}
+              size={30}
+            />
+            <Text style={styles.titlestyle}>Student Credentials</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => navigation.navigate('DepartmentCoaching')}>
           <View style={styles.mainoption}>
-            <FontAwesome6 name="images" color={Colors.primary} size={30} />
-            <Text style={styles.titlestyle}>Add Slider</Text>
+            <FontAwesome6 name="calendar" color={Colors.primary} size={30} />
+            <Text style={styles.titlestyle}>Parent Credentials</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => navigation.navigate('DesignationCoaching')}>
           <View style={styles.mainoption}>
-            <FontAwesome6 name="receipt" color={Colors.primary} size={30} />
-            <Text style={styles.titlestyle}>Receipt Format</Text>
+            <FontAwesome6 name="database" color={Colors.primary} size={30} />
+            <Text style={styles.titlestyle}>Change Session</Text>
           </View>
         </TouchableOpacity>
       </View>
@@ -119,7 +109,7 @@ const MasterOptions = () => {
   );
 };
 
-export default MasterOptions;
+export default SchoolStudentOptions;
 
 const styles = StyleSheet.create({
   mainview: {

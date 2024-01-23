@@ -15,11 +15,12 @@ import {handleDate, getTodaysDate} from '../../utils/functions';
 import {Colors} from '../../utils/Colors';
 import {deviceHeight, deviceWidth} from '../../utils/constant';
 import {FlexRowWrapper} from '../../Component/FlexRowWrapper';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import moment from 'moment';
+import BackHeader from '../../Component/Header/BackHeader';
 const AddEnquiry = () => {
   const dispatch = useDispatch();
-  const navigation = useNavigation()
+  const navigation = useNavigation();
   const [sms, setsms] = useState('');
   const [loader, setloader] = useState(false);
   const [enquirydate, setenquirydate] = useState(getTodaysDate());
@@ -30,7 +31,7 @@ const AddEnquiry = () => {
   const [email, setemail] = useState('');
   const [address, setaddress] = useState('');
   const [comment, setcomment] = useState('');
-  const {enquiry, error} = useSelector(state => state.addenqury);
+  const {enquiry, error, loading} = useSelector(state => state.addenqury);
   const {course} = useSelector(state => state.getcourse);
 
   const submit = () => {
@@ -38,7 +39,7 @@ const AddEnquiry = () => {
       setloader(true);
       setsms('Adding...');
       const data = {
-        EnquiryDate:  moment(enquirydate, 'YYYY-MM-DD'),
+        EnquiryDate: moment(enquirydate, 'YYYY-MM-DD'),
         StudentName: studentname,
         StudentNumber: studentPhone,
         StudentEmail: email,
@@ -102,7 +103,7 @@ const AddEnquiry = () => {
 
   return (
     <View>
-      <Loader loader={loader} sms={sms} />
+      <BackHeader title={'Add Enquiry'} />
       <ScrollView>
         <View style={styles.enquirymainview}>
           <View style={styles.dateview}>
@@ -230,10 +231,10 @@ const AddEnquiry = () => {
                 maxLength={500}
               />
             </View>
-            
           </View>
 
           <RNButton
+            loading={loading}
             onPress={submit}
             style={{marginHorizontal: 20, marginTop: 20}}>
             Save & Next

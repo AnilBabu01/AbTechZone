@@ -1,26 +1,14 @@
-import {StyleSheet, Text, View, Image} from 'react-native';
+import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
 import React, {useState} from 'react';
-import {DrawerItem} from '@react-navigation/drawer';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {secondary, hightlight} from '../utils/Colors';
+import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import profileimg from '../assets/profileimg.jpg';
-import dash from '../assets/dash5.png';
-import hostel from '../assets/hostel.png';
-import hr from '../assets/hr.png';
-import library from '../assets/library.png';
-import office from '../assets/office.png';
-import rupee from '../assets/rupee.png';
-import student from '../assets/student.png';
-import timetable from '../assets/timetable.png';
-import transport from '../assets/transport.png';
-import attendance from '../assets/attendance.png';
-import reports from '../assets/reports.png';
-import test from '../assets/test.png';
 import {useDispatch, useSelector} from 'react-redux';
-import {loadUser} from '../redux/action/commanAction';
+import {loadUser} from '../redux/action/authActions';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Loader from '../Component/Loader/Loader';
-import {backendUrl} from '../Config/config';
+import {Colors} from '../utils/Colors';
+import {deviceWidth} from '../utils/constant';
 const EmployeeDrawerItem = ({navigation, setuserData}) => {
   const [loader, setloader] = useState(false);
   const [sms, setsms] = useState('');
@@ -37,21 +25,44 @@ const EmployeeDrawerItem = ({navigation, setuserData}) => {
     setloader(false);
     setsms('');
   };
+
+  const CommonBTN = ({routename, icon, title}) => {
+    return (
+      <TouchableOpacity
+        style={styles.menu}
+        // onPress={() => navigation.navigate(routename)}
+        
+        >
+        <View style={styles.innearview}>
+          <View style={styles.inneartitle}>
+            <Ionicons name={icon} color={Colors.primary} size={25} />
+            <Text style={styles.textstyle}>{title}</Text>
+          </View>
+
+          <Ionicons
+            name="chevron-forward-outline"
+            color={Colors.primary}
+            size={25}
+          />
+        </View>
+      </TouchableOpacity>
+    );
+  };
   return (
     <View>
       <Loader loader={loader} sms={sms} />
       <View style={styles.mainprofile}>
-        <View style={styles.innearview}>
+        <View style={styles.innearviewprofile}>
           {user?.data?.CredentailsData?.profileurl ? (
             <>
               <Image
                 source={{
-                  uri: `${backendUrl}public/upload/${user?.data?.CredentailsData?.profileurl}`,
+                  uri: `${user?.data?.CredentailsData?.profileurl}`,
                 }}
                 style={{
                   width: 80,
                   height: 80,
-                  borderRadius: 50,
+                  borderRadius: 10,
                 }}
               />
             </>
@@ -62,256 +73,63 @@ const EmployeeDrawerItem = ({navigation, setuserData}) => {
                 style={{
                   width: 80,
                   height: 80,
-                  borderRadius: 50,
+                  borderRadius: 10,
                 }}
               />
             </>
           )}
 
-          <Text style={{color: 'white'}}>Demo</Text>
+          <Text style={{color: Colors.black}}>{user?.data?.User?.name}</Text>
         </View>
       </View>
+      <View style={styles.divider}></View>
 
-      <DrawerItem
-        style={styles.menu}
-        label="DashBoard"
-        icon={() => (
-          <Image
-            source={dash}
-            style={{
-              width: 30,
-              height: 30,
-            }}
-          />
-        )}
-        onPress={() => {
-          navigation.closeDrawer();
-          //   navigation.navigate('Profiles', {user});
-        }}
-        labelStyle={{color: 'black'}}
-      />
-      <DrawerItem
-        style={styles.menu}
-        label="Front Office"
-        icon={() => (
-          <Image
-            source={office}
-            style={{
-              width: 30,
-              height: 30,
-            }}
-          />
-        )}
-        onPress={() => {
-          //   navigation.navigate('Home');
-          navigation.closeDrawer();
-        }}
-        labelStyle={{color: 'black'}}
+      <CommonBTN routename="DashboardSchool" title="DashBoard" icon="grid" />
+
+      <CommonBTN
+        routename="FrontOfficeSchool"
+        title="Front Office"
+        icon="storefront"
       />
 
-      <DrawerItem
-        style={styles.menu}
-        label="Student"
-        icon={() => (
-          <Image
-            source={student}
-            style={{
-              width: 30,
-              height: 30,
-            }}
-          />
-        )}
-        onPress={() => {
-          //   navigation.navigate('login');
-          navigation.closeDrawer();
-        }}
-        labelStyle={{color: 'black'}}
+      <CommonBTN
+        routename="SchoolStudentOptions"
+        title="Student"
+        icon="people"
       />
-      <DrawerItem
-        style={styles.menu}
-        label="Time Table"
-        icon={() => (
-          <Image
-            source={timetable}
-            style={{
-              width: 30,
-              height: 30,
-            }}
-          />
-        )}
-        onPress={() => {
-          //   navigation.navigate('login');
-          navigation.closeDrawer();
-        }}
-        labelStyle={{color: 'black'}}
+      <CommonBTN routename="SchoolAccounts" title="Account" icon="storefront" />
+      <CommonBTN
+        routename="SchoolHrOptions"
+        title="Human Resourse"
+        icon="people"
       />
-      <DrawerItem
-        style={styles.menu}
-        label="Attendance"
-        icon={() => (
-          <Image
-            source={attendance}
-            style={{
-              width: 30,
-              height: 30,
-            }}
-          />
-        )}
-        onPress={() => {
-          //   navigation.navigate('Changepassword');
-          navigation.closeDrawer();
-        }}
-        labelStyle={{color: 'black'}}
-      />
-      <DrawerItem
-        style={styles.menu}
-        label="Accounts"
-        icon={() => (
-          <Image
-            source={rupee}
-            style={{
-              width: 30,
-              height: 30,
-            }}
-          />
-        )}
-        onPress={() => {
-          navigation.closeDrawer();
-          //   navigation.navigate('login');
-        }}
-        labelStyle={{color: 'black'}}
-      />
-      <DrawerItem
-        style={styles.menu}
-        label="Human Resourse"
-        icon={() => (
-          <Image
-            source={hr}
-            style={{
-              width: 30,
-              height: 30,
-            }}
-          />
-        )}
-        // onPress={() => logout()}
-        labelStyle={{color: 'black'}}
-      />
-      <DrawerItem
-        style={styles.menu}
-        label="Hostal"
-        icon={() => (
-          <Image
-            source={hostel}
-            style={{
-              width: 30,
-              height: 30,
-            }}
-          />
-        )}
-        // onPress={() => logout()}
-        labelStyle={{color: 'black'}}
-      />
-      <DrawerItem
-        style={styles.menu}
-        label="Library"
-        icon={() => (
-          <Image
-            source={library}
-            style={{
-              width: 30,
-              height: 30,
-            }}
-          />
-        )}
-        // onPress={() => logout()}
-        labelStyle={{color: 'black'}}
-      />
+      <CommonBTN routename="SchoolHostelOptiins" title="Hostel" icon="home" />
+      <CommonBTN routename="SchoolLibraryOptions" title="Library" icon="book" />
+      <CommonBTN
+        routename="SchoolTranportOptions"
+        title="Transport"
+        icon="bus"
+      />  
+      <CommonBTN routename="MasterOptionsSchool" title="Masters" icon="logo-mastodon" />
+      <CommonBTN routename="ReportsOptionsSchool" title="Reparts" icon="receipt" />
+      <CommonBTN routename="SchoolTestOptions" title="Test" icon="receipt" />
+      <CommonBTN routename="HelpCenter" title="Help Center" icon="help-circle" />
+      <TouchableOpacity style={styles.menu} onPress={() => logout()}>
+        <View style={styles.innearview}>
+          <View style={styles.inneartitle}>
+            <Ionicons name="log-out" color={Colors.primary} size={25} />
+            <Text style={styles.textstyle}>Logout</Text>
+          </View>
 
-      <DrawerItem
-        style={styles.menu}
-        label="Library"
-        icon={() => (
-          <Image
-            source={transport}
-            style={{
-              width: 30,
-              height: 30,
-            }}
+          <Ionicons
+            name="chevron-forward-outline"
+            color={Colors.primary}
+            size={25}
           />
-        )}
-        // onPress={() => logout()}
-        labelStyle={{color: 'black'}}
-      />
-      {/* <DrawerItem
-        style={styles.menu}
-        label="Masters"
-        icon={() => (
-          <Image
-            source={master}
-            style={{
-              width: 30,
-              height: 30,
-            }}
-          />
-        )}
-        // onPress={() => logout()}
-        labelStyle={{color: 'black'}}
-      /> */}
-      <DrawerItem
-        style={styles.menu}
-        label="Reparts"
-        icon={() => (
-          <Image
-            source={reports}
-            style={{
-              width: 30,
-              height: 30,
-            }}
-          />
-        )}
-        // onPress={() => logout()}
-        labelStyle={{color: 'black'}}
-      />
-      {/* <DrawerItem
-        style={styles.menu}
-        label="School Profile"
-        icon={() => (
-          <Image
-            source={coaching}
-            style={{
-              width: 30,
-              height: 30,
-            }}
-          />
-        )}
-        // onPress={() => logout()}
-        labelStyle={{color: 'black'}}
-      /> */}
-      <DrawerItem
-        style={styles.menu}
-        label="Test"
-        icon={() => (
-          <Image
-            source={test}
-            style={{
-              width: 30,
-              height: 30,
-            }}
-          />
-        )}
-        // onPress={() => logout()}
-        labelStyle={{color: 'black'}}
-      />
-      <DrawerItem
-        style={styles.menu}
-        label="Logout"
-        icon={() => <Ionicons name="lock-closed-outline" size={30} />}
-        onPress={() => {
-          navigation.closeDrawer();
-          logout();
-        }}
-        labelStyle={{color: 'black'}}
-      />
+        </View>
+      </TouchableOpacity>
+
+    
     </View>
   );
 };
@@ -322,16 +140,39 @@ const styles = StyleSheet.create({
   mainprofile: {
     paddingHorizontal: 10,
   },
+
   innearview: {
     display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  innearviewprofile: {
+    display: 'flex',
     alignItems: 'center',
-    backgroundColor: hightlight,
     borderRadius: 10,
     paddingVertical: 10,
     marginBottom: 5,
   },
 
   menu: {
-    backgroundColor: secondary,
+    marginHorizontal: deviceWidth * 0.02,
+    marginBottom: deviceWidth * 0.02,
+    paddingVertical: deviceWidth * 0.02,
+    paddingRight: deviceWidth * 0.07,
+  },
+  inneartitle: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: '100%',
+  },
+  textstyle: {
+    color: Colors.primary,
+    fontSize: 15,
+    paddingLeft: deviceWidth * 0.02,
+  },
+  divider: {
+    borderWidth: 1,
+    borderColor: Colors.fadeGray,
   },
 });

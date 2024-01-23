@@ -37,7 +37,7 @@ import {deviceHeight, deviceWidth} from '../../../utils/constant';
 import {Colors} from '../../../utils/Colors';
 import {UPDATE_STUDENT_RESET} from '../../../redux/constants/commanConstants';
 import moment from 'moment';
-
+import BackHeader from '../../../Component/Header/BackHeader';
 const streamlist = [
   {label: 'NONE', value: 'NONE'},
   {label: 'Arts', value: 'Arts'},
@@ -832,9 +832,10 @@ const UpdateAdmission = () => {
               </TouchableOpacity>
             </View>
           </View>
+          
         </View>
       </Modal>
-
+      <BackHeader title={'Update Admission'} />
       <ScrollView>
         <View style={styles.enquirymainview}>
           <View style={styles.dateview}>

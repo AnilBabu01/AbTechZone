@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import HelpCenter from '../Component/HelpCenter';
 import LoginScreen from '../Auth/Login';
 import SplashScreen from '../Splash/Splash';
 import HomeScreen from '../Owner/Home';
@@ -68,11 +69,19 @@ import UpdatePrefixCoaching from '../Coaching/Masters/ReceiptPrefix/UpdatePrefix
 import AddPrefixCoaching from '../Coaching/Masters/ReceiptPrefix/AddPrefix';
 
 ///School screens
-
+import SchoolStudentOptions from '../School/Student/SchoolStudentOptions';
+import SchoolAccounts from '../School/Accounts/SchoolAccounts';
+import SchoolHostelOptiins from '../School/Hostel/SchoolHostelOptiins';
+import SchoolLibraryOptions from '../School/Library/SchoolLibraryOptions';
+import SchoolTranportOptions from '../School/Transport/SchoolTranportOptions';
+import SchoolTestOptions from '../School/Test/SchoolTestOptions';
+import SchoolHrOptions from '../School/HumanResourse/SchoolHrOptions';
 import FrontOfficeSchool from '../School/FrontOffice/FrontOffice';
 import SearchEnquirySchool from '../School/FrontOffice/SearchEnquiry';
 import StudentTabSchool from '../School/Student/StudentTab';
+import Add from '../School/Student/Add/Add';
 import SearchaddSchool from '../School/Student/Add/Search';
+import Admission from '../School/Student/admission/Admission';
 import UpdateAdmission from '../School/Student/admission/UpdateAdmission';
 import TakeAdmissionSchool from '../School/Student/admission/TakeAdmission';
 import AddNewStudentSchool from '../School/Student/Add/AddNewStudent';
@@ -870,23 +879,34 @@ function StackNavigation() {
       {/* End Coching Routes */}
 
       {/* Start School Routes */}
-
-      <Stack.Screen name="StudentTabSchool" component={StudentTabSchool} />
       <Stack.Screen
-        options={{
-          headerShown: true,
-          title: 'Update Admission',
-          headerStyle: {
-            backgroundColor: primary,
-          },
-          headerTintColor: '#fff',
-          headerTitleStyle: {
-            fontWeight: 'bold',
-          },
-        }}
-        name="UpdateAdmission"
-        component={UpdateAdmission}
+        name="SchoolStudentOptions"
+        component={SchoolStudentOptions}
       />
+
+      <Stack.Screen name="SchoolHrOptions" component={SchoolHrOptions} />
+
+      <Stack.Screen name="SchoolAccounts" component={SchoolAccounts} />
+
+      <Stack.Screen
+        name="SchoolLibraryOptions"
+        component={SchoolLibraryOptions}
+      />
+
+      <Stack.Screen
+        name="SchoolHostelOptiins"
+        component={SchoolHostelOptiins}
+      />
+
+      <Stack.Screen
+        name="SchoolTranportOptions"
+        component={SchoolTranportOptions}
+      />
+
+      <Stack.Screen name="SchoolTestOptions" component={SchoolTestOptions} />
+      <Stack.Screen name="Add" component={Add} />
+      <Stack.Screen name="Admission" component={Admission} />
+      <Stack.Screen name="UpdateAdmission" component={UpdateAdmission} />
       <Stack.Screen
         name="MasterOptionsSchool"
         component={MasterOptionsSchool}
@@ -897,98 +917,26 @@ function StackNavigation() {
       <Stack.Screen
         name="TakeAdmissionSchool"
         component={TakeAdmissionSchool}
-        options={{
-          headerShown: true,
-          title: 'Add Admission',
-          headerStyle: {
-            backgroundColor: primary,
-          },
-          headerTintColor: '#fff',
-          headerTitleStyle: {
-            fontWeight: 'bold',
-          },
-        }}
       />
 
       <Stack.Screen
         name="AddNewStudentSchool"
         component={AddNewStudentSchool}
-        options={{
-          headerShown: true,
-          title: 'Add New Student',
-          headerStyle: {
-            backgroundColor: primary,
-          },
-          headerTintColor: '#fff',
-          headerTitleStyle: {
-            fontWeight: 'bold',
-          },
-        }}
       />
       <Stack.Screen
         name="SearchEnquirySchool"
         component={SearchEnquirySchool}
-        options={{
-          headerShown: true,
-          title: 'Search Enquiry',
-          headerStyle: {
-            backgroundColor: primary,
-          },
-          headerTintColor: '#fff',
-          headerTitleStyle: {
-            fontWeight: 'bold',
-          },
-        }}
       />
-      <Stack.Screen
-        name="AddEnquirySchool"
-        component={AddEnquirySchool}
-        options={{
-          headerShown: true,
-          title: 'Add Enquiry',
-          headerStyle: {
-            backgroundColor: primary,
-          },
-          headerTintColor: '#fff',
-          headerTitleStyle: {
-            fontWeight: 'bold',
-          },
-        }}
-      />
+      <Stack.Screen name="AddEnquirySchool" component={AddEnquirySchool} />
       <Stack.Screen
         name="UpdateEnquirySchool"
         component={UpdateEnquirySchool}
-        options={{
-          headerShown: true,
-          title: 'Update Enquiry',
-          headerStyle: {
-            backgroundColor: primary,
-          },
-          headerTintColor: '#fff',
-          headerTitleStyle: {
-            fontWeight: 'bold',
-          },
-        }}
       />
       <Stack.Screen
         name="AttendanceTabSchool"
         component={AttendanceTabSchool}
       />
-      <Stack.Screen
-        name="AddBatchSchool"
-        component={AddBatchSchool}
-        options={{
-          headerShown: true,
-          title: 'Add Batch Time',
-          headerStyle: {
-            backgroundColor: primary,
-          },
-          headerTintColor: '#fff',
-          headerTitleStyle: {
-            fontWeight: 'bold',
-          },
-        }}
-      />
+      <Stack.Screen name="AddBatchSchool" component={AddBatchSchool} />
       <Stack.Screen
         name="BatchSchool"
         component={BatchSchool}
@@ -1576,10 +1524,7 @@ function StackNavigation() {
           },
         }}
       />
-      <Stack.Screen
-        name="HumanResourseOptionsSchool"
-        component={HumanResourseOptionsSchool}
-      />
+
       <Stack.Screen
         name="ReportsOptionsSchool"
         component={ReportsOptionsSchool}
@@ -1591,6 +1536,8 @@ function StackNavigation() {
       <Stack.Screen name="DashboardStudent" component={DashboardStudent} />
       <Stack.Screen name="DashboardParent" component={DashboardParent} />
       <Stack.Screen name="DashboardOwner" component={DashboardOwner} />
+
+      <Stack.Screen name="HelpCenter" component={HelpCenter} />
     </Stack.Navigator>
   );
 }

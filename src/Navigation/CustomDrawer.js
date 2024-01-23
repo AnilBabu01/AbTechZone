@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {DrawerContentScrollView} from '@react-navigation/drawer';
-import {primary} from '../utils/Colors';
+import {primary,Colors} from '../utils/Colors';
 import NologinDrawerItem from '../Owner/NologinDrawerItem';
 import CoachingDrawerItem from '../Coaching/CoachingDrawerItem';
 import SchoolDrawerItem from '../School/SchoolDrawerItem';
@@ -30,7 +30,7 @@ function CustomDrawer(props) {
   
   return (
     <DrawerContentScrollView
-      style={{backgroundColor: primary, color: 'black'}}
+      style={{backgroundColor: Colors.white, color: 'black'}}
       {...props}>
       {userData ? (
         <>

@@ -3,81 +3,228 @@ import {
   Text,
   View,
   Modal,
-  TouchableOpacity,
   ScrollView,
+  Pressable,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import {Height, Width} from '../../utils/responsive';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import CardEnquiry from './CardEnquiry';
 import Header from '../../Component/Header/Header';
 import {primary} from '../../utils/Colors';
-import AddEnquiry from './AddEnquiry';
 import {getenquiries} from '../../redux/action/coachingAction';
 import {AnimatedFAB} from 'react-native-paper';
 import {Colors} from '../../utils/Colors';
 import {useDispatch, useSelector} from 'react-redux';
 import DashboardPlaceholderLoader from '../../Component/DashboardPlaceholderLoader';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
+import RNTable from '../../Component/RNTable';
+import DownEnquiry from '../../Component/school/DownEnquiry';
+import EnquiryFilter from '../../Component/school/EnquiryFilter';
 const FrontOffice = ({navigation}) => {
   const dispatch = useDispatch();
   const [openModel, setopenModel] = useState(false);
   const [enquirylist, setenquirylist] = useState('');
+  const [Tabledata, setTabledata] = useState([]);
+  const [viewdata, setviewdata] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [showDocOptions, setShowDocOptions] = useState(false);
   const {enquiry, loading} = useSelector(state => state.enquiry);
-  const [loadering, setloadering] = useState(true);
-  useEffect(() => {
-    dispatch(getenquiries());
-  }, []);
+
+  const enquiryTableList = [
+    {
+      title: 'Sr.No',
+      items: [],
+      width: 0.33,
+      align: 'center',
+    },
+    {
+      title: 'Enquiry_Date',
+      items: [],
+      width: 0.33,
+      align: 'center',
+    },
+    {
+      title: 'Student_Name',
+      items: [],
+      width: 0.33,
+      align: 'center',
+    },
+    {
+      title: 'Student_Number',
+      items: [],
+      width: 0.33,
+      align: 'center',
+    },
+
+    {
+      title: 'Student_Email',
+      items: [],
+      width: 0.33,
+      align: 'center',
+    },
+    {
+      title: 'Address',
+      items: [],
+      width: 0.33,
+      align: 'center',
+    },
+    {
+      title: 'Class',
+      items: [],
+      width: 0.33,
+      align: 'center',
+    },
+    {
+      title: 'Comment',
+      items: [],
+      width: 0.33,
+      align: 'center',
+    },
+    {
+      title: 'Action',
+      items: [],
+      width: 0.33,
+      align: 'center',
+    },
+  ];
+
+  const convertdata = async () => {
+    await Promise.all(
+      enquiry?.map((item, index) => {
+        enquiryTableList[0].items.push({id: index, value: index + 1});
+        enquiryTableList[1].items.push({
+          id: index,
+          value: item.EnquiryDate,
+        });
+
+        console.log(
+          'from main function',
+          item?.StudentEmail,
+          'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
+        );
+
+        enquiryTableList[2].items.push({
+          id: index,
+          value: item.StudentName,
+        });
+        enquiryTableList[3].items.push({
+          id: index,
+          value: item.StudentNumber,
+        });
+        enquiryTableList[4].items.push({
+          id: index,
+          value: item.StudentEmail,
+        });
+        enquiryTableList[5].items.push({
+          id: index,
+          value: item.Address,
+        });
+        enquiryTableList[6].items.push({
+          id: index,
+          value: item.Course,
+        });
+        enquiryTableList[7].items.push({
+          id: index,
+          value: item.Comment,
+        });
+
+        enquiryTableList[8].items.push({
+          id: index,
+          value: (
+            <Ionicons
+              name="create-outline"
+              color={Colors.primary}
+              size={18.3}
+            />
+          ),
+          allDetails: item,
+          redirect: 'UpdateEnquirySchool',
+        });
+      }),
+    );
+    setTabledata(enquiryTableList);
+    console.log('convets data is', enquiry);
+  };
 
   useEffect(() => {
     if (enquiry) {
       setenquirylist(enquiry);
+      convertdata(enquiry);
     }
   }, [enquiry]);
+
+  useEffect(() => {
+    dispatch(getenquiries());
+  }, []);
   const {fabStyle} = styles;
+
   return (
     <View style={{flex: 1}}>
-      <Modal animationType={'fade'} transparent={true} visible={openModel}>
-        <View style={[styles.modal, styles.elevation]}>
-          <View style={styles.cancalView}>
-            <Text style={styles.canceltext} onPress={() => setopenModel(false)}>
-              <Ionicons name="close-outline" size={40} />
-            </Text>
-          </View>
-          <AddEnquiry />
-        </View>
-      </Modal>
       <Header />
-      <TouchableOpacity
-        onPress={() => navigation.navigate('SearchEnquirySchool')}>
-        <View style={styles.inputview}>
-          <View style={styles.inputsaerch}>
-            <Text style={styles.searchtext}>Search here</Text>
-          </View>
-          <Ionicons
-            name="search-outline"
-            size={Height(22)}
-            style={{marginRight: Width(20)}}
-            color="rgba(0, 0, 0, 0.5)"
-          />
+      <View style={styles.headerTitleContainer}>
+        <View>
+          <Text style={styles.secondaryTitle}>Front Office</Text>
         </View>
-      </TouchableOpacity>
+        <View style={{flexDirection: 'row', gap: 10}}>
+          <Pressable
+            onPress={() => setShowDocOptions(true)}
+            style={styles.filterBtnContainer}>
+            <FontAwesome6 name="download" color={Colors.primary} size={25} />
+          </Pressable>
+          <Pressable
+            onPress={() => setShowModal(true)}
+            style={styles.filterBtnContainer}>
+            <Ionicons name="filter" color={Colors.primary} size={25} />
+          </Pressable>
+          <Pressable
+            onPress={() => setviewdata(!viewdata)}
+            style={styles.filterBtnContainer}>
+            {viewdata ? (
+              <>
+                <Ionicons name="card" color={Colors.primary} size={25} />
+              </>
+            ) : (
+              <>
+                <FontAwesome6 name="table" color={Colors.primary} size={25} />
+              </>
+            )}
+          </Pressable>
+        </View>
+      </View>
 
       <ScrollView>
         {loading ? (
           <>
-            <DashboardPlaceholderLoader type="datacard" />
+            <DashboardPlaceholderLoader type="table" />
           </>
         ) : (
           <>
-            <View style={styles.enquirymainview}>
-              {enquirylist &&
-                enquirylist?.map((item, index) => {
-                  return <CardEnquiry key={index} data={item} />;
-                })}
-            </View>
+            {viewdata ? (
+              <>
+                <View style={styles.enquirymainview}>
+                  {enquirylist?.length > 0 &&
+                    enquirylist?.map((item, index) => {
+                      return <CardEnquiry key={index} data={item} />;
+                    })}
+                </View>
+              </>
+            ) : (
+              <>
+                <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                  <RNTable theme="primary" data={Tabledata} />
+                </ScrollView>
+              </>
+            )}
           </>
         )}
       </ScrollView>
+      {showModal && (
+        <>
+          <EnquiryFilter setShowModal={setShowModal} showModal={showModal} />
+        </>
+      )}
+      <DownEnquiry visible={showDocOptions} hideModal={setShowDocOptions} />
 
       <AnimatedFAB
         icon={'plus'}

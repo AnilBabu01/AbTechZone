@@ -6,7 +6,7 @@ export const resetbtn = 'red';
 export const profileheader ='linear-gradient(90.57deg, rgba(162, 7, 43, 0.85) 12.07%, rgba(255, 0, 59, 0.85) 99.52%)';
 
 export const Colors = {
-    primary:"#122D5C",
+    primary:"#093959",
     white:'#fff',
     textPrimary:'#09101D',
     lightGrey:'#F8F8F8',

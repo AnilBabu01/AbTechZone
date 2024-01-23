@@ -1,359 +1,419 @@
 import {
-    StyleSheet,
-    Text,
-    View,
-    Modal,
-    TouchableOpacity,
-    ScrollView,
-    TextInput,
-  } from 'react-native';
-  import React, {useState} from 'react';
-  import {Height, Width} from '../../../utils/responsive';
-  import {primary} from '../../../utils/Colors';
-  import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-  import DateTimePickerModal from 'react-native-modal-datetime-picker';
-  import moment from 'moment';
-  import {Dropdown} from 'react-native-element-dropdown';
-  const data = [
-    {label: 'DCA', value: 'DCA'},
-    {label: 'ADCA', value: 'ADCA'},
-    {label: 'CCC', value: 'CCC'},
-    {label: 'O-LEVEL', value: 'O-LEVEL'},
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  Pressable,
+  Image,
+} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {Height, Width} from '../../../utils/responsive';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
+import CardEnquiry from './Card';
+import {primary, Colors} from '../../../utils/Colors';
+import {AnimatedFAB} from 'react-native-paper';
+import {
+  getcourse,
+  getbatch,
+  getstudent,
+  getfee,
+  getcategory,
+  GetSession,
+  GetSection,
+  getcurrentsession,
+} from '../../../redux/action/commanAction';
+import {
+  GetHostel,
+  GetFacility,
+  GetCategory,
+} from '../../../redux/action/hostelActions';
+import {GetRoute} from '../../../redux/action/transportActions';
+import {useDispatch, useSelector} from 'react-redux';
+import DashboardPlaceholderLoader from '../../../Component/DashboardPlaceholderLoader';
+import {deviceHeight, deviceWidth} from '../../../utils/constant';
+import RNTable from '../../../Component/RNTable';
+import DownloadStudentData from '../../../Component/school/DownloadStudentData';
+import BackHeader from '../../../Component/Header/BackHeader';
+const Add = ({navigation}) => {
+  const dispatch = useDispatch();
+  const [isdata, setisdata] = useState([]);
+  const [Tabledata, setTabledata] = useState([]);
+  const [viewdata, setviewdata] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [showDocOptions, setShowDocOptions] = useState(false);
+  const {loading, student} = useSelector(state => state.getstudent);
+
+  useEffect(() => {
+    dispatch(getcourse());
+    dispatch(getbatch());
+    dispatch(getstudent());
+    dispatch(getfee());
+    dispatch(getcategory());
+    dispatch(GetSession());
+    dispatch(GetSection());
+    dispatch(getcurrentsession());
+    dispatch(GetHostel());
+    dispatch(GetFacility());
+    dispatch(GetCategory());
+    dispatch(GetRoute());
+  }, []);
+
+  const StudentTableList = [
+    {
+      title: 'Sr.No',
+      items: [],
+      width: 0.33,
+      align: 'center',
+    },
+    {
+      title: 'Session',
+      items: [],
+      width: 0.33,
+      align: 'center',
+    },
+    {
+      title: 'SNO',
+      items: [],
+      width: 0.33,
+      align: 'center',
+    },
+    {
+      title: 'Roll_No',
+      items: [],
+      width: 0.33,
+      align: 'center',
+    },
+
+    {
+      title: 'Section',
+      items: [],
+      width: 0.33,
+      align: 'center',
+    },
+    {
+      title: 'Stream',
+      items: [],
+      width: 0.33,
+      align: 'center',
+    },
+    {
+      title: 'Student_Name',
+      items: [],
+      width: 0.33,
+      align: 'center',
+    },
+    {
+      title: 'Student_Email',
+      items: [],
+      width: 0.33,
+      align: 'center',
+    },
+    {
+      title: 'Student_Phone',
+      items: [],
+      width: 0.33,
+      align: 'center',
+    },
+    {
+      title: 'Adminssion_Date',
+      items: [],
+      width: 0.33,
+      align: 'center',
+    },
+
+    {
+      title: 'Class',
+      items: [],
+      width: 0.33,
+      align: 'center',
+    },
+    {
+      title: 'Category',
+      items: [],
+      width: 0.33,
+      align: 'center',
+    },
+    {
+      title: 'Student_Status',
+      items: [],
+      width: 0.33,
+      align: 'center',
+    },
+    {
+      title: 'Action',
+      items: [],
+      width: 0.33,
+      align: 'center',
+    },
   ];
-  const Add = () => {
-    const [index, setIndex] = useState(0);
-    const [fromdate, setfromdate] = useState('');
-    const [course, setcourse] = useState('');
-    const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-  
-    const showDatePicker = () => {
-      setDatePickerVisibility(true);
-    };
-  
-    const hideDatePicker = () => {
-      setDatePickerVisibility(false);
-    };
-  
-    const handleConfirm = date => {
-      hideDatePicker();
-      setfromdate(date);
-    };
-  
-    return (
-      <View>
-        <ScrollView>
-          <View style={styles.enquirymainview}>
-            <View style={styles.dateview}>
-              <TouchableOpacity
-                style={styles.addinput}
-                onPress={() => {
-                  setIndex(6), showDatePicker();
-                }}>
-                <FontAwesome5
-                  name="calendar"
-                  size={Height(20)}
-                  color="#666666"
-                  style={{marginLeft: Width(10)}}
+
+  const convertdata = async () => {
+    if (StudentTableList?.length > 13) {
+      await Promise.all(
+        student?.length > 0 &&
+          student?.map((item, index) => {
+            StudentTableList[0].items.push({id: index, value: index + 1});
+            StudentTableList[1].items.push({id: index, value: item.Session});
+            StudentTableList[2].items.push({id: index, value: item.SrNumber});
+            StudentTableList[3].items.push({
+              id: index,
+              value: item.rollnumber,
+            });
+            StudentTableList[4].items.push({
+              id: index,
+              value: item.Section,
+            });
+            StudentTableList[5].items.push({
+              id: index,
+              value: item.Stream,
+            });
+            StudentTableList[6].items.push({
+              id: index,
+              value: item.name,
+            });
+            StudentTableList[7].items.push({
+              id: index,
+              value: item.email,
+            });
+            StudentTableList[8].items.push({
+              id: index,
+              value: item.phoneno1,
+            });
+            StudentTableList[9].items.push({
+              id: index,
+              value: item.admissionDate,
+            });
+            StudentTableList[10].items.push({
+              id: index,
+              value: item.courseorclass,
+            });
+            StudentTableList[11].items.push({
+              id: index,
+              value: item.StudentCategory,
+            });
+            StudentTableList[12].items.push({
+              id: index,
+              value: item.StudentStatus,
+            });
+            StudentTableList[13].items.push({
+              id: index,
+              value: (
+                <Ionicons
+                  name="create-outline"
+                  color={Colors.primary}
+                  size={18.3}
                 />
-                <Text
-                  style={{
-                    textAlign: 'center',
-                    fontFamily: 'Gilroy-SemiBold',
-                    fontSize: Height(16),
-                    marginLeft: Width(20),
-                  }}>
-                  {fromdate
-                    ? moment(fromdate).format('DD/MM/YYYY')
-                    : 'Enquiry Date'}
-                </Text>
-              </TouchableOpacity>
-              <DateTimePickerModal
-                isVisible={isDatePickerVisible}
-                mode="date"
-                onConfirm={handleConfirm}
-                onCancel={hideDatePicker}
-              />
-              <View
-                style={{
-                  width: Width(310),
-                  height: Height(40),
-                  alignSelf: 'center',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  borderWidth: 1.5,
-                  borderRadius: Width(10),
-                  borderColor: index === 3 ? primary : '#a9a9a9',
-                  marginTop: Height(10),
-                }}
-                onStartShouldSetResponder={() => setIndex(3)}>
-                <TextInput
-                  placeholder="Student Name"
-                  placeholderTextColor="rgba(0, 0, 0, 0.6)"
-                  style={{
-                    width: Width(280),
-                    fontFamily: 'Gilroy-SemiBold',
-                    paddingHorizontal: Width(20),
-                    fontSize: Height(16),
-                  }}
-                  // secureTextEntry={passwordVisible}
-                  // onBlur={() => Validation()}
-                  // value={address}
-                  // onChangeText={text => setaddress(text)}
-                  // onPressIn={() => setIndex(3)}
-                  onFocus={() => setIndex(3)}
-                />
-              </View>
-  
-              <View
-                style={{
-                  width: Width(310),
-                  height: Height(40),
-                  alignSelf: 'center',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  borderWidth: 1.5,
-                  borderRadius: Width(10),
-                  borderColor: index === 4 ? primary : '#a9a9a9',
-                  marginTop: Height(10),
-                }}
-                onStartShouldSetResponder={() => setIndex(4)}>
-                <TextInput
-                  placeholder="Student Number"
-                  placeholderTextColor="rgba(0, 0, 0, 0.6)"
-                  style={{
-                    width: Width(280),
-                    fontFamily: 'Gilroy-SemiBold',
-                    paddingHorizontal: Width(20),
-                    fontSize: Height(16),
-                  }}
-                  // secureTextEntry={passwordVisible}
-                  // onBlur={() => Validation()}
-                  // value={address}
-                  // onChangeText={text => setaddress(text)}
-                  // onPressIn={() => setIndex(3)}
-                  onFocus={() => setIndex(4)}
-                />
-              </View>
-  
-              <View
-                style={{
-                  width: Width(310),
-                  height: Height(40),
-                  alignSelf: 'center',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  borderWidth: 1.5,
-                  borderRadius: Width(10),
-                  borderColor: index === 5 ? primary : '#a9a9a9',
-                  marginTop: Height(10),
-                }}
-                onStartShouldSetResponder={() => setIndex(5)}>
-                <TextInput
-                  placeholder="Student Email"
-                  placeholderTextColor="rgba(0, 0, 0, 0.6)"
-                  style={{
-                    width: Width(280),
-                    fontFamily: 'Gilroy-SemiBold',
-                    paddingHorizontal: Width(20),
-                    fontSize: Height(16),
-                  }}
-                  // secureTextEntry={passwordVisible}
-                  // onBlur={() => Validation()}
-                  // value={address}
-                  // onChangeText={text => setaddress(text)}
-                  // onPressIn={() => setIndex(3)}
-                  onFocus={() => setIndex(5)}
-                />
-              </View>
-  
-              <View
-                style={{
-                  width: Width(310),
-                  height: Height(40),
-                  alignSelf: 'center',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  borderWidth: 1.5,
-                  borderRadius: Width(10),
-                  borderColor: index === 6 ? primary : '#a9a9a9',
-                  marginTop: Height(10),
-                }}
-                onStartShouldSetResponder={() => setIndex(6)}>
-                <TextInput
-                  placeholder="Address"
-                  placeholderTextColor="rgba(0, 0, 0, 0.6)"
-                  style={{
-                    width: Width(280),
-                    fontFamily: 'Gilroy-SemiBold',
-                    paddingHorizontal: Width(20),
-                    fontSize: Height(16),
-                  }}
-                  // secureTextEntry={passwordVisible}
-                  // onBlur={() => Validation()}
-                  // value={address}
-                  // onChangeText={text => setaddress(text)}
-                  // onPressIn={() => setIndex(3)}
-                  onFocus={() => setIndex(6)}
-                />
-              </View>
-              <Dropdown
-                style={{
-                  alignSelf: 'center',
-                  width: Width(310),
-                  height: Height(40),
-                  fontFamily: 'Gilroy-SemiBold',
-                  borderWidth: 1.5,
-                  borderRadius: Width(10),
-                  paddingHorizontal: Width(20),
-                  fontSize: Height(16),
-                  marginTop: Height(10),
-                  borderColor: index === 1 ? primary : '#a9a9a9',
-                }}
-                placeholderStyle={styles.placeholderStyle}
-                selectedTextStyle={styles.selectedTextStyle}
-                inputSearchStyle={styles.inputSearchStyle}
-                iconStyle={styles.iconStyle}
-                data={data}
-                search
-                maxHeight={300}
-                labelField="label"
-                valueField="value"
-                placeholder="Please Select"
-                searchPlaceholder="Search..."
-                value={course}
-                onChange={item => {
-                  setcourse(item.value);
-                }}
-                // renderLeftIcon={() => (
-                //   <AntDesign style={styles.icon} color="black" name="Safety" size={20} />
-                // )}
-              />
-              <View
-                style={{
-                  width: Width(310),
-                  height: Height(40),
-                  alignSelf: 'center',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  borderWidth: 1.5,
-                  borderRadius: Width(10),
-                  borderColor: index === 7 ? primary : '#a9a9a9',
-                  marginTop: Height(10),
-                }}
-                onStartShouldSetResponder={() => setIndex(7)}>
-                <TextInput
-                  placeholder="Comment"
-                  placeholderTextColor="rgba(0, 0, 0, 0.6)"
-                  style={{
-                    width: Width(280),
-                    fontFamily: 'Gilroy-SemiBold',
-                    paddingHorizontal: Width(20),
-                    fontSize: Height(16),
-                  }}
-                  // secureTextEntry={passwordVisible}
-                  // onBlur={() => Validation()}
-                  // value={address}
-                  // onChangeText={text => setaddress(text)}
-                  // onPressIn={() => setIndex(3)}
-                  onFocus={() => setIndex(7)}
-                />
-              </View>
-            </View>
-  
-            <View style={styles.loginbtndiv}>
-              <TouchableOpacity onPress={() => setopenModel(true)}>
-                <View style={styles.loginbtn}>
-                  <Text style={styles.logintextstyle}>Save</Text>
-                </View>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </ScrollView>
-      </View>
-    );
+              ),
+              allDetails: item,
+              redirect: 'UpdateAdmission',
+            });
+          }),
+      );
+      setTabledata(StudentTableList);
+    }
   };
-  
-  export default Add;
-  
-  const styles = StyleSheet.create({
-    inputview: {
-      width: Width(360),
-      height: Height(50),
-      backgroundColor: '#E9EAEC',
-      alignSelf: 'center',
-      borderRadius: Width(10),
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      marginTop: Height(10),
-    },
-    inputsaerch: {
-      paddingLeft: Width(30),
-      fontFamily: 'Gilroy-SemiBold',
-      color: 'black',
-      fontSize: Height(16),
-      width: Width(260),
-    },
-    enquirymainview: {
-      paddingHorizontal: 2,
-    },
-    baseinput: {
-      width: Width(310),
-      height: Height(40),
-      alignSelf: 'center',
-      flexDirection: 'row',
-      alignItems: 'center',
-      borderWidth: 1.5,
-      borderRadius: Width(10),
-      // borderColor: index === 3 ? primary: '#a9a9a9',
-      marginTop: Height(10),
-    },
-  
-    addinput: {
-      height: Height(40),
-      width: Width(310),
-      borderWidth: 1.5,
-      // borderColor: index === 7 ? primary : '#a9a9a9',
-      alignSelf: 'center',
-      borderRadius: Width(10),
-      flexDirection: 'row',
-      alignItems: 'center',
-      marginTop: Height(10),
-    },
-    loginbtndiv: {
-      alignSelf: 'center',
-      display: 'flex',
-      justifyContent: 'flex-end',
-      flexDirection: 'row',
-    },
-    loginbtn: {
-      width: Width(310),
-      height: Height(40),
-      backgroundColor: primary,
-      borderRadius: 10,
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      marginTop: 10,
-    },
-    logintextstyle: {
-      color: 'white',
-      // fontWeight: 700,
-      fontSize: 16,
-    },
-    placeholderStyle: {
-      fontSize: 16,
-    },
-    selectedTextStyle: {
-      fontSize: 16,
-    },
-    iconStyle: {
-      width: 20,
-      height: 20,
-    },
-    inputSearchStyle: {
-      height: 40,
-      fontSize: 16,
-    },
-  });
-  
+
+  useEffect(() => {
+    if (student) {
+      convertdata(student);
+      setisdata(student);
+    }
+  }, [student]);
+
+  return (
+    <>
+      <View style={{flex: 1}}>
+        <BackHeader title={'Add Student'} icon={'person'} />
+        <View style={styles.headerTitleContainer}>
+          <View>
+            <Text style={styles.secondaryTitle}>Student</Text>
+          </View>
+          <View style={{flexDirection: 'row', gap: 10}}>
+            <Pressable
+              onPress={() => setShowDocOptions(true)}
+              style={styles.filterBtnContainer}>
+              <FontAwesome6 name="download" color={Colors.primary} size={25} />
+            </Pressable>
+            <Pressable
+              onPress={() => setShowModal(true)}
+              style={styles.filterBtnContainer}>
+              <Ionicons name="filter" color={Colors.primary} size={25} />
+            </Pressable>
+            <Pressable
+              onPress={() => setviewdata(!viewdata)}
+              style={styles.filterBtnContainer}>
+              {viewdata ? (
+                <>
+                  <Ionicons name="card" color={Colors.primary} size={25} />
+                </>
+              ) : (
+                <>
+                  <FontAwesome6 name="table" color={Colors.primary} size={25} />
+                </>
+              )}
+            </Pressable>
+          </View>
+        </View>
+
+        <ScrollView>
+          {loading ? (
+            <>
+              <DashboardPlaceholderLoader type="table" />
+            </>
+          ) : (
+            <>
+              {viewdata ? (
+                <>
+                  <View style={styles.enquirymainview}>
+                    {isdata?.length > 0 &&
+                      isdata?.map((item, index) => {
+                        return <CardEnquiry key={index} data={item} />;
+                      })}
+                  </View>
+                </>
+              ) : (
+                <>
+                  <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                    <RNTable theme="primary" data={Tabledata} />
+                  </ScrollView>
+                </>
+              )}
+            </>
+          )}
+        </ScrollView>
+        {showModal && (
+          <>
+            <StudentFilter setShowModal={setShowModal} showModal={showModal} />
+          </>
+        )}
+
+        <DownloadStudentData
+          visible={showDocOptions}
+          hideModal={setShowDocOptions}
+        />
+
+        <AnimatedFAB
+          icon={'plus'}
+          onPress={() => navigation.navigate('TakeAdmissionSchool')}
+          label="Add"
+          extended={false}
+          color={Colors.white}
+          style={styles.fabStyle}
+        />
+      </View>
+    </>
+  );
+};
+
+export default Add;
+
+const styles = StyleSheet.create({
+  dateview: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    width: '100%',
+    paddingHorizontal: 10,
+  },
+  inputview: {
+    width: Width(360),
+    height: Height(50),
+    backgroundColor: '#E9EAEC',
+    alignSelf: 'center',
+    borderRadius: Width(20),
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginTop: Height(10),
+  },
+  inputsaerch: {
+    paddingLeft: Width(30),
+    fontFamily: 'Gilroy-SemiBold',
+    color: 'black',
+    fontSize: Height(16),
+    width: Width(260),
+  },
+  enquirymainview: {
+    paddingHorizontal: 10,
+  },
+
+  searchtext: {
+    fontSize: 20,
+  },
+
+  cancalView: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    flexDirection: 'row',
+  },
+  baseinput: {
+    width: Width(310),
+    height: Height(45),
+    alignSelf: 'center',
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 1.5,
+    borderRadius: Width(10),
+    // borderColor: index === 3 ? primary: '#a9a9a9',
+    marginTop: Height(10),
+  },
+  fabStyle: {
+    bottom: 16,
+    right: 16,
+    position: 'absolute',
+    backgroundColor: primary,
+  },
+  headerTitleContainer: {
+    backgroundColor: Colors.fadeGray,
+    flexDirection: 'row',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  secondaryTitle: {
+    fontSize: 17,
+    fontWeight: '600',
+    lineHeight: 20,
+    color: Colors.primary,
+  },
+  accordionTitle: {
+    color: Colors.primary,
+    fontSize: 17,
+    fontWeight: '700',
+    lineHeight: 20,
+  },
+  filterBtnContainer: {
+    padding: 2,
+    borderRadius: 10,
+  },
+  contentContainerStyle: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  container: {
+    flex: 1,
+    justifyContent: 'flex-start',
+    backgroundColor: '#fff',
+    marginHorizontal: 1,
+    marginVertical: 300,
+    borderRadius: 20,
+    position: 'relative',
+  },
+  innerContainer: {
+    backgroundColor: Colors.primary,
+    padding: 15,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    overflow: 'hidden',
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+  },
+  childContainer: {
+    marginHorizontal: deviceWidth * 0.04,
+    marginTop: deviceWidth * 0.045,
+    marginBottom: deviceWidth * 0.06,
+  },
+});

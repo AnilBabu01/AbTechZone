@@ -116,61 +116,61 @@ const Card = ({data}) => {
             <View style={styles.cardonnear}>
               <View style={styles.viewdel}>
                 <Text>Student Roll No</Text>
-                <Text>{data?.rollnumber}</Text>
+                <Text style={styles.dbData}>{data?.rollnumber}</Text>
               </View>
               <View style={styles.viewdel}>
                 <Text>Student Class</Text>
-                <Text>{data?.courseorclass}</Text>
+                <Text style={styles.dbData}>{data?.courseorclass}</Text>
               </View>
               <View style={styles.viewdel}>
                 <Text>Section</Text>
-                <Text>{data?.Section}</Text>
+                <Text style={styles.dbData}>{data?.Section}</Text>
               </View>
               <View style={styles.viewdel}>
                 <Text>Stream</Text>
-                <Text>{data?.Stream}</Text>
+                <Text style={styles.dbData}>{data?.Stream}</Text>
               </View>
 
               {showinfo && (
                 <>
                   <View style={styles.viewdel}>
                     <Text>Student Name</Text>
-                    <Text>{data?.name}</Text>
+                    <Text style={styles.dbData}>{data?.name}</Text>
                   </View>
                   <View style={styles.viewdel}>
                     <Text>Student Number</Text>
-                    <Text>{data?.phoneno1}</Text>
+                    <Text style={styles.dbData}>{data?.phoneno1}</Text>
                   </View>
                   <View style={styles.viewdel}>
                     <Text>Student Email</Text>
-                    <Text>{data?.email}</Text>
+                    <Text style={styles.dbData}>{data?.email}</Text>
                   </View>
                   <View style={styles.viewdel}>
                     <Text>Admission Date</Text>
-                    <Text>
+                    <Text style={styles.dbData}>
                       {moment(data?.admissionDate).format('DD/MM/YYYY')}
                     </Text>
                   </View>
                   <View style={styles.viewdel}>
                     <Text>DOB</Text>
-                    <Text>
+                    <Text style={styles.dbData}>
                       {moment(data?.DateOfBirth).format('DD/MM/YYYY')}
                     </Text>
                   </View>
                   <View style={styles.viewdel}>
                     <Text>Caste</Text>
-                    <Text>{data?.StudentCategory}</Text>
+                    <Text style={styles.dbData}>{data?.StudentCategory}</Text>
                   </View>
                   <View style={styles.viewdel}>
                     <Text>Status</Text>
-                    <Text>{data?.StudentStatus}</Text>
+                    <Text style={styles.dbData}>{data?.StudentStatus}</Text>
                   </View>
                   <Text>{data?.Comment}</Text>
                   <View style={styles.viewdel}>
                     <Text>Action</Text>
                     <View style={styles.mainActionView}>
                       <TouchableOpacity onPress={() => confirmation(data?.id)}>
-                        <Ionicons name="trash" size={Height(22)} color="red" />
+                        <Ionicons name="trash" size={Height(25)} color="red" />
                       </TouchableOpacity>
                       <TouchableOpacity
                         onPress={() =>
@@ -178,7 +178,7 @@ const Card = ({data}) => {
                         }>
                         <Ionicons
                           name="create"
-                          size={Height(22)}
+                          size={Height(25)}
                           color={Colors.primary}
                         />
                       </TouchableOpacity>
@@ -259,5 +259,9 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontWeight: 'bold',
     fontSize: 17,
+  },
+  dbData: {
+    color: Colors.black,
+    fontWeight: 'bold',
   },
 });

@@ -3,18 +3,20 @@ import {
   Text,
   View,
   Image,
-  TouchableOpacity,
+  Pressable,
   Dimensions,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
-import hamburger from '../../assets/hamburger.png';
-import logoblue1 from '../../assets/whitelogo.png';
 import {primary, hightlight} from '../../utils/Colors';
 import {Height, Width} from '../../utils/responsive';
 import profileimg from '../../assets/profileimg.jpg';
 import {useNavigation} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
+import {Colors} from '../../utils/Colors';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 const windowWidth = Dimensions.get('window').width;
 const Header = () => {
   const navigation = useNavigation();
@@ -31,32 +33,20 @@ const Header = () => {
   return (
     <View>
       <View style={styles.mainheader}>
-        <TouchableOpacity
+        <Pressable
           onPress={() => {
             navigation.openDrawer();
           }}>
-          <Image source={hamburger} style={styles.menuimg} />
-        </TouchableOpacity>
-        {/* {user?.data?.CredentailsData?.logourl ? (
-          <>
-            <Image
-              source={{
-                uri: `${backendUrl}public/upload/${user?.data?.CredentailsData?.logourl}`,
-              }}
-              style={styles.logoimg}
-            />
-          </>
-        ) : (
-          <>
-            <Image source={logoblue1} style={styles.logoimg} />
-          </>
-        )} */}
+          <FontAwesome6 name="bars" color={Colors.white} size={30} />
+        </Pressable>
 
         {istoken ? (
           <>
             <View style={styles.profile}>
-              <TouchableOpacity
-                onPress={() => navigation.navigate('ProfileCoaching')}>
+              {/* <Pressable onPress={() => showNotification(true)}>
+                <MaterialIcons name="notifications" size={20} color="#fff" />
+              </Pressable> */}
+              <Pressable onPress={() => navigation.navigate('ProfileCoaching')}>
                 {user?.data?.CredentailsData?.profileurl ? (
                   <>
                     <Image
@@ -71,16 +61,16 @@ const Header = () => {
                     <Image source={profileimg} style={styles.avator} />
                   </>
                 )}
-              </TouchableOpacity>
+              </Pressable>
             </View>
           </>
         ) : (
           <>
-            <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+            <Pressable onPress={() => navigation.navigate('Login')}>
               <View style={styles.loginbtn}>
                 <Text style={styles.logintextstyle}>Login</Text>
               </View>
-            </TouchableOpacity>
+            </Pressable>
           </>
         )}
       </View>
@@ -118,10 +108,14 @@ const styles = StyleSheet.create({
   profile: {
     backgroundColor: primary,
     boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.1)',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   avator: {
-    width: 40,
-    height: 40,
+    width: 35,
+    height: 35,
     borderRadius: 50,
   },
   logoimg: {

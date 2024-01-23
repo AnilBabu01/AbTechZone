@@ -10,8 +10,6 @@ import React, {useEffect, useState} from 'react';
 import {Height, Width} from '../../../utils/responsive';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
-import Cardview from '../../../assets/cardview.png';
-import tableview from '../../../assets/tableview.png';
 import CardEnquiry from './Card';
 import {primary, Colors} from '../../../utils/Colors';
 import {AnimatedFAB} from 'react-native-paper';
@@ -33,11 +31,11 @@ import {
 import {GetRoute} from '../../../redux/action/transportActions';
 import {useDispatch, useSelector} from 'react-redux';
 import DashboardPlaceholderLoader from '../../../Component/DashboardPlaceholderLoader';
-import StudentFilter from '../../../Component/school/StudentFilter';
-import {Divider} from 'react-native-paper';
 import {deviceHeight, deviceWidth} from '../../../utils/constant';
 import RNTable from '../../../Component/RNTable';
 import DownloadStudentData from '../../../Component/school/DownloadStudentData';
+import BackHeader from '../../../Component/Header/BackHeader';
+import StudentFilter from '../../../Component/school/StudentFilter';
 const Admission = ({navigation}) => {
   const dispatch = useDispatch();
   const [isdata, setisdata] = useState([]);
@@ -227,9 +225,10 @@ const Admission = ({navigation}) => {
   return (
     <>
       <View style={{flex: 1}}>
+        <BackHeader title={'Take Admission'} icon={'person'} />
         <View style={styles.headerTitleContainer}>
           <View>
-            <Text style={styles.secondaryTitle}>Admission Management</Text>
+            <Text style={styles.secondaryTitle}>Admission</Text>
           </View>
           <View style={{flexDirection: 'row', gap: 10}}>
             <Pressable
@@ -257,6 +256,7 @@ const Admission = ({navigation}) => {
             </Pressable>
           </View>
         </View>
+
         <ScrollView>
           {loading ? (
             <>

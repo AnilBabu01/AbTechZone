@@ -17,6 +17,7 @@ import {deviceHeight, deviceWidth} from '../../utils/constant';
 import {FlexRowWrapper} from '../../Component/FlexRowWrapper';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import moment from 'moment';
+import BackHeader from '../../Component/Header/BackHeader';
 const UpdateEnquiry = () => {
   const route = useRoute();
   const dispatch = useDispatch();
@@ -32,7 +33,7 @@ const UpdateEnquiry = () => {
   const [email, setemail] = useState('');
   const [address, setaddress] = useState('');
   const [comment, setcomment] = useState('');
-  const {enquiry, error} = useSelector(state => state.addenqury);
+  const {enquiry, error,loading} = useSelector(state => state.updatenequiry);
   const {course} = useSelector(state => state.getcourse);
 
   const submit = () => {
@@ -122,7 +123,8 @@ const UpdateEnquiry = () => {
   }, []);
   return (
     <View>
-      <Loader loader={loader} sms={sms} />
+    
+      <BackHeader title={'Update Enquiry'} />
       <ScrollView>
         <View style={styles.enquirymainview}>
           <View style={styles.dateview}>
@@ -252,6 +254,7 @@ const UpdateEnquiry = () => {
           </View>
 
           <RNButton
+            loading={loading}
             onPress={submit}
             style={{marginHorizontal: 20, marginTop: 20}}>
             Update & Next
