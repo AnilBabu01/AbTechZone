@@ -37,6 +37,7 @@ import {Colors} from '../../../utils/Colors';
 import {ADD_STUDENT_RESET} from '../../../redux/constants/commanConstants';
 import moment from 'moment';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import BackHeader from '../../../Component/Header/BackHeader';
 
 const streamlist = [
   {label: 'NONE', value: 'NONE'},
@@ -736,6 +737,7 @@ const TakeAdmission = () => {
   };
   return (
     <View>
+      <BackHeader title={'Take Admission'} icon={'person'} />
       <Modal animationType={'fade'} transparent={true} visible={openModel}>
         <View
           style={{

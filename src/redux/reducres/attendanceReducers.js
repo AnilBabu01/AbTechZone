@@ -91,19 +91,19 @@ export const MonthlyAttendanceReducer = (
   switch (action.type) {
     case MONTHLY_ATTENDANCE_REQUEST:
       return {
-        monthlyloading: true,
+         loading: true,
       };
 
     case MONTHLY__ATTENDANCE_SUCCESS:
       return {
         ...state,
-        monthlyloading: false,
+         loading: false,
         monthlyattendance: action.payload,
       };
 
     case MONTHLY__ATTENDANCE_FAIL:
       return {
-        monthlyloading: false,
+         loading: false,
         monthlyattendance: null,
         error: action.payload,
       };

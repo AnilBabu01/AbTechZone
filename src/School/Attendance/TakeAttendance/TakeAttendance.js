@@ -4,24 +4,32 @@ import {
   View,
   TouchableOpacity,
   ScrollView,
+  Pressable,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import {Height, Width} from '../../../utils/responsive';
 import {primary, savebtn, resetbtn} from '../../../utils/Colors';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import DateTimePickerModal from 'react-native-modal-datetime-picker';
-import moment from 'moment';
-import {Dropdown} from 'react-native-element-dropdown';
-import {getcourse, getbatch} from '../../../redux/action/commanAction';
+import {
+  getcourse,
+  getbatch,
+  GetSession,
+  GetSection,
+} from '../../../redux/action/commanAction';
+import {
+  DoneStudentAttendance,
+  MonthlyStudentAttendance,
+} from '../../../redux/action/attendanceActions';
 import {useDispatch, useSelector} from 'react-redux';
-
+import {Colors} from '../../../utils/Colors';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
+import DownloadStudentAttendance from '../../../Component/school/DownloadStudentAttendance';
+import FilterStudentAttendance from '../../../Component/school/FilterStudentAttendance';
+import RNButton from '../../../Component/RNButton';
 const TakeAttendance = () => {
   const dispatch = useDispatch();
-  const [index, setIndex] = useState(0);
-  const [fromdate, setfromdate] = useState('');
-  const [batchname, setbatchname] = useState('');
-  const {batch} = useSelector(state => state.getbatch);
-  const [batchlist, setbatchlist] = useState('');
+  const [showModal, setShowModal] = useState(false);
+  const [showDocOptions, setShowDocOptions] = useState(false);
   const [attendancedetails, setattendancedetails] = useState([
     {
       id: '',
@@ -41,6 +49,7 @@ const TakeAttendance = () => {
       attendancedate: '',
     },
   ]);
+  const {markattendance} = useSelector(state => state.markatten);
   function handleItemUpdate(originalItem, key, value) {
     setattendancedetails(
       attendancedetails.map(Item =>
@@ -53,130 +62,46 @@ const TakeAttendance = () => {
       ),
     );
   }
-  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
-  const showDatePicker = () => {
-    setDatePickerVisibility(true);
+  const saveAttendance = () => {
+    dispatch(DoneStudentAttendance(attendancedetails));
   };
-
-  const hideDatePicker = () => {
-    setDatePickerVisibility(false);
-  };
-
-  const handleConfirm = date => {
-    hideDatePicker();
-    setfromdate(date);
-  };
-
   useEffect(() => {
     dispatch(getcourse());
     dispatch(getbatch());
+    dispatch(GetSession());
+    dispatch(GetSection());
   }, []);
 
   useEffect(() => {
-  
-    if (batch) {
-      setbatchlist(batch);
+    if (markattendance) {
+      setattendancedetails(markattendance);
+      setShowModal(false);
     }
-  }, [batch]);
+  }, [markattendance]);
+
   return (
-    <View>
-      <View style={styles.dateview}>
-        <TouchableOpacity
-          style={{
-            height: Height(45),
-            width: Width(360),
-            borderWidth: 1.5,
-            borderColor: index === 6 ? primary : '#a9a9a9',
-            // alignSelf: 'center',
-            borderRadius: Width(10),
-            flexDirection: 'row',
-            alignItems: 'center',
-            marginTop: Height(10),
-          }}
-          onPress={() => {
-            setIndex(6), showDatePicker();
-          }}>
-          <FontAwesome5
-            name="calendar"
-            size={Height(20)}
-            color="#666666"
-            style={{marginLeft: Width(10)}}
-          />
-          <Text
-            style={{
-              textAlign: 'center',
-              fontFamily: 'Gilroy-SemiBold',
-              fontSize: Height(16),
-              marginLeft: Width(20),
-            }}>
-            {fromdate ? moment(fromdate).format('DD/MM/YYYY') : 'Select Date'}
-          </Text>
-        </TouchableOpacity>
-        <DateTimePickerModal
-          isVisible={isDatePickerVisible}
-          mode="date"
-          onConfirm={handleConfirm}
-          onCancel={hideDatePicker}
-        />
+    <View style={{flex: 1}}>
+      <View style={styles.headerTitleContainer}>
+        <View>
+          <Text style={styles.secondaryTitle}>Take Attendance</Text>
+        </View>
+        <View style={{flexDirection: 'row', gap: 10}}>
+          {/* <Pressable
+            onPress={() => setShowDocOptions(true)}
+            style={styles.filterBtnContainer}>
+            <FontAwesome6 name="download" color={Colors.primary} size={25} />
+          </Pressable> */}
+          <Pressable
+            onPress={() => setShowModal(true)}
+            style={styles.filterBtnContainer}>
+            <Ionicons name="filter" color={Colors.primary} size={25} />
+          </Pressable>
+        </View>
       </View>
-      {batchlist && (
-        <>
-          <Dropdown
-            style={{
-              alignSelf: 'center',
-              width: Width(360),
-              height: Height(45),
-              fontFamily: 'Gilroy-SemiBold',
-              borderWidth: 1.5,
-              borderRadius: Width(10),
-              paddingHorizontal: Width(20),
-              fontSize: Height(16),
-              marginTop: Height(10),
-              borderColor: index === 1 ? primary : '#a9a9a9',
-            }}
-            placeholderStyle={styles.placeholderStyle}
-            selectedTextStyle={styles.selectedTextStyle}
-            inputSearchStyle={styles.inputSearchStyle}
-            iconStyle={styles.iconStyle}
-            data={
-              batchlist &&
-              batchlist?.map(item => ({
-                label: `${item?.StartingTime} ${item?.EndingTime}`,
-                value: `${item?.StartingTime} ${item?.EndingTime}`,
-              }))
-            }
-            search
-            maxHeight={300}
-            labelField="label"
-            valueField="value"
-            placeholder="Select Batch"
-            searchPlaceholder="Search..."
-            value={batchname}
-            onChange={item => {
-              setbatchname(item.value);
-            }}
-          />
-        </>
-      )}
-      <View style={styles.loginbtndiv10}>
-        <TouchableOpacity
-        // onPress={() => {
-        //   setshowimaginput(true);
-        //   setshowfeeandfinal(false);
-        // }}
-        >
-          <View style={styles.loginbtnsave}>
-            <Text style={styles.logintextstyle}>Save</Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity
-        //  onPress={() => setshowfeeandfinal(true)}
-        >
-          <View style={styles.loginbtn10}>
-            <Text style={styles.logintextstyle}>Reset</Text>
-          </View>
-        </TouchableOpacity>
+
+      <View style={styles.bottomBtn}>
+        <RNButton onPress={() => saveAttendance()}>Save Attendance</RNButton>
       </View>
 
       <ScrollView>
@@ -192,9 +117,9 @@ const TakeAttendance = () => {
                       <Text>Course</Text>
                     </View>
                     <View style={styles.viewdel}>
-                      <Text>0002</Text>
-                      <Text>Akash</Text>
-                      <Text>DCA</Text>
+                      <Text>{item?.rollnumber}</Text>
+                      <Text>{item?.name}</Text>
+                      <Text>{item?.courseorclass}</Text>
                     </View>
                     <View style={styles.viewdel}>
                       <Text>Attendance Status</Text>
@@ -246,6 +171,19 @@ const TakeAttendance = () => {
           })}
         </View>
       </ScrollView>
+      {showModal && (
+        <>
+          <FilterStudentAttendance
+            setShowModal={setShowModal}
+            showModal={showModal}
+          />
+        </>
+      )}
+
+      <DownloadStudentAttendance
+        visible={showDocOptions}
+        hideModal={setShowDocOptions}
+      />
     </View>
   );
 };
@@ -253,6 +191,10 @@ const TakeAttendance = () => {
 export default TakeAttendance;
 
 const styles = StyleSheet.create({
+  bottomBtn: {
+    paddingHorizontal: Width(10),
+    marginTop: Height(5),
+  },
   dateview: {
     display: 'flex',
     justifyContent: 'space-between',
@@ -291,8 +233,8 @@ const styles = StyleSheet.create({
   loginbtnsave: {
     width: Width(170),
     height: Height(45),
-    backgroundColor: savebtn,
-    borderRadius: 10,
+    backgroundColor: Colors.primary,
+    borderRadius: 15,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -302,7 +244,7 @@ const styles = StyleSheet.create({
     width: Width(170),
     height: Height(45),
     backgroundColor: resetbtn,
-    borderRadius: 10,
+    borderRadius: 15,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -415,5 +357,33 @@ const styles = StyleSheet.create({
     fontSize: 16,
     borderColor: primary,
     borderRadius: 5,
+  },
+  headerTitleContainer: {
+    backgroundColor: Colors.fadeGray,
+    flexDirection: 'row',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  secondaryTitle: {
+    fontSize: 17,
+    fontWeight: '600',
+    lineHeight: 20,
+    color: Colors.primary,
+  },
+  accordionTitle: {
+    color: Colors.primary,
+    fontSize: 17,
+    fontWeight: '700',
+    lineHeight: 20,
+  },
+  filterBtnContainer: {
+    padding: 2,
+    borderRadius: 10,
+  },
+  contentContainerStyle: {
+    flex: 1,
+    alignItems: 'center',
   },
 });

@@ -295,7 +295,7 @@ const Add = ({navigation}) => {
 
         <AnimatedFAB
           icon={'plus'}
-          onPress={() => navigation.navigate('TakeAdmissionSchool')}
+          onPress={() => navigation.navigate('AddStudent')}
           label="Add"
           extended={false}
           color={Colors.white}

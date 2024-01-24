@@ -11,7 +11,6 @@ function StudentTab() {
       <Header />
       <Tab.Navigator>
         <Tab.Screen name="Attendance" component={TakeAttendance} />
-        <Tab.Screen name="Today" component={TodayAttendance} />
         <Tab.Screen name="Analysis" component={Analysis} />
       </Tab.Navigator>
     </>

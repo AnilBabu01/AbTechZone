@@ -37,6 +37,7 @@ import {Colors} from '../../../utils/Colors';
 import {ADD_STUDENT_RESET} from '../../../redux/constants/commanConstants';
 import moment from 'moment';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import BackHeader from '../../../Component/Header/BackHeader';
 
 const streamlist = [
   {label: 'NONE', value: 'NONE'},
@@ -730,12 +731,14 @@ const AddStudent = () => {
           console.log('clicked', res);
         }
       });
+      
     } catch (error) {
       setloading2(false);
     }
   };
   return (
     <View>
+      <BackHeader title={"Add Student"} icon={"person"}/>
       <Modal animationType={'fade'} transparent={true} visible={openModel}>
         <View
           style={{

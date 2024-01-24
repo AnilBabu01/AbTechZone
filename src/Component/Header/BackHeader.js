@@ -50,6 +50,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     backgroundColor: primary,
     paddingBottom: 5,
+    height: Height(50),
   },
 
   loginbtn: {

@@ -31,7 +31,7 @@ import {
 import {GetRoute} from '../../../redux/action/transportActions';
 import {useDispatch, useSelector} from 'react-redux';
 import DashboardPlaceholderLoader from '../../../Component/DashboardPlaceholderLoader';
-import {deviceHeight, deviceWidth} from '../../../utils/constant';
+import {deviceWidth} from '../../../utils/constant';
 import RNTable from '../../../Component/RNTable';
 import DownloadStudentData from '../../../Component/school/DownloadStudentData';
 import BackHeader from '../../../Component/Header/BackHeader';

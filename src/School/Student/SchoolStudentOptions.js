@@ -28,7 +28,7 @@ const SchoolStudentOptions = () => {
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={() => navigation.navigate('CategoryCoaching')}>
+          onPress={() => navigation.navigate('AttendanceTabSchool')}>
           <View style={styles.mainoption}>
             <FontAwesome6 name="database" color={Colors.primary} size={30} />
             <Text style={styles.titlestyle}>Attendance</Text>

@@ -7,7 +7,7 @@ import {
   ScrollView,
   TextInput,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Height, Width} from '../../../utils/responsive';
 import {primary, savebtn, resetbtn} from '../../../utils/Colors';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
@@ -16,13 +16,17 @@ import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import moment from 'moment';
 import CardEnquiry from './StudentCard';
 import {Dropdown} from 'react-native-element-dropdown';
-const data = [
-  {label: 'DCA', value: 'DCA'},
-  {label: 'ADCA', value: 'ADCA'},
-  {label: 'CCC', value: 'CCC'},
-  {label: 'O-LEVEL', value: 'O-LEVEL'},
-];
+import {
+  getcourse,
+  GetSession,
+  GetSection,
+  getcurrentsession,
+} from '../../../redux/action/commanAction';
+import {useDispatch, useSelector} from 'react-redux';
+
+
 const TodayAttendance = () => {
+  const dispatch = useDispatch();
   const [index, setIndex] = useState(0);
   const [fromdate, setfromdate] = useState('');
   const [todate, settodate] = useState('');
@@ -46,6 +50,7 @@ const TodayAttendance = () => {
       attendancedate: '',
     },
   ]);
+
   function handleItemUpdate(originalItem, key, value) {
     setattendancedetails(
       attendancedetails.map(Item =>
@@ -58,78 +63,24 @@ const TodayAttendance = () => {
       ),
     );
   }
-  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
-  const showDatePicker = () => {
-    setDatePickerVisibility(true);
-  };
-
-  const hideDatePicker = () => {
-    setDatePickerVisibility(false);
-  };
-
-  const handleConfirm = date => {
-    hideDatePicker();
-    setfromdate(date);
-  };
-
-  const [isDatePickerVisibleto, setDatePickerVisibilityto] = useState(false);
-
-  const showDatePickerto = () => {
-    setDatePickerVisibilityto(true);
-  };
-
-  const hideDatePickerto = () => {
-    setDatePickerVisibilityto(false);
-  };
-
-  const handleConfirmto = date => {
-    hideDatePickerto();
-    settodate(date);
-  };
-
+  useEffect(() => {
+    dispatch(getcourse());
+    dispatch(GetSession());
+    dispatch(GetSection());
+    dispatch(getcurrentsession());
+  }, []);
   return (
     <View>
       <View style={styles.dateview}>
-        <Dropdown
-          style={{
-            alignSelf: 'center',
-            width: Width(355),
-            height: Height(45),
-            fontFamily: 'Gilroy-SemiBold',
-            borderWidth: 1.5,
-            borderRadius: Width(10),
-            paddingHorizontal: Width(20),
-            fontSize: Height(16),
-            marginTop: Height(10),
-            borderColor: index === 1 ? primary : '#a9a9a9',
-          }}
-          placeholderStyle={styles.placeholderStyle}
-          selectedTextStyle={styles.selectedTextStyle}
-          inputSearchStyle={styles.inputSearchStyle}
-          iconStyle={styles.iconStyle}
-          data={data}
-          search
-          maxHeight={300}
-          labelField="label"
-          valueField="value"
-          placeholder="Select Batch"
-          searchPlaceholder="Search..."
-          value={batch}
-          onChange={item => {
-            setbatch(item.value);
-          }}
-          // renderLeftIcon={() => (
-          //   <AntDesign style={styles.icon} color="black" name="Safety" size={20} />
-          // )}
-        />
+       
       </View>
       <View style={styles.loginbtndiv10}>
         <TouchableOpacity
         //  onPress={() => setshowfeeandfinal(true)}
         >
           <View style={styles.loginbtn10}>
-            <Text style={styles.logintextstyle}>Reset</Text>
+            <Text style={styles.logintextstyle}>cjhc</Text>
           </View>
         </TouchableOpacity>
       </View>

@@ -1,6 +1,6 @@
-import axios from "axios";
-import { toast } from "react-toastify";
-import { backendApiUrl } from "../../Config/config";
+import axios from 'axios';
+import Toast from 'react-native-toast-message';
+import {backendApiUrl} from '../../Config/config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   MARK_ATTENDANCE_REQUEST,
@@ -15,70 +15,78 @@ import {
   ALL_HOLIDAY_ATTENDANCE_SUCCESS,
   ALL_HOLIDAY_ATTENDANCE_FAIL,
   DONE_ATTENDANCE_FAIL,
-} from "../constants/attendanceConstants";
+} from '../constants/attendanceConstants';
 
-export const MarkStudentAttendance = (date, batch,classname,sectionname) => async (dispatch) => {
+export const MarkStudentAttendance =
+  (date, batch, classname, sectionname) => async dispatch => {
+    try {
+      let token = await AsyncStorage.getItem('erptoken');
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `${token}`,
+        },
+      };
+      dispatch({type: MARK_ATTENDANCE_REQUEST});
+      const {data} = await axios.post(
+        `${backendApiUrl}attendanceatudent/attendance`,
+        {
+          Attendancedate: date,
+          batch: batch,
+          classname: classname,
+          sectionname: sectionname,
+        },
+        config,
+      );
+
+      if (data?.status) {
+        Toast.show({
+          type: 'success',
+          text1: 'Success',
+          text2: data?.msg,
+        });
+      }
+
+      dispatch({
+        type: MARK_ATTENDANCE_SUCCESS,
+        payload: data?.data,
+      });
+    } catch (error) {
+      dispatch({
+        type: MARK_ATTENDANCE_FAIL,
+        payload: error?.response?.data?.msg,
+      });
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: error?.response?.data?.msg,
+      });
+    }
+  };
+
+export const DoneStudentAttendance = udata => async dispatch => {
   try {
     let token = await AsyncStorage.getItem('erptoken');
     const config = {
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         Authorization: `${token}`,
       },
     };
-    dispatch({ type: MARK_ATTENDANCE_REQUEST });
-    const { data } = await axios.post(
-      `${backendApiUrl}attendanceatudent/attendance`,
-      {
-        Attendancedate: date,
-        batch: batch,
-        classname:classname,
-        sectionname:sectionname
-      },
-      config
-    );
-
-    console.log("search", date, batch);
-    if (data?.status) {
-      toast.success(data?.msg, {
-        autoClose: 1000,
-      });
-    }
-
-    dispatch({
-      type: MARK_ATTENDANCE_SUCCESS,
-      payload: data?.data,
-    });
-  } catch (error) {
-    dispatch({
-      type: MARK_ATTENDANCE_FAIL,
-      payload: error?.response?.data?.msg,
-    });
-    toast.error(error?.response?.data?.msg, { autoClose: 1000 });
-  }
-};
-
-export const DoneStudentAttendance = (udata) => async (dispatch) => {
-  try {
-  let token = await AsyncStorage.getItem('erptoken');
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `${token}`,
-      },
-    };
-    dispatch({ type: DONE_ATTENDANCE_REQUEST });
-    const { data } = await axios.put(
+    dispatch({type: DONE_ATTENDANCE_REQUEST});
+    const {data} = await axios.put(
       `${backendApiUrl}attendanceatudent/attendance`,
       {
         data: udata,
       },
-      config
+      config,
     );
-    console.log("Done Attendance is ", data);
+
     if (data?.status) {
-      toast.success(data?.msg, {
-        autoClose: 1000,
+      Toast.show({
+        type: 'success',
+        text1: 'Success',
+        text2: data?.msg,
       });
     }
 
@@ -91,38 +99,45 @@ export const DoneStudentAttendance = (udata) => async (dispatch) => {
       type: DONE_ATTENDANCE_FAIL,
       payload: error?.response?.data?.msg,
     });
-    toast.error(error?.response?.data?.msg, { autoClose: 1000 });
+    Toast.show({
+      type: 'error',
+      text1: 'Error',
+      text2: error?.response?.data?.msg,
+    });
   }
 };
 
 export const MonthlyStudentAttendance =
-  (udata, months, rollname, studentname,status, classname,sectionname) => async (dispatch) => {
+  (udata, months, rollname, studentname, status, classname, sectionname) =>
+  async dispatch => {
     try {
-    let token = await AsyncStorage.getItem('erptoken');
+      let token = await AsyncStorage.getItem('erptoken');
       const config = {
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           Authorization: `${token}`,
         },
       };
-      dispatch({ type: MONTHLY_ATTENDANCE_REQUEST });
-      const { data } = await axios.post(
+      dispatch({type: MONTHLY_ATTENDANCE_REQUEST});
+      const {data} = await axios.post(
         `${backendApiUrl}attendanceatudent/analysisattendance`,
         {
           batch: udata,
           month: months,
           rollname: rollname,
           studentname: studentname,
-          status:status,
+          status: status,
           classname: classname,
-          sectionname:sectionname
+          sectionname: sectionname,
         },
-        config
+        config,
       );
 
       if (data?.status) {
-        toast.success(data?.msg, {
-          autoClose: 1000,
+        Toast.show({
+          type: 'success',
+          text1: 'Success',
+          text2: data?.msg,
         });
       }
 
@@ -135,28 +150,32 @@ export const MonthlyStudentAttendance =
         type: MONTHLY__ATTENDANCE_FAIL,
         payload: error?.response?.data?.msg,
       });
-      toast.error(error?.response?.data?.msg, { autoClose: 1000 });
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: error?.response?.data?.msg,
+      });
     }
   };
 
 // Get all Enquiry
-export const getHolidays = (month) => async (dispatch) => {
+export const getHolidays = month => async dispatch => {
   try {
-  let token = await AsyncStorage.getItem('erptoken');
+    let token = await AsyncStorage.getItem('erptoken');
     const config = {
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         Authorization: `${token}`,
       },
     };
-    dispatch({ type: ALL_HOLIDAY_REQUEST });
+    dispatch({type: ALL_HOLIDAY_REQUEST});
 
-    const { data } = await axios.post(
+    const {data} = await axios.post(
       `${backendApiUrl}attendanceatudent/getholidy`,
       {
-        month:Number(month),
+        month: Number(month),
       },
-      config
+      config,
     );
     dispatch({
       type: ALL_HOLIDAY_ATTENDANCE_SUCCESS,

@@ -78,7 +78,7 @@ import SchoolTestOptions from '../School/Test/SchoolTestOptions';
 import SchoolHrOptions from '../School/HumanResourse/SchoolHrOptions';
 import FrontOfficeSchool from '../School/FrontOffice/FrontOffice';
 import SearchEnquirySchool from '../School/FrontOffice/SearchEnquiry';
-import StudentTabSchool from '../School/Student/StudentTab';
+import AddStudent from '../School/Student/Add/AddStudent';
 import Add from '../School/Student/Add/Add';
 import SearchaddSchool from '../School/Student/Add/Search';
 import Admission from '../School/Student/admission/Admission';
@@ -906,6 +906,7 @@ function StackNavigation() {
       <Stack.Screen name="SchoolTestOptions" component={SchoolTestOptions} />
       <Stack.Screen name="Add" component={Add} />
       <Stack.Screen name="Admission" component={Admission} />
+      <Stack.Screen name="AddStudent" component={AddStudent} />
       <Stack.Screen name="UpdateAdmission" component={UpdateAdmission} />
       <Stack.Screen
         name="MasterOptionsSchool"
