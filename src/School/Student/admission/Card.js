@@ -21,6 +21,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {Height, Width} from '../../../utils/responsive';
 import {deviceHeight, deviceWidth} from '../../../utils/constant';
 import {Colors} from '../../../utils/Colors';
+
 const Card = ({data}) => {
   const dispatch = useDispatch();
   const navigation = useNavigation();

@@ -73,17 +73,11 @@ const SchoolStudentOptions = () => {
             <Text style={styles.titlestyle}>Time Table</Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => navigation.navigate('DesignationCoaching')}>
-          <View style={styles.mainoption}>
-            <FontAwesome6 name="database" color={Colors.primary} size={30} />
-            <Text style={styles.titlestyle}>Send Email</Text>
-          </View>
-        </TouchableOpacity>
+
         <TouchableOpacity onPress={() => navigation.navigate('FeesCoaching')}>
           <View style={styles.mainoption}>
             <FontAwesome6
-              name="indian-rupee-sign"
+              name="person-military-to-person"
               color={Colors.primary}
               size={30}
             />
@@ -93,7 +87,11 @@ const SchoolStudentOptions = () => {
         <TouchableOpacity
           onPress={() => navigation.navigate('DepartmentCoaching')}>
           <View style={styles.mainoption}>
-            <FontAwesome6 name="calendar" color={Colors.primary} size={30} />
+            <FontAwesome6
+              name="person-military-to-person"
+              color={Colors.primary}
+              size={30}
+            />
             <Text style={styles.titlestyle}>Parent Credentials</Text>
           </View>
         </TouchableOpacity>

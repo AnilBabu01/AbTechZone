@@ -1,10 +1,16 @@
-import {View, StyleSheet, StatusBar, Image} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  StatusBar,
+  Image,
+  ImageBackground,
+} from 'react-native';
 import React, {useEffect} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import logo1 from '../assets/phonelogo.png';
 import {useDispatch} from 'react-redux';
 import {loadUser} from '../redux/action/authActions';
-
+import bgImg from '../assets/bg.jpeg';
 const Splash = ({navigation}) => {
   const dispatch = useDispatch();
 
@@ -40,18 +46,22 @@ const Splash = ({navigation}) => {
   }, []);
 
   return (
-    <View style={style.maincontainer}>
+    <View>
       <StatusBar hidden={true} />
-     <View style={style.logocontainer}>
-        <Image
-          source={logo1}
-          style={{
-            width: 200,
-            height: 200,
-            borderRadius: 11,
-          }}
-        />
-      </View>
+      {/* <ImageBackground source={bgImg} style={style.imagestyle}> */}
+        <View style={style.maincontainer}>
+          <View style={style.logocontainer}>
+            <Image
+              source={logo1}
+              style={{
+                width: 200,
+                height: 200,
+                borderRadius: 11,
+              }}
+            />
+          </View>
+        </View>
+      {/* </ImageBackground> */}
     </View>
   );
 };
@@ -73,5 +83,11 @@ const style = StyleSheet.create({
 
   logocontainer: {
     alignItems: 'center',
+  },
+
+  imagestyle: {
+    flex: 1,
+    justifyContent: 'center',
+    position: 'relative',
   },
 });

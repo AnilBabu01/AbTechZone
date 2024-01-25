@@ -10,7 +10,7 @@ import React, {useEffect, useState} from 'react';
 import {Height, Width} from '../../../utils/responsive';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
-import CardEnquiry from './Card';
+import Card from '../admission/Card';
 import {primary, Colors} from '../../../utils/Colors';
 import {AnimatedFAB} from 'react-native-paper';
 import {
@@ -268,7 +268,7 @@ const Add = ({navigation}) => {
                   <View style={styles.enquirymainview}>
                     {isdata?.length > 0 &&
                       isdata?.map((item, index) => {
-                        return <CardEnquiry key={index} data={item} />;
+                        return <Card key={index} data={item} />;
                       })}
                   </View>
                 </>

@@ -1,101 +1,52 @@
-import {StyleSheet, Text, View, Image} from 'react-native';
+import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
 import React from 'react';
-import {DrawerItem} from '@react-navigation/drawer';
+import logouticon from '../assets/logoblue1.png';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {secondary, profileheader} from '../utils/Colors';
-import profileimg from '../assets/logoblue1.png';
-import Help from '../assets/help.png';
-import homee from '../assets/homee.png';
-import learning from '../assets/learning.png';
-import loginIcon from '../assets/loginIcon.png';
-import logouticon from '../assets/logouticon.png';
+import {Colors} from '../utils/Colors';
+import {deviceWidth} from '../utils/constant';
 const NologinDrawerItem = ({navigation}) => {
+  const CommonBTN = ({routename, icon, title}) => {
+    return (
+      <TouchableOpacity
+        style={styles.menu}
+        onPress={() => navigation.navigate(routename)}>
+        <View style={styles.innearview}>
+          <View style={styles.inneartitle}>
+            <Ionicons name={icon} color={Colors.primary} size={25} />
+            <Text style={styles.textstyle}>{title}</Text>
+          </View>
+
+          <Ionicons
+            name="chevron-forward-outline"
+            color={Colors.primary}
+            size={25}
+          />
+        </View>
+      </TouchableOpacity>
+    );
+  };
   return (
     <View>
-      {/* <View style={styles.mainprofile}>
-        <View style={styles.innearview}>
+      <View style={styles.mainprofile}>
+        <View style={styles.innearviewprofile}>
           <Image
-            source={profileimg}
+            source={logouticon}
             style={{
-              width: 80,
+              width: '100%',
               height: 80,
               borderRadius: 50,
             }}
           />
         </View>
-      </View> */}
-      <DrawerItem
-        style={styles.menu}
-        label="Home"
-        icon={() => (
-          <Image
-            source={homee}
-            style={{
-              width: 30,
-              height: 30,
-            }}
-          />
-        )}
-        onPress={() => {
-          navigation.closeDrawer();
-          // navigation.navigate('login');
-        }}
-        labelStyle={{color: 'black'}}
-      />
-
-      <DrawerItem
-        style={styles.menu}
-        label="Learning"
-        icon={() => (
-          <Image
-            source={learning}
-            style={{
-              width: 30,
-              height: 30,
-            }}
-          />
-        )}
-        onPress={() => {
-          navigation.closeDrawer();
-          // navigation.navigate('login');
-        }}
-        labelStyle={{color: 'black'}}
-      />
-      <DrawerItem
-        style={styles.menu}
-        label="Login"
-        icon={() => (
-          <Image
-            source={loginIcon}
-            style={{
-              width: 30,
-              height: 30,
-            }}
-          />
-        )}
-        onPress={() => {
-          navigation.closeDrawer();
-          navigation.navigate('Login');
-        }}
-        labelStyle={{color: 'black'}}
-      />
-      <DrawerItem
-        style={styles.menu}
-        label="Help Center"
-        icon={() => (
-          <Image
-            source={Help}
-            style={{
-              width: 30,
-              height: 30,
-            }}
-          />
-        )}
-        onPress={() => {
-          navigation.closeDrawer();
-          // navigation.navigate('login');
-        }}
-        labelStyle={{color: 'black'}}
+      </View>
+      <View style={styles.divider}></View>
+      <CommonBTN routename="Login" title="Home" icon="home" />
+      <CommonBTN routename="Login" title="Learning" icon="book" />
+      <CommonBTN routename="Login" title="Login" icon="log-in" />
+      <CommonBTN
+        routename="HelpCenter"
+        title="Help Center"
+        icon="help-circle"
       />
     </View>
   );
@@ -107,16 +58,43 @@ const styles = StyleSheet.create({
   mainprofile: {
     paddingHorizontal: 10,
   },
+
   innearview: {
     display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+
+  innearviewprofile: {
+    display: 'flex',
     alignItems: 'center',
-    backgroundColor: profileheader,
     borderRadius: 10,
     paddingVertical: 10,
     marginBottom: 5,
   },
 
   menu: {
-    backgroundColor: secondary,
+    marginHorizontal: deviceWidth * 0.02,
+    marginBottom: deviceWidth * 0.02,
+    paddingVertical: deviceWidth * 0.02,
+    paddingRight: deviceWidth * 0.07,
+  },
+  inneartitle: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: '100%',
+  },
+  textstyle: {
+    color: Colors.primary,
+    fontSize: 15,
+    paddingLeft: deviceWidth * 0.02,
+  },
+  divider: {
+    borderWidth: 1,
+    borderColor: Colors.fadeGray,
+  },
+  mainprofile: {
+    paddingHorizontal: 10,
   },
 });

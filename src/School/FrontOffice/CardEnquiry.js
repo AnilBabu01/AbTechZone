@@ -21,6 +21,8 @@ import {serverInstance} from '../../API/ServerInstance';
 import Toast from 'react-native-toast-message';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {Height, Width} from '../../utils/responsive';
+import {Colors} from '../../utils/Colors';
+import {deviceHeight, deviceWidth} from '../../utils/constant';
 const CardEnquiry = ({data}) => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -100,13 +102,15 @@ const CardEnquiry = ({data}) => {
       <ScrollView>
         <View style={styles.connainer}>
           <View style={styles.card10}>
-            <View style={styles.viewdel}>
-              <Text>{moment(data?.EnquiryDate).format('DD/MM/YYYY')}</Text>
+            <View style={styles.headerarray}>
+              <Text style={{color: Colors.white}}>
+                Date : {moment(data?.EnquiryDate).format('DD/MM/YYYY')}
+              </Text>
               <TouchableOpacity onPress={() => setshowinfo(!showinfo)}>
                 <Ionicons
                   name={showinfo ? 'arrow-down' : 'arrow-up'}
                   size={Height(22)}
-                  color="rgba(0, 0, 0, 0.5)"
+                  color={Colors.white}
                 />
               </TouchableOpacity>
             </View>
@@ -177,8 +181,6 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     width: '100%',
     marginVertical: 10,
-    paddingVertical: 20,
-    paddingHorizontal: 20,
   },
   viewdel: {
     display: 'flex',
@@ -187,6 +189,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     display: 'flex',
     justifyContent: 'space-between',
+    paddingHorizontal:10
   },
   viewdelbtn: {
     display: 'flex',
@@ -209,5 +212,18 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontWeight: 'bold',
     fontSize: 17,
+  },
+  headerarray: {
+    display: 'flex',
+    flexDirection: 'row',
+    width: '100%',
+    marginBottom: 10,
+    display: 'flex',
+    justifyContent: 'space-between',
+    backgroundColor: Colors.primary,
+    borderTopLeftRadius: deviceWidth * 0.02,
+    borderTopRightRadius: deviceWidth * 0.02,
+    paddingVertical: deviceWidth * 0.02,
+    paddingHorizontal: deviceWidth * 0.02,
   },
 });

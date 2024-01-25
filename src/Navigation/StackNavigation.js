@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import HelpCenter from '../Component/HelpCenter';
 import LoginScreen from '../Auth/Login';
+import SignUpScreen from '../Auth/SignUp';
 import SplashScreen from '../Splash/Splash';
 import HomeScreen from '../Owner/Home';
 import DashboardCoaching from '../Coaching/Dashboard/Dashboard';
@@ -84,6 +85,7 @@ import SearchaddSchool from '../School/Student/Add/Search';
 import Admission from '../School/Student/admission/Admission';
 import UpdateAdmission from '../School/Student/admission/UpdateAdmission';
 import TakeAdmissionSchool from '../School/Student/admission/TakeAdmission';
+import CharacterC from '../School/Student/CC/CharacterC';
 import AddNewStudentSchool from '../School/Student/Add/AddNewStudent';
 import AttendanceTabSchool from '../School/Attendance/AttendanceTab';
 import AddEnquirySchool from '../School/FrontOffice/AddEnquiry';
@@ -152,21 +154,8 @@ function StackNavigation() {
         <Stack.Screen name="OnBoarding" component={SplashScreen} />
       )}
       <Stack.Screen name="home" component={HomeScreen} />
-      <Stack.Screen
-        name="Login"
-        component={LoginScreen}
-        options={{
-          headerShown: true,
-          title: 'Sign-in',
-          headerStyle: {
-            backgroundColor: primary,
-          },
-          headerTintColor: '#fff',
-          headerTitleStyle: {
-            fontWeight: 'bold',
-          },
-        }}
-      />
+      <Stack.Screen name="Login" component={LoginScreen} />
+      <Stack.Screen name="Signup" component={SignUpScreen} />
       {/* Coaching routes */}
 
       <Stack.Screen name="DashboardCoaching" component={DashboardCoaching} />

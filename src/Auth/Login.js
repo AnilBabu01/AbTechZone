@@ -6,13 +6,12 @@ import {
   Image,
   Dimensions,
   StyleSheet,
+  ImageBackground,
   TouchableOpacity,
-  SafeAreaView,
-  TextInput,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import {primary, secondary} from '../utils/Colors';
-import loginicon from '../assets/newphonelogo.png';
+import loginicon from '../assets/logoblue1.png';
 import {Height, Width} from '../utils/responsive';
 import {Dropdown} from 'react-native-element-dropdown';
 import {useDispatch, useSelector} from 'react-redux';
@@ -26,7 +25,13 @@ import {
 import {useNavigation} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Loader from '../Component/Loader/Loader';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import BackHeader from '../Component/Header/BackHeader';
+import RNButton from '../Component/RNButton';
+import RNInputField from '../Component/RNInputField';
+import {Colors} from '../utils/Colors';
+import {deviceHeight, deviceWidth} from '../utils/constant';
+import bgImg from '../assets/bg.jpeg';
+import {Checkbox} from 'react-native-paper';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
@@ -49,6 +54,7 @@ const Login = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const [index, setIndex] = useState(0);
+  const [showPassword, setShowPassword] = useState(true);
   const [loader, setloader] = useState(false);
   const [sms, setsms] = useState('');
   const [showloginoption, setshowloginoption] = useState(false);
@@ -58,11 +64,10 @@ const Login = () => {
   const [loginfor, setloginfor] = useState('');
   const [userid, setuserid] = useState('');
   const [password, setpassword] = useState('');
-  const [passwordVisible, setPasswordVisible] = useState(true);
   const [useriderror, setuseriderror] = useState('');
   const [passworderror, setpassworderror] = useState('');
   const [Fullname, setFullname] = useState('');
-  const [showonldpassword, setshowonldpassword] = useState(false);
+
   const {loading, isAuthenticated, user, error} = useSelector(
     state => state.auth,
   );
@@ -174,1293 +179,605 @@ const Login = () => {
   }, []);
 
   return (
-    <SafeAreaView>
+    <>
+      <BackHeader title={'Sign-in'} />
       <StatusBar backgroundColor={primary} />
-      <Loader loader={loader} sms={sms} />
-      <ScrollView>
-        <View style={styles.connainer}>
-          <Image source={loginicon} style={styles.imgtop} />
-          <View style={styles.btnsdiv}>
-            <TouchableOpacity
-              onPress={() => {
-                setshowloginoption(false);
-              }}>
-              <View style={showloginoption ? styles.btn : styles.activebtn}>
-                <Text style={{color: showloginoption ? 'black' : 'white'}}>
-                  LOGIN
-                </Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => setshowloginoption(true)}>
-              <View style={showloginoption ? styles.activebtn : styles.btn}>
-                <Text style={{color: showloginoption ? 'white' : 'black'}}>
-                  GUEST
-                </Text>
-              </View>
-            </TouchableOpacity>
+      <ImageBackground source={bgImg} style={styles.imagestyle}>
+        <View style={{flex: 1}}>
+          <View style={styles.mainprofile}>
+            <View style={styles.innearviewprofile}>
+              <Image
+                source={loginicon}
+                style={{
+                  width: '100%',
+                  height: 80,
+                  borderRadius: 50,
+                }}
+              />
+            </View>
           </View>
-          {showloginoption === true && (
-            <>
-              <Text
+          <View style={styles.Content}>
+            <Loader loader={loader} sms={sms} />
+            <ScrollView>
+              <View
                 style={{
-                  color: 'black',
-                  fontFamily: 'Gilroy-SemiBold',
-                  fontSize: Height(12),
-                  marginTop: Height(10),
-                  marginLeft: Width(40),
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
                 }}>
-                Login As<Text style={{color: primary}}> *</Text>
-              </Text>
-              <Dropdown
-                style={{
-                  alignSelf: 'center',
-                  width: Width(315),
-                  height: Height(40),
-                  fontFamily: 'Gilroy-SemiBold',
-                  borderWidth: 1.5,
-                  borderRadius: Width(5),
-                  paddingHorizontal: Width(10),
-                  fontSize: Height(16),
-                  marginTop: Height(10),
-                  borderColor: index === 1 ? primary : '#a9a9a9',
-                }}
-                onFocus={() => setIndex(1)}
-                placeholderStyle={styles.placeholderStyle}
-                selectedTextStyle={styles.selectedTextStyle}
-                inputSearchStyle={styles.inputSearchStyle}
-                iconStyle={styles.iconStyle}
-                data={dataguest}
-                search
-                maxHeight={300}
-                labelField="label"
-                valueField="value"
-                placeholder="Please Select"
-                searchPlaceholder="Search..."
-                value={guestloginas}
-                onChange={item => {
-                  setguestloginas(item.value);
-                }}
-              />
+                <View style={{width: '45%'}}>
+                  <RNButton
+                    style={{paddingHorizontal: 20}}
+                    onPress={() => {
+                      setshowloginoption(false);
+                    }}>
+                    Login
+                  </RNButton>
+                </View>
 
-              <Text
-                style={{
-                  color: 'black',
-                  fontFamily: 'Gilroy-SemiBold',
-                  fontSize: Height(12),
-                  marginTop: Height(10),
-                  marginLeft: Width(40),
-                }}>
-                Full Name<Text style={{color: primary}}> *</Text>
-              </Text>
-              <TextInput
-                placeholder="Enter full name"
-                placeholderTextColor="rgba(0, 0, 0, 0.6)"
-                style={{
-                  alignSelf: 'center',
-                  width: Width(315),
-                  height: Height(40),
-                  fontFamily: 'Gilroy-SemiBold',
-                  borderWidth: 1.5,
-                  borderRadius: Width(5),
-                  paddingHorizontal: Width(10),
-                  fontSize: Height(16),
-                  marginTop: Height(10),
-                  borderColor: index === 2 ? primary : '#a9a9a9',
-                }}
-                value={Fullname}
-                // onBlur={() => Validation()}
-                onChangeText={text => setFullname(text)}
-                // keyboardType="email-address"
-                onFocus={() => setIndex(2)}
-              />
-              {/* {emailError.length > 0 && (
-                <Text
-                  style={{
-                    color: 'red',
-                    marginLeft: Width(60),
-                    fontSize: Height(11),
-                    fontFamily: 'Gilroy-SemiBold',
-                  }}>
-                  {emailError}
-                </Text>
-              )} */}
-
-              <Text
-                style={{
-                  color: 'black',
-                  fontFamily: 'Gilroy-SemiBold',
-                  fontSize: Height(12),
-                  marginTop: Height(10),
-                  marginLeft: Width(40),
-                }}>
-                Email<Text style={{color: primary}}> *</Text>
-              </Text>
-              <TextInput
-                placeholder="Enter email"
-                placeholderTextColor="rgba(0, 0, 0, 0.6)"
-                style={{
-                  alignSelf: 'center',
-                  width: Width(315),
-                  height: Height(40),
-                  fontFamily: 'Gilroy-SemiBold',
-                  borderWidth: 1.5,
-                  borderRadius: Width(5),
-                  paddingHorizontal: Width(10),
-                  fontSize: Height(16),
-                  marginTop: Height(10),
-                  borderColor: index === 3 ? primary : '#a9a9a9',
-                }}
-                value={userid}
-                // onBlur={() => Validation()}
-                onChangeText={text => setuserid(text)}
-                keyboardType="email-address"
-                onFocus={() => setIndex(3)}
-              />
-              {/* {emailError.length > 0 && (
-                <Text
-                  style={{
-                    color: 'red',
-                    marginLeft: Width(60),
-                    fontSize: Height(11),
-                    fontFamily: 'Gilroy-SemiBold',
-                  }}>
-                  {emailError}
-                </Text>
-              )} */}
-
-              <Text
-                style={{
-                  color: 'black',
-                  fontFamily: 'Gilroy-SemiBold',
-                  fontSize: Height(12),
-                  marginTop: Height(10),
-                  marginLeft: Width(40),
-                }}>
-                Phone Number<Text style={{color: primary}}> *</Text>
-              </Text>
-              <TextInput
-                placeholder="Enter phone number"
-                placeholderTextColor="rgba(0, 0, 0, 0.6)"
-                style={{
-                  alignSelf: 'center',
-                  width: Width(315),
-                  height: Height(40),
-                  fontFamily: 'Gilroy-SemiBold',
-                  borderWidth: 1.5,
-                  borderRadius: Width(5),
-                  paddingHorizontal: Width(10),
-                  fontSize: Height(16),
-                  marginTop: Height(10),
-                  borderColor: index === 4 ? primary : '#a9a9a9',
-                }}
-                value={password}
-                // onBlur={() => Validation()}
-                onChangeText={text => setpassword(text)}
-                // keyboardType="email-address"
-                onFocus={() => setIndex(4)}
-              />
-              {/* {emailError.length > 0 && (
-                <Text
-                  style={{
-                    color: 'red',
-                    marginLeft: Width(60),
-                    fontSize: Height(11),
-                    fontFamily: 'Gilroy-SemiBold',
-                  }}>
-                  {emailError}
-                </Text>
-              )} */}
-
-              <View style={styles.loginbtndiv}>
-                <TouchableOpacity onPress={() => submit()}>
-                  <View style={styles.loginbtn}>
-                    <Text style={styles.logintextstyle}>Login</Text>
-                  </View>
-                </TouchableOpacity>
+                <View style={{width: '45%'}}>
+                  <RNButton
+                    style={{paddingHorizontal: 20}}
+                    onPress={() => setshowloginoption(true)}>
+                    GUEST
+                  </RNButton>
+                </View>
               </View>
-            </>
-          )}
-
-          {showloginoption === false && (
-            <>
-              <Text
-                style={{
-                  color: 'black',
-                  fontFamily: 'Gilroy-SemiBold',
-                  fontSize: Height(12),
-                  marginTop: Height(10),
-                  marginLeft: Width(40),
-                }}>
-                Login As<Text style={{color: primary}}> *</Text>
-              </Text>
-              <Dropdown
-                style={{
-                  alignSelf: 'center',
-                  width: Width(315),
-                  height: Height(40),
-                  fontFamily: 'Gilroy-SemiBold',
-                  borderWidth: 1.5,
-                  borderRadius: Width(5),
-                  paddingHorizontal: Width(10),
-                  fontSize: Height(16),
-                  marginTop: Height(10),
-                  borderColor: index === 5 ? primary : '#a9a9a9',
-                }}
-                onFocus={() => setIndex(5)}
-                placeholderStyle={styles.placeholderStyle}
-                selectedTextStyle={styles.selectedTextStyle}
-                inputSearchStyle={styles.inputSearchStyle}
-                iconStyle={styles.iconStyle}
-                data={data}
-                search
-                maxHeight={300}
-                labelField="label"
-                valueField="value"
-                placeholder="Please Select"
-                searchPlaceholder="Search..."
-                value={loginas}
-                onChange={item => {
-                  setloginas(item.value);
-                }}
-              />
-              {loginas === 'College' && (
+              {showloginoption === true && (
                 <>
                   <Text
                     style={{
-                      color: 'black',
                       fontFamily: 'Gilroy-SemiBold',
                       fontSize: Height(12),
                       marginTop: Height(10),
-                      marginLeft: Width(40),
                     }}>
-                    Please Select College
-                    <Text style={{color: primary}}> *</Text>
+                    Login As<Text style={{color: primary}}> *</Text>
                   </Text>
-                  {college?.length ? (
+                  <Dropdown
+                    style={styles.dropstyle}
+                    placeholderStyle={styles.placeholderStyle}
+                    selectedTextStyle={styles.selectedTextStyle}
+                    inputSearchStyle={styles.inputSearchStyle}
+                    iconStyle={styles.iconStyle}
+                    data={dataguest}
+                    search
+                    maxHeight={300}
+                    labelField="label"
+                    valueField="value"
+                    placeholder="Please Select"
+                    searchPlaceholder="Search..."
+                    value={guestloginas}
+                    onChange={item => {
+                      setguestloginas(item.value);
+                    }}
+                  />
+                  <View>
+                    <RNInputField
+                      label="Full Name"
+                      placeholder="Enter Full Name"
+                      value={Fullname}
+                      onChangeText={data => setFullname(data)}
+                    />
+                  </View>
+                  <View>
+                    <RNInputField
+                      label="Email"
+                      placeholder="Enter Email"
+                      value={userid}
+                      onChangeText={data => setuserid(data)}
+                    />
+                  </View>
+
+                  <RNInputField
+                    label="Mobile No"
+                    placeholder="Enter Mobile NO"
+                    value={userid}
+                    onChangeText={data => setuserid(data)}
+                  />
+
+                  <RNButton
+                    style={{paddingHorizontal: 25}}
+                    onPress={() => {
+                      submit();
+                    }}>
+                    Login
+                  </RNButton>
+                </>
+              )}
+
+              {showloginoption === false && (
+                <>
+                  <Text
+                    style={{
+                      fontFamily: 'Gilroy-SemiBold',
+                      fontSize: Height(12),
+                      marginTop: Height(10),
+                    }}>
+                    Login As<Text style={{color: primary}}> *</Text>
+                  </Text>
+                  <Dropdown
+                    style={styles.dropstyle}
+                    placeholderStyle={styles.placeholderStyle}
+                    selectedTextStyle={styles.selectedTextStyle}
+                    inputSearchStyle={styles.inputSearchStyle}
+                    iconStyle={styles.iconStyle}
+                    data={data}
+                    search
+                    maxHeight={300}
+                    labelField="label"
+                    valueField="value"
+                    placeholder="Please Select"
+                    searchPlaceholder="Search..."
+                    value={loginas}
+                    onChange={item => {
+                      setloginas(item.value);
+                    }}
+                  />
+                  {loginas === 'College' && (
                     <>
-                      <Dropdown
+                      <Text
                         style={{
-                          alignSelf: 'center',
-                          width: Width(315),
-                          height: Height(40),
                           fontFamily: 'Gilroy-SemiBold',
-                          borderWidth: 1.5,
-                          borderRadius: Width(5),
-                          paddingHorizontal: Width(10),
-                          fontSize: Height(16),
+                          fontSize: Height(12),
                           marginTop: Height(10),
-                          borderColor: index === 6 ? primary : '#a9a9a9',
-                        }}
-                        onFocus={() => setIndex(6)}
-                        placeholderStyle={styles.placeholderStyle}
-                        selectedTextStyle={styles.selectedTextStyle}
-                        inputSearchStyle={styles.inputSearchStyle}
-                        iconStyle={styles.iconStyle}
-                        data={
-                          college &&
-                          college?.map(item => ({
-                            label: `${item?.institutename} ${item?.ClientCode}`,
-                            value: `${item?.institutename} ${item?.ClientCode}`,
-                          }))
-                        }
-                        search
-                        maxHeight={300}
-                        labelField="label"
-                        valueField="value"
-                        placeholder="Please Select"
-                        searchPlaceholder="Search..."
-                        value={loginfor}
-                        onChange={item => {
-                          setloginfor(item.value);
-                        }}
-                      />
+                        }}>
+                        Please Select College
+                        <Text style={{color: primary}}> *</Text>
+                      </Text>
+
+                      {college?.length ? (
+                        <>
+                          <Dropdown
+                            style={styles.dropstyle}
+                            placeholderStyle={styles.placeholderStyle}
+                            selectedTextStyle={styles.selectedTextStyle}
+                            inputSearchStyle={styles.inputSearchStyle}
+                            iconStyle={styles.iconStyle}
+                            data={
+                              college &&
+                              college?.map(item => ({
+                                label: `${item?.institutename} ${item?.ClientCode}`,
+                                value: `${item?.institutename} ${item?.ClientCode}`,
+                              }))
+                            }
+                            search
+                            maxHeight={300}
+                            labelField="label"
+                            valueField="value"
+                            placeholder="Please Select"
+                            searchPlaceholder="Search..."
+                            value={loginfor}
+                            onChange={item => {
+                              setloginfor(item.value);
+                            }}
+                          />
+                        </>
+                      ) : (
+                        ''
+                      )}
+
+                      <View>
+                        <RNInputField
+                          label="College Id"
+                          placeholder="Enter College Id"
+                          value={userid}
+                          onChangeText={data => setuserid(data)}
+                        />
+                      </View>
+                      <View>
+                        <RNInputField
+                          label="Password"
+                          placeholder="Enter Password"
+                          ispassword
+                          passwordShow={showPassword}
+                          setShowPassword={setShowPassword}
+                          value={password}
+                          onChangeText={data => setpassword(data)}
+                        />
+                      </View>
                     </>
-                  ) : (
-                    ''
                   )}
 
-                  <Text
-                    style={{
-                      color: 'black',
-                      fontFamily: 'Gilroy-SemiBold',
-                      fontSize: Height(12),
-                      marginTop: Height(10),
-                      marginLeft: Width(40),
-                    }}>
-                    College Id<Text style={{color: primary}}> *</Text>
-                  </Text>
-                  <TextInput
-                    placeholder="Enter college Id"
-                    placeholderTextColor="rgba(0, 0, 0, 0.6)"
-                    style={{
-                      alignSelf: 'center',
-                      width: Width(315),
-                      height: Height(40),
-                      fontFamily: 'Gilroy-SemiBold',
-                      borderWidth: 1.5,
-                      borderRadius: Width(5),
-                      paddingHorizontal: Width(10),
-                      fontSize: Height(16),
-                      marginTop: Height(10),
-                      borderColor: index === 7 ? primary : '#a9a9a9',
-                    }}
-                    value={userid}
-                    // onBlur={() => Validation()}
-                    onChangeText={text => setuserid(text)}
-                    // keyboardType="email-address"
-                    onFocus={() => setIndex(7)}
-                  />
-
-                  {/* {emailError.length > 0 && (
-                <Text
-                  style={{
-                    color: 'red',
-                    marginLeft: Width(60),
-                    fontSize: Height(11),
-                    fontFamily: 'Gilroy-SemiBold',
-                  }}>
-                  {emailError}
-                </Text>
-              )} */}
-
-                  <Text
-                    style={{
-                      color: 'black',
-                      fontFamily: 'Gilroy-SemiBold',
-                      fontSize: Height(12),
-                      marginTop: Height(10),
-                      marginLeft: Width(40),
-                    }}>
-                    Password<Text style={{color: primary}}> *</Text>
-                  </Text>
-                  <View style={styles.showpassView}>
-                    <TextInput
-                      placeholder="Enter Password"
-                      placeholderTextColor="rgba(0, 0, 0, 0.6)"
-                      secureTextEntry={passwordVisible}
-                      style={{
-                        alignSelf: 'center',
-                        width: Width(315),
-                        height: Height(40),
-                        fontFamily: 'Gilroy-SemiBold',
-                        borderWidth: 1.5,
-                        borderRadius: Width(5),
-                        paddingHorizontal: Width(10),
-                        fontSize: Height(16),
-                        marginTop: Height(10),
-                        borderColor: index === 8 ? primary : '#a9a9a9',
-                      }}
-                      value={password}
-                      // onBlur={() => Validation()}
-                      onChangeText={text => setpassword(text)}
-                      // keyboardType="email-address"
-                      onFocus={() => setIndex(8)}
-                    />
-                    <Ionicons
-                      style={styles.showpassIcon}
-                      name={passwordVisible ? 'eye' : 'eye-off'}
-                      onPress={() => setPasswordVisible(!passwordVisible)}
-                      color="#666666"
-                      size={Height(20)}
-                    />
-                  </View>
-
-                  {/* {emailError.length > 0 && (
-                <Text
-                  style={{
-                    color: 'red',
-                    marginLeft: Width(60),
-                    fontSize: Height(11),
-                    fontFamily: 'Gilroy-SemiBold',
-                  }}>
-                  {emailError}
-                </Text>
-              )} */}
-                </>
-              )}
-
-              {loginas === 'School' && (
-                <>
-                  <Text
-                    style={{
-                      color: 'black',
-                      fontFamily: 'Gilroy-SemiBold',
-                      fontSize: Height(12),
-                      marginTop: Height(10),
-                      marginLeft: Width(40),
-                    }}>
-                    Please Select School
-                    <Text style={{color: primary}}> *</Text>
-                  </Text>
-                  {school ? (
+                  {loginas === 'School' && (
                     <>
-                      <Dropdown
+                      <Text
                         style={{
-                          alignSelf: 'center',
-                          width: Width(315),
-                          height: Height(40),
                           fontFamily: 'Gilroy-SemiBold',
-                          borderWidth: 1.5,
-                          borderRadius: Width(5),
-                          paddingHorizontal: Width(10),
-                          fontSize: Height(16),
+                          fontSize: Height(12),
                           marginTop: Height(10),
-                          borderColor: index === 9 ? primary : '#a9a9a9',
-                        }}
-                        onFocus={() => setIndex(9)}
-                        placeholderStyle={styles.placeholderStyle}
-                        selectedTextStyle={styles.selectedTextStyle}
-                        inputSearchStyle={styles.inputSearchStyle}
-                        iconStyle={styles.iconStyle}
-                        data={
-                          school &&
-                          school?.map(item => ({
-                            label: `${item?.institutename} ${item?.ClientCode}`,
-                            value: `${item?.institutename} ${item?.ClientCode}`,
-                          }))
-                        }
-                        search
-                        maxHeight={300}
-                        labelField="label"
-                        valueField="value"
-                        placeholder="Please Select"
-                        searchPlaceholder="Search..."
-                        value={loginfor}
-                        onChange={item => {
-                          setloginfor(item.value);
-                        }}
-                      />
+                        }}>
+                        Please Select School
+                        <Text style={{color: primary}}> *</Text>
+                      </Text>
+                      {school ? (
+                        <>
+                          <Dropdown
+                            style={styles.dropstyle}
+                            onFocus={() => setIndex(9)}
+                            placeholderStyle={styles.placeholderStyle}
+                            selectedTextStyle={styles.selectedTextStyle}
+                            inputSearchStyle={styles.inputSearchStyle}
+                            iconStyle={styles.iconStyle}
+                            data={
+                              school &&
+                              school?.map(item => ({
+                                label: `${item?.institutename} ${item?.ClientCode}`,
+                                value: `${item?.institutename} ${item?.ClientCode}`,
+                              }))
+                            }
+                            search
+                            maxHeight={300}
+                            labelField="label"
+                            valueField="value"
+                            placeholder="Please Select"
+                            searchPlaceholder="Search..."
+                            value={loginfor}
+                            onChange={item => {
+                              setloginfor(item.value);
+                            }}
+                          />
+                        </>
+                      ) : (
+                        ''
+                      )}
+                      <View>
+                        <RNInputField
+                          label="School Id"
+                          placeholder="Enter College Id"
+                          value={userid}
+                          onChangeText={data => setuserid(data)}
+                        />
+                      </View>
+
+                      <View>
+                        <RNInputField
+                          label="Password"
+                          placeholder="Enter Password"
+                          ispassword
+                          passwordShow={showPassword}
+                          setShowPassword={setShowPassword}
+                          value={password}
+                          onChangeText={data => setpassword(data)}
+                        />
+                      </View>
                     </>
-                  ) : (
-                    ''
                   )}
 
-                  <Text
-                    style={{
-                      color: 'black',
-                      fontFamily: 'Gilroy-SemiBold',
-                      fontSize: Height(12),
-                      marginTop: Height(10),
-                      marginLeft: Width(40),
-                    }}>
-                    School Id<Text style={{color: primary}}> *</Text>
-                  </Text>
-                  <TextInput
-                    placeholder="Enter User Id"
-                    placeholderTextColor="rgba(0, 0, 0, 0.6)"
-                    style={{
-                      alignSelf: 'center',
-                      width: Width(315),
-                      height: Height(40),
-                      fontFamily: 'Gilroy-SemiBold',
-                      borderWidth: 1.5,
-                      borderRadius: Width(5),
-                      paddingHorizontal: Width(10),
-                      fontSize: Height(16),
-                      marginTop: Height(10),
-                      borderColor: index === 10 ? primary : '#a9a9a9',
-                    }}
-                    value={userid}
-                    // onBlur={() => Validation()}
-                    onChangeText={text => setuserid(text)}
-                    // keyboardType="email-address"
-                    onFocus={() => setIndex(10)}
-                  />
-                  {/* {emailError.length > 0 && (
-                <Text
-                  style={{
-                    color: 'red',
-                    marginLeft: Width(60),
-                    fontSize: Height(11),
-                    fontFamily: 'Gilroy-SemiBold',
-                  }}>
-                  {emailError}
-                </Text>
-              )} */}
-
-                  <Text
-                    style={{
-                      color: 'black',
-                      fontFamily: 'Gilroy-SemiBold',
-                      fontSize: Height(12),
-                      marginTop: Height(10),
-                      marginLeft: Width(40),
-                    }}>
-                    Password<Text style={{color: primary}}> *</Text>
-                  </Text>
-                  <View style={styles.showpassView}>
-                    <TextInput
-                      placeholder="Enter Password"
-                      placeholderTextColor="rgba(0, 0, 0, 0.6)"
-                      secureTextEntry={passwordVisible}
-                      style={{
-                        alignSelf: 'center',
-                        width: Width(315),
-                        height: Height(40),
-                        fontFamily: 'Gilroy-SemiBold',
-                        borderWidth: 1.5,
-                        borderRadius: Width(5),
-                        paddingHorizontal: Width(10),
-                        fontSize: Height(16),
-                        marginTop: Height(10),
-                        borderColor: index === 11 ? primary : '#a9a9a9',
-                      }}
-                      value={password}
-                      // onBlur={() => Validation()}
-                      onChangeText={text => setpassword(text)}
-                      // keyboardType="email-address"
-                      onFocus={() => setIndex(11)}
-                    />
-                    <Ionicons
-                      style={styles.showpassIcon}
-                      name={passwordVisible ? 'eye' : 'eye-off'}
-                      onPress={() => setPasswordVisible(!passwordVisible)}
-                      color="#666666"
-                      size={Height(20)}
-                    />
-                  </View>
-                  {/* {emailError.length > 0 && (
-                <Text
-                  style={{
-                    color: 'red',
-                    marginLeft: Width(60),
-                    fontSize: Height(11),
-                    fontFamily: 'Gilroy-SemiBold',
-                  }}>
-                  {emailError}
-                </Text>
-              )} */}
-                </>
-              )}
-
-              {loginas === 'Coaching Institute' && (
-                <>
-                  <Text
-                    style={{
-                      color: 'black',
-                      fontFamily: 'Gilroy-SemiBold',
-                      fontSize: Height(12),
-                      marginTop: Height(10),
-                      marginLeft: Width(40),
-                    }}>
-                    Please Select Coaching
-                    <Text style={{color: primary}}> *</Text>
-                  </Text>
-                  {coaching ? (
+                  {loginas === 'Coaching Institute' && (
                     <>
-                      <Dropdown
+                      <Text
                         style={{
-                          alignSelf: 'center',
-                          width: Width(315),
-                          height: Height(40),
                           fontFamily: 'Gilroy-SemiBold',
-                          borderWidth: 1.5,
-                          borderRadius: Width(5),
-                          paddingHorizontal: Width(10),
-                          fontSize: Height(16),
+                          fontSize: Height(12),
                           marginTop: Height(10),
-                          borderColor: index === 13 ? primary : '#a9a9a9',
-                        }}
-                        onFocus={() => setIndex(13)}
-                        placeholderStyle={styles.placeholderStyle}
-                        selectedTextStyle={styles.selectedTextStyle}
-                        inputSearchStyle={styles.inputSearchStyle}
-                        iconStyle={styles.iconStyle}
-                        data={
-                          coaching &&
-                          coaching?.map(item => ({
-                            label: `${item?.institutename} ${item?.ClientCode}`,
-                            value: `${item?.institutename} ${item?.ClientCode}`,
-                          }))
-                        }
-                        search
-                        maxHeight={300}
-                        labelField="label"
-                        valueField="value"
-                        placeholder="Please Select"
-                        searchPlaceholder="Search..."
-                        value={loginfor}
-                        onChange={item => {
-                          setloginfor(item.value);
-                        }}
-                      />
+                        }}>
+                        Please Select Coaching
+                        <Text style={{color: primary}}> *</Text>
+                      </Text>
+                      {coaching ? (
+                        <>
+                          <Dropdown
+                            style={styles.dropstyle}
+                            onFocus={() => setIndex(13)}
+                            placeholderStyle={styles.placeholderStyle}
+                            selectedTextStyle={styles.selectedTextStyle}
+                            inputSearchStyle={styles.inputSearchStyle}
+                            iconStyle={styles.iconStyle}
+                            data={
+                              coaching &&
+                              coaching?.map(item => ({
+                                label: `${item?.institutename} ${item?.ClientCode}`,
+                                value: `${item?.institutename} ${item?.ClientCode}`,
+                              }))
+                            }
+                            search
+                            maxHeight={300}
+                            labelField="label"
+                            valueField="value"
+                            placeholder="Please Select"
+                            searchPlaceholder="Search..."
+                            value={loginfor}
+                            onChange={item => {
+                              setloginfor(item.value);
+                            }}
+                          />
+                        </>
+                      ) : (
+                        ''
+                      )}
+                      <View>
+                        <RNInputField
+                          label="Coaching Id"
+                          placeholder="Enter Coaching Id"
+                          value={userid}
+                          onChangeText={data => setuserid(data)}
+                        />
+                      </View>
+
+                      <View>
+                        <RNInputField
+                          label="Password"
+                          placeholder="Enter Password"
+                          ispassword
+                          passwordShow={showPassword}
+                          setShowPassword={setShowPassword}
+                          value={password}
+                          onChangeText={data => setpassword(data)}
+                        />
+                      </View>
                     </>
-                  ) : (
-                    ''
+                  )}
+                  {loginas === 'Employee' && (
+                    <>
+                      <Text
+                        style={{
+                          fontFamily: 'Gilroy-SemiBold',
+                          fontSize: Height(12),
+                          marginTop: Height(10),
+                        }}>
+                        Please Select
+                        <Text style={{color: primary}}> *</Text>
+                      </Text>
+                      {client ? (
+                        <>
+                          <Dropdown
+                            style={styles.dropstyle}
+                            onFocus={() => setIndex(16)}
+                            placeholderStyle={styles.placeholderStyle}
+                            selectedTextStyle={styles.selectedTextStyle}
+                            inputSearchStyle={styles.inputSearchStyle}
+                            iconStyle={styles.iconStyle}
+                            data={
+                              client &&
+                              client?.map(item => ({
+                                label: `${item?.institutename} ${item?.ClientCode}`,
+                                value: `${item?.institutename} ${item?.ClientCode}`,
+                              }))
+                            }
+                            search
+                            maxHeight={300}
+                            labelField="label"
+                            valueField="value"
+                            placeholder="Please Select"
+                            searchPlaceholder="Search..."
+                            value={loginfor}
+                            onChange={item => {
+                              setloginfor(item.value);
+                            }}
+                          />
+                        </>
+                      ) : (
+                        ''
+                      )}
+
+                      <View>
+                        <RNInputField
+                          label="Employee Id"
+                          placeholder="Enter Employee Id"
+                          value={userid}
+                          onChangeText={data => setuserid(data)}
+                        />
+                      </View>
+
+                      <View>
+                        <RNInputField
+                          label="Password"
+                          placeholder="Enter Password"
+                          ispassword
+                          passwordShow={showPassword}
+                          setShowPassword={setShowPassword}
+                          value={password}
+                          onChangeText={data => setpassword(data)}
+                        />
+                      </View>
+                    </>
+                  )}
+                  {loginas === 'Student' && (
+                    <>
+                      <Text
+                        style={{
+                          fontFamily: 'Gilroy-SemiBold',
+                          fontSize: Height(12),
+                          marginTop: Height(10),
+                        }}>
+                        Please Select
+                        <Text style={{color: primary}}> *</Text>
+                      </Text>
+                      {client ? (
+                        <>
+                          <Dropdown
+                            style={styles.dropstyle}
+                            onFocus={() => setIndex(19)}
+                            placeholderStyle={styles.placeholderStyle}
+                            selectedTextStyle={styles.selectedTextStyle}
+                            inputSearchStyle={styles.inputSearchStyle}
+                            iconStyle={styles.iconStyle}
+                            data={
+                              client &&
+                              client?.map(item => ({
+                                label: `${item?.institutename} ${item?.ClientCode}`,
+                                value: `${item?.institutename} ${item?.ClientCode}`,
+                              }))
+                            }
+                            search
+                            maxHeight={300}
+                            labelField="label"
+                            valueField="value"
+                            placeholder="Please Select"
+                            searchPlaceholder="Search..."
+                            value={loginfor}
+                            onChange={item => {
+                              setloginfor(item.value);
+                            }}
+                          />
+                        </>
+                      ) : (
+                        ''
+                      )}
+                      <View>
+                        <RNInputField
+                          label="Roll No"
+                          placeholder="Enter Roll No"
+                          value={userid}
+                          onChangeText={data => setuserid(data)}
+                        />
+                      </View>
+
+                      <View>
+                        <RNInputField
+                          label="Password"
+                          placeholder="Enter Password"
+                          ispassword
+                          passwordShow={showPassword}
+                          setShowPassword={setShowPassword}
+                          value={password}
+                          onChangeText={data => setpassword(data)}
+                        />
+                      </View>
+                    </>
                   )}
 
-                  <Text
-                    style={{
-                      color: 'black',
-                      fontFamily: 'Gilroy-SemiBold',
-                      fontSize: Height(12),
-                      marginTop: Height(10),
-                      marginLeft: Width(40),
-                    }}>
-                    Coaching Id<Text style={{color: primary}}> *</Text>
-                  </Text>
-                  <TextInput
-                    placeholder="Enter Coaching Id"
-                    placeholderTextColor="rgba(0, 0, 0, 0.6)"
-                    style={{
-                      alignSelf: 'center',
-                      width: Width(315),
-                      height: Height(40),
-                      fontFamily: 'Gilroy-SemiBold',
-                      borderWidth: 1.5,
-                      borderRadius: Width(5),
-                      paddingHorizontal: Width(10),
-                      fontSize: Height(16),
-                      marginTop: Height(10),
-                      borderColor: index === 14 ? primary : '#a9a9a9',
-                    }}
-                    value={userid}
-                    // onBlur={() => Validation()}
-                    onChangeText={text => setuserid(text)}
-                    // keyboardType="email-address"
-                    onFocus={() => setIndex(14)}
-                  />
-                  {/* {emailError.length > 0 && (
-                <Text
-                  style={{
-                    color: 'red',
-                    marginLeft: Width(60),
-                    fontSize: Height(11),
-                    fontFamily: 'Gilroy-SemiBold',
-                  }}>
-                  {emailError}
-                </Text>
-              )} */}
-
-                  <Text
-                    style={{
-                      color: 'black',
-                      fontFamily: 'Gilroy-SemiBold',
-                      fontSize: Height(12),
-                      marginTop: Height(10),
-                      marginLeft: Width(40),
-                    }}>
-                    Password<Text style={{color: primary}}> *</Text>
-                  </Text>
-                  <View style={styles.showpassView}>
-                    <TextInput
-                      placeholder="Enter Password"
-                      placeholderTextColor="rgba(0, 0, 0, 0.6)"
-                      secureTextEntry={passwordVisible}
-                      style={{
-                        alignSelf: 'center',
-                        width: Width(315),
-                        height: Height(40),
-                        fontFamily: 'Gilroy-SemiBold',
-                        borderWidth: 1.5,
-                        borderRadius: Width(5),
-                        paddingHorizontal: Width(10),
-                        fontSize: Height(16),
-                        marginTop: Height(10),
-                        borderColor: index === 15 ? primary : '#a9a9a9',
-                      }}
-                      value={password}
-                      // onBlur={() => Validation()}
-                      onChangeText={text => setpassword(text)}
-                      // keyboardType="email-address"
-                      onFocus={() => setIndex(15)}
-                    />
-                    <Ionicons
-                      style={styles.showpassIcon}
-                      name={passwordVisible ? 'eye' : 'eye-off'}
-                      onPress={() => setPasswordVisible(!passwordVisible)}
-                      color="#666666"
-                      size={Height(20)}
-                    />
-                  </View>
-                  {/* {emailError.length > 0 && (
-                <Text
-                  style={{
-                    color: 'red',
-                    marginLeft: Width(60),
-                    fontSize: Height(11),
-                    fontFamily: 'Gilroy-SemiBold',
-                  }}>
-                  {emailError}
-                </Text>
-              )} */}
-                </>
-              )}
-              {loginas === 'Employee' && (
-                <>
-                  <Text
-                    style={{
-                      color: 'black',
-                      fontFamily: 'Gilroy-SemiBold',
-                      fontSize: Height(12),
-                      marginTop: Height(10),
-                      marginLeft: Width(40),
-                    }}>
-                    Please Select
-                    <Text style={{color: primary}}> *</Text>
-                  </Text>
-                  {client ? (
+                  {loginas === 'Parent' && (
                     <>
-                      <Dropdown
+                      <Text
                         style={{
-                          alignSelf: 'center',
-                          width: Width(315),
-                          height: Height(40),
                           fontFamily: 'Gilroy-SemiBold',
-                          borderWidth: 1.5,
-                          borderRadius: Width(5),
-                          paddingHorizontal: Width(10),
-                          fontSize: Height(16),
+                          fontSize: Height(12),
                           marginTop: Height(10),
-                          borderColor: index === 16 ? primary : '#a9a9a9',
-                        }}
-                        onFocus={() => setIndex(16)}
-                        placeholderStyle={styles.placeholderStyle}
-                        selectedTextStyle={styles.selectedTextStyle}
-                        inputSearchStyle={styles.inputSearchStyle}
-                        iconStyle={styles.iconStyle}
-                        data={
-                          client &&
-                          client?.map(item => ({
-                            label: `${item?.institutename} ${item?.ClientCode}`,
-                            value: `${item?.institutename} ${item?.ClientCode}`,
-                          }))
-                        }
-                        search
-                        maxHeight={300}
-                        labelField="label"
-                        valueField="value"
-                        placeholder="Please Select"
-                        searchPlaceholder="Search..."
-                        value={loginfor}
-                        onChange={item => {
-                          setloginfor(item.value);
-                        }}
-                      />
+                        }}>
+                        Please Select Organization
+                        <Text style={{color: primary}}> *</Text>
+                      </Text>
+                      {client ? (
+                        <>
+                          <Dropdown
+                            style={styles.dropstyle}
+                            onFocus={() => setIndex(22)}
+                            placeholderStyle={styles.placeholderStyle}
+                            selectedTextStyle={styles.selectedTextStyle}
+                            inputSearchStyle={styles.inputSearchStyle}
+                            iconStyle={styles.iconStyle}
+                            data={
+                              client &&
+                              client?.map(item => ({
+                                label: `${item?.institutename} ${item?.ClientCode}`,
+                                value: `${item?.institutename} ${item?.ClientCode}`,
+                              }))
+                            }
+                            search
+                            maxHeight={300}
+                            labelField="label"
+                            valueField="value"
+                            placeholder="Please Select Organization"
+                            searchPlaceholder="Search..."
+                            value={value}
+                            onChange={item => {
+                              setloginfor(item.value);
+                            }}
+                          />
+                        </>
+                      ) : (
+                        ''
+                      )}
+                      <View>
+                        <RNInputField
+                          label="Mobile No"
+                          placeholder="Enter Mobile NO"
+                          value={userid}
+                          onChangeText={data => setuserid(data)}
+                        />
+                      </View>
+
+                      <View>
+                        <RNInputField
+                          label="Password"
+                          placeholder="Enter Password"
+                          ispassword
+                          passwordShow={showPassword}
+                          setShowPassword={setShowPassword}
+                          value={password}
+                          onChangeText={data => setpassword(data)}
+                        />
+                      </View>
                     </>
-                  ) : (
-                    ''
                   )}
 
-                  <Text
-                    style={{
-                      color: 'black',
-                      fontFamily: 'Gilroy-SemiBold',
-                      fontSize: Height(12),
-                      marginTop: Height(10),
-                      marginLeft: Width(40),
-                    }}>
-                    Employee Id
-                    <Text style={{color: primary}}>*</Text>
-                  </Text>
-                  <TextInput
-                    placeholder="Enter User Id"
-                    placeholderTextColor="rgba(0, 0, 0, 0.6)"
-                    style={{
-                      alignSelf: 'center',
-                      width: Width(315),
-                      height: Height(40),
-                      fontFamily: 'Gilroy-SemiBold',
-                      borderWidth: 1.5,
-                      borderRadius: Width(5),
-                      paddingHorizontal: Width(10),
-                      fontSize: Height(16),
-                      marginTop: Height(10),
-                      borderColor: index === 17 ? primary : '#a9a9a9',
-                    }}
-                    value={userid}
-                    // onBlur={() => Validation()}
-                    onChangeText={text => setuserid(text)}
-                    // keyboardType="email-address"
-                    onFocus={() => setIndex(17)}
-                  />
-                  {/* {emailError.length > 0 && (
-                <Text
-                  style={{
-                    color: 'red',
-                    marginLeft: Width(60),
-                    fontSize: Height(11),
-                    fontFamily: 'Gilroy-SemiBold',
-                  }}>
-                  {emailError}
-                </Text>
-              )} */}
-
-                  <Text
-                    style={{
-                      color: 'black',
-                      fontFamily: 'Gilroy-SemiBold',
-                      fontSize: Height(12),
-                      marginTop: Height(10),
-                      marginLeft: Width(40),
-                    }}>
-                    Password<Text style={{color: primary}}> *</Text>
-                  </Text>
-                  <View style={styles.showpassView}>
-                    <TextInput
-                      placeholder="Enter Password"
-                      placeholderTextColor="rgba(0, 0, 0, 0.6)"
-                      secureTextEntry={passwordVisible}
-                      style={{
-                        alignSelf: 'center',
-                        width: Width(315),
-                        height: Height(40),
-                        fontFamily: 'Gilroy-SemiBold',
-                        borderWidth: 1.5,
-                        borderRadius: Width(5),
-                        paddingHorizontal: Width(10),
-                        fontSize: Height(16),
-                        marginTop: Height(10),
-                        borderColor: index === 18 ? primary : '#a9a9a9',
-                      }}
-                      value={password}
-                      // onBlur={() => Validation()}
-                      onChangeText={text => setpassword(text)}
-                      // keyboardType="email-address"
-                      onFocus={() => setIndex(18)}
-                    />
-                    <Ionicons
-                      style={styles.showpassIcon}
-                      name={passwordVisible ? 'eye' : 'eye-off'}
-                      onPress={() => setPasswordVisible(!passwordVisible)}
-                      color="#666666"
-                      size={Height(20)}
-                    />
-                  </View>
-                  {/* {emailError.length > 0 && (
-                <Text
-                  style={{
-                    color: 'red',
-                    marginLeft: Width(60),
-                    fontSize: Height(11),
-                    fontFamily: 'Gilroy-SemiBold',
-                  }}>
-                  {emailError}
-                </Text>
-              )} */}
-                </>
-              )}
-              {loginas === 'Student' && (
-                <>
-                  <Text
-                    style={{
-                      color: 'black',
-                      fontFamily: 'Gilroy-SemiBold',
-                      fontSize: Height(12),
-                      marginTop: Height(10),
-                      marginLeft: Width(40),
-                    }}>
-                    Please Select
-                    <Text style={{color: primary}}> *</Text>
-                  </Text>
-                  {client ? (
+                  {loginas === 'Others' && (
                     <>
-                      <Dropdown
-                        style={{
-                          alignSelf: 'center',
-                          width: Width(315),
-                          height: Height(40),
-                          fontFamily: 'Gilroy-SemiBold',
-                          borderWidth: 1.5,
-                          borderRadius: Width(10),
-                          paddingHorizontal: Width(5),
-                          fontSize: Height(16),
-                          marginTop: Height(10),
-                          borderColor: index === 19 ? primary : '#a9a9a9',
-                        }}
-                        onFocus={() => setIndex(19)}
-                        placeholderStyle={styles.placeholderStyle}
-                        selectedTextStyle={styles.selectedTextStyle}
-                        inputSearchStyle={styles.inputSearchStyle}
-                        iconStyle={styles.iconStyle}
-                        data={
-                          client &&
-                          client?.map(item => ({
-                            label: `${item?.institutename} ${item?.ClientCode}`,
-                            value: `${item?.institutename} ${item?.ClientCode}`,
-                          }))
-                        }
-                        search
-                        maxHeight={300}
-                        labelField="label"
-                        valueField="value"
-                        placeholder="Please Select"
-                        searchPlaceholder="Search..."
-                        value={loginfor}
-                        onChange={item => {
-                          setloginfor(item.value);
-                        }}
-                      />
+                      <View>
+                        <RNInputField
+                          label="Admin Id"
+                          placeholder="Enter Admin Id"
+                          value={userid}
+                          onChangeText={data => setuserid(data)}
+                        />
+                      </View>
+
+                      <View>
+                        <RNInputField
+                          label="Password"
+                          placeholder="Enter Password"
+                          ispassword
+                          passwordShow={showPassword}
+                          setShowPassword={setShowPassword}
+                          value={password}
+                          onChangeText={data => setpassword(data)}
+                        />
+                      </View>
                     </>
-                  ) : (
-                    ''
                   )}
-
-                  <Text
+                  <View
                     style={{
-                      color: 'black',
-                      fontFamily: 'Gilroy-SemiBold',
-                      fontSize: Height(12),
-                      marginTop: Height(10),
-                      marginLeft: Width(40),
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      marginBottom: deviceHeight * 0.02,
                     }}>
-                    Roll Number<Text style={{color: primary}}> *</Text>
-                  </Text>
-                  <TextInput
-                    placeholder="Enter Roll Number"
-                    placeholderTextColor="rgba(0, 0, 0, 0.6)"
-                    style={{
-                      alignSelf: 'center',
-                      width: Width(315),
-                      height: Height(40),
-                      fontFamily: 'Gilroy-SemiBold',
-                      borderWidth: 1.5,
-                      borderRadius: Width(5),
-                      paddingHorizontal: Width(10),
-                      fontSize: Height(16),
-                      marginTop: Height(10),
-                      borderColor: index === 20 ? primary : '#a9a9a9',
-                    }}
-                    value={userid}
-                    // onBlur={() => Validation()}
-                    onChangeText={text => setuserid(text)}
-                    // keyboardType="email-address"
-                    onFocus={() => setIndex(20)}
-                  />
-                  {/* {emailError.length > 0 && (
-                <Text
-                  style={{
-                    color: 'red',
-                    marginLeft: Width(60),
-                    fontSize: Height(11),
-                    fontFamily: 'Gilroy-SemiBold',
-                  }}>
-                  {emailError}
-                </Text>
-              )} */}
-
-                  <Text
-                    style={{
-                      color: 'black',
-                      fontFamily: 'Gilroy-SemiBold',
-                      fontSize: Height(12),
-                      marginTop: Height(10),
-                      marginLeft: Width(40),
-                    }}>
-                    Password<Text style={{color: primary}}> *</Text>
-                  </Text>
-                  <View style={styles.showpassView}>
-                    <TextInput
-                      placeholder="Enter Password"
-                      placeholderTextColor="rgba(0, 0, 0, 0.6)"
-                      secureTextEntry={passwordVisible}
+                    <View
                       style={{
-                        alignSelf: 'center',
-                        width: Width(315),
-                        height: Height(40),
-                        fontFamily: 'Gilroy-SemiBold',
-                        borderWidth: 1.5,
-                        borderRadius: Width(5),
-                        paddingHorizontal: Width(10),
-                        fontSize: Height(16),
-                        marginTop: Height(10),
-                        borderColor: index === 20 ? primary : '#a9a9a9',
-                      }}
-                      value={password}
-                      // onBlur={() => Validation()}
-                      onChangeText={text => setpassword(text)}
-                      // keyboardType="email-address"
-                      onFocus={() => setIndex(20)}
-                    />
-                    <Ionicons
-                      style={styles.showpassIcon}
-                      name={passwordVisible ? 'eye' : 'eye-off'}
-                      onPress={() => setPasswordVisible(!passwordVisible)}
-                      color="#666666"
-                      size={Height(20)}
-                    />
-                  </View>
-
-                  {/* {emailError.length > 0 && (
-                <Text
-                  style={{
-                    color: 'red',
-                    marginLeft: Width(60),
-                    fontSize: Height(11),
-                    fontFamily: 'Gilroy-SemiBold',
-                  }}>
-                  {emailError}
-                </Text>
-              )} */}
-                </>
-              )}
-
-              {loginas === 'Parent' && (
-                <>
-                  <Text
-                    style={{
-                      color: 'black',
-                      fontFamily: 'Gilroy-SemiBold',
-                      fontSize: Height(12),
-                      marginTop: Height(10),
-                      marginLeft: Width(40),
-                    }}>
-                    Please Select Organization
-                    <Text style={{color: primary}}> *</Text>
-                  </Text>
-                  {client ? (
-                    <>
-                      <Dropdown
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        flexDirection: 'row',
+                      }}>
+                      <Checkbox status="checked" color={Colors.primary} />
+                      <Text
                         style={{
-                          alignSelf: 'center',
-                          width: Width(315),
-                          height: Height(40),
-                          fontFamily: 'Gilroy-SemiBold',
-                          borderWidth: 1.5,
-                          borderRadius: Width(5),
-                          paddingHorizontal: Width(10),
-                          fontSize: Height(16),
-                          marginTop: Height(10),
-                          borderColor: index === 22 ? primary : '#a9a9a9',
-                        }}
-                        onFocus={() => setIndex(22)}
-                        placeholderStyle={styles.placeholderStyle}
-                        selectedTextStyle={styles.selectedTextStyle}
-                        inputSearchStyle={styles.inputSearchStyle}
-                        iconStyle={styles.iconStyle}
-                        data={
-                          client &&
-                          client?.map(item => ({
-                            label: `${item?.institutename} ${item?.ClientCode}`,
-                            value: `${item?.institutename} ${item?.ClientCode}`,
-                          }))
-                        }
-                        search
-                        maxHeight={300}
-                        labelField="label"
-                        valueField="value"
-                        placeholder="Please Select"
-                        searchPlaceholder="Search..."
-                        value={value}
-                        onChange={item => {
-                          setloginfor(item.value);
-                        }}
-                      />
-                    </>
-                  ) : (
-                    ''
-                  )}
-
-                  <Text
-                    style={{
-                      color: 'black',
-                      fontFamily: 'Gilroy-SemiBold',
-                      fontSize: Height(12),
-                      marginTop: Height(10),
-                      marginLeft: Width(40),
-                    }}>
-                    Phone Number<Text style={{color: primary}}> *</Text>
-                  </Text>
-                  <TextInput
-                    placeholder="Enter Phone Number"
-                    placeholderTextColor="rgba(0, 0, 0, 0.6)"
-                    style={{
-                      alignSelf: 'center',
-                      width: Width(315),
-                      height: Height(40),
-                      fontFamily: 'Gilroy-SemiBold',
-                      borderWidth: 1.5,
-                      borderRadius: Width(5),
-                      paddingHorizontal: Width(10),
-                      fontSize: Height(16),
-                      marginTop: Height(10),
-                      borderColor: index === 23 ? primary : '#a9a9a9',
-                    }}
-                    value={userid}
-                    // onBlur={() => Validation()}
-                    onChangeText={text => setuserid(text)}
-                    // keyboardType="email-address"
-                    onFocus={() => setIndex(23)}
-                  />
-                  {/* {emailError.length > 0 && (
-                <Text
-                  style={{
-                    color: 'red',
-                    marginLeft: Width(60),
-                    fontSize: Height(11),
-                    fontFamily: 'Gilroy-SemiBold',
-                  }}>
-                  {emailError}
-                </Text>
-              )} */}
-
-                  <Text
-                    style={{
-                      color: 'black',
-                      fontFamily: 'Gilroy-SemiBold',
-                      fontSize: Height(12),
-                      marginTop: Height(10),
-                      marginLeft: Width(40),
-                    }}>
-                    Password<Text style={{color: primary}}> *</Text>
-                  </Text>
-                  <View style={styles.showpassView}>
-                    <TextInput
-                      placeholder="Enter Password"
-                      placeholderTextColor="rgba(0, 0, 0, 0.6)"
-                      secureTextEntry={passwordVisible}
-                      style={{
-                        alignSelf: 'center',
-                        width: Width(315),
-                        height: Height(40),
-                        fontFamily: 'Gilroy-SemiBold',
-                        borderWidth: 1.5,
-                        borderRadius: Width(5),
-                        paddingHorizontal: Width(10),
-                        fontSize: Height(16),
-                        marginTop: Height(10),
-                        borderColor: index === 24 ? primary : '#a9a9a9',
-                      }}
-                      value={password}
-                      // onBlur={() => Validation()}
-                      onChangeText={text => setpassword(text)}
-                      // keyboardType="email-address"
-                      onFocus={() => setIndex(24)}
-                    />
-                    <Ionicons
-                      style={styles.showpassIcon}
-                      name={passwordVisible ? 'eye' : 'eye-off'}
-                      onPress={() => setPasswordVisible(!passwordVisible)}
-                      color="#666666"
-                      size={Height(20)}
-                    />
+                          fontSize: 13,
+                          fontWeight: '500',
+                          lineHeight: 18,
+                        }}>
+                        Remember Me!
+                      </Text>
+                    </View>
+                    <TouchableOpacity
+                      onPress={() => navigation.navigate('Signup')}>
+                      <View>
+                        <Text
+                          style={{
+                            fontSize: 13,
+                            fontWeight: '500',
+                            lineHeight: 18,
+                          }}>
+                          Don't have An Account?
+                          <Text style={{color: Colors.primary}}>Sign-Up</Text>
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
                   </View>
-                  {/* {emailError.length > 0 && (
-                <Text
-                  style={{
-                    color: 'red',
-                    marginLeft: Width(60),
-                    fontSize: Height(11),
-                    fontFamily: 'Gilroy-SemiBold',
-                  }}>
-                  {emailError}
-                </Text>
-              )} */}
+                  <RNButton
+                    style={{paddingHorizontal: 25}}
+                    onPress={() => {
+                      submit();
+                    }}>
+                    Login
+                  </RNButton>
                 </>
               )}
-
-              {loginas === 'Others' && (
-                <>
-                  <Text
-                    style={{
-                      color: 'black',
-                      fontFamily: 'Gilroy-SemiBold',
-                      fontSize: Height(12),
-                      marginTop: Height(10),
-                      marginLeft: Width(40),
-                    }}>
-                    Admin Id<Text style={{color: primary}}> *</Text>
-                  </Text>
-                  <TextInput
-                    placeholder="Enter Admin Id"
-                    placeholderTextColor="rgba(0, 0, 0, 0.6)"
-                    style={{
-                      alignSelf: 'center',
-                      width: Width(315),
-                      height: Height(40),
-                      fontFamily: 'Gilroy-SemiBold',
-                      borderWidth: 1.5,
-                      borderRadius: Width(5),
-                      paddingHorizontal: Width(10),
-                      fontSize: Height(16),
-                      marginTop: Height(10),
-                      borderColor: index === 25 ? primary : '#a9a9a9',
-                    }}
-                    value={userid}
-                    // onBlur={() => Validation()}
-                    onChangeText={text => setuserid(text)}
-                    // keyboardType="email-address"
-                    onFocus={() => setIndex(25)}
-                  />
-                  {/* {emailError.length > 0 && (
-                <Text
-                  style={{
-                    color: 'red',
-                    marginLeft: Width(60),
-                    fontSize: Height(11),
-                    fontFamily: 'Gilroy-SemiBold',
-                  }}>
-                  {emailError}
-                </Text>
-              )} */}
-
-                  <Text
-                    style={{
-                      color: 'black',
-                      fontFamily: 'Gilroy-SemiBold',
-                      fontSize: Height(12),
-                      marginTop: Height(10),
-                      marginLeft: Width(40),
-                    }}>
-                    Password<Text style={{color: primary}}> *</Text>
-                  </Text>
-                  <View style={styles.showpassView}>
-                    <TextInput
-                      placeholder="Enter Password"
-                      placeholderTextColor="rgba(0, 0, 0, 0.6)"
-                      secureTextEntry={passwordVisible}
-                      style={{
-                        alignSelf: 'center',
-                        width: Width(315),
-                        height: Height(40),
-                        fontFamily: 'Gilroy-SemiBold',
-                        borderWidth: 1.5,
-                        borderRadius: Width(5),
-                        paddingHorizontal: Width(10),
-                        fontSize: Height(16),
-                        marginTop: Height(10),
-                        borderColor: index === 25 ? primary : '#a9a9a9',
-                      }}
-                      value={password}
-                      // onBlur={() => Validation()}
-                      onChangeText={text => setpassword(text)}
-                      // keyboardType="email-address"
-                      onFocus={() => setIndex(25)}
-                    />
-                    <Ionicons
-                      style={styles.showpassIcon}
-                      name={passwordVisible ? 'eye' : 'eye-off'}
-                      onPress={() => setPasswordVisible(!passwordVisible)}
-                      color="#666666"
-                      size={Height(20)}
-                    />
-                  </View>
-                  {/* {emailError.length > 0 && (
-                <Text
-                  style={{
-                    color: 'red',
-                    marginLeft: Width(60),
-                    fontSize: Height(11),
-                    fontFamily: 'Gilroy-SemiBold',
-                  }}>
-                  {emailError}
-                </Text>
-              )} */}
-                </>
-              )}
-
-              <View style={styles.loginbtndiv}>
-                <TouchableOpacity onPress={() => submit()}>
-                  <View style={styles.loginbtn}>
-                    <Text style={styles.logintextstyle}>Login</Text>
-                  </View>
-                </TouchableOpacity>
-              </View>
-            </>
-          )}
+            </ScrollView>
+          </View>
         </View>
-      </ScrollView>
-    </SafeAreaView>
+      </ImageBackground>
+    </>
   );
 };
 
@@ -1471,10 +788,11 @@ const styles = StyleSheet.create({
     height: windowHeight,
   },
   imgtop: {
-    width: windowWidth,
+    width: '100%',
     height: windowHeight / 6,
-    // borderBottomRightRadius: windowHeight / 4,
-    // borderBottomLeftRadius: windowHeight / 4,
+  },
+  mainlogo: {
+    paddingHorizontal: 20,
   },
   textcenter: {
     alignItems: 'center',
@@ -1506,8 +824,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 10,
-    paddingHorizontal: Width(30),
   },
   logintext: {
     color: primary,
@@ -1568,5 +884,51 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: Width(310),
     top: Height(20),
+  },
+  mainprofile: {
+    paddingTop: deviceWidth * 0.05,
+    display: 'flex',
+    justifyContent: 'center',
+  },
+  innearview: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+
+  innearviewprofile: {
+    display: 'flex',
+    alignItems: 'center',
+    borderRadius: 10,
+    paddingVertical: 10,
+    marginBottom: 5,
+  },
+  dropstyle: {
+    alignSelf: 'center',
+    width: '100%',
+    height: Height(52),
+    fontFamily: 'Gilroy-SemiBold',
+    borderRadius: Width(15),
+    paddingHorizontal: Width(20),
+    fontSize: Height(16),
+    marginTop: Height(10),
+    backgroundColor: Colors.fadeGray,
+    color: 'white',
+  },
+  Content: {
+    position: 'absolute',
+    bottom: 0,
+    backgroundColor: Colors.white,
+    borderTopRightRadius: 31,
+    borderTopLeftRadius: 31,
+    paddingTop: 28,
+    paddingHorizontal: deviceWidth * 0.05,
+    height: deviceHeight * 0.7,
+    width: '100%',
+  },
+  imagestyle: {
+    flex: 1,
+    justifyContent: 'center',
+    position: 'relative',
   },
 });

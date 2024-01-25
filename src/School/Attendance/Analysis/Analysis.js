@@ -132,7 +132,7 @@ const Analysis = () => {
   useEffect(() => {
     if (monthlyattendance) {
       setattendancedetails(monthlyattendance);
-      // setShowModal(false);
+      setShowModal(false);
 
       convertdata();
       console.log('mark data is', monthlyattendance);
