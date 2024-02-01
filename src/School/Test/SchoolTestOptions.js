@@ -7,11 +7,12 @@ import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import {Colors} from '../../utils/Colors';
 import {deviceHeight, deviceWidth} from '../../utils/constant';
 import {Height, Width} from '../../utils/responsive';
+import Header from '../../Component/Header/Header';
 const SchoolTestOptions = () => {
   const navigation = useNavigation();
   return (
     <>
-     <BackHeader title={'Test Management'} icon={'receipt'}/>
+      <Header/>
       <View style={styles.mainview}>
         <TouchableOpacity onPress={() => navigation.navigate('BatchCoaching')}>
           <View style={styles.mainoption}>

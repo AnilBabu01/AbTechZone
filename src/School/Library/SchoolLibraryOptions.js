@@ -7,19 +7,21 @@ import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import {Colors} from '../../utils/Colors';
 import {deviceHeight, deviceWidth} from '../../utils/constant';
 import {Height, Width} from '../../utils/responsive';
+import Header from '../../Component/Header/Header';
 const SchoolLibraryOptions = () => {
   const navigation = useNavigation();
   return (
     <>
-      <BackHeader title={'Library Management'} icon={'book'}/>
+     <Header/>
       <View style={styles.mainview}>
-        <TouchableOpacity onPress={() => navigation.navigate('BatchCoaching')}>
+        <TouchableOpacity onPress={() => navigation.navigate('AddBook')}>
           <View style={styles.mainoption}>
             <FontAwesome6 name="book" color={Colors.primary} size={30} />
             <Text style={styles.titlestyle}>Add Book</Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('CourseCoaching')}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('AddStudentToLibrary')}>
           <View style={styles.mainoption}>
             <FontAwesome6 name="user-plus" color={Colors.primary} size={30} />
             <Text style={styles.titlestyle}>Add Student</Text>
@@ -27,16 +29,19 @@ const SchoolLibraryOptions = () => {
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={() => navigation.navigate('CategoryCoaching')}>
+          onPress={() => navigation.navigate('TabIssueOrReturn')}>
           <View style={styles.mainoption}>
             <FontAwesome6 name="database" color={Colors.primary} size={30} />
             <Text style={styles.titlestyle}>Issue-Or-Return</Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => navigation.navigate('CategoryCoaching')}>
+        <TouchableOpacity onPress={() => navigation.navigate('SearchBook')}>
           <View style={styles.mainoption}>
-            <FontAwesome6 name="magnifying-glass" color={Colors.primary} size={30} />
+            <FontAwesome6
+              name="magnifying-glass"
+              color={Colors.primary}
+              size={30}
+            />
             <Text style={styles.titlestyle}>Search</Text>
           </View>
         </TouchableOpacity>

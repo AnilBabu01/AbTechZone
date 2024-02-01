@@ -30,25 +30,7 @@ const TakeAttendance = () => {
   const dispatch = useDispatch();
   const [showModal, setShowModal] = useState(false);
   const [showDocOptions, setShowDocOptions] = useState(false);
-  const [attendancedetails, setattendancedetails] = useState([
-    {
-      id: '',
-      userId: '',
-      parentId: '',
-      studentid: '',
-      fathersName: '',
-      MathersName: '',
-      fathersPhoneNo: '',
-      name: '',
-      email: '',
-      courseorclass: '',
-      batch: '',
-      rollnumber: '',
-      institutename: '',
-      attendaceStatus: '',
-      attendancedate: '',
-    },
-  ]);
+  const [attendancedetails, setattendancedetails] = useState([]);
   const {markattendance} = useSelector(state => state.markatten);
   function handleItemUpdate(originalItem, key, value) {
     setattendancedetails(

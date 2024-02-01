@@ -95,7 +95,7 @@ const SchoolDrawerItem = ({navigation, setuserData}) => {
         title="Student"
         icon="people"
       />
-      <CommonBTN routename="SchoolAccounts" title="Account" icon="storefront" />
+      <CommonBTN routename="FeeCollectOptions" title="Account" icon="storefront" />
       <CommonBTN
         routename="SchoolHrOptions"
         title="Human Resourse"
@@ -109,7 +109,7 @@ const SchoolDrawerItem = ({navigation, setuserData}) => {
         icon="bus"
       />  
       <CommonBTN routename="MasterOptionsSchool" title="Masters" icon="logo-mastodon" />
-      <CommonBTN routename="ReportsOptionsSchool" title="Reparts" icon="receipt" />
+      <CommonBTN routename="ReportsOptionsSchool" title="Reports" icon="receipt" />
       <CommonBTN routename="SchoolTestOptions" title="Test" icon="receipt" />
       <CommonBTN routename="HelpCenter" title="Help Center" icon="help-circle" />
       <TouchableOpacity style={styles.menu} onPress={() => logout()}>

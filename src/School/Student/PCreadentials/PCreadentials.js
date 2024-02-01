@@ -224,7 +224,7 @@ import {
     return (
       <>
         <View style={{flex: 1}}>
-          <BackHeader title={'Add Student'} icon={'person'} />
+          <BackHeader title={'Parent Creadentials'} icon={'person'} />
           <View style={styles.headerTitleContainer}>
             <View>
               <Text style={styles.secondaryTitle}>Student</Text>

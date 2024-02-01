@@ -21,6 +21,7 @@ import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import RNTable from '../../Component/RNTable';
 import DownEnquiry from '../../Component/school/DownEnquiry';
 import EnquiryFilter from '../../Component/school/EnquiryFilter';
+import RNHTMLtoPDF from 'react-native-html-to-pdf';
 const FrontOffice = ({navigation}) => {
   const dispatch = useDispatch();
   const [openModel, setopenModel] = useState(false);
@@ -30,6 +31,22 @@ const FrontOffice = ({navigation}) => {
   const [showModal, setShowModal] = useState(false);
   const [showDocOptions, setShowDocOptions] = useState(false);
   const {enquiry, loading} = useSelector(state => state.enquiry);
+  const generatePDF = async () => {
+    try {
+      const options = {
+        html: '<html><body><h1>Hello, world!</h1></body></html>', // Your HTML content here
+        fileName: 'example', // PDF file name
+        directory: 'Documents',
+      };
+
+      const pdf = await RNHTMLtoPDF.convert(options);
+      console.log(pdf.filePath);
+
+      // Now you can use the generated PDF file (pdf.filePath) as needed.
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+    }
+  };
 
   const enquiryTableList = [
     {
@@ -228,7 +245,7 @@ const FrontOffice = ({navigation}) => {
 
       <AnimatedFAB
         icon={'plus'}
-        onPress={() => navigation.navigate('AddEnquirySchool')}
+        onPress={() => generatePDF()}
         label="Add"
         extended={false}
         color={Colors.white}

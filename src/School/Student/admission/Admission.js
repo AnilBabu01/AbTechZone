@@ -219,6 +219,7 @@ const Admission = ({navigation}) => {
     if (student) {
       convertdata(student);
       setisdata(student);
+      setShowModal(false);
     }
   }, [student]);
 

@@ -7,26 +7,21 @@ import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import {Colors} from '../../utils/Colors';
 import {deviceHeight, deviceWidth} from '../../utils/constant';
 import {Height, Width} from '../../utils/responsive';
+import Header from '../../Component/Header/Header';
 const SchoolHrOptions = () => {
   const navigation = useNavigation();
   return (
     <>
-      <BackHeader title={"HR Management"} icon={"school"}/>
+      <Header />
       <View style={styles.mainview}>
-        <TouchableOpacity onPress={() => navigation.navigate('BatchCoaching')}>
+        <TouchableOpacity onPress={() => navigation.navigate('Employee')}>
           <View style={styles.mainoption}>
             <FontAwesome6 name="user-plus" color={Colors.primary} size={30} />
             <Text style={styles.titlestyle}>Add Staff</Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('CourseCoaching')}>
-          <View style={styles.mainoption}>
-            <FontAwesome6 name="comment-sms" color={Colors.primary} size={30} />
-            <Text style={styles.titlestyle}>Send SMS</Text>
-          </View>
-        </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => navigation.navigate('FeesCoaching')}>
+        <TouchableOpacity onPress={() => navigation.navigate('EmpAssignRole')}>
           <View style={styles.mainoption}>
             <FontAwesome6
               name="critical-role"
@@ -36,35 +31,45 @@ const SchoolHrOptions = () => {
             <Text style={styles.titlestyle}>Assign role</Text>
           </View>
         </TouchableOpacity>
+
         <TouchableOpacity
-          onPress={() => navigation.navigate('CategoryCoaching')}>
+          onPress={() => navigation.navigate('AttendanceTabEmployee')}>
           <View style={styles.mainoption}>
             <FontAwesome6 name="database" color={Colors.primary} size={30} />
             <Text style={styles.titlestyle}>Attendance</Text>
           </View>
         </TouchableOpacity>
-
-        <TouchableOpacity onPress={() => navigation.navigate('FeesCoaching')}>
-          <View style={styles.mainoption}>
-            <FontAwesome6 name="mug-hot" color={Colors.primary} size={30} />
-            <Text style={styles.titlestyle}>Add Holiday</Text>
-          </View>
-        </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => navigation.navigate('DepartmentCoaching')}>
+          onPress={() => navigation.navigate('SearchAttendance')}>
           <View style={styles.mainoption}>
             <FontAwesome6
               name="magnifying-glass"
               color={Colors.primary}
               size={30}
             />
-            <Text style={styles.titlestyle}>Search Attendance</Text>
+            <Text style={styles.titlestyle}>Search</Text>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('EmpAddholiday')}>
+          <View style={styles.mainoption}>
+            <FontAwesome6 name="mug-hot" color={Colors.primary} size={30} />
+            <Text style={styles.titlestyle}>Add Holiday</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => navigation.navigate('DesignationCoaching')}>
+          onPress={() => navigation.navigate('CommunicationTabemp')}>
           <View style={styles.mainoption}>
             <FontAwesome6 name="comment-sms" color={Colors.primary} size={30} />
+            <Text style={styles.titlestyle}>Communication</Text>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('EmpAddpayroll')}>
+          <View style={styles.mainoption}>
+            <FontAwesome6
+              name="indian-rupee-sign"
+              color={Colors.primary}
+              size={30}
+            />
             <Text style={styles.titlestyle}>Add Payroll</Text>
           </View>
         </TouchableOpacity>

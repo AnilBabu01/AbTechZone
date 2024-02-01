@@ -296,7 +296,7 @@ const UpdateAdmission = () => {
       console.log(error);
     }
   };
-  console.log('erroe form data is ', updatedata?.adharcard);
+
   useEffect(() => {
     if (newroute?.params?.data) {
       let feeob = fee?.find(({coursename}) => coursename === courses);
@@ -320,12 +320,6 @@ const UpdateAdmission = () => {
       // setbatchname(updatedata?.batch);
       setcourses(updatedata?.courseorclass);
       setadminssiondate(moment(updatedata?.admissionDate).format('DD/MM/YYYY'));
-
-      console.log(
-        'date from edig admission',
-        moment(updatedata?.admissionDate).format('DD/MM/YYYY'),
-      );
-
       setPincode(updatedata?.pincode);
       setwhatsaapnumber(updatedata?.whatsappNo);
       setothersname(updatedata?.othersdocName);

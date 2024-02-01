@@ -14,7 +14,8 @@ import AddEnquiry from './AddCollectFee';
 import BatchCard from './FeeCardCollect';
 import {getbatch} from '../../../redux/action/commanAction';
 import {useDispatch, useSelector} from 'react-redux';
-const FeeCollect= ({navigation}) => {
+import BackHeader from '../../../Component/Header/BackHeader';
+const FeeCollect = ({navigation}) => {
   const dispatch = useDispatch();
   const [openModel, setopenModel] = useState(false);
   const [batchlist, setbatchlist] = useState('');
@@ -32,6 +33,7 @@ const FeeCollect= ({navigation}) => {
 
   return (
     <View>
+      <BackHeader title={'Collect Fee'} />
       <Modal animationType={'fade'} transparent={true} visible={openModel}>
         <View style={[styles.modal, styles.elevation]}>
           <View style={styles.cancalView}>
@@ -42,7 +44,7 @@ const FeeCollect= ({navigation}) => {
           <AddEnquiry />
         </View>
       </Modal>
-      {/* <Header /> */}
+
       {/* <TouchableOpacity
           onPress={() => navigation.navigate('SearchEnquiryCoaching')}>
           <View style={styles.inputview}>

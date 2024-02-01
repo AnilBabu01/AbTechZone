@@ -9,19 +9,20 @@ import {deviceHeight, deviceWidth} from '../../utils/constant';
 import {Height, Width} from '../../utils/responsive';
 import Checkin from '../../assets/Checkin.png';
 import Checkout from '../../assets/Checkout.png';
+import Header from '../../Component/Header/Header';
 const SchoolHostelOptiins = () => {
   const navigation = useNavigation();
   return (
     <>
-      <BackHeader title={"Hostel Management"} icon={'hotel'}/>
+       <Header/>
       <View style={styles.mainview}>
-        <TouchableOpacity onPress={() => navigation.navigate('BatchCoaching')}>
+        <TouchableOpacity onPress={() => navigation.navigate('HostelCategory')}>
           <View style={styles.mainoption}>
             <FontAwesome6 name="layer-group" color={Colors.black} size={30} />
             <Text style={styles.titlestyle}>Add Category</Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('CourseCoaching')}>
+        <TouchableOpacity onPress={() => navigation.navigate('HostelFacility')}>
           <View style={styles.mainoption}>
             <FontAwesome6 name="history" color={Colors.black} size={30} />
             <Text style={styles.titlestyle}>Add Facility</Text>
@@ -29,43 +30,37 @@ const SchoolHostelOptiins = () => {
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={() => navigation.navigate('CategoryCoaching')}>
+          onPress={() => navigation.navigate('Addhostel')}>
           <View style={styles.mainoption}>
             <FontAwesome6 name="hotel" color={Colors.black} size={30} />
             <Text style={styles.titlestyle}>Add Hostel</Text>
           </View>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => navigation.navigate('FeesCoaching')}>
+        <TouchableOpacity onPress={() => navigation.navigate('AddRoom')}>
           <View style={styles.mainoption}>
             <FontAwesome6 name="restroom" color={Colors.black} size={30} />
             <Text style={styles.titlestyle}>Add Room</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => navigation.navigate('DesignationCoaching')}>
+          onPress={() => navigation.navigate('AddStudentToHostel')}>
           <View style={styles.mainoption}>
             <FontAwesome6 name="user-plus" color={Colors.black} size={30} />
             <Text style={styles.titlestyle}>Add Student</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => navigation.navigate('DepartmentCoaching')}>
+          onPress={() => navigation.navigate('TabCheckinOrCheckout')}>
           <View style={styles.mainoption}>
             <Image source={Checkin} style={styles.optionimg} />
 
-            <Text style={styles.titlestyle}>Check-In</Text>
+            <Text style={styles.titlestyle}>Check-In-Out</Text>
           </View>
         </TouchableOpacity>
+      
         <TouchableOpacity
-          onPress={() => navigation.navigate('DepartmentCoaching')}>
-          <View style={styles.mainoption}>
-            <Image source={Checkout} style={styles.optionimg} />
-            <Text style={styles.titlestyle}>Check-Out</Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => navigation.navigate('DepartmentCoaching')}>
+          onPress={() => navigation.navigate('SearchHostel')}>
           <View style={styles.mainoption}>
             <FontAwesome6
               name="magnifying-glass"

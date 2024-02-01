@@ -16,7 +16,7 @@ import {Height, Width} from '../../utils/responsive';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useSelector, useDispatch} from 'react-redux';
 import {Dropdown} from 'react-native-element-dropdown';
-import {handleDate}  from '../../utils/functions';
+import {handleDate, getTodaysDate} from '../../utils/functions';
 import {getstudent} from '../../redux/action/commanAction';
 const studentStatus = [
   {label: 'Active', value: 'Active'},
@@ -34,14 +34,14 @@ const StreamList = [
 ];
 const StudentFilter = ({showModal, setShowModal}) => {
   const dispatch = useDispatch();
-  const [fromdate, setfromdate] = useState('');
-  const [todate, settodate] = useState('');
+  const [fromdate, setfromdate] = useState();
+  const [todate, settodate] = useState();
   const [srno, setsrno] = useState('');
   const [rollnumber, setrollnumber] = useState('');
   const [sessionname, setsessionname] = useState('');
   const [sectionname, setsectionname] = useState('NONE');
   const [stream, setstream] = useState('NONE');
-  const [studentstatus, setstudentstatus] = useState('');
+  const [studentstatus, setstudentstatus] = useState('Active');
   const [studentcaste, setstudentcaste] = useState('');
   const [courseorclass, setcourseorclass] = useState('');
   const [courselist, setcourselist] = useState([]);
@@ -54,7 +54,7 @@ const StudentFilter = ({showModal, setShowModal}) => {
   const {CURRENTSESSION} = useSelector(state => state.GetCurrentSession);
   const {Sessions} = useSelector(state => state.GetSession);
   const {container, innerContainer, childContainer, mainContainer} = styles;
-
+  const {loading} = useSelector(state => state.getstudent);
   useEffect(() => {
     if (sections) {
       const newArray = [...sections, {section: 'NONE', section: 'NONE'}];
@@ -76,40 +76,27 @@ const StudentFilter = ({showModal, setShowModal}) => {
   }, [sections, CURRENTSESSION, Sessions, course, category]);
 
   const onSubmit = () => {
-    // console.log('cliecked on filters');
-    // dispatch(
-    //   getstudent(
-    //     fromdate,
-    //     todate,
-    //     scoursename,
-    //     sbatch,
-    //     sstudent,
-    //     sfathers,
-    //     rollnumber,
-    //     status,
-    //     categoryname,
-    //     "",
-    //     sessionname,
-    //     sectionname,
-    //     "",
-    //     stream
-    //   )
-    // );
+    console.log('cliecked on filters');
+    dispatch(
+      getstudent(
+        '',
+        '',
+        courseorclass,
+        '',
+        '',
+        '',
+        rollnumber,
+        studentstatus,
+        studentcaste,
+        '',
+        sessionname,
+        sectionname,
+        srno,
+        '',
+      ),
+    );
   };
 
-  const reset = () => {
-    // setstream("");
-    // setsstudent("");
-    // setsfathers("");
-    // setfromdate("");
-    // settodate("");
-    // setscoursename("");
-    // setsbatch("");
-    // setcategoryname("");
-    // setsessionname(CURRENTSESSION);
-    // setsectionname("");
-    // dispatch(getstudent());
-  };
   return (
     <>
       <Modal
@@ -137,10 +124,10 @@ const StudentFilter = ({showModal, setShowModal}) => {
               backgroundColor: Colors.white,
               borderRadius: deviceWidth * 0.05,
               paddingHorizontal: deviceWidth * 0.02,
-              paddingBottom: deviceHeight * 0.01,
+              paddingBottom: deviceHeight * 0.03,
             }}>
             <ScrollView
-              style={{height: deviceHeight * 0.7}}
+              style={{height: deviceHeight * 0.6}}
               showsVerticalScrollIndicator={false}>
               <View
                 style={{
@@ -150,7 +137,7 @@ const StudentFilter = ({showModal, setShowModal}) => {
                   gap: deviceWidth * 0.04,
                   marginTop: deviceHeight * 0.02,
                 }}>
-                <View style={styles.rowwrapper}>
+                {/* <View style={styles.rowwrapper}>
                   <View style={{width: '49.3%'}}>
                     <RNDatePicker
                       title="From Date"
@@ -165,7 +152,7 @@ const StudentFilter = ({showModal, setShowModal}) => {
                       onDateChange={date => settodate(handleDate(date))}
                     />
                   </View>
-                </View>
+                </View> */}
                 <View style={styles.rowwrapper}>
                   <View style={{width: '45%'}}>
                     <View style={{marginHorizontal: deviceWidth * 0.01}}>
@@ -402,7 +389,9 @@ const StudentFilter = ({showModal, setShowModal}) => {
               </View>
             </ScrollView>
 
-            <RNButton onPress={onSubmit}>Submit</RNButton>
+            <RNButton loading={loading} onPress={onSubmit}>
+              Submit
+            </RNButton>
           </View>
         </View>
       </Modal>
@@ -453,7 +442,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
-  
   },
   dropstyle: {
     width: Width(160),

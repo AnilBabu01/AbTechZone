@@ -7,23 +7,30 @@ import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import {Colors} from '../../utils/Colors';
 import {deviceHeight, deviceWidth} from '../../utils/constant';
 import {Height, Width} from '../../utils/responsive';
+import Header from '../../Component/Header/Header';
 const SchoolTranportOptions = () => {
   const navigation = useNavigation();
   return (
     <>
-      <BackHeader title={'Transport Management'} icon={'bus'}/>
+     <Header/>
       <View style={styles.mainview}>
-        <TouchableOpacity onPress={() => navigation.navigate('BatchCoaching')}>
+        <TouchableOpacity onPress={() => navigation.navigate('VehicleType')}>
           <View style={styles.mainoption}>
             <FontAwesome6
               name="wand-magic-sparkles"
               color={Colors.primary}
               size={30}
             />
-            <Text style={styles.titlestyle}>Add-Vehicle-Type</Text>
+            <Text style={styles.titlestyle}>Vehicle Type</Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('CourseCoaching')}>
+        <TouchableOpacity onPress={() => navigation.navigate('AddRoute')}>
+          <View style={styles.mainoption}>
+            <FontAwesome6 name="route" color={Colors.primary} size={30} />
+            <Text style={styles.titlestyle}>Add Route</Text>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('AddBus')}>
           <View style={styles.mainoption}>
             <FontAwesome6 name="bus" color={Colors.primary} size={30} />
             <Text style={styles.titlestyle}>Add Bus</Text>
@@ -31,35 +38,27 @@ const SchoolTranportOptions = () => {
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={() => navigation.navigate('CategoryCoaching')}>
-          <View style={styles.mainoption}>
-            <FontAwesome6 name="route" color={Colors.primary} size={30} />
-            <Text style={styles.titlestyle}>Add Route</Text>
-          </View>
-        </TouchableOpacity>
-
-        <TouchableOpacity onPress={() => navigation.navigate('FeesCoaching')}>
+          onPress={() => navigation.navigate('AddStudentToTransport')}>
           <View style={styles.mainoption}>
             <FontAwesome6 name="user-plus" color={Colors.primary} size={30} />
             <Text style={styles.titlestyle}>Add Student</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => navigation.navigate('DepartmentCoaching')}>
+          onPress={() => navigation.navigate('TabGiveBusOrRemove')}>
           <View style={styles.mainoption}>
             <FontAwesome6 name="bus" color={Colors.primary} size={30} />
             <Text style={styles.titlestyle}>Assign Bus</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => navigation.navigate('DesignationCoaching')}>
+          onPress={() => navigation.navigate('SendSmsToBusStudent')}>
           <View style={styles.mainoption}>
             <FontAwesome6 name="comment-sms" color={Colors.primary} size={30} />
-            <Text style={styles.titlestyle}>Send SMS</Text>
+            <Text style={styles.titlestyle}>Communication</Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => navigation.navigate('DesignationCoaching')}>
+        <TouchableOpacity onPress={() => navigation.navigate('SearchBus')}>
           <View style={styles.mainoption}>
             <FontAwesome6
               name="magnifying-glass"

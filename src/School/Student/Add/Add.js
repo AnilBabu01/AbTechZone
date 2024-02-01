@@ -35,6 +35,7 @@ import {deviceHeight, deviceWidth} from '../../../utils/constant';
 import RNTable from '../../../Component/RNTable';
 import DownloadStudentData from '../../../Component/school/DownloadStudentData';
 import BackHeader from '../../../Component/Header/BackHeader';
+import StudentFilter from '../../../Component/school/StudentFilter';
 const Add = ({navigation}) => {
   const dispatch = useDispatch();
   const [isdata, setisdata] = useState([]);
@@ -218,6 +219,7 @@ const Add = ({navigation}) => {
     if (student) {
       convertdata(student);
       setisdata(student);
+      setShowModal(false);
     }
   }, [student]);
 

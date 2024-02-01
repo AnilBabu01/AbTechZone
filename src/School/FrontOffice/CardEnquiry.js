@@ -135,9 +135,9 @@ const CardEnquiry = ({data}) => {
                 </View>
                 <View style={styles.viewdel}>
                   <Text>Comment</Text>
-                  <Text></Text>
+                  <Text>{data?.Comment}</Text>
                 </View>
-                <Text>{data?.Comment}</Text>
+
                 <View style={styles.viewdel}>
                   <Text>Action</Text>
                   <View style={styles.mainActionView}>
@@ -189,7 +189,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     display: 'flex',
     justifyContent: 'space-between',
-    paddingHorizontal:10
+    paddingHorizontal: 10,
   },
   viewdelbtn: {
     display: 'flex',
