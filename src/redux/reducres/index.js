@@ -90,6 +90,7 @@ import {
   DoneAttendanceReducer,
   MonthlyAttendanceReducer,
   getHolidayReducer,
+  geteMPHolidayReducer,
 } from './attendanceReducers';
 import {getChoachingMonthlyFeeReducer} from './reportReducers';
 import {GetBooks} from './libraryReducers';
@@ -206,4 +207,5 @@ export default combineReducers({
   GetExpenses: GetExpensesReducer,
   GetAmountTransfer: GetAmountTransferReducer,
   GetBookslist: GetBooks,
+  geteMPHoliday: geteMPHolidayReducer,
 });

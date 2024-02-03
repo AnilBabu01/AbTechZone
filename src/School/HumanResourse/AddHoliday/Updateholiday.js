@@ -12,7 +12,7 @@ import {handleDate, getTodaysDate} from '../../../utils/functions';
 import {Colors} from '../../../utils/Colors';
 import {deviceHeight, deviceWidth} from '../../../utils/constant';
 import {FlexRowWrapper} from '../../../Component/FlexRowWrapper';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import BackHeader from '../../../Component/Header/BackHeader';
 import moment from 'moment';
 const statuslist = [
@@ -20,8 +20,10 @@ const statuslist = [
   {label: 'disabled', value: 'disabled'},
 ];
 const Updateholiday = () => {
+  const route = useRoute();
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const [data, setdata] = useState('');
   const [status, setstatus] = useState('Enable');
   const [comment, setcomment] = useState('');
   const [Holidaydate, setHolidaydate] = useState(getTodaysDate());
@@ -30,6 +32,7 @@ const Updateholiday = () => {
   const submit = () => {
     setloading(true);
     const data = {
+      id: data?.is,
       holidaydate: moment(Holidaydate, 'YYYY-MM-DD'),
       comment: comment,
       status: status,
@@ -59,9 +62,21 @@ const Updateholiday = () => {
     });
   };
 
+  useEffect(() => {
+    if (route.params?.data) {
+      setdata(route.params.data);
+      const d = new Date(route.params?.data?.attendancedate);
+      let newdate = `${d.getDate()}/${(d.getMonth() + 1)
+        .toString()
+        .padStart(2, '0')}/${d.getFullYear()}`;
+      setHolidaydate(newdate);
+      setcomment(route.params?.data?.Comment);
+    }
+  }, []);
+
   return (
     <View>
-      <BackHeader title={'Add Holiday'} />
+      <BackHeader title={'Update Holiday'} />
       <ScrollView>
         <View style={styles.enquirymainview}>
           <View style={styles.dateview}>
@@ -88,7 +103,7 @@ const Updateholiday = () => {
                   position: 'absolute',
                   right: deviceWidth * 0.05,
                 }}>
-                {comment.length} / 500
+                {comment?.length} / 500
               </Text>
               <RNInputField
                 style={{backgroundColor: Colors.fadeGray, paddingTop: 10}}
@@ -119,7 +134,7 @@ const Updateholiday = () => {
                   maxHeight={300}
                   labelField="label"
                   valueField="value"
-                  placeholder="Please Select"
+                  placeholder="Enable"
                   searchPlaceholder="Search..."
                   value={status}
                   onChange={item => {
@@ -133,7 +148,7 @@ const Updateholiday = () => {
             loading={loading}
             onPress={submit}
             style={{marginHorizontal: 20, marginTop: 20}}>
-            Save & Next
+            Update & Next
           </RNButton>
         </View>
       </ScrollView>

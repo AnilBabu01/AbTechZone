@@ -22,6 +22,8 @@ import BackHeader from '../../../Component/Header/BackHeader';
 import {serverInstance} from '../../../API/ServerInstance';
 
 const EmpAddholiday = ({navigation}) => {
+  let currmonth = new Date().getMonth();
+  const [month, setmonth] = useState(currmonth + 1);
   const [enquirylist, setenquirylist] = useState([]);
   const [Tabledata, setTabledata] = useState([]);
   const [viewdata, setviewdata] = useState(false);
@@ -93,13 +95,15 @@ const EmpAddholiday = ({navigation}) => {
 
   const getholiday = () => {
     setloading(true);
-    serverInstance('EmployeeAttendance/getholidy', 'post', {
-      month: Number(1),
-    }).then(res => {
+    const data = {
+      month: Number(month),
+    };
+    serverInstance('EmployeeAttendance/getholidy', 'post', data).then(res => {
       if (res?.status) {
         setenquirylist(res?.data);
         setloading(false);
       }
+
       if (res?.status === false) {
         setloading(false);
       }
@@ -107,7 +111,7 @@ const EmpAddholiday = ({navigation}) => {
   };
 
   useEffect(() => {
-    getholiday();
+    getholiday(month);
   }, []);
   const {fabStyle} = styles;
 

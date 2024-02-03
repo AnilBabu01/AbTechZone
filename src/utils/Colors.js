@@ -17,5 +17,7 @@ export const Colors = {
     black:'#000',
     light3Grey:"#F5F5F5",
     fadeGray:'#E7EAEF',
-    purple:'#800080'
+    purple:'#800080',
+    red:"red",
+    green:'green'
 }

@@ -24,7 +24,7 @@ const monthnamelist = {
 
   2: 'February',
 
-  3: 'Mark',
+  3: 'March',
 
   4: 'April',
 
@@ -76,7 +76,7 @@ const SearchAttendance = () => {
       align: 'center',
     },
     {
-      title: 'Employee_Name',
+      title: 'Name',
       items: [],
       width: 0.33,
       align: 'center',
@@ -138,7 +138,7 @@ const SearchAttendance = () => {
       <BackHeader title={'Search Attendance'} />
       <View style={styles.headerTitleContainer}>
         <View>
-          <Text style={styles.secondaryTitle}>Attendance Analysis</Text>
+          <Text style={styles.secondaryTitle}>Employee Attendance Analysis</Text>
         </View>
         <View style={{flexDirection: 'row', gap: 10}}>
           <Pressable

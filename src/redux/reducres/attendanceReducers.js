@@ -11,6 +11,9 @@ import {
   ALL_HOLIDAY_REQUEST,
   ALL_HOLIDAY_ATTENDANCE_SUCCESS,
   ALL_HOLIDAY_ATTENDANCE_FAIL,
+  ALL_EMPLOYEE_HOLIDAY_REQUEST,
+  ALL_EMPLOYEE_HOLIDAY_ATTENDANCE_SUCCESS,
+  ALL_EMPLOYEE_HOLIDAY_ATTENDANCE_FAIL,
   CLEAR_ERRORS,
 } from "../constants/attendanceConstants";
 
@@ -137,6 +140,41 @@ export const getHolidayReducer = (state = { Holidays: [] }, action) => {
       return {
         loading: false,
         Holidays: null,
+        error: action.payload,
+      };
+
+    case CLEAR_ERRORS:
+      return {
+        ...state,
+        error: null,
+      };
+
+    default:
+      return state;
+  }
+};
+
+
+
+
+export const geteMPHolidayReducer = (state = { emHolidays: [] }, action) => {
+  switch (action.type) {
+    case ALL_EMPLOYEE_HOLIDAY_REQUEST:
+      return {
+        loading: true,
+      };
+
+    case ALL_EMPLOYEE_HOLIDAY_ATTENDANCE_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        emHolidays: action.payload,
+      };
+
+    case ALL_EMPLOYEE_HOLIDAY_ATTENDANCE_FAIL:
+      return {
+        loading: false,
+        emHolidays: null,
         error: action.payload,
       };
 

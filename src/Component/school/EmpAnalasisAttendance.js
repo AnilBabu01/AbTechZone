@@ -6,15 +6,12 @@ import {
   TouchableOpacity,
   Modal,
 } from 'react-native';
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {deviceHeight, deviceWidth} from '../../utils/constant';
-import RNDatePicker from '../RNDatePicker';
 import RNButton from '../RNButton';
 import {Colors} from '../../utils/Colors';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {useSelector, useDispatch} from 'react-redux';
 import {Dropdown} from 'react-native-element-dropdown';
-import moment from 'moment';
 import {serverInstance} from '../../API/ServerInstance';
 import Toast from 'react-native-toast-message';
 import {Width, Height} from '../../utils/responsive';

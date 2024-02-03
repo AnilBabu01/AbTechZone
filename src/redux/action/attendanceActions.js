@@ -15,6 +15,9 @@ import {
   ALL_HOLIDAY_ATTENDANCE_SUCCESS,
   ALL_HOLIDAY_ATTENDANCE_FAIL,
   DONE_ATTENDANCE_FAIL,
+  ALL_EMPLOYEE_HOLIDAY_REQUEST,
+  ALL_EMPLOYEE_HOLIDAY_ATTENDANCE_SUCCESS,
+  ALL_EMPLOYEE_HOLIDAY_ATTENDANCE_FAIL,
 } from '../constants/attendanceConstants';
 
 export const MarkStudentAttendance =
@@ -184,6 +187,42 @@ export const getHolidays = month => async dispatch => {
   } catch (error) {
     dispatch({
       type: ALL_HOLIDAY_ATTENDANCE_FAIL,
+      payload: error?.response?.data?.msg,
+    });
+  }
+};
+
+
+
+// Get all Enquiry
+export const getEmpHolidays = month => async dispatch => {
+  try {
+    let token = await AsyncStorage.getItem('erptoken');
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `${token}`,
+      },
+    };
+    dispatch({type: ALL_EMPLOYEE_HOLIDAY_REQUEST});
+
+    const {data} = await axios.post(
+      `${backendApiUrl}EmployeeAttendance/getholidy'`,
+      {
+        month: Number(month),
+      },
+      config,
+    );
+
+     console.log("Attendace from action",data);
+     
+    dispatch({
+      type: ALL_EMPLOYEE_HOLIDAY_ATTENDANCE_SUCCESS,
+      payload: data?.data,
+    });
+  } catch (error) {
+    dispatch({
+      type: ALL_EMPLOYEE_HOLIDAY_ATTENDANCE_FAIL,
       payload: error?.response?.data?.msg,
     });
   }

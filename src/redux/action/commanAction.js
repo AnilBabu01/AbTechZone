@@ -2220,27 +2220,14 @@ export const GetNotic = (classId, empID) => async dispatch => {
         Authorization: `${token}`,
       },
     };
+
     dispatch({type: GET_NOTIC_REQUEST});
+    const {data} = await axios.get(`${backendApiUrl}comman/notes`, config);
 
-    if (classId || empID) {
-      const {data} = await axios.get(
-        `${backendApiUrl}comman/notes?classId=${classId}&empID=${empID}`,
-        config,
-      );
-
-      dispatch({
-        type: GET_NOTIC_SUCCESS,
-        payload: data?.data,
-      });
-    } else {
-      dispatch({type: GET_NOTIC_REQUEST});
-      const {data} = await axios.get(`${backendApiUrl}comman/notes`, config);
-
-      dispatch({
-        type: GET_NOTIC_SUCCESS,
-        payload: data?.data,
-      });
-    }
+    dispatch({
+      type: GET_NOTIC_SUCCESS,
+      payload: data?.data,
+    });
   } catch (error) {
     dispatch({
       type: GET_NOTIC_FAIL,

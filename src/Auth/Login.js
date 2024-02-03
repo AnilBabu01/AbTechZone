@@ -182,7 +182,7 @@ const Login = () => {
     <>
       <BackHeader title={'Sign-in'} />
       <StatusBar backgroundColor={primary} />
-      <ImageBackground source={bgImg} style={styles.imagestyle}>
+      {/* <ImageBackground  style={styles.imagestyle}> */}
         <View style={{flex: 1}}>
           <View style={styles.mainprofile}>
             <View style={styles.innearviewprofile}>
@@ -776,7 +776,7 @@ const Login = () => {
             </ScrollView>
           </View>
         </View>
-      </ImageBackground>
+      {/* </ImageBackground> */}
     </>
   );
 };

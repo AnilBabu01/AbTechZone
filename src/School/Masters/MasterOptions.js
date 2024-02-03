@@ -13,18 +13,18 @@ const MasterOptions = () => {
   const navigation = useNavigation();
   return (
     <>
-      <Header/>
+      <Header />
       <View style={styles.mainview}>
-        <TouchableOpacity onPress={() => navigation.navigate('AddSession')}>
-          <View style={styles.mainoption}>
-            <FontAwesome6 name="calendar" color={Colors.primary} size={30} />
-            <Text style={styles.titlestyle}>Add Session</Text>
-          </View>
-        </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate('AddClass')}>
           <View style={styles.mainoption}>
             <FontAwesome6 name="computer" color={Colors.primary} size={30} />
             <Text style={styles.titlestyle}>Add Class</Text>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('AddSession')}>
+          <View style={styles.mainoption}>
+            <FontAwesome6 name="calendar" color={Colors.primary} size={30} />
+            <Text style={styles.titlestyle}>Add Session</Text>
           </View>
         </TouchableOpacity>
 

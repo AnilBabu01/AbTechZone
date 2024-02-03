@@ -88,7 +88,7 @@ const EmpHolidayFilter = ({showModal, setShowModal, setenquirylist}) => {
           text2: res?.msg,
         });
 
-        // setShowModal(false);
+        setShowModal(false);
         setenquirylist(res?.data);
         setloading(false);
 

@@ -1,21 +1,116 @@
-import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
-import React from 'react';
+import {StyleSheet, Text, View, TouchableOpacity, Alert} from 'react-native';
+import React, {useState} from 'react';
 import {deviceWidth} from '../utils/constant';
-import {Colors, primary} from '../utils/Colors';
-
+import {Colors} from '../utils/Colors';
+import {serverInstance} from '../API/ServerInstance';
 import {useNavigation} from '@react-navigation/native';
-const RNTable = ({isFirst, data, theme, isBorderCurve}) => {
+import Loader from './Loader/Loader';
+import {
+  getcategory,
+  getcourse,
+  GetSection,
+  GetSession,
+  GetStream,
+  GetClassSubject,
+  getfee,
+  getDepartment,
+  getDesignation,
+  GetNotic,
+} from '../redux/action/commanAction';
+import {useDispatch} from 'react-redux';
+import Toast from 'react-native-toast-message';
+const RNTable = ({data, theme, isBorderCurve}) => {
+  const dispatch = useDispatch();
   const navigation = useNavigation();
-
-  const nav = data => {
+  const [loader, setloader] = useState(false);
+  const [sms, setsms] = useState('');
+  const ToUpdate = data => {
     navigation.navigate(data.redirect, {
       data: data.allDetails,
     });
-
-    console.log('dd', data.redirect);
   };
+
+  const ToDelete = data => {
+    console.log('jhgchxcv', data);
+    serverInstance(`${data?.deleteUrl}`, 'delete', {
+      id: data?.id,
+    }).then(res => {
+      if (res?.status) {
+        setloader(false);
+        setsms('');
+        Toast.show({
+          type: 'success',
+          text1: 'Success',
+          text2: res?.msg,
+        });
+        if (data?.deleteUrl === 'comman/studentcategory') {
+          dispatch(getcategory());
+        }
+        if (data?.deleteUrl === 'comman/course') {
+          dispatch(getcourse());
+        }
+        if (data?.deleteUrl === 'comman/session') {
+          dispatch(GetSession());
+        }
+        if (data?.deleteUrl === 'comman/section') {
+          dispatch(GetSection());
+        }
+        if (data?.deleteUrl === 'comman/stream') {
+          dispatch(GetStream());
+        }
+        if (data?.deleteUrl === 'comman/classsubject') {
+          dispatch(GetClassSubject());
+        }
+        if (data?.deleteUrl === 'comman/fee') {
+          dispatch(getfee());
+        }
+        if (data?.deleteUrl === 'comman/department') {
+          dispatch(getDepartment());
+        }
+        if (data?.deleteUrl === 'comman/designation') {
+          dispatch(getDesignation());
+        }
+        if (data?.deleteUrl === 'comman/notes') {
+          dispatch(GetNotic());
+        }
+      }
+
+      if (res?.status === false) {
+        setloader(false);
+        setsms('');
+        Toast.show({
+          type: 'error',
+          text1: 'Error',
+          text2: res?.msg,
+        });
+      }
+    });
+  };
+
+  const confirmation = data => {
+    Alert.alert(
+      'Delete',
+      'Do you really want to Delete ?',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'OK',
+          onPress: () => ToDelete(data),
+        },
+      ],
+      {
+        cancelable: false,
+      },
+    );
+    return true;
+  };
+
   return (
     <View style={{flexDirection: 'row'}}>
+      <Loader loader={loader} sms={sms} />
       {data?.length > 0 &&
         data?.map((item, index) => (
           <View key={index} style={{width: deviceWidth * item.width}}>
@@ -55,11 +150,16 @@ const RNTable = ({isFirst, data, theme, isBorderCurve}) => {
                 <>
                   {data?.allDetails ? (
                     <>
-                      <TouchableOpacity onPress={() => nav(data)}>
-                        <Text numberOfLines={1} style={{}}>
-                          {data?.value}
-                        </Text>
-                      </TouchableOpacity>
+                      <View style={styles.iconView}>
+                        <TouchableOpacity onPress={() => ToUpdate(data)}>
+                          <View numberOfLines={1}>{data?.value}</View>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                          style={styles.deleteIcon}
+                          onPress={() => confirmation(data)}>
+                          <View numberOfLines={1}>{data?.Deleteicon}</View>
+                        </TouchableOpacity>
+                      </View>
                     </>
                   ) : (
                     <>
@@ -85,5 +185,12 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  iconView: {
+    display: 'flex',
+    flexDirection: 'row',
+  },
+  deleteIcon: {
+    marginLeft: 10,
   },
 });

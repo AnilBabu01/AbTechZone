@@ -23,6 +23,7 @@ import RNButton from '../../../../Component/RNButton';
 import EmpTakeAttendanceFilter from '../../../../Component/school/EmpTakeAttendanceFilter';
 import {serverInstance} from '../../../../API/ServerInstance';
 import Toast from 'react-native-toast-message';
+import moment from 'moment';
 const TakeAttendance = () => {
   const dispatch = useDispatch();
   const [showModal, setShowModal] = useState(false);
@@ -78,7 +79,7 @@ const TakeAttendance = () => {
     <View style={{flex: 1}}>
       <View style={styles.headerTitleContainer}>
         <View>
-          <Text style={styles.secondaryTitle}>Take Attendance</Text>
+          <Text style={styles.secondaryTitle}>Take Attendance Employee</Text>
         </View>
         <View style={{flexDirection: 'row', gap: 10}}>
           <Pressable
@@ -101,14 +102,16 @@ const TakeAttendance = () => {
                 <View style={styles.connainer}>
                   <View style={styles.card10}>
                     <View style={styles.viewdel}>
-                      <Text>Roll No</Text>
-                      <Text>name</Text>
-                      <Text>Course</Text>
+                      <Text>Date</Text>
+                      <Text>Emp Id</Text>
+                      <Text>Name</Text>
                     </View>
                     <View style={styles.viewdel}>
-                      <Text>{item?.rollnumber}</Text>
-                      <Text>{item?.name}</Text>
-                      <Text>{item?.courseorclass}</Text>
+                      <Text style={styles.dbdata}>
+                        {moment(item?.attendancedate).format('DD-MM-YYYY')}
+                      </Text>
+                      <Text style={styles.dbdata}>{item?.EmployeeId}</Text>
+                      <Text style={styles.dbdata}>{item?.name}</Text>
                     </View>
                     <View style={styles.viewdel}>
                       <Text>Attendance Status</Text>
@@ -181,6 +184,10 @@ const TakeAttendance = () => {
 export default TakeAttendance;
 
 const styles = StyleSheet.create({
+  dbdata: {
+    fontWeight: 'bold',
+    color: Colors.black,
+  },
   bottomBtn: {
     paddingHorizontal: Width(10),
     marginTop: Height(5),

@@ -5,6 +5,8 @@ import {
   Modal,
   ScrollView,
   Pressable,
+  PermissionsAndroid,
+  Platform,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import {Height, Width} from '../../utils/responsive';
@@ -22,6 +24,7 @@ import RNTable from '../../Component/RNTable';
 import DownEnquiry from '../../Component/school/DownEnquiry';
 import EnquiryFilter from '../../Component/school/EnquiryFilter';
 import RNHTMLtoPDF from 'react-native-html-to-pdf';
+import RNFS from 'react-native-fs';
 const FrontOffice = ({navigation}) => {
   const dispatch = useDispatch();
   const [openModel, setopenModel] = useState(false);
@@ -38,9 +41,12 @@ const FrontOffice = ({navigation}) => {
         fileName: 'example', // PDF file name
         directory: 'Documents',
       };
-
+      const directoryPath = RNFS.DocumentDirectoryPath + '/Documents';
+      if (!RNFS.exists(directoryPath)) {
+        RNFS.mkdir(directoryPath);
+      }
       const pdf = await RNHTMLtoPDF.convert(options);
-      console.log(pdf.filePath);
+      console.log('filede path', pdf.filePath);
 
       // Now you can use the generated PDF file (pdf.filePath) as needed.
     } catch (error) {
@@ -114,12 +120,6 @@ const FrontOffice = ({navigation}) => {
           id: index,
           value: item.EnquiryDate,
         });
-
-        console.log(
-          'from main function',
-          item?.StudentEmail,
-          'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
-        );
 
         enquiryTableList[2].items.push({
           id: index,
@@ -245,7 +245,7 @@ const FrontOffice = ({navigation}) => {
 
       <AnimatedFAB
         icon={'plus'}
-        onPress={() => generatePDF()}
+        onPress={() => navigation.navigate('AddEnquirySchool')}
         label="Add"
         extended={false}
         color={Colors.white}

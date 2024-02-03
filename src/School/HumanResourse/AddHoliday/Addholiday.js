@@ -1,8 +1,8 @@
-import {StyleSheet, View, ScrollView,Text} from 'react-native';
-import React, {useState, useEffect} from 'react';
+import {StyleSheet, View, ScrollView, Text} from 'react-native';
+import React, {useState} from 'react';
 import {Height, Width} from '../../../utils/responsive';
 import {Dropdown} from 'react-native-element-dropdown';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import {serverInstance} from '../../../API/ServerInstance';
 import Toast from 'react-native-toast-message';
 import RNButton from '../../../Component/RNButton';
@@ -29,8 +29,9 @@ const Addholiday = () => {
 
   const submit = () => {
     setloading(true);
+    var momentDate = moment(Holidaydate, 'DD/MM/YYYY');
     const data = {
-      holidaydate: moment(Holidaydate, 'YYYY-MM-DD'),
+      holidaydate: moment(momentDate, 'YYYY-MM-DD'),
       comment: comment,
       status: status,
     };
@@ -43,9 +44,9 @@ const Addholiday = () => {
           text2: res?.msg,
         });
 
-         console.log("holidat res is",res);
+        console.log('add holidat res is', res);
 
-        // navigation.goBack();
+        navigation.goBack();
       }
 
       if (res?.status === false) {

@@ -134,6 +134,36 @@ import CommunicationTabemp from '../School/HumanResourse/SendSmsEmp/Communicatio
 import SendmailToEmp from '../School/HumanResourse/SendSmsEmp/SendmailToEmp';
 import Addholiday from '../School/HumanResourse/AddHoliday/Addholiday';
 import Updateholiday from '../School/HumanResourse/AddHoliday/Updateholiday';
+
+///add and update master data
+
+import Addcast from '../School/Masters/AddCaste/Addcast';
+import UpdateCaste from '../School/Masters/AddCaste/UpdateCaste';
+import Addclss from '../School/Masters/AddClass/Addclss';
+import UpdateClass from '../School/Masters/AddClass/UpdateClass';
+import AddDepart from '../School/Masters/AddDepartment/AddDepart';
+import UpdateDepart from '../School/Masters/AddDepartment/UpdateDepart';
+import AddDesign from '../School/Masters/AddDesignation/AddDesign';
+import UpdateDesignation from '../School/Masters/AddDesignation/UpdateDesignation';
+import AddFe from '../School/Masters/AddFee/AddFe';
+import UpdateFee from '../School/Masters/AddFee/UpdateFee';
+import Addnote from '../School/Masters/AddNotic/Addnote';
+import UpdateNotice from '../School/Masters/AddNotic/UpdateNotice';
+import AddReceiFormat from '../School/Masters/AddReceiptFormat/AddReceiFormat';
+import UpdateReceiptFormat from '../School/Masters/AddReceiptFormat/UpdateReceiptFormat';
+import Addsec from '../School/Masters/AddSection/Addsec';
+import UpdateSection from '../School/Masters/AddSection/UpdateSection';
+import AddSessio from '../School/Masters/AddSession/AddSessio';
+import UpdateSession from '../School/Masters/AddSession/UpdateSession';
+import AddStrea from '../School/Masters/AddStream/AddStrea';
+import UpdateStream from '../School/Masters/AddStream/UpdateStream';
+import AddSubjec from '../School/Masters/AddSubject/AddSubjec';
+import UpdateSubjec from '../School/Masters/AddSubject/UpdateSubjec';
+import AddFooter from '../School/Masters/FooterDetails/AddFooter';
+import UpdateFooter from '../School/Masters/FooterDetails/UpdateFooter';
+import Addsliderimg from '../School/Masters/AddSlider/Addsliderimg';
+import UpdateSliderImg from '../School/Masters/AddSlider/UpdateSliderImg';
+
 import {primary} from '../utils/Colors';
 const Stack = createNativeStackNavigator();
 
@@ -395,6 +425,33 @@ function StackNavigation() {
       <Stack.Screen name="Addholidays" component={Addholiday} />
       <Stack.Screen name="Updateholiday" component={Updateholiday} />
       <Stack.Screen name="UpdateRole" component={UpdateRole} />
+       {/* Add and Update master data */}
+      <Stack.Screen name="Addcast" component={Addcast} />
+      <Stack.Screen name="UpdateCaste" component={UpdateCaste} />
+      <Stack.Screen name="Addclss" component={Addclss} />
+      <Stack.Screen name="UpdateClass" component={UpdateClass} />
+      <Stack.Screen name="AddDepart" component={AddDepart} />
+      <Stack.Screen name="UpdateDepart" component={UpdateDepart} />
+      <Stack.Screen name="AddDesign" component={AddDesign} />
+      <Stack.Screen name="UpdateDesignation" component={UpdateDesignation} />
+      <Stack.Screen name="AddFe" component={AddFe} />
+      <Stack.Screen name="UpdateFee" component={UpdateFee} />
+      <Stack.Screen name="Addnote" component={Addnote} />
+      <Stack.Screen name="UpdateNotice" component={UpdateNotice} />
+      <Stack.Screen name="AddReceiFormat" component={AddReceiFormat} />
+      <Stack.Screen name="UpdateReceiptFormat" component={UpdateReceiptFormat} />
+      <Stack.Screen name="Addsec" component={Addsec} />
+      <Stack.Screen name="UpdateSection" component={UpdateSection} />
+      <Stack.Screen name="AddSessio" component={AddSessio} />
+      <Stack.Screen name="UpdateSession" component={UpdateSession} />
+      <Stack.Screen name="AddStrea" component={AddStrea} />
+      <Stack.Screen name="UpdateStream" component={UpdateStream} />
+      <Stack.Screen name="AddSubjec" component={AddSubjec} />
+      <Stack.Screen name="UpdateSubjec" component={UpdateSubjec} />
+      <Stack.Screen name="AddFooter" component={AddFooter} />
+      <Stack.Screen name="UpdateFooter" component={UpdateFooter} />
+      <Stack.Screen name="Addsliderimg" component={Addsliderimg} />
+      <Stack.Screen name="UpdateSliderImg" component={UpdateSliderImg} />
       <Stack.Screen
         name="FeeCollectOptionsSchool"
         component={FeeCollectOptionsSchool}

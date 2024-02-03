@@ -29,6 +29,7 @@ const Card = ({data}) => {
   const [sms, setsms] = useState('');
   const [loader, setloader] = useState(false);
   const {enquiry, error} = useSelector(state => state.deleteenqury);
+
   const submit = id => {
     setsms('Deleting...');
     setloader(true);
@@ -75,6 +76,8 @@ const Card = ({data}) => {
       }
     }
   }, [error]);
+
+  
   const confirmation = id => {
     Alert.alert(
       'Delete',
