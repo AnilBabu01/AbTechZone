@@ -5,57 +5,20 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import CardEnquiry from './Card';
 import {primary, Colors} from '../../../utils/Colors';
-import {
-  getcourse,
-  getbatch,
-  getstudent,
-  getfee,
-  getcategory,
-  GetSession,
-  GetSection,
-  getcurrentsession,
-} from '../../../redux/action/commanAction';
-import {
-  GetHostel,
-  GetFacility,
-  GetCategory,
-} from '../../../redux/action/hostelActions';
-import {loadUser} from '../../../redux/action/authActions';
-import {GetRoute} from '../../../redux/action/transportActions';
-import {useDispatch, useSelector} from 'react-redux';
+import {AnimatedFAB} from 'react-native-paper';
 import DashboardPlaceholderLoader from '../../../Component/DashboardPlaceholderLoader';
 import {deviceWidth} from '../../../utils/constant';
 import RNTable from '../../../Component/RNTable';
 import DownloadStudentData from '../../../Component/school/DownloadStudentData';
-import BackHeader from '../../../Component/Header/BackHeader';
-import StudentFilter from '../../../Component/school/StudentFilter';
-import moment from 'moment';
-const SCreadentials = ({navigation}) => {
-  const dispatch = useDispatch();
+import EmailFilter from '../../../Component/school/EmailFilter';
+import {serverInstance} from '../../../API/ServerInstance';
+const SendEmail = ({navigation}) => {
   const [isdata, setisdata] = useState([]);
   const [Tabledata, setTabledata] = useState([]);
   const [viewdata, setviewdata] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const [userdata, setuserdata] = useState('');
   const [showDocOptions, setShowDocOptions] = useState(false);
-  const {loading, student} = useSelector(state => state.getstudent);
-  const {user} = useSelector(state => state.auth);
-  useEffect(() => {
-    dispatch(getcourse());
-    dispatch(getbatch());
-    dispatch(getstudent());
-    dispatch(getfee());
-    dispatch(getcategory());
-    dispatch(GetSession());
-    dispatch(GetSection());
-    dispatch(getcurrentsession());
-    dispatch(GetHostel());
-    dispatch(GetFacility());
-    dispatch(GetCategory());
-    dispatch(GetRoute());
-    dispatch(loadUser());
-  }, []);
-
+  const [loading, setloading] = useState(false);
   const StudentTableList = [
     {
       title: 'Sr.No',
@@ -64,20 +27,19 @@ const SCreadentials = ({navigation}) => {
       align: 'center',
     },
     {
-      title: 'Session',
+      title: 'Sent_Date',
       items: [],
       width: 0.33,
       align: 'center',
     },
     {
-      title: 'SRNO (Login Id)',
+      title: 'Subject',
       items: [],
       width: 0.33,
       align: 'center',
     },
-
     {
-      title: 'Password',
+      title: 'Sent_Messaage',
       items: [],
       width: 0.33,
       align: 'center',
@@ -86,37 +48,47 @@ const SCreadentials = ({navigation}) => {
 
   const convertdata = async () => {
     await Promise.all(
-      student?.length > 0 &&
-        student?.map((item, index) => {
+      isdata?.length > 0 &&
+        isdata?.map((item, index) => {
           StudentTableList[0].items.push({id: index, value: index + 1});
-          StudentTableList[1].items.push({id: index, value: item.Session});
-          StudentTableList[2].items.push({id: index, value: item.SrNumber});
+          StudentTableList[1].items.push({id: index, value: item.date});
+          StudentTableList[2].items.push({id: index, value: item.Subject});
           StudentTableList[3].items.push({
             id: index,
-            value: userdata?.data?.CredentailsData?.Studentpassword,
+            value: item.Sms,
           });
         }),
     );
     setTabledata(StudentTableList);
   };
 
+  const GetAllMail = () => {
+    setloading(true);
+    serverInstance('comman/SendemailToStudent', 'post').then(res => {
+      if (res?.status) {
+        setisdata(res?.data);
+        setloading(false);
+      }
+      if (res?.status === false) {
+        setloading(false);
+      }
+    });
+  };
+
   useEffect(() => {
-    if (student) {
-      convertdata(student);
-      setisdata(student);
-    }
-    if (user) {
-      setuserdata(user);
-    }
-  }, [student, user]);
+    GetAllMail();
+  }, []);
+
+  useEffect(() => {
+    convertdata(isdata);
+  }, [isdata]);
 
   return (
     <>
       <View style={{flex: 1}}>
-        <BackHeader title={'Student Creadentials'} icon={'person'} />
         <View style={styles.headerTitleContainer}>
           <View>
-            <Text style={styles.secondaryTitle}>Student Creadentials</Text>
+            <Text style={styles.secondaryTitle}>Email Management</Text>
           </View>
           <View style={{flexDirection: 'row', gap: 10}}>
             <Pressable
@@ -129,19 +101,19 @@ const SCreadentials = ({navigation}) => {
               style={styles.filterBtnContainer}>
               <Ionicons name="filter" color={Colors.primary} size={25} />
             </Pressable>
-            {/* <Pressable
-                onPress={() => setviewdata(!viewdata)}
-                style={styles.filterBtnContainer}>
-                {viewdata ? (
-                  <>
-                    <Ionicons name="card" color={Colors.primary} size={25} />
-                  </>
-                ) : (
-                  <>
-                    <FontAwesome6 name="table" color={Colors.primary} size={25} />
-                  </>
-                )}
-              </Pressable> */}
+            <Pressable
+              onPress={() => setviewdata(!viewdata)}
+              style={styles.filterBtnContainer}>
+              {viewdata ? (
+                <>
+                  <FontAwesome6 name="table" color={Colors.primary} size={25} />
+                </>
+              ) : (
+                <>
+                  <Ionicons name="card" color={Colors.primary} size={25} />
+                </>
+              )}
+            </Pressable>
           </View>
         </View>
 
@@ -171,9 +143,14 @@ const SCreadentials = ({navigation}) => {
             </>
           )}
         </ScrollView>
+
         {showModal && (
           <>
-            <StudentFilter setShowModal={setShowModal} showModal={showModal} />
+            <EmailFilter
+              setisdata={setisdata}
+              setShowModal={setShowModal}
+              showModal={showModal}
+            />
           </>
         )}
 
@@ -181,12 +158,21 @@ const SCreadentials = ({navigation}) => {
           visible={showDocOptions}
           hideModal={setShowDocOptions}
         />
+
+        <AnimatedFAB
+          icon={'plus'}
+          onPress={() => navigation.navigate('SendEmailToStudent')}
+          label="Add"
+          extended={false}
+          color={Colors.white}
+          style={styles.fabStyle}
+        />
       </View>
     </>
   );
 };
 
-export default SCreadentials;
+export default SendEmail;
 
 const styles = StyleSheet.create({
   dateview: {

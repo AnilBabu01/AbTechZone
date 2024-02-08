@@ -47,7 +47,7 @@ const AddReceiptFormat = ({navigation}) => {
     {
       title: 'Action',
       items: [],
-      width: 0.4,
+      width: 0.40,
       align: 'center',
     },
   ];

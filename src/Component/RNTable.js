@@ -16,6 +16,8 @@ import {
   getDepartment,
   getDesignation,
   GetNotic,
+  GeOtherFees,
+  GetsSubject,
 } from '../redux/action/commanAction';
 import {useDispatch} from 'react-redux';
 import Toast from 'react-native-toast-message';
@@ -72,6 +74,14 @@ const RNTable = ({data, theme, isBorderCurve}) => {
         }
         if (data?.deleteUrl === 'comman/notes') {
           dispatch(GetNotic());
+        }
+        if (data?.deleteUrl === 'student/otherfee') {
+          dispatch(GeOtherFees());
+        }
+
+        if(data?.deleteUrl==='comman/subject')
+        {
+          dispatch(GetsSubject())
         }
       }
 

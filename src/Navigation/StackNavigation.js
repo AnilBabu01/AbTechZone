@@ -134,7 +134,7 @@ import CommunicationTabemp from '../School/HumanResourse/SendSmsEmp/Communicatio
 import SendmailToEmp from '../School/HumanResourse/SendSmsEmp/SendmailToEmp';
 import Addholiday from '../School/HumanResourse/AddHoliday/Addholiday';
 import Updateholiday from '../School/HumanResourse/AddHoliday/Updateholiday';
-
+import SendEmailToStudent from '../School/Student/SendSms.js/SendEmailToStudent';
 ///add and update master data
 
 import Addcast from '../School/Masters/AddCaste/Addcast';
@@ -163,7 +163,10 @@ import AddFooter from '../School/Masters/FooterDetails/AddFooter';
 import UpdateFooter from '../School/Masters/FooterDetails/UpdateFooter';
 import Addsliderimg from '../School/Masters/AddSlider/Addsliderimg';
 import UpdateSliderImg from '../School/Masters/AddSlider/UpdateSliderImg';
-
+import AdOtherFee from '../School/Student/OtherFee/AdOtherFee';
+import UpdateOtherFee from '../School/Student/OtherFee/UpdateOtherFee';
+import AdTimeTable from '../School/Student/TimeTable/AdTimeTable';
+import UpdateTimeTable from '../School/Student/TimeTable/UpdateTimeTable';
 import {primary} from '../utils/Colors';
 const Stack = createNativeStackNavigator();
 
@@ -425,7 +428,13 @@ function StackNavigation() {
       <Stack.Screen name="Addholidays" component={Addholiday} />
       <Stack.Screen name="Updateholiday" component={Updateholiday} />
       <Stack.Screen name="UpdateRole" component={UpdateRole} />
-       {/* Add and Update master data */}
+
+      {/* Add and Update master data */}
+
+      <Stack.Screen name="AdOtherFee" component={AdOtherFee} />
+      <Stack.Screen name="UpdateOtherFee" component={UpdateOtherFee} />
+      <Stack.Screen name="AdTimeTable" component={AdTimeTable} />
+      <Stack.Screen name="UpdateTimeTable" component={UpdateTimeTable} />
       <Stack.Screen name="Addcast" component={Addcast} />
       <Stack.Screen name="UpdateCaste" component={UpdateCaste} />
       <Stack.Screen name="Addclss" component={Addclss} />
@@ -439,7 +448,10 @@ function StackNavigation() {
       <Stack.Screen name="Addnote" component={Addnote} />
       <Stack.Screen name="UpdateNotice" component={UpdateNotice} />
       <Stack.Screen name="AddReceiFormat" component={AddReceiFormat} />
-      <Stack.Screen name="UpdateReceiptFormat" component={UpdateReceiptFormat} />
+      <Stack.Screen
+        name="UpdateReceiptFormat"
+        component={UpdateReceiptFormat}
+      />
       <Stack.Screen name="Addsec" component={Addsec} />
       <Stack.Screen name="UpdateSection" component={UpdateSection} />
       <Stack.Screen name="AddSessio" component={AddSessio} />
@@ -457,6 +469,8 @@ function StackNavigation() {
         component={FeeCollectOptionsSchool}
       />
       <Stack.Screen name="CommunicationTab" component={CommunicationTab} />
+      <Stack.Screen name="SendEmailToStudent" component={SendEmailToStudent} />
+
       <Stack.Screen name="FeeCollectSchool" component={FeeCollectSchool} />
       <Stack.Screen name="SearchFee" component={SearchFee} />
       <Stack.Screen name="PrintReceipt" component={PrintReceipt} />

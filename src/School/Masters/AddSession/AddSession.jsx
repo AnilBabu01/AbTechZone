@@ -48,7 +48,7 @@ const AddSession = ({navigation}) => {
     {
       title: 'Action',
       items: [],
-      width: 0.33,
+      width: 0.40,
       align: 'center',
     },
   ];
@@ -104,7 +104,7 @@ const AddSession = ({navigation}) => {
           <Text style={styles.secondaryTitle}>Session Master</Text>
         </View>
         <View style={{flexDirection: 'row', gap: 10}}>
-          <Pressable
+          {/* <Pressable
             onPress={() => setShowDocOptions(true)}
             style={styles.filterBtnContainer}>
             <FontAwesome6 name="download" color={Colors.primary} size={25} />
@@ -126,7 +126,7 @@ const AddSession = ({navigation}) => {
                 <FontAwesome6 name="table" color={Colors.primary} size={25} />
               </>
             )}
-          </Pressable>
+          </Pressable> */}
         </View>
       </View>
 

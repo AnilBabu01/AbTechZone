@@ -48,7 +48,7 @@ const AddCaste = ({navigation}) => {
     {
       title: 'Action',
       items: [],
-      width: 0.33,
+      width: 0.40,
       align: 'center',
     },
   ];

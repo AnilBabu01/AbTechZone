@@ -2093,7 +2093,7 @@ export const GeOtherFees =
       };
       dispatch({type: GET_OTHERFEE_REQUEST});
 
-      if ((scoursename, datedues, sessionname, sectionname)) {
+      if ((scoursename|| datedues||sessionname||sectionname)) {
         const {data} = await axios.get(
           `${backendApiUrl}student/otherfee?courseorclass=${scoursename}&sessionname=${sessionname}&sectionname=${sectionname}&date=${datedues}`,
           config,

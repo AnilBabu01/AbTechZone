@@ -13,7 +13,7 @@ const SchoolStudentOptions = () => {
   const navigation = useNavigation();
   return (
     <>
-       <Header/>
+      <Header />
       <View style={styles.mainview}>
         <TouchableOpacity onPress={() => navigation.navigate('Admission')}>
           <View style={styles.mainoption}>
@@ -33,25 +33,6 @@ const SchoolStudentOptions = () => {
           <View style={styles.mainoption}>
             <FontAwesome6 name="database" color={Colors.primary} size={30} />
             <Text style={styles.titlestyle}>Attendance</Text>
-          </View>
-        </TouchableOpacity>
-
-        <TouchableOpacity onPress={() => navigation.navigate('TransferCer')}>
-          <View style={styles.mainoption}>
-            <FontAwesome6 name="certificate" color={Colors.primary} size={30} />
-            <Text style={styles.titlestyle}>TC</Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('CharacterC')}>
-          <View style={styles.mainoption}>
-            <FontAwesome6 name="certificate" color={Colors.primary} size={30} />
-            <Text style={styles.titlestyle}>CC</Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('SendSms')}>
-          <View style={styles.mainoption}>
-            <FontAwesome6 name="comment-sms" color={Colors.primary} size={30} />
-            <Text style={styles.titlestyle}>Send SMS</Text>
           </View>
         </TouchableOpacity>
 
@@ -99,6 +80,25 @@ const SchoolStudentOptions = () => {
           </View>
         </TouchableOpacity>
 
+        <TouchableOpacity onPress={() => navigation.navigate('TransferCer')}>
+          <View style={styles.mainoption}>
+            <FontAwesome6 name="certificate" color={Colors.primary} size={30} />
+            <Text style={styles.titlestyle}>TC</Text>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('CharacterC')}>
+          <View style={styles.mainoption}>
+            <FontAwesome6 name="certificate" color={Colors.primary} size={30} />
+            <Text style={styles.titlestyle}>CC</Text>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('CommunicationTab')}>
+          <View style={styles.mainoption}>
+            <FontAwesome6 name="comment-sms" color={Colors.primary} size={30} />
+            <Text style={styles.titlestyle}>Send SMS</Text>
+          </View>
+        </TouchableOpacity>
         <View style={styles.mainoptionface}></View>
       </View>
     </>

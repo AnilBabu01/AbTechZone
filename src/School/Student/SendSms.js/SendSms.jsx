@@ -10,15 +10,15 @@ import DashboardPlaceholderLoader from '../../../Component/DashboardPlaceholderL
 import {deviceWidth} from '../../../utils/constant';
 import RNTable from '../../../Component/RNTable';
 import DownloadStudentData from '../../../Component/school/DownloadStudentData';
-
-const SendEmail = ({navigation}) => {
+import EmailFilter from '../../../Component/school/EmailFilter';
+import {serverInstance} from '../../../API/ServerInstance';
+const SendSms = ({navigation}) => {
   const [isdata, setisdata] = useState([]);
   const [Tabledata, setTabledata] = useState([]);
   const [viewdata, setviewdata] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [showDocOptions, setShowDocOptions] = useState(false);
   const [loading, setloading] = useState(false);
-
   const StudentTableList = [
     {
       title: 'Sr.No',
@@ -47,27 +47,25 @@ const SendEmail = ({navigation}) => {
   ];
 
   const convertdata = async () => {
-    if (StudentTableList?.length > 13) {
-      await Promise.all(
-        student?.length > 0 &&
-          student?.map((item, index) => {
-            StudentTableList[0].items.push({id: index, value: index + 1});
-            StudentTableList[1].items.push({id: index, value: item.date});
-            StudentTableList[2].items.push({id: index, value: item.Subject});
-            StudentTableList[3].items.push({
-              id: index,
-              value: item.Sms,
-            });
-          }),
-      );
-      setTabledata(StudentTableList);
-    }
+    await Promise.all(
+      isdata?.length > 0 &&
+        isdata?.map((item, index) => {
+          StudentTableList[0].items.push({id: index, value: index + 1});
+          StudentTableList[1].items.push({id: index, value: item.date});
+          StudentTableList[2].items.push({id: index, value: item.Subject});
+          StudentTableList[3].items.push({
+            id: index,
+            value: item.Sms,
+          });
+        }),
+    );
+    setTabledata(StudentTableList);
   };
 
-  const GetSendmail = () => {
+  const onSubmit = () => {
     setloading(true);
     serverInstance('comman/GetSentemailToEmployee', 'post').then(res => {
-      if (res?.status === true) {
+      if (res?.status) {
         setisdata(res?.data);
         setloading(false);
       }
@@ -78,7 +76,7 @@ const SendEmail = ({navigation}) => {
   };
 
   useEffect(() => {
-    GetSendmail;
+    onSubmit();
   }, []);
 
   useEffect(() => {
@@ -90,7 +88,7 @@ const SendEmail = ({navigation}) => {
       <View style={{flex: 1}}>
         <View style={styles.headerTitleContainer}>
           <View>
-            <Text style={styles.secondaryTitle}>Student</Text>
+            <Text style={styles.secondaryTitle}>Email Management</Text>
           </View>
           <View style={{flexDirection: 'row', gap: 10}}>
             <Pressable
@@ -108,11 +106,11 @@ const SendEmail = ({navigation}) => {
               style={styles.filterBtnContainer}>
               {viewdata ? (
                 <>
-                  <Ionicons name="card" color={Colors.primary} size={25} />
+                  <FontAwesome6 name="table" color={Colors.primary} size={25} />
                 </>
               ) : (
                 <>
-                  <FontAwesome6 name="table" color={Colors.primary} size={25} />
+                  <Ionicons name="card" color={Colors.primary} size={25} />
                 </>
               )}
             </Pressable>
@@ -145,9 +143,14 @@ const SendEmail = ({navigation}) => {
             </>
           )}
         </ScrollView>
+
         {showModal && (
           <>
-            <StudentFilter setShowModal={setShowModal} showModal={showModal} />
+            <EmailFilter
+              setisdata={setisdata}
+              setShowModal={setShowModal}
+              showModal={showModal}
+            />
           </>
         )}
 
@@ -158,7 +161,7 @@ const SendEmail = ({navigation}) => {
 
         <AnimatedFAB
           icon={'plus'}
-          onPress={() => navigation.navigate('AddStudent')}
+          onPress={() => navigation.navigate('SendmailToEmp')}
           label="Add"
           extended={false}
           color={Colors.white}
@@ -169,7 +172,7 @@ const SendEmail = ({navigation}) => {
   );
 };
 
-export default SendEmail;
+export default SendSms;
 
 const styles = StyleSheet.create({
   dateview: {

@@ -810,6 +810,7 @@ const TakeAdmission = () => {
                 />
               </View>
             </FlexRowWrapper>
+            
             <FlexRowWrapper>
               <View style={{width: '45%'}}>
                 <View style={{marginHorizontal: deviceWidth * 0.01}}>

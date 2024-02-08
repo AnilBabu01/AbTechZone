@@ -22,6 +22,7 @@ import {
   GetSession,
   GetSection,
   getcurrentsession,
+  GeOtherFees,
 } from '../../../redux/action/commanAction';
 import {
   GetHostel,
@@ -31,33 +32,20 @@ import {
 import {GetRoute} from '../../../redux/action/transportActions';
 import {useDispatch, useSelector} from 'react-redux';
 import DashboardPlaceholderLoader from '../../../Component/DashboardPlaceholderLoader';
-import {deviceHeight, deviceWidth} from '../../../utils/constant';
+import {deviceWidth} from '../../../utils/constant';
 import RNTable from '../../../Component/RNTable';
 import DownloadStudentData from '../../../Component/school/DownloadStudentData';
 import BackHeader from '../../../Component/Header/BackHeader';
-const SendSms = ({navigation}) => {
+import FilterOtherFee from '../../../Component/school/FilterOtherFee';
+import moment from 'moment';
+const AddOtherFee = ({navigation}) => {
   const dispatch = useDispatch();
   const [isdata, setisdata] = useState([]);
   const [Tabledata, setTabledata] = useState([]);
   const [viewdata, setviewdata] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [showDocOptions, setShowDocOptions] = useState(false);
-  const {loading, student} = useSelector(state => state.getstudent);
-
-  useEffect(() => {
-    dispatch(getcourse());
-    dispatch(getbatch());
-    dispatch(getstudent());
-    dispatch(getfee());
-    dispatch(getcategory());
-    dispatch(GetSession());
-    dispatch(GetSection());
-    dispatch(getcurrentsession());
-    dispatch(GetHostel());
-    dispatch(GetFacility());
-    dispatch(GetCategory());
-    dispatch(GetRoute());
-  }, []);
+  const {loading, otherfee} = useSelector(state => state.GetOtherFee);
 
   const StudentTableList = [
     {
@@ -73,73 +61,31 @@ const SendSms = ({navigation}) => {
       align: 'center',
     },
     {
-      title: 'SNO',
-      items: [],
-      width: 0.33,
-      align: 'center',
-    },
-    {
-      title: 'Roll_No',
-      items: [],
-      width: 0.33,
-      align: 'center',
-    },
-
-    {
       title: 'Section',
       items: [],
       width: 0.33,
       align: 'center',
     },
     {
-      title: 'Stream',
-      items: [],
-      width: 0.33,
-      align: 'center',
-    },
-    {
-      title: 'Student_Name',
-      items: [],
-      width: 0.33,
-      align: 'center',
-    },
-    {
-      title: 'Student_Email',
-      items: [],
-      width: 0.33,
-      align: 'center',
-    },
-    {
-      title: 'Student_Phone',
-      items: [],
-      width: 0.33,
-      align: 'center',
-    },
-    {
-      title: 'Adminssion_Date',
+      title: 'Class',
       items: [],
       width: 0.33,
       align: 'center',
     },
 
     {
-      title: 'Class',
+      title: 'Comment',
       items: [],
       width: 0.33,
       align: 'center',
     },
     {
-      title: 'Category',
+      title: 'Dues',
       items: [],
       width: 0.33,
       align: 'center',
     },
-    {
-      title: 'Student_Status',
-      items: [],
-      width: 0.33,
-      align: 'center',
-    },
+
     {
       title: 'Action',
       items: [],
@@ -149,84 +95,77 @@ const SendSms = ({navigation}) => {
   ];
 
   const convertdata = async () => {
-    if (StudentTableList?.length > 13) {
-      await Promise.all(
-        student?.length > 0 &&
-          student?.map((item, index) => {
-            StudentTableList[0].items.push({id: index, value: index + 1});
-            StudentTableList[1].items.push({id: index, value: item.Session});
-            StudentTableList[2].items.push({id: index, value: item.SrNumber});
-            StudentTableList[3].items.push({
-              id: index,
-              value: item.rollnumber,
-            });
-            StudentTableList[4].items.push({
-              id: index,
-              value: item.Section,
-            });
-            StudentTableList[5].items.push({
-              id: index,
-              value: item.Stream,
-            });
-            StudentTableList[6].items.push({
-              id: index,
-              value: item.name,
-            });
-            StudentTableList[7].items.push({
-              id: index,
-              value: item.email,
-            });
-            StudentTableList[8].items.push({
-              id: index,
-              value: item.phoneno1,
-            });
-            StudentTableList[9].items.push({
-              id: index,
-              value: item.admissionDate,
-            });
-            StudentTableList[10].items.push({
-              id: index,
-              value: item.courseorclass,
-            });
-            StudentTableList[11].items.push({
-              id: index,
-              value: item.StudentCategory,
-            });
-            StudentTableList[12].items.push({
-              id: index,
-              value: item.StudentStatus,
-            });
-            StudentTableList[13].items.push({
-              id: index,
-              value: (
-                <Ionicons
-                  name="create-outline"
-                  color={Colors.primary}
-                  size={18.3}
-                />
-              ),
-              allDetails: item,
-              redirect: 'UpdateAdmission',
-            });
-          }),
-      );
-      setTabledata(StudentTableList);
-    }
+    await Promise.all(
+      otherfee?.map((item, index) => {
+        StudentTableList[0].items.push({id: index, value: index + 1});
+        StudentTableList[1].items.push({id: index, value: item?.Session});
+        StudentTableList[2].items.push({id: index, value: item?.Section});
+        StudentTableList[3].items.push({
+          id: index,
+          value: item?.Course,
+        });
+        StudentTableList[4].items.push({
+          id: index,
+          value: item?.OtherFeeName,
+        });
+        StudentTableList[5].items.push({
+          id: index,
+          value: moment(item?.DuesDate).format('DD/MM/YYYY'),
+        });
+
+        StudentTableList[6].items.push({
+          id: index,
+          value: (
+            <Ionicons
+              name="create-outline"
+              color={Colors.primary}
+              size={18.3}
+            />
+          ),
+
+          Deleteicon: (
+            <Ionicons name="trash-outline" color={Colors.red} size={18.3} />
+          ),
+          deleteUrl: 'student/otherfee',
+          allDetails: item,
+          redirect: 'UpdateOtherFee',
+        });
+      }),
+    );
+    setTabledata(StudentTableList);
   };
 
   useEffect(() => {
-    if (student) {
-      convertdata(student);
-      setisdata(student);
-    }
-  }, [student]);
+    if (otherfee) {
+      convertdata(otherfee);
+      setisdata(otherfee);
 
+      setShowModal(false);
+    }
+  }, [otherfee]);
+
+  useEffect(() => {
+    dispatch(getcourse());
+    dispatch(getbatch());
+    dispatch(getstudent());
+    dispatch(getfee());
+    dispatch(getcategory());
+    dispatch(GetSession());
+    dispatch(GetSection());
+    dispatch(getcurrentsession());
+    dispatch(GetHostel());
+    dispatch(GetFacility());
+    dispatch(GetCategory());
+    dispatch(GetRoute());
+    dispatch(GeOtherFees());
+  }, []);
   return (
     <>
       <View style={{flex: 1}}>
+        <BackHeader title={'Add Other Fee'} />
         <View style={styles.headerTitleContainer}>
           <View>
-            <Text style={styles.secondaryTitle}>Student</Text>
+            <Text style={styles.secondaryTitle}>Other Fee Management</Text>
           </View>
           <View style={{flexDirection: 'row', gap: 10}}>
             <Pressable
@@ -239,7 +178,7 @@ const SendSms = ({navigation}) => {
               style={styles.filterBtnContainer}>
               <Ionicons name="filter" color={Colors.primary} size={25} />
             </Pressable>
-            <Pressable
+            {/* <Pressable
               onPress={() => setviewdata(!viewdata)}
               style={styles.filterBtnContainer}>
               {viewdata ? (
@@ -251,7 +190,7 @@ const SendSms = ({navigation}) => {
                   <FontAwesome6 name="table" color={Colors.primary} size={25} />
                 </>
               )}
-            </Pressable>
+            </Pressable> */}
           </View>
         </View>
 
@@ -283,7 +222,7 @@ const SendSms = ({navigation}) => {
         </ScrollView>
         {showModal && (
           <>
-            <StudentFilter setShowModal={setShowModal} showModal={showModal} />
+            <FilterOtherFee setShowModal={setShowModal} showModal={showModal} />
           </>
         )}
 
@@ -294,7 +233,7 @@ const SendSms = ({navigation}) => {
 
         <AnimatedFAB
           icon={'plus'}
-          onPress={() => navigation.navigate('AddStudent')}
+          onPress={() => navigation.navigate('AdOtherFee')}
           label="Add"
           extended={false}
           color={Colors.white}
@@ -305,7 +244,7 @@ const SendSms = ({navigation}) => {
   );
 };
 
-export default SendSms;
+export default AddOtherFee;
 
 const styles = StyleSheet.create({
   dateview: {

@@ -11,7 +11,7 @@ function CommunicationTab() {
       <BackHeader title={'Communication'} />
       <Tab.Navigator>
         <Tab.Screen name="SendEmail" component={SendEmail} />
-        <Tab.Screen name="SemdSms" component={SendSms} />
+        {/* <Tab.Screen name="SemdSms" component={SendSms} /> */}
       </Tab.Navigator>
     </>
   );
