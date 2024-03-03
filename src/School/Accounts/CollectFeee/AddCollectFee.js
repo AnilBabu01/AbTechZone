@@ -24,11 +24,15 @@ import Toast from 'react-native-toast-message';
 import {Colors} from '../../../utils/Colors';
 import DashboardPlaceholderLoader from '../../../Component/DashboardPlaceholderLoader';
 import PaymentStatus from './PaymentStatus';
-
+import RNDatePicker from '../../../Component/RNDatePicker';
+import {handleDate, getTodaysDate} from '../../../utils/functions';
+import moment from 'moment';
 const AddCollectFee = () => {
   const dispatch = useDispatch();
   const route = useRoute();
   const navigation = useNavigation();
+  const [discountallow, setdiscountallow] = useState(false);
+  const [payDate, setpayDate] = useState(getTodaysDate());
   const [openModel, setopenModel] = useState(false);
   const [loading, setloading] = useState(false);
   const [studentdatais, setstudentdatais] = useState('');
@@ -74,12 +78,18 @@ const AddCollectFee = () => {
   const [isSwitchOn, setIsSwitchOn] = useState(false);
   const {batch, error} = useSelector(state => state.addbatch);
 
+  console.log('ncd', payDate, discountallow);
+
   const toggleSwitch = () => {
     setIsSwitchOn(!isSwitchOn);
     seteditacadminArray([]);
     setedithostelArray([]);
     seteditotherfeearray([]);
     setedittransportArray([]);
+  };
+
+  const togglePaySwitch = () => {
+    setdiscountallow(!discountallow);
   };
 
   const getallfee = () => {
@@ -196,7 +206,7 @@ const AddCollectFee = () => {
     }
   };
 
-  console.log('edithostelArray   data is', edithostelArray);
+  
 
   const handleCheckboxtransportArrayToggle = index => {
     const updatedMonths = [...transportArray];
@@ -305,9 +315,10 @@ const AddCollectFee = () => {
         studentData: studentdatais,
         feetype: 'Academy Fee',
         PayOption: PayOption,
-        paymentdate: paymentdate,
+        paymentdate: moment(payDate, 'YYYY-MM-DD'),
         unlockfeeOptions: isSwitchOn,
         editacadminArray: editacadminArray,
+        discountallow: discountallow,
       };
 
       serverInstance('Student/addacadmyfee', 'post', datas).then(res => {
@@ -320,8 +331,7 @@ const AddCollectFee = () => {
           dispatch(getstudent());
           getallfee();
           setloading(false);
-          // setsendacadminArray([]);
-          // seteditacadminArray([]);
+          
           setshowreceiptotions(true);
           setreceiptdata(res?.data);
 
@@ -330,11 +340,14 @@ const AddCollectFee = () => {
           // navigation.navigate('StatusSreenFeeSchool', {
           //   receiptdata: res?.data[0]?.receiptdata,
           // });
-          if (isSwitchOn === true) {
+          
+
+          if (isSwitchOn === true||discountallow===true) {
             navigation.navigate('FeeCollectSchool');
           } else {
             setopenModel(true);
           }
+
         }
 
         if (res?.status === false) {
@@ -363,9 +376,10 @@ const AddCollectFee = () => {
         studentData: studentdatais,
         feetype: 'Hostel Fee',
         PayOption: PayOption,
-        paymentdate: paymentdate,
+        paymentdate: moment(payDate, 'YYYY-MM-DD'),
         unlockfeeOptions: isSwitchOn,
-        edithostelArray: edithostelArray,
+        editacadminArray: editacadminArray,
+        discountallow: discountallow,
       };
 
       serverInstance('Student/addhostelfee', 'post', datas).then(res => {
@@ -381,7 +395,7 @@ const AddCollectFee = () => {
           setloading(false);
           setshowreceiptotions(true);
           setreceiptdata(res?.data[0]?.receiptdata);
-          if (isSwitchOn === true) {
+          if (isSwitchOn === true||discountallow===true) {
             navigation.navigate('FeeCollectSchool');
           } else {
             setopenModel(true);
@@ -414,9 +428,10 @@ const AddCollectFee = () => {
         studentData: studentdatais,
         feetype: 'Transport Fee',
         PayOption: PayOption,
-        paymentdate: paymentdate,
+        paymentdate: moment(payDate, 'YYYY-MM-DD'),
         unlockfeeOptions: isSwitchOn,
-        edittransportArray: edittransportArray,
+        editacadminArray: editacadminArray,
+        discountallow: discountallow,
       };
 
       serverInstance('Student/addtransportfee', 'post', datas).then(res => {
@@ -464,9 +479,10 @@ const AddCollectFee = () => {
         studentData: studentdatais,
         feetype: 'Other Fee',
         PayOption: PayOption,
-        paymentdate: paymentdate,
+        paymentdate: moment(payDate, 'YYYY-MM-DD'),
         unlockfeeOptions: isSwitchOn,
-        editotherfeearray: editotherfeearray,
+        editacadminArray: editacadminArray,
+        discountallow: discountallow,
       };
 
       serverInstance('Student/addotherfee', 'post', datas).then(res => {
@@ -482,7 +498,7 @@ const AddCollectFee = () => {
           getallfee();
           setshowreceiptotions(true);
           setreceiptdata(res?.data[0]?.receiptdata);
-          if (isSwitchOn === true) {
+          if (isSwitchOn === true||discountallow===true) {
             navigation.navigate('FeeCollectSchool');
           } else {
             setopenModel(true);
@@ -590,8 +606,9 @@ const AddCollectFee = () => {
 
               <Text>Other</Text>
             </View>
+
             <View style={styles.editFeeView}>
-              <Text>Edit Fee</Text>
+              <Text>Edit On/Off</Text>
               <Switch value={isSwitchOn} onValueChange={toggleSwitch} />
 
               <View style={styles.radioButton}>
@@ -616,130 +633,165 @@ const AddCollectFee = () => {
             </View>
             {academinfee === true && (
               <>
-                <View style={styles.dateview}>
-                  <View style={styles.cardContent}>
-                    <Text style={styles.title}>Student Name</Text>
-                    <Text style={styles.datatext}>
-                      {studentdatais?.name ? studentdatais?.name : '-'}
-                    </Text>
+                <View
+                  style={{
+                    borderBottomWidth: 2,
+                    borderBottomColor: Colors.primary,
+                    borderTopColor: Colors.primary,
+                    borderTopWidth: 2,
+                    paddingVertical: 10,
+                  }}>
+                  <View style={styles.dateview}>
+                    <View style={styles.cardContent}>
+                      <Text style={styles.title}>Student Name</Text>
+                      <Text style={styles.datatext}>
+                        {studentdatais?.name ? studentdatais?.name : '-'}
+                      </Text>
+                    </View>
+                    <View style={styles.cardContent}>
+                      <Text style={styles.title}>Class</Text>
+                      <Text style={styles.datatext}>
+                        {studentdatais?.courseorclass
+                          ? studentdatais?.courseorclass
+                          : '-'}
+                      </Text>
+                    </View>
+                    <View style={styles.cardContent}>
+                      <Text style={styles.title}>Roll No</Text>
+                      <Text style={styles.datatext}>
+                        {studentdatais?.rollnumber
+                          ? studentdatais?.rollnumber
+                          : '-'}
+                      </Text>
+                    </View>
                   </View>
-                  <View style={styles.cardContent}>
-                    <Text style={styles.title}>Class</Text>
-                    <Text style={styles.datatext}>
-                      {studentdatais?.courseorclass
-                        ? studentdatais?.courseorclass
-                        : '-'}
-                    </Text>
-                  </View>
-                  <View style={styles.cardContent}>
-                    <Text style={styles.title}>Roll No</Text>
-                    <Text style={styles.datatext}>
-                      {studentdatais?.rollnumber
-                        ? studentdatais?.rollnumber
-                        : '-'}
-                    </Text>
-                  </View>
-                </View>
 
-                <View style={styles.dateview}>
-                  <View style={styles.cardContent}>
-                    <Text style={styles.title}>Father's Name</Text>
-                    <Text style={styles.datatext}>
-                      {studentdatais?.fathersName
-                        ? studentdatais?.fathersName
-                        : '-'}
-                    </Text>
+                  <View style={styles.dateview}>
+                    <View style={styles.cardContent}>
+                      <Text style={styles.title}>Father's Name</Text>
+                      <Text style={styles.datatext}>
+                        {studentdatais?.fathersName
+                          ? studentdatais?.fathersName
+                          : '-'}
+                      </Text>
+                    </View>
+                    <View style={styles.cardContent}>
+                      <Text style={styles.title}>Fathers Mobile</Text>
+                      <Text style={styles.datatext}>
+                        {studentdatais?.fathersPhoneNo
+                          ? studentdatais?.fathersPhoneNo
+                          : '-'}
+                      </Text>
+                    </View>
+                    <View style={styles.cardContent}>
+                      <Text style={styles.title}>Student Mobile</Text>
+                      <Text style={styles.datatext}>
+                        {studentdatais?.phoneno1
+                          ? studentdatais?.phoneno1
+                          : '-'}
+                      </Text>
+                    </View>
                   </View>
-                  <View style={styles.cardContent}>
-                    <Text style={styles.title}>Fathers Mobile</Text>
-                    <Text style={styles.datatext}>
-                      {studentdatais?.fathersPhoneNo
-                        ? studentdatais?.fathersPhoneNo
-                        : '-'}
-                    </Text>
-                  </View>
-                  <View style={styles.cardContent}>
-                    <Text style={styles.title}>Student Mobile</Text>
-                    <Text style={styles.datatext}>
-                      {studentdatais?.phoneno1 ? studentdatais?.phoneno1 : '-'}
-                    </Text>
-                  </View>
-                </View>
 
-                <View style={styles.dateview}>
-                  <View style={styles.cardContent}>
-                    <Text style={styles.title}>Per Month Fee</Text>
-                    <Text style={styles.datatext}>
-                      {studentdatais?.permonthfee
-                        ? studentdatais?.permonthfee
-                        : '-'}
-                    </Text>
+                  <View style={styles.dateview}>
+                    <View style={styles.cardContent}>
+                      <Text style={styles.title}>Per Month Fee</Text>
+                      <Text style={styles.datatext}>
+                        {studentdatais?.permonthfee
+                          ? studentdatais?.permonthfee
+                          : '-'}
+                      </Text>
+                    </View>
+                    <View style={styles.cardContent}>
+                      <Text style={styles.title}>Total Fee</Text>
+                      <Text style={styles.datatext}>
+                        {studentdatais?.studentTotalFee
+                          ? studentdatais?.studentTotalFee
+                          : '-'}
+                      </Text>
+                    </View>
+                    <View style={styles.cardContent}>
+                      <Text style={styles.title}>Paid Fee</Text>
+                      <Text style={styles.datatext}>
+                        {studentdatais?.paidfee ? studentdatais?.paidfee : '-'}
+                      </Text>
+                    </View>
                   </View>
-                  <View style={styles.cardContent}>
-                    <Text style={styles.title}>Total Fee</Text>
-                    <Text style={styles.datatext}>
-                      {studentdatais?.studentTotalFee
-                        ? studentdatais?.studentTotalFee
-                        : '-'}
-                    </Text>
-                  </View>
-                  <View style={styles.cardContent}>
-                    <Text style={styles.title}>Paid Fee</Text>
-                    <Text style={styles.datatext}>
-                      {studentdatais?.paidfee ? studentdatais?.paidfee : '-'}
-                    </Text>
-                  </View>
-                </View>
 
-                <View style={styles.dateview}>
-                  <View style={styles.cardContent}>
-                    <Text style={styles.title}>Pending Amount</Text>
-                    <Text style={styles.datatext}>
-                      {isSwitchOn ? (
-                        <>
-                          {Math.abs(
-                            Number(studentdatais?.pendingfee) +
-                              Number(
-                                editacadminArray &&
-                                  editacadminArray?.reduce(
-                                    (n, {PerMonthFee}) =>
-                                      parseFloat(n) + parseFloat(PerMonthFee),
-                                    0,
-                                  ),
-                              ),
-                          )}
-                        </>
-                      ) : (
-                        <>
-                          {Math.abs(
-                            Number(studentdatais?.pendingfee) -
-                              Number(
-                                sendacadminArray &&
-                                  sendacadminArray?.reduce(
-                                    (n, {PerMonthFee}) =>
-                                      parseFloat(n) + parseFloat(PerMonthFee),
-                                    0,
-                                  ),
-                              ),
-                          )}
-                        </>
-                      )}
-                    </Text>
-                  </View>
-                  <View style={styles.cardContent}>
-                    <Text style={styles.title}>
-                      {isSwitchOn ? 'Editable' : 'Payable'} Amount
-                    </Text>
-                    <Text style={styles.datatext}>
-                      {sendacadminArray &&
-                        sendacadminArray?.reduce(
-                          (n, {PerMonthFee}) =>
-                            parseFloat(n) + parseFloat(PerMonthFee),
-                          0,
+                  <View style={styles.dateview}>
+                    <View style={styles.cardContent}>
+                      <Text style={styles.title}>Pending Amount</Text>
+                      <Text style={styles.datatext}>
+                        {isSwitchOn ? (
+                          <>
+                            {Math.abs(
+                              Number(studentdatais?.pendingfee) +
+                                Number(
+                                  editacadminArray &&
+                                    editacadminArray?.reduce(
+                                      (n, {PerMonthFee}) =>
+                                        parseFloat(n) + parseFloat(PerMonthFee),
+                                      0,
+                                    ),
+                                ),
+                            )}
+                          </>
+                        ) : (
+                          <>
+                            {Math.abs(
+                              Number(studentdatais?.pendingfee) -
+                                Number(
+                                  sendacadminArray &&
+                                    sendacadminArray?.reduce(
+                                      (n, {PerMonthFee}) =>
+                                        parseFloat(n) + parseFloat(PerMonthFee),
+                                      0,
+                                    ),
+                                ),
+                            )}
+                          </>
                         )}
-                    </Text>
+                      </Text>
+                    </View>
+                    <View style={styles.cardContent}>
+                      <Text style={styles.title}>
+                        {isSwitchOn ? 'Editable' : 'Payable'} Amount
+                      </Text>
+                      <Text style={styles.datatext}>
+                        {sendacadminArray &&
+                          sendacadminArray?.reduce(
+                            (n, {PerMonthFee}) =>
+                              parseFloat(n) + parseFloat(PerMonthFee),
+                            0,
+                          )}
+                      </Text>
+                    </View>
+                    <View style={styles.cardContent}></View>
                   </View>
-                  <View style={styles.cardContent}></View>
+                </View>
+                <View
+                  style={{
+                    borderBottomWidth: 2,
+                    borderBottomColor: Colors.primary,
+                    paddingVertical: 10,
+                  }}>
+                  <View style={styles.dateview}>
+                    <View style={styles.mainDiscountView}>
+                      <Text>Discount On/Off</Text>
+                      <Switch
+                        value={discountallow}
+                        onValueChange={togglePaySwitch}
+                      />
+                    </View>
+
+                    <View style={{width: '49%'}}>
+                      <RNDatePicker
+                        title="From Date"
+                        value={payDate}
+                        onDateChange={date => setpayDate(handleDate(date))}
+                      />
+                    </View>
+                  </View>
                 </View>
 
                 {loadingfee ? (
@@ -806,7 +858,9 @@ const AddCollectFee = () => {
                             <Text> {item?.PerMonthFee}</Text>
 
                             <Text>
-                              {item?.paidStatus === true ? (
+                              {item?.Discount === true ? (
+                                <Text>Discounted</Text>
+                              ) : item?.paidStatus === true ? (
                                 <Text style={styles.paidtextColor}> Paid</Text>
                               ) : (
                                 <Text style={styles.DuestextColor}>Dues</Text>
@@ -1016,7 +1070,9 @@ const AddCollectFee = () => {
                         <Text> {item?.PerMonthFee}</Text>
 
                         <Text>
-                          {item?.paidStatus === true ? (
+                          {item?.Discount === true ? (
+                            <Text>Discounted</Text>
+                          ) : item?.paidStatus === true ? (
                             <Text style={styles.paidtextColor}> Paid</Text>
                           ) : (
                             <Text style={styles.DuestextColor}>Dues</Text>
@@ -1223,7 +1279,9 @@ const AddCollectFee = () => {
                         <Text> {item?.PerMonthFee}</Text>
 
                         <Text>
-                          {item?.paidStatus === true ? (
+                          {item?.Discount === true ? (
+                            <Text>Discounted</Text>
+                          ) : item?.paidStatus === true ? (
                             <Text style={styles.paidtextColor}> Paid</Text>
                           ) : (
                             <Text style={styles.DuestextColor}>Dues</Text>
@@ -1399,7 +1457,9 @@ const AddCollectFee = () => {
                         <Text> {item?.FeeAmount}</Text>
 
                         <Text>
-                          {item?.paidStatus === true ? (
+                          {item?.Discount === true ? (
+                            <Text>Discounted</Text>
+                          ) : item?.paidStatus === true ? (
                             <Text style={styles.paidtextColor}> Paid</Text>
                           ) : (
                             <Text style={styles.DuestextColor}>Dues</Text>
@@ -1519,6 +1579,10 @@ const AddCollectFee = () => {
 export default AddCollectFee;
 
 const styles = StyleSheet.create({
+  mainDiscountView: {
+    display: 'flex',
+    alignItems: 'center',
+  },
   MainViewSkip: {
     paddingLeft: deviceWidth * 0.02,
   },
@@ -1667,10 +1731,10 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    // justifyContent: 'space-between',
     width: '100%',
-    // paddingHorizontal: deviceWidth * 0.02,
-    // paddingVertical: deviceWidth * 0.02,
+    borderBottomWidth: 2,
+    borderBottomColor: Colors.primary,
+    paddingVertical: 10,
   },
   inputview: {
     width: Width(360),

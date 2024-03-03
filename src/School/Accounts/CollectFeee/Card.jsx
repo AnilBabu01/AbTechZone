@@ -257,7 +257,7 @@ export default Card;
 
 const styles = StyleSheet.create({
   cardContent: {
-    width: '30%',
+    width: '25%',
     marginBottom: deviceHeight * 0.01,
   },
   dateview: {

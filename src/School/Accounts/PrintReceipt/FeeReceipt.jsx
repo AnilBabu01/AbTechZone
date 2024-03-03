@@ -1,11 +1,4 @@
-import {
-  StyleSheet,
-  View,
-  ScrollView,
-  Text,
-  Share,
-  Pressable,
-} from 'react-native';
+import {StyleSheet, View, ScrollView, Text, Pressable} from 'react-native';
 import React, {useState, useEffect, useCallback} from 'react';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {useDispatch} from 'react-redux';
@@ -17,8 +10,8 @@ import RNFS from 'react-native-fs';
 import RNHTMLtoPDF from 'react-native-html-to-pdf';
 import FileViewer from 'react-native-file-viewer';
 import RNPrint from 'react-native-print';
-
-const Card = ({data}) => {
+import Share from 'react-native-share';
+const FeeReceipt = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const route = useRoute();
@@ -99,19 +92,20 @@ const Card = ({data}) => {
         base64: true,
       });
 
-      const result = await Share.share({
-        url: `file://${results.filePath}`,
-        message: 'Check out this PDF file!',
-      });
+      console.log('share filepath is', results);
+      
+      if (results) {
+        const shareOptions = {
+          title: 'Share PDF via',
+          url: `${results.filePath}`,
+          social: Share.Social.WHATSAPP,
+        };
 
-      if (result.action === Share.sharedAction) {
-        if (result.activityType) {
-          console.log(`Shared with activity type: ${result.activityType}`);
-        } else {
-          console.log('Shared successfully');
+        try {
+          await Share.shareSingle(shareOptions);
+        } catch (error) {
+          console.error(error.message);
         }
-      } else if (result.action === Share.dismissedAction) {
-        console.log('Share dismissed');
       }
     } catch (error) {
       console.error('Error sharing PDF:', error.message);
@@ -120,22 +114,21 @@ const Card = ({data}) => {
 
   return (
     <View>
+      <BackHeader title={'Print Fee Receipt'} />
       <ScrollView>
         <View style={styles.card}>
-          <Text style={styles.name}>Name : {data?.studentName}</Text>
-          <Text style={styles.name}>Roll Number: {data?.RollNo}</Text>
+          <Text style={styles.name}>Name : {isData?.studentName}</Text>
+          <Text style={styles.name}>Roll Number: {isData?.RollNo}</Text>
           <Text style={styles.name}>
-            SR No: <Text style={styles.rollNumber}> {data?.SNO}</Text>
+            SR No: <Text style={styles.rollNumber}> {isData?.SNO}</Text>
           </Text>
-          <Text style={styles.name}>
-            Amount: {data?.PaidAmount}
-          </Text>
+          <Text style={styles.name}>Amount: {isData?.PaidAmount}</Text>
           <Text style={styles.name}>
             Receipt No:
-            <Text style={styles.rollNumber}> {data?.ReceiptNo}</Text>
+            <Text style={styles.rollNumber}> {isData?.ReceiptNo}</Text>
           </Text>
           <Text style={styles.name}>
-            Paid Date: {moment(data?.PaidDate).format('DD/MM/YYYY')}
+            Paid Date: {moment(isData?.PaidDate).format('DD/MM/YYYY')}
           </Text>
           <View style={styles.mainbtn}>
             <Pressable onPress={() => handleGeneratePdf()}>
@@ -158,13 +151,13 @@ const Card = ({data}) => {
   );
 };
 
-export default Card;
+export default FeeReceipt;
 
 const styles = StyleSheet.create({
   card: {
     backgroundColor: '#fff',
     padding: 16,
-    margin: 10,
+    margin: 16,
     borderRadius: 8,
     shadowColor: '#000',
     shadowOffset: {width: 0, height: 2},

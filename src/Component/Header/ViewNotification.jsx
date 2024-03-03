@@ -5,11 +5,8 @@ import BackHeader from './BackHeader';
 const ViewNotification = () => {
   return (
     <>
-      <BackHeader title={'Notifications'} />
+      <BackHeader title={'Notifications'} icon={'envelope'} />
       <View style={styles.mainView}>
-        <NotificationCard />
-        <NotificationCard />
-        <NotificationCard />
         <NotificationCard />
       </View>
     </>

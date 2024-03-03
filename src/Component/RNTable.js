@@ -170,14 +170,22 @@ const RNTable = ({data, theme, isBorderCurve}) => {
                   {data?.allDetails ? (
                     <>
                       <View style={styles.iconView}>
-                        <TouchableOpacity onPress={() => ToUpdate(data)}>
-                          <View numberOfLines={1}>{data?.value}</View>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                          style={styles.deleteIcon}
-                          onPress={() => confirmation(data)}>
-                          <View numberOfLines={1}>{data?.Deleteicon}</View>
-                        </TouchableOpacity>
+                        {data?.value && (
+                          <>
+                            <TouchableOpacity onPress={() => ToUpdate(data)}>
+                              <View numberOfLines={1}>{data?.value}</View>
+                            </TouchableOpacity>
+                          </>
+                        )}
+                        {data?.Deleteicon && (
+                          <>
+                            <TouchableOpacity
+                              style={styles.deleteIcon}
+                              onPress={() => confirmation(data)}>
+                              <View numberOfLines={1}>{data?.Deleteicon}</View>
+                            </TouchableOpacity>
+                          </>
+                        )}
                       </View>
                     </>
                   ) : (

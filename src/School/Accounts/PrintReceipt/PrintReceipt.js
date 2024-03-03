@@ -18,11 +18,12 @@ import RNTable from '../../../Component/RNTable';
 import DownloadStudentData from '../../../Component/school/DownloadStudentData';
 import BackHeader from '../../../Component/Header/BackHeader';
 import SearchReceipt from '../../../Component/school/SearchReceipt';
+import {ActivityIndicator, MD2Colors} from 'react-native-paper';
 const PrintReceipt = () => {
   const dispatch = useDispatch();
   const [isdata, setisdata] = useState([]);
   const [Tabledata, setTabledata] = useState([]);
-  const [viewdata, setviewdata] = useState(false);
+  const [viewdata, setviewdata] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [showDocOptions, setShowDocOptions] = useState(false);
   const {loading, receiptdata} = useSelector(state => state.getReceiptPrint);
@@ -151,7 +152,7 @@ const PrintReceipt = () => {
               />
             ),
             allDetails: item,
-            DownloadUrl: 'UpdateAdmission',
+            redirect: 'FeeReceipt',
           });
         }),
     );
@@ -169,10 +170,10 @@ const PrintReceipt = () => {
   return (
     <>
       <View style={{flex: 1}}>
-        <BackHeader title={'Print Fee Receipt'} icon={'person'} />
+        <BackHeader title={'Fee Receipt'} icon={'person'} />
         <View style={styles.headerTitleContainer}>
           <View>
-            <Text style={styles.secondaryTitle}>Print Fee Receipt</Text>
+            <Text style={styles.secondaryTitle}>Fee Receipt</Text>
           </View>
           <View style={{flexDirection: 'row', gap: 10}}>
             <Pressable
@@ -185,7 +186,7 @@ const PrintReceipt = () => {
               style={styles.filterBtnContainer}>
               <Ionicons name="filter" color={Colors.primary} size={25} />
             </Pressable>
-            {/* <Pressable
+            <Pressable
               onPress={() => setviewdata(!viewdata)}
               style={styles.filterBtnContainer}>
               {viewdata ? (
@@ -197,17 +198,20 @@ const PrintReceipt = () => {
                   <FontAwesome6 name="table" color={Colors.primary} size={25} />
                 </>
               )}
-            </Pressable> */}
+            </Pressable>
           </View>
         </View>
 
         <ScrollView>
           {loading ? (
             <>
-              <DashboardPlaceholderLoader type="table" />
+              <View style={styles.loaderCenter}>
+                <ActivityIndicator size="large" animating={true} color={MD2Colors.red800} />
+              </View>
             </>
           ) : (
             <>
+
               {viewdata ? (
                 <>
                   <View style={styles.enquirymainview}>
@@ -245,6 +249,12 @@ const PrintReceipt = () => {
 export default PrintReceipt;
 
 const styles = StyleSheet.create({
+  loaderCenter: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingTop:"50%"
+  },
   dateview: {
     display: 'flex',
     justifyContent: 'space-between',

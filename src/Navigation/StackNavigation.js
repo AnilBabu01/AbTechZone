@@ -186,6 +186,8 @@ import Analysie from '../School/Expenses/ExpensesAnalysie/Analysie';
 import ViewNotification from '../Component/Header/ViewNotification';
 import ReadMore from '../Component/Header/ReadMore';
 
+import FeeReceipt from '../School/Accounts/PrintReceipt/FeeReceipt';
+
 import {primary} from '../utils/Colors';
 const Stack = createNativeStackNavigator();
 
@@ -525,6 +527,8 @@ function StackNavigation() {
       <Stack.Screen name="Analysie" component={Analysie} />
       <Stack.Screen name="ViewNotification" component={ViewNotification} />
       <Stack.Screen name="ReadMore" component={ReadMore} />
+      <Stack.Screen name="FeeReceipt" component={FeeReceipt} />
+      
       <Stack.Screen name="DashboardCollege" component={DashboardCollege} />
       <Stack.Screen name="DashboardSchool" component={DashboardSchool} />
       <Stack.Screen name="DashboardEmplyee" component={DashboardEmplyee} />

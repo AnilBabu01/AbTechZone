@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {Colors} from '../../utils/Colors';
 const NotificationCard = () => {
   const navigation = useNavigation();
-
+  
   return (
     <>
       <View style={styles.maincard}>

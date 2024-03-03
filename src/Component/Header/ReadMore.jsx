@@ -5,7 +5,7 @@ import BackHeader from './BackHeader';
 const ReadMore = () => {
   return (
     <View>
-      <BackHeader title={'Read More'} />
+      <BackHeader title={'Read More'} icon={'envelope'} />
       <View style={styles.mainReadMore}>
         <Text>ReadMore</Text>
       </View>

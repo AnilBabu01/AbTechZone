@@ -2,7 +2,6 @@ import {
   StyleSheet,
   Text,
   View,
-  Image,
   TouchableOpacity,
   Dimensions,
 } from 'react-native';
@@ -10,7 +9,6 @@ import React from 'react';
 import {primary, hightlight} from '../../utils/Colors';
 import {Height, Width} from '../../utils/responsive';
 import {useNavigation} from '@react-navigation/native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import {Colors} from '../../utils/Colors';
 const windowWidth = Dimensions.get('window').width;

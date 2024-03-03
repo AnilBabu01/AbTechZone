@@ -295,7 +295,7 @@ const Dashboard = () => {
     setBarCharSessionExpenses(CURRENTSESSION);
     if (CURRENTSESSION) {
       getPaidFeeLineChart();
-    
+
       // getPaidFeeBarChart();
 
       // getExpensesBarChart();
