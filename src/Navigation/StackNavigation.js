@@ -69,8 +69,10 @@ import UpdateCredentialSchool from '../School/Profile/UpdateCredential';
 import UpdateImgaesSchool from '../School/Profile/UpdateImgaes';
 import UpdateCommunicationSchool from '../School/Profile/UpdateCommunication';
 import EmployeeSchool from '../School/HumanResourse/Staff/AddEmployee';
+
 import AddCollectFeeSchool from '../School/Accounts/CollectFeee/AddCollectFee';
 import UpdateCollectFeeSchool from '../School/Accounts/CollectFeee/UpdateCollectFee';
+
 import FeeCollectSchool from '../School/Accounts/CollectFeee/FeeCollect';
 import SearchPaidSchool from '../School/Accounts/PaidFee/SearchPaid';
 import SearchPendingFeeSchool from '../School/Accounts/PendingFee/SearchPendingFee';
@@ -86,7 +88,7 @@ import TransferCer from '../School/Student/TC/TransferCer';
 import AddTimeTable from '../School/Student/TimeTable/AddTimeTable';
 import ChangeSession from '../School/Student/ChangeSession/ChangeSession';
 import PrintReceipt from '../School/Accounts/PrintReceipt/PrintReceipt';
-import SearchFee from '../School/Accounts/SearchFee/SearchFee';
+import SearchFeeTab from '../School/Accounts/SearchFee/SearchFeeTab';
 import EmpAddholiday from '../School/HumanResourse/AddHoliday/EmpAddholiday';
 import EmpAssignRole from '../School/HumanResourse/AssignRole/EmpAssignRole';
 import EmpAddpayroll from '../School/HumanResourse/AddPayRoll/EmpAddpayroll';
@@ -135,6 +137,7 @@ import SendmailToEmp from '../School/HumanResourse/SendSmsEmp/SendmailToEmp';
 import Addholiday from '../School/HumanResourse/AddHoliday/Addholiday';
 import Updateholiday from '../School/HumanResourse/AddHoliday/Updateholiday';
 import SendEmailToStudent from '../School/Student/SendSms.js/SendEmailToStudent';
+
 ///add and update master data
 
 import Addcast from '../School/Masters/AddCaste/Addcast';
@@ -167,6 +170,22 @@ import AdOtherFee from '../School/Student/OtherFee/AdOtherFee';
 import UpdateOtherFee from '../School/Student/OtherFee/UpdateOtherFee';
 import AdTimeTable from '../School/Student/TimeTable/AdTimeTable';
 import UpdateTimeTable from '../School/Student/TimeTable/UpdateTimeTable';
+
+///Expenses screens
+import ExpensesOptions from '../School/Expenses/ExpensesOptions';
+import AddExpenses from '../School/Expenses/AddExpenses/AddExpenses';
+import AdExpenses from '../School/Expenses/AddExpenses/AdExpenses';
+import UpdateExpenses from '../School/Expenses/AddExpenses/UpdateExpenses';
+
+import TransferCachOnline from '../School/Expenses/CashBankTransfer/TransferCachOnline';
+import TransferCaseOnline from '../School/Expenses/CashBankTransfer/TransferCaseOnline';
+import UpdateTranscashOnline from '../School/Expenses/CashBankTransfer/UpdateTranscashOnline';
+
+import Analysie from '../School/Expenses/ExpensesAnalysie/Analysie';
+
+import ViewNotification from '../Component/Header/ViewNotification';
+import ReadMore from '../Component/Header/ReadMore';
+
 import {primary} from '../utils/Colors';
 const Stack = createNativeStackNavigator();
 
@@ -472,7 +491,7 @@ function StackNavigation() {
       <Stack.Screen name="SendEmailToStudent" component={SendEmailToStudent} />
 
       <Stack.Screen name="FeeCollectSchool" component={FeeCollectSchool} />
-      <Stack.Screen name="SearchFee" component={SearchFee} />
+      <Stack.Screen name="SearchFeeTab" component={SearchFeeTab} />
       <Stack.Screen name="PrintReceipt" component={PrintReceipt} />
       <Stack.Screen
         name="AddCollectFeeSchool"
@@ -493,6 +512,19 @@ function StackNavigation() {
         component={ReportsOptionsSchool}
       />
 
+      <Stack.Screen name="ExpensesOptions" component={ExpensesOptions} />
+      <Stack.Screen name="AddExpenses" component={AddExpenses} />
+      <Stack.Screen name="AdExpenses" component={AdExpenses} />
+      <Stack.Screen name="UpdateExpenses" component={UpdateExpenses} />
+      <Stack.Screen name="TransferCachOnline" component={TransferCachOnline} />
+      <Stack.Screen name="TransferCaseOnline" component={TransferCaseOnline} />
+      <Stack.Screen
+        name="UpdateTranscashOnline"
+        component={UpdateTranscashOnline}
+      />
+      <Stack.Screen name="Analysie" component={Analysie} />
+      <Stack.Screen name="ViewNotification" component={ViewNotification} />
+      <Stack.Screen name="ReadMore" component={ReadMore} />
       <Stack.Screen name="DashboardCollege" component={DashboardCollege} />
       <Stack.Screen name="DashboardSchool" component={DashboardSchool} />
       <Stack.Screen name="DashboardEmplyee" component={DashboardEmplyee} />

@@ -19,6 +19,8 @@ const UpdateFee = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const [isdata, setisdata] = useState('');
+  const [adminssionfee, setadminssionfee] = useState('');
+  const [AnnualFee, setAnnualFee] = useState('');
   const [studentClassName, setstudentClassName] = useState('');
   const [RegistrationFee, setRegistrationFee] = useState('');
   const [courseduration, setcourseduration] = useState('');
@@ -34,6 +36,8 @@ const UpdateFee = () => {
       Registractionfee: RegistrationFee,
       feepermonth: PerMonthFee,
       coursename: studentClassName,
+      adminssionfee: adminssionfee,
+      AnnualFee: AnnualFee,
       courseduration: courseduration,
     };
     serverInstance('comman/fee', 'put', data).then(res => {
@@ -64,6 +68,8 @@ const UpdateFee = () => {
       setPerMonthFee(route.params?.data?.feepermonth?.toString());
       setRegistrationFee(route.params?.data?.Registractionfee?.toString());
       setstudentClassName(route.params?.data?.coursename);
+      setAnnualFee(route.params?.data?.AnnualFee?.toString());
+      setadminssionfee(route.params?.data?.adminssionfee?.toString());
     }
   }, []);
 
@@ -126,6 +132,38 @@ const UpdateFee = () => {
                   value={RegistrationFee}
                   onChangeText={data => setRegistrationFee(data)}
                   placeholder="Enter Registration Fee"
+                />
+              </View>
+            </View>
+            <View>
+              <View
+                style={{
+                  marginHorizontal: deviceWidth * 0.04,
+                  position: 'relative',
+                  marginTop: 30,
+                }}>
+                <RNInputField
+                  style={{backgroundColor: Colors.fadeGray}}
+                  label="Admission Fee"
+                  value={adminssionfee}
+                  onChangeText={data => setadminssionfee(data)}
+                  placeholder="Enter Admission Fee"
+                />
+              </View>
+            </View>
+            <View>
+              <View
+                style={{
+                  marginHorizontal: deviceWidth * 0.04,
+                  position: 'relative',
+                  marginTop: 30,
+                }}>
+                <RNInputField
+                  style={{backgroundColor: Colors.fadeGray}}
+                  label="Annual Fee"
+                  value={AnnualFee}
+                  onChangeText={data => setAnnualFee(data)}
+                  placeholder="Enter Annual Fee"
                 />
               </View>
             </View>

@@ -32,7 +32,7 @@ const FeeCollectOptions = () => {
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={() => navigation.navigate('SearchFee')}>
+          onPress={() => navigation.navigate('SearchFeeTab')}>
           <View style={styles.mainoption}>
             <FontAwesome6
               name="magnifying-glass"

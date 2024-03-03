@@ -184,13 +184,13 @@ const UpdateRole = () => {
       formData.append('JoningLater', '');
 
       formData.append('fronrofice', frontoffice);
-      formData.append('fronroficeRead', frontoffice);
+      formData.append('fronroficeRead', frontofficeR);
       formData.append('fronroficeWrite', frontofficeW);
       formData.append('fronroficeEdit', frontofficeE);
       formData.append('fronroficeDelete', frontofficeD);
 
       formData.append('student', student);
-      formData.append('studentRead', student);
+      formData.append('studentRead', studentR);
       formData.append('studentWrite', studentW);
       formData.append('studentEdit', studentE);
       formData.append('studentDelete', studentD);
@@ -439,7 +439,7 @@ const UpdateRole = () => {
               <View style={styles.optionview}>
                 <Text>Update</Text>
                 <Checkbox
-                  status={studentW ? 'checked' : 'unchecked'}
+                  status={studentE ? 'checked' : 'unchecked'}
                   color={Colors.primary}
                   onPress={() => setstudentE(!studentE)}
                 />

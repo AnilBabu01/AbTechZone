@@ -7,6 +7,7 @@ import {
   ScrollView,
   Image,
 } from 'react-native';
+
 import React, {useState, useEffect} from 'react';
 import {Height, Width} from '../../../utils/responsive';
 import {primary} from '../../../utils/Colors';
@@ -34,20 +35,68 @@ import {backendApiUrl} from '../../../Config/config';
 import axios from 'axios';
 import Toast from 'react-native-toast-message';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+
+let formData = new FormData();
+
 const EmpStatusList = [
   {label: 'Active', value: 'Active'},
   {label: 'On Leave', value: 'On Leave'},
   {label: 'Left In Middle', value: 'Left'},
 ];
 
-let formData = new FormData();
+const CasteList = [
+  {label: 'General', value: 'General'},
+  {label: 'OBC', value: 'OBC'},
+  {label: 'SC', value: 'SC'},
+  {label: 'ST', value: 'ST'},
+  {label: 'Others', value: 'Others'},
+];
+
+const BloodGroupList = [
+  {label: '(A+)', value: '(A+)'},
+  {label: '(A-)', value: '(A-)'},
+  {label: '(B+)', value: '(B+)'},
+  {label: '(B-)', value: '(B-)'},
+  {label: '(O+)', value: '(O+)'},
+  {label: '(O-)', value: '(O-)'},
+  {label: '(AB+)', value: '(AB+)'},
+  {label: '(AB-)', value: '(AB-)'},
+  {
+    label: 'Under Investigation OR N.A.',
+    value: 'Under Investigation OR N.A.',
+  },
+];
+
+const religionList = [
+  {label: 'Hinduism', value: 'Hinduism'},
+  {label: 'Muslim', value: 'Muslim'},
+  {label: 'Sikhism', value: 'Sikhism'},
+  {label: 'Buddhism', value: 'Buddhism'},
+  {label: 'Jainism', value: 'Jainism'},
+  {label: 'Christianity', value: 'Christianity'},
+  {label: 'Others', value: 'Others'},
+];
+
+const GenderListList = [
+  {label: 'Male', value: 'Male'},
+  {label: 'Female', value: 'Female'},
+  {label: 'Others', value: 'Others'},
+];
+
 const AddEmployee = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
+
+  const [Religion, setReligion] = useState('');
+  const [Nationality, setNationality] = useState('Indian');
+  const [gender, setgender] = useState('Male');
+  const [BloodGroup, setBloodGroup] = useState('');
+
   const [loading, setloading] = useState(false);
   const [openModel, setopenModel] = useState(false);
   const [isdata, setisData] = useState([]);
   const [isdata1, setisdata1] = useState([]);
+  const [categoryname, setcategoryname] = useState('');
   const [emplyeetype, setemplyeetype] = useState('employee');
   const [designationname, setdesignationname] = useState('');
   const [depart, setdepart] = useState('');
@@ -114,6 +163,13 @@ const AddEmployee = () => {
       formData.append('department', depart);
       formData.append('joiningdate', joiningdatenew);
       formData.append('address', address);
+
+      formData.append('Caste', categoryname);
+      formData.append('Religion', Religion);
+      formData.append('Nationality', Nationality);
+      formData.append('Gender', gender);
+      formData.append('BloodGroup', BloodGroup);
+
       // formData.append('profileurl', profileimg);
       formData.append('basicsalary', Number(basicsalary));
       formData.append('Allowance1', allowance1);
@@ -172,7 +228,9 @@ const AddEmployee = () => {
         navigation.goBack();
       }
     } catch (error) {
-      console.log(error);
+
+      console.log("error adding data is",error);
+
       setloading(false);
       Toast.show({
         type: 'error',
@@ -921,6 +979,137 @@ const AddEmployee = () => {
                 />
               </View>
             </FlexRowWrapper>
+
+            <FlexRowWrapper>
+              <View style={{width: '45%'}}>
+                <View style={{marginHorizontal: deviceWidth * 0.01}}>
+                  <Text
+                    style={{fontSize: 14, fontWeight: '600', lineHeight: 19}}>
+                    Gender
+                  </Text>
+                  <Dropdown
+                    style={styles.dropstyle}
+                    placeholderStyle={styles.placeholderStyle}
+                    selectedTextStyle={styles.selectedTextStyle}
+                    inputSearchStyle={styles.inputSearchStyle}
+                    iconStyle={styles.iconStyle}
+                    data={GenderListList}
+                    search
+                    maxHeight={300}
+                    labelField="label"
+                    valueField="value"
+                    placeholder="Select"
+                    searchPlaceholder="Search..."
+                    value={gender}
+                    onChange={item => {
+                      setgender(item.value);
+                    }}
+                  />
+                </View>
+              </View>
+              <View style={{width: '45%', marginBottom: deviceHeight * 0.02}}>
+                <View style={{marginHorizontal: deviceWidth * 0.01}}>
+                  <Text
+                    style={{fontSize: 14, fontWeight: '600', lineHeight: 19}}>
+                    Blood Group
+                  </Text>
+                  <Dropdown
+                    style={styles.dropstyle}
+                    placeholderStyle={styles.placeholderStyle}
+                    selectedTextStyle={styles.selectedTextStyle}
+                    inputSearchStyle={styles.inputSearchStyle}
+                    iconStyle={styles.iconStyle}
+                    data={BloodGroupList}
+                    search
+                    maxHeight={300}
+                    defaultValue={'NONE'}
+                    labelField="label"
+                    valueField="value"
+                    placeholder="Select"
+                    searchPlaceholder="Search..."
+                    value={BloodGroup}
+                    onChange={item => {
+                      setBloodGroup(item.value);
+                    }}
+                  />
+                </View>
+              </View>
+            </FlexRowWrapper>
+
+            <FlexRowWrapper>
+              <View style={{width: '45%'}}>
+                <View style={{marginHorizontal: deviceWidth * 0.01}}>
+                  <Text
+                    style={{fontSize: 14, fontWeight: '600', lineHeight: 19}}>
+                    Religion
+                  </Text>
+                  <Dropdown
+                    style={styles.dropstyle}
+                    placeholderStyle={styles.placeholderStyle}
+                    selectedTextStyle={styles.selectedTextStyle}
+                    inputSearchStyle={styles.inputSearchStyle}
+                    iconStyle={styles.iconStyle}
+                    data={religionList}
+                    search
+                    maxHeight={300}
+                    labelField="label"
+                    valueField="value"
+                    placeholder="Select"
+                    searchPlaceholder="Search..."
+                    value={Religion}
+                    onChange={item => {
+                      setReligion(item.value);
+                    }}
+                  />
+                </View>
+              </View>
+              <View style={{width: '45%'}}>
+                <RNInputField
+                  label="Nationality"
+                  placeholder="Enter Nationality"
+                  value={Nationality}
+                  onChangeText={data => setNationality(data)}
+                  keyboardType="number-pad"
+                />
+              </View>
+
+            </FlexRowWrapper>
+            <FlexRowWrapper>
+              <View style={{width: '45%'}}>
+                <View style={{marginHorizontal: deviceWidth * 0.01}}>
+                  <Text
+                    style={{fontSize: 14, fontWeight: '600', lineHeight: 19}}>
+                    Caste
+                  </Text>
+                  <Dropdown
+                    style={styles.dropstyle}
+                    placeholderStyle={styles.placeholderStyle}
+                    selectedTextStyle={styles.selectedTextStyle}
+                    inputSearchStyle={styles.inputSearchStyle}
+                    iconStyle={styles.iconStyle}
+                    data={CasteList}
+                    search
+                    maxHeight={300}
+                    labelField="label"
+                    valueField="value"
+                    placeholder="Select"
+                    searchPlaceholder="Search..."
+                    value={categoryname}
+                    onChange={item => {
+                      setcategoryname(item.value);
+                    }}
+                  />
+                </View>
+              </View>
+              <View style={{width: '45%'}}>
+                <RNInputField
+                  label="Allow Leave"
+                  placeholder="Enter Allow Leave "
+                  value={leaveNo}
+                  onChangeText={data => setleaveNo(data)}
+                />
+              </View>
+            </FlexRowWrapper>
             <FlexRowWrapper>
               <View style={{width: '45%'}}>
                 <RNInputField
@@ -940,16 +1129,7 @@ const AddEmployee = () => {
               </View>
             </FlexRowWrapper>
 
-            <FlexRowWrapper>
-              <View style={{width: '95%'}}>
-                <RNInputField
-                  label="Allow Leave"
-                  placeholder="Enter Allow Leave "
-                  value={leaveNo}
-                  onChangeText={data => setleaveNo(data)}
-                />
-              </View>
-            </FlexRowWrapper>
+           
             <FlexRowWrapper>
               <View style={{width: '45%'}}>
                 <RNInputField

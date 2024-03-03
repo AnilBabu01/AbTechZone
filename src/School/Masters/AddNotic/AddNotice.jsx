@@ -30,6 +30,7 @@ const AddNotice = ({navigation}) => {
   const [showModal, setShowModal] = useState(false);
   const [showDocOptions, setShowDocOptions] = useState(false);
   const {notic, loading} = useSelector(state => state.GetNotic);
+  
   const enquiryTableList = [
     {
       title: 'Sr.No',

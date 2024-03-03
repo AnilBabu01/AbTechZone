@@ -206,6 +206,10 @@ const Add = ({navigation}) => {
                   size={18.3}
                 />
               ),
+              Deleteicon: (
+                <Ionicons name="trash-outline" color={Colors.red} size={18.3} />
+              ),
+              deleteUrl: 'student/addstudent',
               allDetails: item,
               redirect: 'UpdateAdmission',
             });

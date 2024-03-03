@@ -122,7 +122,7 @@ const StudentFilter = ({showModal, setShowModal}) => {
           <View
             style={{
               backgroundColor: Colors.white,
-              borderRadius: deviceWidth * 0.05,
+              // borderRadius: deviceWidth * 0.05,
               paddingHorizontal: deviceWidth * 0.02,
               paddingBottom: deviceHeight * 0.03,
             }}>
@@ -402,6 +402,7 @@ const StudentFilter = ({showModal, setShowModal}) => {
 export default StudentFilter;
 
 const styles = StyleSheet.create({
+  
   bottomBtn: {
     marginBottom: deviceHeight * 0.01,
     width: '100%',

@@ -24,7 +24,6 @@ import {
   getstudent,
   getbatch,
   getfeelist,
-  Addstudent,
   Updatestudent,
 } from '../../../redux/action/commanAction';
 import {useNavigation, useRoute} from '@react-navigation/native';
@@ -51,6 +50,46 @@ const studentStatus = [
   {label: 'Completed', value: 'Completed'},
   {label: 'Unknown', value: 'Unknown'},
 ];
+
+const CasteList = [
+  {label: 'General', value: 'General'},
+  {label: 'OBC', value: 'OBC'},
+  {label: 'SC', value: 'SC'},
+  {label: 'ST', value: 'ST'},
+  {label: 'Others', value: 'Others'},
+];
+
+const BloodGroupList = [
+  {label: '(A+)', value: '(A+)'},
+  {label: '(A-)', value: '(A-)'},
+  {label: '(B+)', value: '(B+)'},
+  {label: '(B-)', value: '(B-)'},
+  {label: '(O+)', value: '(O+)'},
+  {label: '(O-)', value: '(O-)'},
+  {label: '(AB+)', value: '(AB+)'},
+  {label: '(AB-)', value: '(AB-)'},
+  {
+    label: 'Under Investigation OR N.A.',
+    value: 'Under Investigation OR N.A.',
+  },
+];
+
+const religionList = [
+  {label: 'Hinduism', value: 'Hinduism'},
+  {label: 'Muslim', value: 'Muslim'},
+  {label: 'Sikhism', value: 'Sikhism'},
+  {label: 'Buddhism', value: 'Buddhism'},
+  {label: 'Jainism', value: 'Jainism'},
+  {label: 'Christianity', value: 'Christianity'},
+  {label: 'Others', value: 'Others'},
+];
+
+const GenderListList = [
+  {label: 'Male', value: 'Male'},
+  {label: 'Female', value: 'Female'},
+  {label: 'Others', value: 'Others'},
+];
+
 let formData = new FormData();
 const UpdateAdmission = () => {
   const newroute = useRoute();
@@ -64,6 +103,18 @@ const UpdateAdmission = () => {
   const [whatsaapnumber, setwhatsaapnumber] = useState('');
   const [stream, setstream] = useState('NONE');
   const [noofMonth, setnoofMonth] = useState('');
+
+  const [Religion, setReligion] = useState('');
+  const [Nationality, setNationality] = useState('Indian');
+  const [address, setaddress] = useState('');
+  const [gender, setgender] = useState('Male');
+  const [BloodGroup, setBloodGroup] = useState('');
+  const [mothersname, setmothersname] = useState('');
+  const [mothersPhoneNo, setmothersPhoneNo] = useState('');
+  const [PreviousTcNo, setPreviousTcNo] = useState('');
+  const [PreviousSchool, setPreviousSchool] = useState('');
+  const [PreviousSchoolAddress, setPreviousSchoolAddress] = useState('');
+
   const [DateOfBirth, setDateOfBirth] = useState(getTodaysDate());
   const [datecertificatePreview, setdatecertificatePreview] = useState('');
   const [islibrary, setislibrary] = useState(false);
@@ -134,7 +185,12 @@ const UpdateAdmission = () => {
   const [TransportFeePermonth, setTransportFeePermonth] = useState('');
   const [loading1, setloading1] = useState(false);
   const [loading2, setloading2] = useState(false);
+
   const [annualfee, setannualfee] = useState('');
+  const [annualmanualfee, setannualmanualfee] = useState('');
+
+  const [AdmissionFee, setAdmissionFee] = useState('');
+  const [AdmissionFeeManual, setAdmissionFeeManual] = useState('');
   const [profile64, setprofile64] = useState('');
   const [adhar64, setadhar64] = useState('');
   const [markSheet64, setmarkSheet64] = useState('');
@@ -156,6 +212,7 @@ const UpdateAdmission = () => {
   const {CURRENTSESSION} = useSelector(state => state.GetCurrentSession);
   const {Sessions} = useSelector(state => state.GetSession);
   const [classfee, setclassfee] = useState('');
+
   let regfee = classfee?.split(' ').pop();
   var lastIndex = classfee?.lastIndexOf(' ');
   let first = classfee?.substring(0, lastIndex);
@@ -168,6 +225,16 @@ const UpdateAdmission = () => {
   var lastIndex = coursein?.lastIndexOf(' ');
   let regcoursein = coursein?.substring(0, lastIndex);
 
+  let valuesArray = classfee?.split(' ');
+  let [
+    coursename,
+    courseduration,
+    feepermonth,
+    Registractionfee,
+    adminssionfee,
+    AnnualFee,
+  ] = valuesArray;
+
   const submit = async () => {
     try {
       var momentDate = moment(adminssiondate, 'DD/MM/YYYY');
@@ -178,53 +245,46 @@ const UpdateAdmission = () => {
       formData.append('name', studentname);
       formData.append('email', studentemail);
       formData.append('phoneno1', studentphone);
-      formData.append('city', city);
-      formData.append('state', state);
-      formData.append('pincode', Pincode);
+      formData.append('Religion', Religion);
+      formData.append('Nationality', Nationality);
+      formData.append('Gender', gender);
+      formData.append('BloodGroup', BloodGroup);
+      formData.append('address', address);
+      formData.append('PreviousTcNo', PreviousTcNo);
+      formData.append('PreviousSchoolName', PreviousSchool);
+      formData.append('PreviousSchoolAddress', PreviousSchoolAddress);
 
-      formData.append(
-        'profileurl',
-        profile64 ? profile64 : updatedata?.profileurl,
-      );
-      formData.append('adharcard', adhar64 ? adhar64 : updatedata?.adharcard);
-      formData.append(
-        'markSheet',
-        markSheet64 ? markSheet64 : updatedata?.markSheet,
-      );
-      formData.append('othersdoc', other64 ? other64 : updatedata?.othersdoc);
-      formData.append(
-        'BirthDocument',
-        birth64 ? birth64 : updatedata?.BirthDocument,
-      );
+      formData.append('whatsappNo', fathersphone);
+      formData.append('MathersName', mothersname);
+      formData.append('MathersPhoneNo', mothersPhoneNo);
+      formData.append('MatherswhatsappNo', mothersPhoneNo);
 
+      formData.append('othersdoc', '');
+      formData.append('BirthDocument', '');
       formData.append('fathersPhoneNo', fathersphone);
       formData.append('fathersName', fathersname);
-      formData.append('courseorclass', regcoursein);
-      formData.append('rollnumber', Number(studentrollno));
+      formData.append('courseorclass', coursename);
+      formData.append('rollnumber', studentrollno);
       formData.append('StudentStatus', studentstatus);
+      formData.append('Status', studentstatus);
       formData.append('batch', batchname);
 
       formData.append('admissionDate', newadminssiondate);
 
-      formData.append(
-        'regisgrationfee',
-        selectedValue === 'option1' ? Number(regfee) : Number(amount),
-      );
-
       formData.append('courseduration', '');
-      formData.append('adharno', Number(adharcardno));
+      formData.append('adharno', adharcardno);
       formData.append('pancardnno', pano);
-      formData.append('whatsappNo', fathersphone);
+      formData.append('PEN', pano);
       formData.append('markSheetname', marksheetName);
       formData.append('othersdocName', othersname);
-      // formData.append('Status', studentStatus);
+    
       formData.append('Transport', istransport);
       formData.append('FromRoute', '');
       formData.append('ToRoute', '');
       formData.append('BusNumber', '');
       formData.append('Library', islibrary);
       formData.append('hostal', ishostel);
-      formData.append('AnnualFee', annualfee);
+
       formData.append('Section', sectionname);
       formData.append('Session', sessionname);
       formData.append('SrNumber', SrNumber);
@@ -264,28 +324,33 @@ const UpdateAdmission = () => {
 
       formData.append(
         'permonthfee',
-        selectedValue === 'option1' ? Number(perFee) : Number(monthlyfee),
+        selectedValue === 'option1' ? Number(feepermonth) : Number(monthlyfee),
+      );
+
+      formData.append(
+        'AnnualFee',
+        selectedValue === 'option1'
+          ? Number(AnnualFee)
+          : Number(annualmanualfee),
+      );
+      formData.append(
+        'admissionfee',
+        selectedValue === 'option1'
+          ? Number(adminssionfee)
+          : Number(AdmissionFeeManual),
+      );
+
+      formData.append(
+        'regisgrationfee',
+        selectedValue === 'option1' ? Number(Registractionfee) : Number(amount),
       );
 
       formData.append(
         'studentTotalFee',
         selectedValue === 'option1'
-          ? Number(perFee) * 12
+          ? Number(feepermonth) * 12
           : Number(monthlyfee) * 12,
       );
-      // formData.append(
-      //   'Studentpassword',
-      //   user?.data[0]?.Studentpassword
-      //     ? user?.data[0]?.Studentpassword
-      //     : 'student',
-      // );
-
-      // formData.append(
-      //   'Parentpassword',
-      //   user?.data[0]?.Parentpassword
-      //     ? user?.data[0]?.Parentpassword
-      //     : 'parent',
-      // );
 
       setloader(true);
 
@@ -299,11 +364,15 @@ const UpdateAdmission = () => {
 
   useEffect(() => {
     if (newroute?.params?.data) {
-      let feeob = fee?.find(({coursename}) => coursename === courses);
-      setclassfee(
-        `${feeob?.coursename} ${feeob?.courseduration} ${feeob?.feepermonth} ${feeob?.Registractionfee}`,
+      let feeob = fee?.find(
+        ({coursename}) => coursename === updatedata?.courseorclass,
       );
-
+      setclassfee(
+        `${feeob?.coursename} ${feeob?.courseduration} ${feeob?.feepermonth} ${feeob?.Registractionfee} ${feeob?.adminssionfee} ${feeob?.AnnualFee}`,
+      );
+      setcourses(
+        `${feeob?.coursename} ${feeob?.courseduration} ${feeob?.feepermonth} ${feeob?.Registractionfee} ${feeob?.adminssionfee} ${feeob?.AnnualFee}`,
+      );
       setupdatedata(newroute.params.data);
       setSrNumber(updatedata?.SrNumber?.toString());
       setstudentrollno(updatedata?.rollnumber?.toString());
@@ -316,9 +385,7 @@ const UpdateAdmission = () => {
       setadharcardno(updatedata?.adharno?.toString());
       setstate(updatedata?.state);
       setcity(updatedata?.city);
-      setstate(updatedata?.state);
-      // setbatchname(updatedata?.batch);
-      setcourses(updatedata?.courseorclass);
+
       setadminssiondate(moment(updatedata?.admissionDate).format('DD/MM/YYYY'));
       setPincode(updatedata?.pincode);
       setwhatsaapnumber(updatedata?.whatsappNo);
@@ -331,10 +398,14 @@ const UpdateAdmission = () => {
       setphoto(updatedata?.profileurl);
       setstatus(updatedata?.Status);
       setnoofMonth(updatedata?.courseduration);
+
       setamount(updatedata?.regisgrationfee?.toString());
       setmonthlyfee(updatedata?.permonthfee?.toString());
       setonlyshowmonthfee(updatedata?.permonthfee?.toString());
       setonlyshowrefee(updatedata?.regisgrationfee)?.toString();
+      setAdmissionFeeManual(updatedata?.admissionfee?.toString());
+      setannualmanualfee(updatedata?.AnnualFee?.toString());
+
       setistransport(updatedata?.Transport);
       setislibrary(updatedata?.Library);
       setishostel(updatedata?.hostal);
@@ -348,10 +419,19 @@ const UpdateAdmission = () => {
       sethostelcategory(updatedata?.Category);
       setfromroute(updatedata?.FromRoute);
       settoroute(updatedata?.ToRoute);
-      setpano(updatedata?.pancardnno?.toString());
+      setpano(updatedata?.PEN?.toString());
       setDateOfBirth(moment(updatedata?.DateOfBirth).format('DD/MM/YYYY'));
       setcategoryname(updatedata?.StudentCategory);
       setstream(updatedata?.Stream);
+      setgender(updatedata?.Gender);
+      setReligion(updatedata?.Religion);
+      setBloodGroup(updatedata?.BloodGroup);
+      setaddress(updatedata?.address);
+      setPreviousTcNo(updatedata?.PreviousTcNo);
+      setPreviousSchool(updatedata?.PreviousSchool);
+      setPreviousSchoolAddress(updatedata?.PreviousSchoolAddress);
+      setmothersname(updatedata?.MathersName);
+      setmothersPhoneNo(updatedata?.MathersPhoneNo);
     }
   }, [updatedata, fee]);
 
@@ -826,7 +906,6 @@ const UpdateAdmission = () => {
               </TouchableOpacity>
             </View>
           </View>
-          
         </View>
       </Modal>
       <BackHeader title={'Update Admission'} />
@@ -868,6 +947,7 @@ const UpdateAdmission = () => {
                 />
               </View>
             </FlexRowWrapper>
+
             <FlexRowWrapper>
               <View style={{width: '45%'}}>
                 <View style={{marginHorizontal: deviceWidth * 0.01}}>
@@ -948,13 +1028,7 @@ const UpdateAdmission = () => {
                     selectedTextStyle={styles.selectedTextStyle}
                     inputSearchStyle={styles.inputSearchStyle}
                     iconStyle={styles.iconStyle}
-                    data={
-                      categorylist &&
-                      categorylist?.map(item => ({
-                        label: `${item?.category}`,
-                        value: `${item?.category}`,
-                      }))
-                    }
+                    data={CasteList}
                     search
                     maxHeight={300}
                     labelField="label"
@@ -973,6 +1047,98 @@ const UpdateAdmission = () => {
                   title="Date Of Birth"
                   value={DateOfBirth}
                   onDateChange={date => setDateOfBirth(handleDate(date))}
+                />
+              </View>
+            </FlexRowWrapper>
+            <FlexRowWrapper>
+              <View style={{width: '45%'}}>
+                <View style={{marginHorizontal: deviceWidth * 0.01}}>
+                  <Text
+                    style={{fontSize: 14, fontWeight: '600', lineHeight: 19}}>
+                    Gender
+                  </Text>
+                  <Dropdown
+                    style={styles.dropstyle}
+                    placeholderStyle={styles.placeholderStyle}
+                    selectedTextStyle={styles.selectedTextStyle}
+                    inputSearchStyle={styles.inputSearchStyle}
+                    iconStyle={styles.iconStyle}
+                    data={GenderListList}
+                    search
+                    maxHeight={300}
+                    labelField="label"
+                    valueField="value"
+                    placeholder="Select"
+                    searchPlaceholder="Search..."
+                    value={gender}
+                    onChange={item => {
+                      setgender(item.value);
+                    }}
+                  />
+                </View>
+              </View>
+              <View style={{width: '45%', marginBottom: deviceHeight * 0.02}}>
+                <View style={{marginHorizontal: deviceWidth * 0.01}}>
+                  <Text
+                    style={{fontSize: 14, fontWeight: '600', lineHeight: 19}}>
+                    Blood Group
+                  </Text>
+                  <Dropdown
+                    style={styles.dropstyle}
+                    placeholderStyle={styles.placeholderStyle}
+                    selectedTextStyle={styles.selectedTextStyle}
+                    inputSearchStyle={styles.inputSearchStyle}
+                    iconStyle={styles.iconStyle}
+                    data={BloodGroupList}
+                    search
+                    maxHeight={300}
+                    defaultValue={'NONE'}
+                    labelField="label"
+                    valueField="value"
+                    placeholder="Select"
+                    searchPlaceholder="Search..."
+                    value={BloodGroup}
+                    onChange={item => {
+                      setBloodGroup(item.value);
+                    }}
+                  />
+                </View>
+              </View>
+            </FlexRowWrapper>
+            <FlexRowWrapper>
+              <View style={{width: '45%'}}>
+                <View style={{marginHorizontal: deviceWidth * 0.01}}>
+                  <Text
+                    style={{fontSize: 14, fontWeight: '600', lineHeight: 19}}>
+                    Religion
+                  </Text>
+                  <Dropdown
+                    style={styles.dropstyle}
+                    placeholderStyle={styles.placeholderStyle}
+                    selectedTextStyle={styles.selectedTextStyle}
+                    inputSearchStyle={styles.inputSearchStyle}
+                    iconStyle={styles.iconStyle}
+                    data={religionList}
+                    search
+                    maxHeight={300}
+                    labelField="label"
+                    valueField="value"
+                    placeholder="Select"
+                    searchPlaceholder="Search..."
+                    value={Religion}
+                    onChange={item => {
+                      setReligion(item.value);
+                    }}
+                  />
+                </View>
+              </View>
+              <View style={{width: '45%'}}>
+                <RNInputField
+                  label="Nationality"
+                  placeholder="Enter Nationality"
+                  value={Nationality}
+                  onChangeText={data => setNationality(data)}
+                  keyboardType="number-pad"
                 />
               </View>
             </FlexRowWrapper>
@@ -999,7 +1165,7 @@ const UpdateAdmission = () => {
             <FlexRowWrapper>
               <View style={{width: '45%'}}>
                 <RNInputField
-                  label="Fathers Mobile No"
+                  label="Father's Mobile No"
                   placeholder="Enter Mobile No"
                   value={fathersphone}
                   onChangeText={data => setfathersphone(data)}
@@ -1018,18 +1184,18 @@ const UpdateAdmission = () => {
             <FlexRowWrapper>
               <View style={{width: '45%'}}>
                 <RNInputField
-                  label="State"
-                  placeholder="Enter State"
-                  value={state}
-                  onChangeText={data => setstate(data)}
+                  label="Mother's Mobile No"
+                  placeholder="Enter Mobile No"
+                  value={mothersPhoneNo}
+                  onChangeText={data => setmothersPhoneNo(data)}
                 />
               </View>
               <View style={{width: '45%'}}>
                 <RNInputField
-                  label="City"
-                  placeholder="Enter City"
-                  value={city}
-                  onChangeText={data => setcity(data)}
+                  label="Mother's Name"
+                  placeholder="Enter Mother's Name"
+                  value={mothersname}
+                  onChangeText={data => setmothersname(data)}
                 />
               </View>
             </FlexRowWrapper>
@@ -1045,29 +1211,64 @@ const UpdateAdmission = () => {
               </View>
               <View style={{width: '45%'}}>
                 <RNInputField
-                  label="Pan No"
-                  placeholder="Enter Pan No"
+                  label="Permanent Education No"
+                  placeholder="Enter PEN"
                   value={pano}
                   onChangeText={data => setpano(data)}
                 />
               </View>
             </FlexRowWrapper>
-
             <FlexRowWrapper>
               <View style={{width: '45%'}}>
+                <RNInputField
+                  label="State"
+                  placeholder="Enter State"
+                  value={state}
+                  onChangeText={data => setstate(data)}
+                />
+              </View>
+              <View style={{width: '45%'}}>
+                <RNInputField
+                  label="City"
+                  placeholder="Enter City"
+                  value={city}
+                  onChangeText={data => setcity(data)}
+                />
+              </View>
+            </FlexRowWrapper>
+            <View
+              style={{
+                marginHorizontal: deviceWidth * 0.04,
+                position: 'relative',
+              }}>
+              <Text
+                style={{
+                  textAlign: 'right',
+                  fontWeight: '800',
+                  position: 'absolute',
+                  right: deviceWidth * 0.05,
+                }}>
+                {address?.length} / 500
+              </Text>
+              <RNInputField
+                style={{backgroundColor: Colors.fadeGray, paddingTop: 10}}
+                label="address"
+                value={address}
+                onChangeText={data => setaddress(data)}
+                placeholder="Enter Address"
+                multiline
+                numberOfLines={5}
+                maxLength={500}
+              />
+            </View>
+
+            <FlexRowWrapper>
+              <View style={{width: '95%'}}>
                 <RNInputField
                   label="Adhar Card No"
                   placeholder="Enter Adhar Card No"
                   value={adharcardno}
                   onChangeText={data => setadharcardno(data)}
-                />
-              </View>
-              <View style={{width: '45%'}}>
-                <RNInputField
-                  label="Annual Fee"
-                  placeholder="Enter Annual Fee"
-                  value={annualfee}
-                  onChangeText={data => setannualfee(data)}
                 />
               </View>
             </FlexRowWrapper>
@@ -1109,6 +1310,59 @@ const UpdateAdmission = () => {
                 </View>
               </View>
             </View>
+
+            <View
+              style={{
+                marginHorizontal: deviceWidth * 0.04,
+                marginTop: 10,
+              }}>
+              <Text>Previous School Details</Text>
+            </View>
+
+            <FlexRowWrapper>
+              <View style={{width: '45%'}}>
+                <RNInputField
+                  label="TC No"
+                  placeholder="Enter State"
+                  value={PreviousTcNo}
+                  onChangeText={data => setPreviousTcNo(data)}
+                />
+              </View>
+              <View style={{width: '45%'}}>
+                <RNInputField
+                  label="Previous School Name"
+                  placeholder="Enter City"
+                  value={PreviousSchool}
+                  onChangeText={data => setPreviousSchool(data)}
+                />
+              </View>
+            </FlexRowWrapper>
+
+            <View
+              style={{
+                marginHorizontal: deviceWidth * 0.04,
+                position: 'relative',
+              }}>
+              <Text
+                style={{
+                  textAlign: 'right',
+                  fontWeight: '800',
+                  position: 'absolute',
+                  right: deviceWidth * 0.05,
+                }}>
+                {PreviousSchoolAddress?.length} / 500
+              </Text>
+              <RNInputField
+                style={{backgroundColor: Colors.fadeGray, paddingTop: 10}}
+                label="Previous School Address"
+                value={PreviousSchoolAddress}
+                onChangeText={data => setPreviousSchoolAddress(data)}
+                placeholder="Enter Previous School Address"
+                multiline
+                numberOfLines={5}
+                maxLength={500}
+              />
+            </View>
             <FlexRowWrapper>
               <View style={{width: '45%'}}>
                 <View style={{marginHorizontal: deviceWidth * 0.01}}>
@@ -1126,7 +1380,7 @@ const UpdateAdmission = () => {
                       isdata &&
                       isdata?.map(item => ({
                         label: `${item?.coursename}`,
-                        value: `${item?.coursename}`,
+                        value: `${item?.coursename} ${item?.courseduration} ${item?.feepermonth} ${item?.Registractionfee} ${item?.adminssionfee} ${item?.AnnualFee}`,
                       }))
                     }
                     search
@@ -1138,7 +1392,21 @@ const UpdateAdmission = () => {
                     value={courses}
                     onChange={item => {
                       setcourses(item.value);
-                      console.log('data from select', item);
+
+                      let valuesArray = item.value?.split(' ');
+                      let [
+                        coursename,
+                        courseduration,
+                        feepermonth,
+                        Registractionfee,
+                        adminssionfee,
+                        AnnualFee,
+                      ] = valuesArray;
+
+                      setmonthlyfee(feepermonth);
+                      setamount(Registractionfee);
+                      setannualmanualfee(AnnualFee);
+                      setAdmissionFeeManual(adminssionfee);
                     }}
                   />
                 </View>
@@ -1209,7 +1477,7 @@ const UpdateAdmission = () => {
                     disabled
                     style={{backgroundColor: Colors.fadeGray}}
                     label="Registration Fee"
-                    value={regfee}
+                    value={Registractionfee}
                     onChangeText={data => setamount(data)}
                     placeholder="0"
                   />
@@ -1223,13 +1491,41 @@ const UpdateAdmission = () => {
                   <RNInputField
                     disabled
                     style={{backgroundColor: Colors.fadeGray}}
-                    label="Monthly Fee"
-                    value={perFee}
-                    onChangeText={data => setamount(data)}
+                    label="Annual Fee"
+                    value={AnnualFee}
+                    onChangeText={data => setannualfee(data)}
                     placeholder="0"
                   />
                 </View>
 
+                <View
+                  style={{
+                    marginHorizontal: deviceWidth * 0.04,
+                    position: 'relative',
+                  }}>
+                  <RNInputField
+                    disabled
+                    style={{backgroundColor: Colors.fadeGray}}
+                    label="Admission Fee"
+                    value={adminssionfee}
+                    onChangeText={data => setAdmissionFee(data)}
+                    placeholder="0"
+                  />
+                </View>
+                <View
+                  style={{
+                    marginHorizontal: deviceWidth * 0.04,
+                    position: 'relative',
+                  }}>
+                  <RNInputField
+                    disabled
+                    style={{backgroundColor: Colors.fadeGray}}
+                    label="Monthly Fee"
+                    value={feepermonth}
+                    onChangeText={data => setamount(data)}
+                    placeholder="0"
+                  />
+                </View>
                 <View
                   style={{
                     marginHorizontal: deviceWidth * 0.04,
@@ -1246,7 +1542,7 @@ const UpdateAdmission = () => {
                         paddingHorizontal: Width(15),
                         fontSize: Height(16),
                       }}>
-                      {Number(perFee) * Number(12)}
+                      {Number(feepermonth) * Number(12)}
                     </Text>
                   </View>
                 </View>
@@ -1276,13 +1572,39 @@ const UpdateAdmission = () => {
                   }}>
                   <RNInputField
                     style={{backgroundColor: Colors.fadeGray}}
+                    label="Annual Fee"
+                    value={annualmanualfee}
+                    onChangeText={data => setannualmanualfee(data)}
+                    placeholder="0"
+                  />
+                </View>
+
+                <View
+                  style={{
+                    marginHorizontal: deviceWidth * 0.04,
+                    position: 'relative',
+                  }}>
+                  <RNInputField
+                    style={{backgroundColor: Colors.fadeGray}}
+                    label="Admission Fee"
+                    value={AdmissionFeeManual}
+                    onChangeText={data => setAdmissionFeeManual(data)}
+                    placeholder="0"
+                  />
+                </View>
+                <View
+                  style={{
+                    marginHorizontal: deviceWidth * 0.04,
+                    position: 'relative',
+                  }}>
+                  <RNInputField
+                    style={{backgroundColor: Colors.fadeGray}}
                     label="Monthly Fee"
                     value={monthlyfee}
                     onChangeText={data => setmonthlyfee(data)}
                     placeholder="0"
                   />
                 </View>
-
                 <View
                   style={{
                     marginHorizontal: deviceWidth * 0.04,
@@ -1667,7 +1989,7 @@ const UpdateAdmission = () => {
                       marginHorizontal: deviceWidth * 0.04,
                       position: 'relative',
                     }}>
-                    <Text style={styles.inputLabel}>Per Month Fee</Text>
+                    <Text style={styles.inputLabel}>Total Fee</Text>
                     <View
                       style={styles.totalamountstyle}
                       onStartShouldSetResponder={() => setIndex(5)}>
@@ -1713,8 +2035,8 @@ const UpdateAdmission = () => {
                     <RNInputField
                       style={{backgroundColor: Colors.fadeGray}}
                       label="Per Month Fee"
-                      value={TransportFeePermonth}
-                      onChangeText={data => setTransportFeePermonth(data)}
+                      value={onlyTransport}
+                      onChangeText={data => setonlyTransport(data)}
                       placeholder="0"
                     />
                   </View>
@@ -1735,7 +2057,7 @@ const UpdateAdmission = () => {
                           paddingHorizontal: Width(20),
                           fontSize: Height(16),
                         }}>
-                        {Number(TransportFeePermonth) * Number(12)}
+                        {Number(onlyTransport) * Number(12)}
                       </Text>
                     </View>
                   </View>
@@ -1743,6 +2065,7 @@ const UpdateAdmission = () => {
               )}
             </>
           )}
+
           <View style={{paddingHorizontal: 10}}>
             <Text style={{fontSize: 20, marginBottom: 10, marginTop: 8}}>
               Password Size Photo
@@ -2056,7 +2379,7 @@ const UpdateAdmission = () => {
           <RNButton
             loading={loading}
             onPress={submit}
-            style={{marginHorizontal: 20, marginTop: 20}}>
+            style={{marginHorizontal: 20, marginTop: 20, marginBottom: 50}}>
             Update & Next
           </RNButton>
         </View>

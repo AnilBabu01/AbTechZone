@@ -18,7 +18,9 @@ import {
   GetNotic,
   GeOtherFees,
   GetsSubject,
+  getstudent,
 } from '../redux/action/commanAction';
+import {getenquiries} from '../redux/action/coachingAction';
 import {useDispatch} from 'react-redux';
 import Toast from 'react-native-toast-message';
 const RNTable = ({data, theme, isBorderCurve}) => {
@@ -33,9 +35,10 @@ const RNTable = ({data, theme, isBorderCurve}) => {
   };
 
   const ToDelete = data => {
-    console.log('jhgchxcv', data);
+    console.log('jhgchxcv', data?.allDetails?.id);
+
     serverInstance(`${data?.deleteUrl}`, 'delete', {
-      id: data?.id,
+      id: data?.allDetails?.id,
     }).then(res => {
       if (res?.status) {
         setloader(false);
@@ -78,10 +81,14 @@ const RNTable = ({data, theme, isBorderCurve}) => {
         if (data?.deleteUrl === 'student/otherfee') {
           dispatch(GeOtherFees());
         }
-
-        if(data?.deleteUrl==='comman/subject')
-        {
-          dispatch(GetsSubject())
+        if (data?.deleteUrl === 'student/addstudent') {
+          dispatch(getstudent());
+        }
+        if (data?.deleteUrl === 'comman/subject') {
+          dispatch(GetsSubject());
+        }
+        if (data?.deleteUrl === 'coaching/enquiry') {
+          dispatch(getenquiries());
         }
       }
 
@@ -93,6 +100,8 @@ const RNTable = ({data, theme, isBorderCurve}) => {
           text1: 'Error',
           text2: res?.msg,
         });
+
+        console.log('error is', res);
       }
     });
   };

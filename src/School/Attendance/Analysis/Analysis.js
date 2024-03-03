@@ -117,6 +117,7 @@ const Analysis = () => {
             id: index,
             value: item?.student?.Section,
           });
+          
           item?.attendance?.map((data, index) => {
             return AttendanceTableList[index + 5].items.push({
               id: index,

@@ -25,7 +25,6 @@ export const ADD_BATCH_FAIL = "ADD_BATCH_FAIL";
 export const UPDATE_BATCH_REQUEST = "UPDATE_BATCH_REQUEST";
 export const UPDATE_BATCH_SUCCESS = "UPDATE_BATCH_SUCCESS";
 export const UPDATE_BATCH_FAIL = "UPDATE_BATCH_FAIL";
-export const UPDATE_BATCH_RESET ="UPDATE_BATCH_RESET"
 
 export const ALL_BATCH_REQUEST = " ALL_BATCH_REQUEST";
 export const ALL_BATCH_SUCCESS = " ALL_BATCH_SUCCESS";
@@ -58,7 +57,6 @@ export const ADD_CATEGORY_FAIL = "ADD_CATEGORY_FAIL";
 export const UPDATE_CATEGORY_REQUEST = "UPDATE_CATEGORY_REQUEST";
 export const UPDATE_CATEGORY_SUCCESS = "UPDATE_CATEGORY_SUCCESS";
 export const UPDATE_CATEGORY_FAIL = "UPDATE_CATEGORY_FAIL";
-export const UPDATE_CATEGORY_RESET="UPDATE_CATEGORY_RESET"
 
 export const ALL_CATEGORY_REQUEST = " ALL_CATEGORY_REQUEST";
 export const ALL_CATEGORY_SUCCESS = " ALL_CATEGORY_SUCCESS";
@@ -124,8 +122,6 @@ export const ADD_STUDENT_FAIL = "ADD_STUDENT_FAIL";
 export const UPDATE_STUDENT_REQUEST = "UPDATE_STUDENT_REQUEST";
 export const UPDATE_STUDENT_SUCCESS = "UPDATE_STUDENT_SUCCESS";
 export const UPDATE_STUDENT_FAIL = "UPDATE_STUDENT_FAIL";
-export const UPDATE_STUDENT_RESET = "UPDATE_STUDENT_RESET";
-
 
 export const ALL_STUDENT_REQUEST = " ALL_STUDENT_REQUEST";
 export const ALL_STUDENT_SUCCESS = " ALL_STUDENT_SUCCESS";
@@ -144,7 +140,6 @@ export const UPDATE_Designation_REQUEST = "UPDATE_Designation_REQUEST";
 export const UPDATE_Designation_SUCCESS = "UPDATE_Designation_SUCCESS";
 export const UPDATE_Designation_FAIL = "UPDATE_Designation_FAIL";
 
-
 export const ALL_Designation_REQUEST = " ALL_Designation_REQUEST";
 export const ALL_Designation_SUCCESS = " ALL_Designation_SUCCESS";
 export const ALL_Designation_FAIL = " ALL_Designation_FAIL";
@@ -161,7 +156,6 @@ export const ADD_Department_FAIL = "ADD_Department_FAIL";
 export const UPDATE_Department_REQUEST = "UPDATE_Department_REQUEST";
 export const UPDATE_Department_SUCCESS = "UPDATE_Department_SUCCESS";
 export const UPDATE_Department_FAIL = "UPDATE_Department_FAIL";
-export const UPDATE_Department_RESET ="UPDATE_Department_RESET"
 
 export const ALL_Department_REQUEST = " ALL_Department_REQUEST";
 export const ALL_Department_SUCCESS = " ALL_Department_SUCCESS";
@@ -295,5 +289,9 @@ export const ALL_COACHINGSTUDENT_FAIL = " ALL_COACHINGSTUDENT_FAIL";
 export const ALL_COACHINGRECEIPTDATA_REQUEST = " ALL_COACHINGRECEIPTDATA_REQUEST";
 export const ALL_COACHINGRECEIPTDATA_SUCCESS = " ALL_COACHINGRECEIPTDATA_SUCCESS";
 export const ALL_COACHINGRECEIPTDATA_FAIL = " ALL_COACHINGRECEIPTDATA_FAIL";
+
+export const ALL_TC_REQUEST = " ALL_TC_REQUEST";
+export const ALL_TC_SUCCESS = " ALL_TC_SUCCESS";
+export const ALL_TC_FAIL = " ALL_TC_FAIL";
 
 export const CLEAR_ERRORS = "CLEAR_ERRORS";

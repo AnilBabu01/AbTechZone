@@ -202,7 +202,7 @@ const EmpAssignRole = ({navigation}) => {
       <ScrollView>
         {loading ? (
           <>
-            <DashboardPlaceholderLoader type="card" />
+            <DashboardPlaceholderLoader type="Student" />
           </>
         ) : (
           <>
@@ -254,7 +254,9 @@ const styles = StyleSheet.create({
     width: Width(260),
   },
   enquirymainview: {
-    paddingHorizontal: 10,
+   display:"flex",
+   justifyContent:"center",
+   alignItems:"center"
   },
 
   loginbtndiv: {

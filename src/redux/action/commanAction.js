@@ -201,6 +201,9 @@ import {
   ALL_COACHINGRECEIPTDATA_REQUEST,
   ALL_COACHINGRECEIPTDATA_SUCCESS,
   ALL_COACHINGRECEIPTDATA_FAIL,
+  ALL_TC_REQUEST,
+  ALL_TC_SUCCESS,
+  ALL_TC_FAIL,
   CLEAR_ERRORS,
 } from '../constants/commanConstants';
 
@@ -1119,6 +1122,8 @@ export const Addstudent = datas => async dispatch => {
       text1: 'Error',
       text2: error?.response?.data?.msg,
     });
+
+    console.log('Error is data is', error?.response?.data);
   }
 };
 
@@ -2093,7 +2098,7 @@ export const GeOtherFees =
       };
       dispatch({type: GET_OTHERFEE_REQUEST});
 
-      if ((scoursename|| datedues||sessionname||sectionname)) {
+      if (scoursename || datedues || sessionname || sectionname) {
         const {data} = await axios.get(
           `${backendApiUrl}student/otherfee?courseorclass=${scoursename}&sessionname=${sessionname}&sectionname=${sectionname}&date=${datedues}`,
           config,
@@ -2558,6 +2563,71 @@ export const getPrintReceiptCoaching =
     } catch (error) {
       dispatch({
         type: ALL_COACHINGRECEIPTDATA_FAIL,
+        payload: error?.response?.data?.msg,
+      });
+    }
+  };
+
+// Get all Enquiry
+export const getPrintReceipt =
+  (
+    newadminssiondate,
+    scoursename,
+    sstudent,
+    rollnumber,
+    sessionname,
+    sectionname,
+    sno,
+    newDateOfBirth,
+  ) =>
+  async dispatch => {
+    try {
+      let token = await AsyncStorage.getItem('erptoken');
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `${token}`,
+        },
+      };
+      if (
+        newadminssiondate ||
+        scoursename ||
+        sstudent ||
+        rollnumber ||
+        sessionname ||
+        sectionname ||
+        sno ||
+        newDateOfBirth
+      ) {
+        dispatch({type: ALL_RECEIPTDATA_REQUEST});
+        const {data} = await axios.get(
+          `${backendApiUrl}student/getreceiptdata?name=${scoursename}&fromdate=${newadminssiondate}&studentname=${sstudent}&rollnumber=${rollnumber}&sessionname=${sessionname}&sectionname=${sectionname}&sno=${sno}&todate=${newDateOfBirth}`,
+          config,
+        );
+
+        dispatch({
+          type: ALL_RECEIPTDATA_SUCCESS,
+          payload: data?.data,
+        });
+      } else {
+        let date = new Date();
+        let fullyear = date.getFullYear();
+        let lastyear = date.getFullYear() - 1;
+        let sessionss = `${lastyear}-${fullyear}`;
+        dispatch({type: ALL_RECEIPTDATA_REQUEST});
+        const {data} = await axios.get(
+          `${backendApiUrl}student/getreceiptdata?sessionname=${sessionss}`,
+
+          config,
+        );
+        dispatch({
+          type: ALL_RECEIPTDATA_SUCCESS,
+          payload: data?.data,
+        });
+      }
+    } catch (error) {
+      dispatch({
+        type: ALL_RECEIPTDATA_FAIL,
         payload: error?.response?.data?.msg,
       });
     }

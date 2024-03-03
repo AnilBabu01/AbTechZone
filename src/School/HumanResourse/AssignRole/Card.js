@@ -523,7 +523,7 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: 'white',
     borderRadius: 8,
-    width: Width(357),
+    width: Width(350),
     marginVertical: 10,
   },
   cardonnear: {

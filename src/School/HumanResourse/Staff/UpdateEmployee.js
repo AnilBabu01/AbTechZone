@@ -40,11 +40,57 @@ const EmpStatusList = [
   {label: 'Left In Middle', value: 'Left'},
 ];
 
+const CasteList = [
+  {label: 'General', value: 'General'},
+  {label: 'OBC', value: 'OBC'},
+  {label: 'SC', value: 'SC'},
+  {label: 'ST', value: 'ST'},
+  {label: 'Others', value: 'Others'},
+];
+
+const BloodGroupList = [
+  {label: '(A+)', value: '(A+)'},
+  {label: '(A-)', value: '(A-)'},
+  {label: '(B+)', value: '(B+)'},
+  {label: '(B-)', value: '(B-)'},
+  {label: '(O+)', value: '(O+)'},
+  {label: '(O-)', value: '(O-)'},
+  {label: '(AB+)', value: '(AB+)'},
+  {label: '(AB-)', value: '(AB-)'},
+  {
+    label: 'Under Investigation OR N.A.',
+    value: 'Under Investigation OR N.A.',
+  },
+];
+
+const religionList = [
+  {label: 'Hinduism', value: 'Hinduism'},
+  {label: 'Muslim', value: 'Muslim'},
+  {label: 'Sikhism', value: 'Sikhism'},
+  {label: 'Buddhism', value: 'Buddhism'},
+  {label: 'Jainism', value: 'Jainism'},
+  {label: 'Christianity', value: 'Christianity'},
+  {label: 'Others', value: 'Others'},
+];
+
+const GenderListList = [
+  {label: 'Male', value: 'Male'},
+  {label: 'Female', value: 'Female'},
+  {label: 'Others', value: 'Others'},
+];
+
 let formData = new FormData();
 const UpdateEmployee = () => {
   const newroute = useRoute();
   const navigation = useNavigation();
   const dispatch = useDispatch();
+
+  const [categoryname, setcategoryname] = useState('');
+  const [Religion, setReligion] = useState('');
+  const [Nationality, setNationality] = useState('Indian');
+  const [gender, setgender] = useState('Male');
+  const [BloodGroup, setBloodGroup] = useState('');
+
   const [loading, setloading] = useState(false);
   const [openModel, setopenModel] = useState(false);
   const [isdata, setisData] = useState([]);
@@ -154,7 +200,7 @@ const UpdateEmployee = () => {
       var joiningdatenew = momentDate.format('YYYY-MM-DD');
       var resigndateDate = moment(resigndate, 'DD/MM/YYYY');
       var resigndatenew = resigndateDate.format('YYYY-MM-DD');
-      formData.append('id',updatedata?.id);
+      formData.append('id', updatedata?.id);
       formData.append('name', empname);
       formData.append('email', empemail);
       formData.append('phoneno1', empphone1);
@@ -167,6 +213,13 @@ const UpdateEmployee = () => {
       formData.append('joiningdate', joiningdatenew);
       formData.append('resigndate', resigndatenew);
       formData.append('address', address);
+
+      formData.append('Caste', categoryname);
+      formData.append('Religion', Religion);
+      formData.append('Nationality', Nationality);
+      formData.append('Gender', gender);
+      formData.append('BloodGroup', BloodGroup);
+
       // formData.append('profileurl', profileimg);
       formData.append('basicsalary', Number(basicsalary));
       formData.append('Allowance1', allowance1);
@@ -281,7 +334,6 @@ const UpdateEmployee = () => {
         dispatch(getEmployee());
         navigation.goBack();
         formData = new FormData();
-       
       }
     } catch (error) {
       console.log(error);
@@ -385,6 +437,12 @@ const UpdateEmployee = () => {
       setlibraryWrite(updatedata?.libraryWrite);
       setlibraryDelete(updatedata?.libraryDelete);
       setlibraryEdit(updatedata?.libraryEdit);
+
+      setNationality(updatedata?.Nationality);
+      setReligion(updatedata?.Religion);
+      setgender(updatedata?.Gender);
+      setBloodGroup(updatedata?.BloodGroup);
+      setcategoryname(updatedata?.Caste);
     }
   }, [updatedata]);
 
@@ -1121,6 +1179,135 @@ const UpdateEmployee = () => {
                 />
               </View>
             </FlexRowWrapper>
+
+            <FlexRowWrapper>
+              <View style={{width: '45%'}}>
+                <View style={{marginHorizontal: deviceWidth * 0.01}}>
+                  <Text
+                    style={{fontSize: 14, fontWeight: '600', lineHeight: 19}}>
+                    Gender
+                  </Text>
+                  <Dropdown
+                    style={styles.dropstyle}
+                    placeholderStyle={styles.placeholderStyle}
+                    selectedTextStyle={styles.selectedTextStyle}
+                    inputSearchStyle={styles.inputSearchStyle}
+                    iconStyle={styles.iconStyle}
+                    data={GenderListList}
+                    search
+                    maxHeight={300}
+                    labelField="label"
+                    valueField="value"
+                    placeholder="Select"
+                    searchPlaceholder="Search..."
+                    value={gender}
+                    onChange={item => {
+                      setgender(item.value);
+                    }}
+                  />
+                </View>
+              </View>
+              <View style={{width: '45%', marginBottom: deviceHeight * 0.02}}>
+                <View style={{marginHorizontal: deviceWidth * 0.01}}>
+                  <Text
+                    style={{fontSize: 14, fontWeight: '600', lineHeight: 19}}>
+                    Blood Group
+                  </Text>
+                  <Dropdown
+                    style={styles.dropstyle}
+                    placeholderStyle={styles.placeholderStyle}
+                    selectedTextStyle={styles.selectedTextStyle}
+                    inputSearchStyle={styles.inputSearchStyle}
+                    iconStyle={styles.iconStyle}
+                    data={BloodGroupList}
+                    search
+                    maxHeight={300}
+                    defaultValue={'NONE'}
+                    labelField="label"
+                    valueField="value"
+                    placeholder="Select"
+                    searchPlaceholder="Search..."
+                    value={BloodGroup}
+                    onChange={item => {
+                      setBloodGroup(item.value);
+                    }}
+                  />
+                </View>
+              </View>
+            </FlexRowWrapper>
+            <FlexRowWrapper>
+              <View style={{width: '45%'}}>
+                <View style={{marginHorizontal: deviceWidth * 0.01}}>
+                  <Text
+                    style={{fontSize: 14, fontWeight: '600', lineHeight: 19}}>
+                    Religion
+                  </Text>
+                  <Dropdown
+                    style={styles.dropstyle}
+                    placeholderStyle={styles.placeholderStyle}
+                    selectedTextStyle={styles.selectedTextStyle}
+                    inputSearchStyle={styles.inputSearchStyle}
+                    iconStyle={styles.iconStyle}
+                    data={religionList}
+                    search
+                    maxHeight={300}
+                    labelField="label"
+                    valueField="value"
+                    placeholder="Select"
+                    searchPlaceholder="Search..."
+                    value={Religion}
+                    onChange={item => {
+                      setReligion(item.value);
+                    }}
+                  />
+                </View>
+              </View>
+              <View style={{width: '45%'}}>
+                <RNInputField
+                  label="Nationality"
+                  placeholder="Enter Nationality"
+                  value={Nationality}
+                  onChangeText={data => setNationality(data)}
+                  keyboardType="number-pad"
+                />
+              </View>
+            </FlexRowWrapper>
+            <FlexRowWrapper>
+              <View style={{width: '45%'}}>
+                <View style={{marginHorizontal: deviceWidth * 0.01}}>
+                  <Text
+                    style={{fontSize: 14, fontWeight: '600', lineHeight: 19}}>
+                    Caste
+                  </Text>
+                  <Dropdown
+                    style={styles.dropstyle}
+                    placeholderStyle={styles.placeholderStyle}
+                    selectedTextStyle={styles.selectedTextStyle}
+                    inputSearchStyle={styles.inputSearchStyle}
+                    iconStyle={styles.iconStyle}
+                    data={CasteList}
+                    search
+                    maxHeight={300}
+                    labelField="label"
+                    valueField="value"
+                    placeholder="Select"
+                    searchPlaceholder="Search..."
+                    value={categoryname}
+                    onChange={item => {
+                      setcategoryname(item.value);
+                    }}
+                  />
+                </View>
+              </View>
+              <View style={{width: '45%'}}>
+                <RNInputField
+                  label="Allow Leave"
+                  placeholder="Enter Allow Leave "
+                  value={leaveNo}
+                  onChangeText={data => setleaveNo(data)}
+                />
+              </View>
+            </FlexRowWrapper>
             <FlexRowWrapper>
               <View style={{width: '45%'}}>
                 <RNInputField
@@ -1140,16 +1327,6 @@ const UpdateEmployee = () => {
               </View>
             </FlexRowWrapper>
 
-            <FlexRowWrapper>
-              <View style={{width: '95%'}}>
-                <RNInputField
-                  label="Allow Leave"
-                  placeholder="Enter Allow Leave "
-                  value={leaveNo}
-                  onChangeText={data => setleaveNo(data)}
-                />
-              </View>
-            </FlexRowWrapper>
             <FlexRowWrapper>
               <View style={{width: '45%'}}>
                 <RNInputField
@@ -1888,7 +2065,7 @@ const UpdateEmployee = () => {
               Cartificate 1
             </Text>
 
-            <View style={{marginBottom:10}}>
+            <View style={{marginBottom: 10}}>
               {updatedata?.Certificate1url || certificateimg1 ? (
                 <>
                   <View style={{position: 'relative'}}>
@@ -1942,7 +2119,7 @@ const UpdateEmployee = () => {
               )}
             </View>
 
-            <View style={{marginBottom:10}}>
+            <View style={{marginBottom: 10}}>
               {updatedata?.Certificate2url || certificateimg2 ? (
                 <>
                   <View style={{position: 'relative'}}>
@@ -1996,7 +2173,7 @@ const UpdateEmployee = () => {
               )}
             </View>
 
-            <View style={{marginBottom:10}}>
+            <View style={{marginBottom: 10}}>
               {updatedata?.Certificate3url || certificateimg3 ? (
                 <>
                   <View style={{position: 'relative'}}>

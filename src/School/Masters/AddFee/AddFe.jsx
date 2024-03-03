@@ -17,6 +17,8 @@ import {useSelector} from 'react-redux';
 const AddFe = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const [adminssionfee, setadminssionfee] = useState('');
+  const [AnnualFee, setAnnualFee] = useState('');
   const [studentClassName, setstudentClassName] = useState('');
   const [RegistrationFee, setRegistrationFee] = useState('');
   const [courseduration, setcourseduration] = useState('');
@@ -32,6 +34,8 @@ const AddFe = () => {
       Registractionfee: RegistrationFee,
       feepermonth: PerMonthFee,
       coursename: studentClassName,
+      adminssionfee: adminssionfee,
+      AnnualFee: AnnualFee,
       courseduration: courseduration,
     };
     serverInstance('comman/fee', 'post', data).then(res => {
@@ -117,6 +121,38 @@ const AddFe = () => {
                   value={RegistrationFee}
                   onChangeText={data => setRegistrationFee(data)}
                   placeholder="Enter Registration Fee"
+                />
+              </View>
+            </View>
+            <View>
+              <View
+                style={{
+                  marginHorizontal: deviceWidth * 0.04,
+                  position: 'relative',
+                  marginTop: 30,
+                }}>
+                <RNInputField
+                  style={{backgroundColor: Colors.fadeGray}}
+                  label="Admission Fee"
+                  value={adminssionfee}
+                  onChangeText={data => setadminssionfee(data)}
+                  placeholder="Enter Admission Fee"
+                />
+              </View>
+            </View>
+            <View>
+              <View
+                style={{
+                  marginHorizontal: deviceWidth * 0.04,
+                  position: 'relative',
+                  marginTop: 30,
+                }}>
+                <RNInputField
+                  style={{backgroundColor: Colors.fadeGray}}
+                  label="Annual Fee"
+                  value={AnnualFee}
+                  onChangeText={data => setAnnualFee(data)}
+                  placeholder="Enter Annual Fee"
                 />
               </View>
             </View>

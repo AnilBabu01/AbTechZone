@@ -1,32 +1,56 @@
 import {StyleSheet, Text, View, Pressable, Alert} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useCallback} from 'react';
 import {Colors} from '../../utils/Colors';
-import {ActivityIndicator, Modal} from 'react-native-paper';
+import {Modal} from 'react-native-paper';
 import {deviceHeight, deviceWidth} from '../../utils/constant';
 import RNFS from 'react-native-fs';
-import XLSX from 'xlsx';
-const DownEnquiry = ({visible, hideModal}) => {
-  const exportDataToExcel = () => {
-    var path = RNFS.DocumentDirectoryPath + '/test.txt';
-    let sample_data_to_export = [
-      {id: '1', name: 'First User'},
-      {id: '2', name: 'Second User'},
-    ];
+import ExcelJS from 'exceljs';
+import RNHTMLtoPDF from 'react-native-html-to-pdf';
+import FileViewer from 'react-native-file-viewer';
 
-    let wb = XLSX.utils.book_new();
-    let ws = XLSX.utils.json_to_sheet(sample_data_to_export);
-    XLSX.utils.book_append_sheet(wb, ws, 'Users');
-    const wbout = XLSX.write(wb, {type: 'binary', bookType: 'xlsx'});
-    
-    // write the file
-    RNFS.writeFile(path, 'Lorem ipsum dolor sit amet', 'utf8')
-      .then(success => {
-        console.log('FILE WRITTEN!',success);
-      })
-      .catch(err => {
-        console.log(err.message);
+const DownEnquiry = ({visible, hideModal}) => {
+  const dataArray = [
+    {name: 'John', age: 25, city: 'New York'},
+    {name: 'Jane', age: 30, city: 'Los Angeles'},
+    // Add more data as needed
+  ];
+
+  const createExcelFile = async (dataArray, fileName) => {
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet('Sheet 1');
+
+    // Add headers
+    const headers = Object.keys(dataArray[0]);
+    worksheet.addRow(headers);
+
+    // Add data
+    dataArray.forEach(data => {
+      const row = [];
+      headers.forEach(header => {
+        row.push(data[header]);
       });
+      worksheet.addRow(row);
+    });
+
+    // Save workbook to a file
+    const filePath = `${RNFS.DocumentDirectoryPath}/${fileName}.xlsx`;
+    
+    await workbook.xlsx.writeFile(filePath);
+
+    return filePath;
   };
+
+  const handleExport = async () => {
+    try {
+      const fileName = 'exportedData';
+      const filePath = await createExcelFile(dataArray, fileName);
+      console.log('Excel file created at:', filePath);
+      // Add logic to open or share the file if needed
+    } catch (error) {
+      console.error('Error creating Excel file:', error);
+    }
+  };
+
   return (
     <Modal
       visible={visible}
@@ -36,7 +60,7 @@ const DownEnquiry = ({visible, hideModal}) => {
         <Text style={{color: '#fff'}}>Select Report</Text>
       </View>
       <View style={styles.buttonContainer}>
-        <Pressable style={styles.reportBtn} onPress={() => exportDataToExcel()}>
+        <Pressable style={styles.reportBtn} onPress={() => handleExport()}>
           <Text style={styles.textBtn}>Export Excel</Text>
         </Pressable>
       </View>

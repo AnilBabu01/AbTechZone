@@ -12,7 +12,13 @@ const DashboardPlaceholderLoader = ({type}) => {
           <View style={{width: '100%', marginBottom: 6}}>
             <ShimmerPlaceHolder width={deviceWidth * 1} height={40} />
           </View>
-          <View style={{width: '100%',display: 'flex', justifyContent: 'space-between',flexDirection:"row"}}>
+          <View
+            style={{
+              width: '100%',
+              display: 'flex',
+              justifyContent: 'space-between',
+              flexDirection: 'row',
+            }}>
             <View style={{height: deviceHeight * 0.41}}>
               <ShimmerPlaceHolder
                 width={deviceWidth * 0.28}
@@ -41,6 +47,18 @@ const DashboardPlaceholderLoader = ({type}) => {
             <ShimmerPlaceHolder
               width={deviceWidth * 0.9}
               height={deviceHeight * 0.3}
+              shimmerStyle={{borderRadius: 12}}
+            />
+          </View>
+        </>
+      )}
+
+      {type === 'Student' && (
+        <>
+          <View style={styles.card}>
+            <ShimmerPlaceHolder
+              width={deviceWidth * 0.9}
+              height={deviceHeight * 0.1}
               shimmerStyle={{borderRadius: 12}}
             />
           </View>

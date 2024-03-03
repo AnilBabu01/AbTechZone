@@ -51,12 +51,12 @@ const MasterOptions = () => {
             <Text style={styles.titlestyle}>Add Subjects</Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('AddCaste')}>
+        {/* <TouchableOpacity onPress={() => navigation.navigate('AddCaste')}>
           <View style={styles.mainoption}>
             <FontAwesome6 name="certificate" color={Colors.primary} size={30} />
             <Text style={styles.titlestyle}>Caste</Text>
           </View>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <TouchableOpacity onPress={() => navigation.navigate('AddFee')}>
           <View style={styles.mainoption}>
             <FontAwesome6

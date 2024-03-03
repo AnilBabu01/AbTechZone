@@ -16,6 +16,7 @@ import BackHeader from '../../../Component/Header/BackHeader';
 import {GeOtherFees} from '../../../redux/action/commanAction';
 import {useSelector} from 'react-redux';
 import {handleDate, getTodaysDate} from '../../../utils/functions';
+import moment from 'moment';
 const AdOtherFee = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();

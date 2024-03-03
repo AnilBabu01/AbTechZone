@@ -13,15 +13,20 @@ import profileimg from '../../assets/profileimg.jpg';
 import {useNavigation} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import {Colors} from '../../utils/Colors';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import Notification from './Notification';
+
 const windowWidth = Dimensions.get('window').width;
 const Header = () => {
+  const [notificationCount, setNotificationCount] = useState(3);
   const navigation = useNavigation();
   const {user} = useSelector(state => state.auth);
   const [istoken, setistoken] = useState('');
+  const [openModel, setopenModel] = useState(false);
+  const [visible, setVisible] = useState(false);
+  const onToggleSnackBar = () => setVisible(!visible);
+  const onDismissSnackBar = () => setVisible(false);
   const getToken = async () => {
     let token = await AsyncStorage.getItem('erptoken');
     setistoken(token);
@@ -43,9 +48,13 @@ const Header = () => {
         {istoken ? (
           <>
             <View style={styles.profile}>
-              {/* <Pressable onPress={() => showNotification(true)}>
-                <MaterialIcons name="notifications" size={20} color="#fff" />
-              </Pressable> */}
+              <View style={styles.notificationView}>
+                <Notification
+                  count={notificationCount}
+                  onPress={() => navigation.navigate('ViewNotification')}
+                />
+              </View>
+
               <Pressable onPress={() => navigation.navigate('ProfileCoaching')}>
                 {user?.data?.CredentailsData?.profileurl ? (
                   <>
@@ -74,6 +83,8 @@ const Header = () => {
           </>
         )}
       </View>
+
+  
     </View>
   );
 };
@@ -81,6 +92,9 @@ const Header = () => {
 export default Header;
 
 const styles = StyleSheet.create({
+  notificationView: {
+    marginRight: 20,
+  },
   mainheader: {
     width: windowWidth,
     display: 'flex',

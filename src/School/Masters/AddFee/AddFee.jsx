@@ -46,6 +46,18 @@ const AddFee = ({navigation}) => {
       align: 'center',
     },
     {
+      title: 'Admission',
+      items: [],
+      width: 0.33,
+      align: 'center',
+    },
+    {
+      title: 'Annual',
+      items: [],
+      width: 0.33,
+      align: 'center',
+    },
+    {
       title: 'Registration_Fee',
       items: [],
       width: 0.33,
@@ -80,9 +92,17 @@ const AddFee = ({navigation}) => {
         });
         enquiryTableList[3].items.push({
           id: index,
-          value: item?.feepermonth,
+          value: item?.adminssionfee,
         });
         enquiryTableList[4].items.push({
+          id: index,
+          value: item?.AnnualFee,
+        });
+        enquiryTableList[5].items.push({
+          id: index,
+          value: item?.feepermonth,
+        });
+        enquiryTableList[6].items.push({
           id: index,
           value: (
             <Ionicons

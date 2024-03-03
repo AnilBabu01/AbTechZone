@@ -16,8 +16,6 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {RadioButton} from 'react-native-paper';
 import check from '../../../assets/check1.png';
 import {serverInstance} from '../../../API/ServerInstance';
-import {backendApiUrl} from '../../../Config/config';
-import axios from 'axios';
 import Toast from 'react-native-toast-message';
 import {useDispatch, useSelector} from 'react-redux';
 import {
@@ -38,7 +36,7 @@ import {ADD_STUDENT_RESET} from '../../../redux/constants/commanConstants';
 import moment from 'moment';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import BackHeader from '../../../Component/Header/BackHeader';
-
+import {indiaStatesData} from '../StaticData';
 const streamlist = [
   {label: 'NONE', value: 'NONE'},
   {label: 'Arts', value: 'Arts'},
@@ -52,6 +50,46 @@ const studentStatus = [
   {label: 'Completed', value: 'Completed'},
   {label: 'Unknown', value: 'Unknown'},
 ];
+
+const CasteList = [
+  {label: 'General', value: 'General'},
+  {label: 'OBC', value: 'OBC'},
+  {label: 'SC', value: 'SC'},
+  {label: 'ST', value: 'ST'},
+  {label: 'Others', value: 'Others'},
+];
+
+const BloodGroupList = [
+  {label: '(A+)', value: '(A+)'},
+  {label: '(A-)', value: '(A-)'},
+  {label: '(B+)', value: '(B+)'},
+  {label: '(B-)', value: '(B-)'},
+  {label: '(O+)', value: '(O+)'},
+  {label: '(O-)', value: '(O-)'},
+  {label: '(AB+)', value: '(AB+)'},
+  {label: '(AB-)', value: '(AB-)'},
+  {
+    label: 'Under Investigation OR N.A.',
+    value: 'Under Investigation OR N.A.',
+  },
+];
+
+const religionList = [
+  {label: 'Hinduism', value: 'Hinduism'},
+  {label: 'Muslim', value: 'Muslim'},
+  {label: 'Sikhism', value: 'Sikhism'},
+  {label: 'Buddhism', value: 'Buddhism'},
+  {label: 'Jainism', value: 'Jainism'},
+  {label: 'Christianity', value: 'Christianity'},
+  {label: 'Others', value: 'Others'},
+];
+
+const GenderListList = [
+  {label: 'Male', value: 'Male'},
+  {label: 'Female', value: 'Female'},
+  {label: 'Others', value: 'Others'},
+];
+
 let formData = new FormData();
 const TakeAdmission = () => {
   const navigation = useNavigation();
@@ -61,6 +99,18 @@ const TakeAdmission = () => {
   const [index, setIndex] = useState(0);
   const [openModel, setopenModel] = useState(false);
   const [whatsaapnumber, setwhatsaapnumber] = useState('');
+
+  const [Religion, setReligion] = useState('');
+  const [Nationality, setNationality] = useState('Indian');
+  const [address, setaddress] = useState('');
+  const [gender, setgender] = useState('Male');
+  const [BloodGroup, setBloodGroup] = useState('');
+  const [mothersname, setmothersname] = useState('');
+  const [mothersPhoneNo, setmothersPhoneNo] = useState('');
+  const [PreviousTcNo, setPreviousTcNo] = useState('');
+  const [PreviousSchool, setPreviousSchool] = useState('');
+  const [PreviousSchoolAddress, setPreviousSchoolAddress] = useState('');
+
   const [stream, setstream] = useState('NONE');
   const [DateOfBirth, setDateOfBirth] = useState(getTodaysDate());
   const [datecertificatePreview, setdatecertificatePreview] = useState('');
@@ -69,7 +119,7 @@ const TakeAdmission = () => {
   const [istransport, setistransport] = useState(false);
   const [SrNumber, setSrNumber] = useState('');
   const [sessionname, setsessionname] = useState('');
-  const [sectionname, setsectionname] = useState('');
+  const [sectionname, setsectionname] = useState('NONE');
   const [sectionlist, setsectionlist] = useState([]);
   const [selectedValue, setSelectedValue] = useState('option1');
   const [passportsize, setpassportsize] = useState('');
@@ -89,18 +139,9 @@ const TakeAdmission = () => {
   const [premarksheet, setpremarksheet] = useState('');
   const [passmarksheet, setpassmarksheet] = useState('');
   const [marksheetName, setmarksheetName] = useState('');
-  const [marksheetPreview, setmarksheetPreview] = useState('');
-  const [birth, setbirth] = useState('');
-  const [adharcard, setadharcard] = useState('');
-  const [others, setothers] = useState('');
-  const [profileimg, setprofileimg] = useState('');
-  const [marksheetimg, setmarksheetimg] = useState('');
-  const [passadharcard, setpassadharcard] = useState('');
   const [otherspreview, setotherspreview] = useState('');
   const [othersname, setothersname] = useState('');
   const [photo, setphoto] = useState('');
-  const [onlyshowmonthfee, setonlyshowmonthfee] = useState('');
-  const [onlyshowrefee, setonlyshowrefee] = useState('');
   const [city, setcity] = useState('');
   const [state, setstate] = useState('');
   const [Pincode, setPincode] = useState('');
@@ -134,7 +175,13 @@ const TakeAdmission = () => {
   const [TransportFeePermonth, setTransportFeePermonth] = useState('');
   const [loading1, setloading1] = useState(false);
   const [loading2, setloading2] = useState(false);
+
   const [annualfee, setannualfee] = useState('');
+  const [annualmanualfee, setannualmanualfee] = useState('');
+
+  const [AdmissionFee, setAdmissionFee] = useState('');
+  const [AdmissionFeeManual, setAdmissionFeeManual] = useState('');
+
   const {fee} = useSelector(state => state.getfee);
   const {batch} = useSelector(state => state.getbatch);
   const {user} = useSelector(state => state.auth);
@@ -162,53 +209,68 @@ const TakeAdmission = () => {
 
   var lastIndex = coursein?.lastIndexOf(' ');
   let regcoursein = coursein?.substring(0, lastIndex);
+
+  let valuesArray = courses?.split(' ');
+  let [
+    coursename,
+    courseduration,
+    feepermonth,
+    Registractionfee,
+    adminssionfee,
+    AnnualFee,
+  ] = valuesArray;
+
+  console.log('pano data is', pano);
+
   const submit = async () => {
     try {
       var momentDate = moment(adminssiondate, 'DD/MM/YYYY');
       var newadminssiondate = momentDate.format('YYYY-MM-DD');
       var momentDateOfBirth = moment(DateOfBirth, 'DD/MM/YYYY');
       var newDateOfBirth = momentDateOfBirth.format('YYYY-MM-DD');
+
       formData.append('name', studentname);
       formData.append('email', studentemail);
       formData.append('phoneno1', studentphone);
-      formData.append('city', city);
-      formData.append('state', state);
-      formData.append('pincode', Pincode);
+      formData.append('Religion', Religion);
+      formData.append('Nationality', Nationality);
+      formData.append('Gender', gender);
+      formData.append('BloodGroup', BloodGroup);
+      formData.append('address', address);
+      formData.append('PreviousTcNo', PreviousTcNo);
+      formData.append('PreviousSchoolName', PreviousSchool);
+      formData.append('PreviousSchoolAddress', PreviousSchoolAddress);
 
-      formData.append('profileurl', '');
-      formData.append('adharcard', '');
-      formData.append('markSheet', '');
+      formData.append('whatsappNo', fathersphone);
+      formData.append('MathersName', mothersname);
+      formData.append('MathersPhoneNo', mothersPhoneNo);
+      formData.append('MatherswhatsappNo', mothersPhoneNo);
+
       formData.append('othersdoc', '');
       formData.append('BirthDocument', '');
-
       formData.append('fathersPhoneNo', fathersphone);
       formData.append('fathersName', fathersname);
-      formData.append('courseorclass', regcoursein);
+      formData.append('courseorclass', coursename);
       formData.append('rollnumber', studentrollno);
       formData.append('StudentStatus', studentstatus);
       formData.append('batch', batchname);
 
       formData.append('admissionDate', newadminssiondate);
 
-      formData.append(
-        'regisgrationfee',
-        selectedValue === 'option1' ? Number(regfee) : Number(amount),
-      );
-
       formData.append('courseduration', '');
       formData.append('adharno', adharcardno);
       formData.append('pancardnno', pano);
-      formData.append('whatsappNo', fathersphone);
+      formData.append('PEN', pano);
       formData.append('markSheetname', marksheetName);
       formData.append('othersdocName', othersname);
-      formData.append('Status', studentaddstatus);
+      formData.append('Status', studentstatus);
       formData.append('Transport', istransport);
       formData.append('FromRoute', '');
       formData.append('ToRoute', '');
       formData.append('BusNumber', '');
       formData.append('Library', islibrary);
       formData.append('hostal', ishostel);
-      formData.append('AnnualFee', annualfee);
+
       formData.append('Section', sectionname);
       formData.append('Session', sessionname);
       formData.append('SrNumber', SrNumber);
@@ -248,28 +310,33 @@ const TakeAdmission = () => {
 
       formData.append(
         'permonthfee',
-        selectedValue === 'option1' ? Number(perFee) : Number(monthlyfee),
+        selectedValue === 'option1' ? Number(feepermonth) : Number(monthlyfee),
+      );
+
+      formData.append(
+        'AnnualFee',
+        selectedValue === 'option1'
+          ? Number(AnnualFee)
+          : Number(annualmanualfee),
+      );
+      formData.append(
+        'admissionfee',
+        selectedValue === 'option1'
+          ? Number(adminssionfee)
+          : Number(AdmissionFeeManual),
+      );
+
+      formData.append(
+        'regisgrationfee',
+        selectedValue === 'option1' ? Number(Registractionfee) : Number(amount),
       );
 
       formData.append(
         'studentTotalFee',
         selectedValue === 'option1'
-          ? Number(perFee) * 12
+          ? Number(feepermonth) * 12
           : Number(monthlyfee) * 12,
       );
-      // formData.append(
-      //   'Studentpassword',
-      //   user?.data[0]?.Studentpassword
-      //     ? user?.data[0]?.Studentpassword
-      //     : 'student',
-      // );
-
-      // formData.append(
-      //   'Parentpassword',
-      //   user?.data[0]?.Parentpassword
-      //     ? user?.data[0]?.Parentpassword
-      //     : 'parent',
-      // );
 
       setloader(true);
 
@@ -700,7 +767,7 @@ const TakeAdmission = () => {
           });
           setloading1(false);
           sethostelfeeperMonth(res?.data?.PermonthFee);
-          setonlyHostelFee(res?.data?.PermonthFee);
+          setonlyHostelFee(res?.data?.PermonthFee?.toString());
         }
       });
     } catch (error) {
@@ -724,7 +791,9 @@ const TakeAdmission = () => {
           setloading2(false);
 
           setTransportFeePermonth(res?.data?.BusRentPermonth);
-          setonlyTransport(res?.data?.BusRentPermonth);
+          setonlyTransport(res?.data?.BusRentPermonth?.toString());
+
+          console.log('transport fee is', res?.data?.BusRentPermonth);
         }
         if (res?.status === false) {
           setloading2(false);
@@ -773,7 +842,10 @@ const TakeAdmission = () => {
       </Modal>
 
       <ScrollView>
+        
         <View style={styles.enquirymainview}>
+
+
           <View style={styles.dateview}>
             <FlexRowWrapper>
               <View style={{width: '45%'}}>
@@ -810,7 +882,7 @@ const TakeAdmission = () => {
                 />
               </View>
             </FlexRowWrapper>
-            
+
             <FlexRowWrapper>
               <View style={{width: '45%'}}>
                 <View style={{marginHorizontal: deviceWidth * 0.01}}>
@@ -891,13 +963,7 @@ const TakeAdmission = () => {
                     selectedTextStyle={styles.selectedTextStyle}
                     inputSearchStyle={styles.inputSearchStyle}
                     iconStyle={styles.iconStyle}
-                    data={
-                      categorylist &&
-                      categorylist?.map(item => ({
-                        label: `${item?.category}`,
-                        value: `${item?.category}`,
-                      }))
-                    }
+                    data={CasteList}
                     search
                     maxHeight={300}
                     labelField="label"
@@ -916,6 +982,99 @@ const TakeAdmission = () => {
                   title="Date Of Birth"
                   value={DateOfBirth}
                   onDateChange={date => setDateOfBirth(handleDate(date))}
+                />
+              </View>
+            </FlexRowWrapper>
+            
+            <FlexRowWrapper>
+              <View style={{width: '45%'}}>
+                <View style={{marginHorizontal: deviceWidth * 0.01}}>
+                  <Text
+                    style={{fontSize: 14, fontWeight: '600', lineHeight: 19}}>
+                    Gender
+                  </Text>
+                  <Dropdown
+                    style={styles.dropstyle}
+                    placeholderStyle={styles.placeholderStyle}
+                    selectedTextStyle={styles.selectedTextStyle}
+                    inputSearchStyle={styles.inputSearchStyle}
+                    iconStyle={styles.iconStyle}
+                    data={GenderListList}
+                    search
+                    maxHeight={300}
+                    labelField="label"
+                    valueField="value"
+                    placeholder="Select"
+                    searchPlaceholder="Search..."
+                    value={gender}
+                    onChange={item => {
+                      setgender(item.value);
+                    }}
+                  />
+                </View>
+              </View>
+              <View style={{width: '45%', marginBottom: deviceHeight * 0.02}}>
+                <View style={{marginHorizontal: deviceWidth * 0.01}}>
+                  <Text
+                    style={{fontSize: 14, fontWeight: '600', lineHeight: 19}}>
+                    Blood Group
+                  </Text>
+                  <Dropdown
+                    style={styles.dropstyle}
+                    placeholderStyle={styles.placeholderStyle}
+                    selectedTextStyle={styles.selectedTextStyle}
+                    inputSearchStyle={styles.inputSearchStyle}
+                    iconStyle={styles.iconStyle}
+                    data={BloodGroupList}
+                    search
+                    maxHeight={300}
+                    defaultValue={'NONE'}
+                    labelField="label"
+                    valueField="value"
+                    placeholder="Select"
+                    searchPlaceholder="Search..."
+                    value={BloodGroup}
+                    onChange={item => {
+                      setBloodGroup(item.value);
+                    }}
+                  />
+                </View>
+              </View>
+            </FlexRowWrapper>
+            <FlexRowWrapper>
+              <View style={{width: '45%'}}>
+                <View style={{marginHorizontal: deviceWidth * 0.01}}>
+                  <Text
+                    style={{fontSize: 14, fontWeight: '600', lineHeight: 19}}>
+                    Religion
+                  </Text>
+                  <Dropdown
+                    style={styles.dropstyle}
+                    placeholderStyle={styles.placeholderStyle}
+                    selectedTextStyle={styles.selectedTextStyle}
+                    inputSearchStyle={styles.inputSearchStyle}
+                    iconStyle={styles.iconStyle}
+                    data={religionList}
+                    search
+                    maxHeight={300}
+                    labelField="label"
+                    valueField="value"
+                    placeholder="Select"
+                    searchPlaceholder="Search..."
+                    value={Religion}
+                    onChange={item => {
+                      setReligion(item.value);
+                    }}
+                  />
+                </View>
+              </View>
+              <View style={{width: '45%'}}>
+                <RNInputField
+                  label="Nationality"
+                  placeholder="Enter Nationality"
+                  value={Nationality}
+                  onChangeText={data => setNationality(data)}
+                  keyboardType="number-pad"
                 />
               </View>
             </FlexRowWrapper>
@@ -942,7 +1101,7 @@ const TakeAdmission = () => {
             <FlexRowWrapper>
               <View style={{width: '45%'}}>
                 <RNInputField
-                  label="Fathers Mobile No"
+                  label="Father's Mobile No"
                   placeholder="Enter Mobile No"
                   value={fathersphone}
                   onChangeText={data => setfathersphone(data)}
@@ -961,18 +1120,18 @@ const TakeAdmission = () => {
             <FlexRowWrapper>
               <View style={{width: '45%'}}>
                 <RNInputField
-                  label="State"
-                  placeholder="Enter State"
-                  value={state}
-                  onChangeText={data => setstate(data)}
+                  label="Mother's Mobile No"
+                  placeholder="Enter Mobile No"
+                  value={mothersPhoneNo}
+                  onChangeText={data => setmothersPhoneNo(data)}
                 />
               </View>
               <View style={{width: '45%'}}>
                 <RNInputField
-                  label="City"
-                  placeholder="Enter City"
-                  value={city}
-                  onChangeText={data => setcity(data)}
+                  label="Mother's Name"
+                  placeholder="Enter Mother's Name"
+                  value={mothersname}
+                  onChangeText={data => setmothersname(data)}
                 />
               </View>
             </FlexRowWrapper>
@@ -988,29 +1147,64 @@ const TakeAdmission = () => {
               </View>
               <View style={{width: '45%'}}>
                 <RNInputField
-                  label="Pan No"
-                  placeholder="Enter Pan No"
+                  label="Permanent Education No"
+                  placeholder="Enter PEN"
                   value={pano}
                   onChangeText={data => setpano(data)}
                 />
               </View>
             </FlexRowWrapper>
-
             <FlexRowWrapper>
               <View style={{width: '45%'}}>
+                <RNInputField
+                  label="State"
+                  placeholder="Enter State"
+                  value={state}
+                  onChangeText={data => setstate(data)}
+                />
+              </View>
+              <View style={{width: '45%'}}>
+                <RNInputField
+                  label="City"
+                  placeholder="Enter City"
+                  value={city}
+                  onChangeText={data => setcity(data)}
+                />
+              </View>
+            </FlexRowWrapper>
+            <View
+              style={{
+                marginHorizontal: deviceWidth * 0.04,
+                position: 'relative',
+              }}>
+              <Text
+                style={{
+                  textAlign: 'right',
+                  fontWeight: '800',
+                  position: 'absolute',
+                  right: deviceWidth * 0.05,
+                }}>
+                {address.length} / 500
+              </Text>
+              <RNInputField
+                style={{backgroundColor: Colors.fadeGray, paddingTop: 10}}
+                label="address"
+                value={address}
+                onChangeText={data => setaddress(data)}
+                placeholder="Enter Address"
+                multiline
+                numberOfLines={5}
+                maxLength={500}
+              />
+            </View>
+
+            <FlexRowWrapper>
+              <View style={{width: '95%'}}>
                 <RNInputField
                   label="Adhar Card No"
                   placeholder="Enter Adhar Card No"
                   value={adharcardno}
                   onChangeText={data => setadharcardno(data)}
-                />
-              </View>
-              <View style={{width: '45%'}}>
-                <RNInputField
-                  label="Annual Fee"
-                  placeholder="Enter Annual Fee"
-                  value={annualfee}
-                  onChangeText={data => setannualfee(data)}
                 />
               </View>
             </FlexRowWrapper>
@@ -1042,7 +1236,7 @@ const TakeAdmission = () => {
                     maxHeight={300}
                     labelField="label"
                     valueField="value"
-                    placeholder="Select Class"
+                    placeholder="Select Stream"
                     searchPlaceholder="Search..."
                     value={stream}
                     onChange={item => {
@@ -1051,6 +1245,59 @@ const TakeAdmission = () => {
                   />
                 </View>
               </View>
+            </View>
+
+            <View
+              style={{
+                marginHorizontal: deviceWidth * 0.04,
+                marginTop: 10,
+              }}>
+              <Text>Previous School Details</Text>
+            </View>
+
+            <FlexRowWrapper>
+              <View style={{width: '45%'}}>
+                <RNInputField
+                  label="TC No"
+                  placeholder="Enter State"
+                  value={PreviousTcNo}
+                  onChangeText={data => setPreviousTcNo(data)}
+                />
+              </View>
+              <View style={{width: '45%'}}>
+                <RNInputField
+                  label="Previous School Name"
+                  placeholder="Enter City"
+                  value={PreviousSchool}
+                  onChangeText={data => setPreviousSchool(data)}
+                />
+              </View>
+            </FlexRowWrapper>
+
+            <View
+              style={{
+                marginHorizontal: deviceWidth * 0.04,
+                position: 'relative',
+              }}>
+              <Text
+                style={{
+                  textAlign: 'right',
+                  fontWeight: '800',
+                  position: 'absolute',
+                  right: deviceWidth * 0.05,
+                }}>
+                {address.length} / 500
+              </Text>
+              <RNInputField
+                style={{backgroundColor: Colors.fadeGray, paddingTop: 10}}
+                label="Previous School Address"
+                value={PreviousSchoolAddress}
+                onChangeText={data => setPreviousSchoolAddress(data)}
+                placeholder="Enter Previous School Address"
+                multiline
+                numberOfLines={5}
+                maxLength={500}
+              />
             </View>
             <FlexRowWrapper>
               <View style={{width: '45%'}}>
@@ -1069,7 +1316,7 @@ const TakeAdmission = () => {
                       isdata &&
                       isdata?.map(item => ({
                         label: `${item?.coursename}`,
-                        value: `${item?.coursename} ${item?.courseduration} ${item?.feepermonth} ${item?.Registractionfee}`,
+                        value: `${item?.coursename} ${item?.courseduration} ${item?.feepermonth} ${item?.Registractionfee} ${item?.adminssionfee} ${item?.AnnualFee}`,
                       }))
                     }
                     search
@@ -1081,7 +1328,30 @@ const TakeAdmission = () => {
                     value={courses}
                     onChange={item => {
                       setcourses(item.value);
-                      console.log('data from select', item);
+
+                      let valuesArray = item.value?.split(' ');
+                      let [
+                        coursename,
+                        courseduration,
+                        feepermonth,
+                        Registractionfee,
+                        adminssionfee,
+                        AnnualFee,
+                      ] = valuesArray;
+
+                      console.log(
+                        'data from select selct options',
+                        coursename,
+                        courseduration,
+                        feepermonth,
+                        Registractionfee,
+                        adminssionfee,
+                        AnnualFee,
+                      );
+                      setmonthlyfee(feepermonth);
+                      setamount(Registractionfee);
+                      setannualmanualfee(AnnualFee);
+                      setAdmissionFeeManual(adminssionfee);
                     }}
                   />
                 </View>
@@ -1152,7 +1422,7 @@ const TakeAdmission = () => {
                     disabled
                     style={{backgroundColor: Colors.fadeGray}}
                     label="Registration Fee"
-                    value={regfee}
+                    value={Registractionfee}
                     onChangeText={data => setamount(data)}
                     placeholder="0"
                   />
@@ -1166,13 +1436,41 @@ const TakeAdmission = () => {
                   <RNInputField
                     disabled
                     style={{backgroundColor: Colors.fadeGray}}
-                    label="Monthly Fee"
-                    value={perFee}
-                    onChangeText={data => setamount(data)}
+                    label="Annual Fee"
+                    value={AnnualFee}
+                    onChangeText={data => setannualfee(data)}
                     placeholder="0"
                   />
                 </View>
 
+                <View
+                  style={{
+                    marginHorizontal: deviceWidth * 0.04,
+                    position: 'relative',
+                  }}>
+                  <RNInputField
+                    disabled
+                    style={{backgroundColor: Colors.fadeGray}}
+                    label="Admission Fee"
+                    value={adminssionfee}
+                    onChangeText={data => setAdmissionFee(data)}
+                    placeholder="0"
+                  />
+                </View>
+                <View
+                  style={{
+                    marginHorizontal: deviceWidth * 0.04,
+                    position: 'relative',
+                  }}>
+                  <RNInputField
+                    disabled
+                    style={{backgroundColor: Colors.fadeGray}}
+                    label="Monthly Fee"
+                    value={feepermonth}
+                    onChangeText={data => setamount(data)}
+                    placeholder="0"
+                  />
+                </View>
                 <View
                   style={{
                     marginHorizontal: deviceWidth * 0.04,
@@ -1189,7 +1487,7 @@ const TakeAdmission = () => {
                         paddingHorizontal: Width(15),
                         fontSize: Height(16),
                       }}>
-                      {Number(perFee) * Number(12)}
+                      {Number(feepermonth) * Number(12)}
                     </Text>
                   </View>
                 </View>
@@ -1219,13 +1517,39 @@ const TakeAdmission = () => {
                   }}>
                   <RNInputField
                     style={{backgroundColor: Colors.fadeGray}}
+                    label="Annual Fee"
+                    value={annualmanualfee}
+                    onChangeText={data => setannualmanualfee(data)}
+                    placeholder="0"
+                  />
+                </View>
+
+                <View
+                  style={{
+                    marginHorizontal: deviceWidth * 0.04,
+                    position: 'relative',
+                  }}>
+                  <RNInputField
+                    style={{backgroundColor: Colors.fadeGray}}
+                    label="Admission Fee"
+                    value={AdmissionFeeManual}
+                    onChangeText={data => setAdmissionFeeManual(data)}
+                    placeholder="0"
+                  />
+                </View>
+                <View
+                  style={{
+                    marginHorizontal: deviceWidth * 0.04,
+                    position: 'relative',
+                  }}>
+                  <RNInputField
+                    style={{backgroundColor: Colors.fadeGray}}
                     label="Monthly Fee"
                     value={monthlyfee}
                     onChangeText={data => setmonthlyfee(data)}
                     placeholder="0"
                   />
                 </View>
-
                 <View
                   style={{
                     marginHorizontal: deviceWidth * 0.04,
@@ -1431,7 +1755,7 @@ const TakeAdmission = () => {
                           paddingHorizontal: Width(15),
                           fontSize: Height(16),
                         }}>
-                        {onlyTransport}
+                        {hostelfeeperMonth}
                       </Text>
                     </View>
                   </View>
@@ -1451,7 +1775,7 @@ const TakeAdmission = () => {
                           paddingHorizontal: Width(15),
                           fontSize: Height(16),
                         }}>
-                        {Number(onlyTransport) * Number(12)}
+                        {Number(hostelfeeperMonth) * Number(12)}
                       </Text>
                     </View>
                   </View>
@@ -1466,8 +1790,8 @@ const TakeAdmission = () => {
                     <RNInputField
                       style={{backgroundColor: Colors.fadeGray}}
                       label="Per Month Fee"
-                      value={TransportFeePermonth}
-                      onChangeText={data => setTransportFeePermonth(data)}
+                      value={onlyHostelFee}
+                      onChangeText={data => setonlyHostelFee(data)}
                       placeholder="0"
                     />
                   </View>
@@ -1488,7 +1812,7 @@ const TakeAdmission = () => {
                           paddingHorizontal: Width(20),
                           fontSize: Height(16),
                         }}>
-                        {Number(TransportFeePermonth) * Number(12)}
+                        {Number(onlyHostelFee) * Number(12)}
                       </Text>
                     </View>
                   </View>
@@ -1621,7 +1945,7 @@ const TakeAdmission = () => {
                           paddingHorizontal: Width(15),
                           fontSize: Height(16),
                         }}>
-                        {Number(hostelfeeperMonth)}
+                        {Number(TransportFeePermonth)}
                       </Text>
                     </View>
                   </View>
@@ -1641,7 +1965,7 @@ const TakeAdmission = () => {
                           paddingHorizontal: Width(15),
                           fontSize: Height(16),
                         }}>
-                        {Number(hostelfeeperMonth) * Number(12)}
+                        {Number(TransportFeePermonth) * Number(12)}
                       </Text>
                     </View>
                   </View>
@@ -1686,6 +2010,8 @@ const TakeAdmission = () => {
               )}
             </>
           )}
+
+          
           <View style={{paddingHorizontal: 10}}>
             <Text style={{fontSize: 20, marginBottom: 10, marginTop: 8}}>
               Password Size Photo
@@ -1978,7 +2304,7 @@ const TakeAdmission = () => {
           <RNButton
             loading={loading}
             onPress={submit}
-            style={{marginHorizontal: 20, marginTop: 20}}>
+            style={{marginHorizontal: 20, marginTop: 20, marginBottom: 50}}>
             Save & Next
           </RNButton>
         </View>

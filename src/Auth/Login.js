@@ -76,6 +76,8 @@ const Login = () => {
   const {school} = useSelector(state => state.school);
   const {client} = useSelector(state => state.client);
 
+
+
   const submit = () => {
     if (showloginoption === false) {
       if (userid === '') {
@@ -112,16 +114,12 @@ const Login = () => {
   };
 
   useEffect(() => {
-    if (isAuthenticated) {
+    if (isAuthenticated&&user) {
       if (user?.data[0]?.token) {
         setauthtoken();
         dispatch(loadUser());
       }
 
-      // setOpen(false);
-      // if (user?.data[0]?.newclient === true) {
-      //   navigate.navigate('/pricing');
-      // } else {
       if (user?.data[0]?.User?.userType === 'school') {
         navigation.navigate('DashboardSchool');
         setloader(false);
@@ -183,599 +181,599 @@ const Login = () => {
       <BackHeader title={'Sign-in'} />
       <StatusBar backgroundColor={primary} />
       {/* <ImageBackground  style={styles.imagestyle}> */}
-        <View style={{flex: 1}}>
-          <View style={styles.mainprofile}>
-            <View style={styles.innearviewprofile}>
-              <Image
-                source={loginicon}
-                style={{
-                  width: '100%',
-                  height: 80,
-                  borderRadius: 50,
-                }}
-              />
-            </View>
+      <View style={{flex: 1}}>
+        <View style={styles.mainprofile}>
+          <View style={styles.innearviewprofile}>
+            <Image
+              source={loginicon}
+              style={{
+                width: '100%',
+                height: 80,
+                borderRadius: 50,
+              }}
+            />
           </View>
-          <View style={styles.Content}>
-            <Loader loader={loader} sms={sms} />
-            <ScrollView>
-              <View
-                style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                }}>
-                <View style={{width: '45%'}}>
-                  <RNButton
-                    style={{paddingHorizontal: 20}}
-                    onPress={() => {
-                      setshowloginoption(false);
-                    }}>
-                    Login
-                  </RNButton>
-                </View>
-
-                <View style={{width: '45%'}}>
-                  <RNButton
-                    style={{paddingHorizontal: 20}}
-                    onPress={() => setshowloginoption(true)}>
-                    GUEST
-                  </RNButton>
-                </View>
+        </View>
+        <View style={styles.Content}>
+          <Loader loader={loader} sms={sms} />
+          <ScrollView>
+            <View
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+              }}>
+              <View style={{width: '45%'}}>
+                <RNButton
+                  style={{paddingHorizontal: 20}}
+                  onPress={() => {
+                    setshowloginoption(false);
+                  }}>
+                  Login
+                </RNButton>
               </View>
-              {showloginoption === true && (
-                <>
-                  <Text
-                    style={{
-                      fontFamily: 'Gilroy-SemiBold',
-                      fontSize: Height(12),
-                      marginTop: Height(10),
-                    }}>
-                    Login As<Text style={{color: primary}}> *</Text>
-                  </Text>
-                  <Dropdown
-                    style={styles.dropstyle}
-                    placeholderStyle={styles.placeholderStyle}
-                    selectedTextStyle={styles.selectedTextStyle}
-                    inputSearchStyle={styles.inputSearchStyle}
-                    iconStyle={styles.iconStyle}
-                    data={dataguest}
-                    search
-                    maxHeight={300}
-                    labelField="label"
-                    valueField="value"
-                    placeholder="Please Select"
-                    searchPlaceholder="Search..."
-                    value={guestloginas}
-                    onChange={item => {
-                      setguestloginas(item.value);
-                    }}
-                  />
-                  <View>
-                    <RNInputField
-                      label="Full Name"
-                      placeholder="Enter Full Name"
-                      value={Fullname}
-                      onChangeText={data => setFullname(data)}
-                    />
-                  </View>
-                  <View>
-                    <RNInputField
-                      label="Email"
-                      placeholder="Enter Email"
-                      value={userid}
-                      onChangeText={data => setuserid(data)}
-                    />
-                  </View>
 
+              <View style={{width: '45%'}}>
+                <RNButton
+                  style={{paddingHorizontal: 20}}
+                  onPress={() => setshowloginoption(true)}>
+                  GUEST
+                </RNButton>
+              </View>
+            </View>
+            {showloginoption === true && (
+              <>
+                <Text
+                  style={{
+                    fontFamily: 'Gilroy-SemiBold',
+                    fontSize: Height(12),
+                    marginTop: Height(10),
+                  }}>
+                  Login As<Text style={{color: primary}}> *</Text>
+                </Text>
+                <Dropdown
+                  style={styles.dropstyle}
+                  placeholderStyle={styles.placeholderStyle}
+                  selectedTextStyle={styles.selectedTextStyle}
+                  inputSearchStyle={styles.inputSearchStyle}
+                  iconStyle={styles.iconStyle}
+                  data={dataguest}
+                  search
+                  maxHeight={300}
+                  labelField="label"
+                  valueField="value"
+                  placeholder="Please Select"
+                  searchPlaceholder="Search..."
+                  value={guestloginas}
+                  onChange={item => {
+                    setguestloginas(item.value);
+                  }}
+                />
+                <View>
                   <RNInputField
-                    label="Mobile No"
-                    placeholder="Enter Mobile NO"
+                    label="Full Name"
+                    placeholder="Enter Full Name"
+                    value={Fullname}
+                    onChangeText={data => setFullname(data)}
+                  />
+                </View>
+                <View>
+                  <RNInputField
+                    label="Email"
+                    placeholder="Enter Email"
                     value={userid}
                     onChangeText={data => setuserid(data)}
                   />
+                </View>
 
-                  <RNButton
-                    style={{paddingHorizontal: 25}}
-                    onPress={() => {
-                      submit();
-                    }}>
-                    Login
-                  </RNButton>
-                </>
-              )}
+                <RNInputField
+                  label="Mobile No"
+                  placeholder="Enter Mobile NO"
+                  value={userid}
+                  onChangeText={data => setuserid(data)}
+                />
 
-              {showloginoption === false && (
-                <>
-                  <Text
-                    style={{
-                      fontFamily: 'Gilroy-SemiBold',
-                      fontSize: Height(12),
-                      marginTop: Height(10),
-                    }}>
-                    Login As<Text style={{color: primary}}> *</Text>
-                  </Text>
-                  <Dropdown
-                    style={styles.dropstyle}
-                    placeholderStyle={styles.placeholderStyle}
-                    selectedTextStyle={styles.selectedTextStyle}
-                    inputSearchStyle={styles.inputSearchStyle}
-                    iconStyle={styles.iconStyle}
-                    data={data}
-                    search
-                    maxHeight={300}
-                    labelField="label"
-                    valueField="value"
-                    placeholder="Please Select"
-                    searchPlaceholder="Search..."
-                    value={loginas}
-                    onChange={item => {
-                      setloginas(item.value);
-                    }}
-                  />
-                  {loginas === 'College' && (
-                    <>
-                      <Text
-                        style={{
-                          fontFamily: 'Gilroy-SemiBold',
-                          fontSize: Height(12),
-                          marginTop: Height(10),
-                        }}>
-                        Please Select College
-                        <Text style={{color: primary}}> *</Text>
-                      </Text>
+                <RNButton
+                  style={{paddingHorizontal: 25}}
+                  onPress={() => {
+                    submit();
+                  }}>
+                  Login
+                </RNButton>
+              </>
+            )}
 
-                      {college?.length ? (
-                        <>
-                          <Dropdown
-                            style={styles.dropstyle}
-                            placeholderStyle={styles.placeholderStyle}
-                            selectedTextStyle={styles.selectedTextStyle}
-                            inputSearchStyle={styles.inputSearchStyle}
-                            iconStyle={styles.iconStyle}
-                            data={
-                              college &&
-                              college?.map(item => ({
-                                label: `${item?.institutename} ${item?.ClientCode}`,
-                                value: `${item?.institutename} ${item?.ClientCode}`,
-                              }))
-                            }
-                            search
-                            maxHeight={300}
-                            labelField="label"
-                            valueField="value"
-                            placeholder="Please Select"
-                            searchPlaceholder="Search..."
-                            value={loginfor}
-                            onChange={item => {
-                              setloginfor(item.value);
-                            }}
-                          />
-                        </>
-                      ) : (
-                        ''
-                      )}
+            {showloginoption === false && (
+              <>
+                <Text
+                  style={{
+                    fontFamily: 'Gilroy-SemiBold',
+                    fontSize: Height(12),
+                    marginTop: Height(10),
+                  }}>
+                  Login As<Text style={{color: primary}}> *</Text>
+                </Text>
+                <Dropdown
+                  style={styles.dropstyle}
+                  placeholderStyle={styles.placeholderStyle}
+                  selectedTextStyle={styles.selectedTextStyle}
+                  inputSearchStyle={styles.inputSearchStyle}
+                  iconStyle={styles.iconStyle}
+                  data={data}
+                  search
+                  maxHeight={300}
+                  labelField="label"
+                  valueField="value"
+                  placeholder="Please Select"
+                  searchPlaceholder="Search..."
+                  value={loginas}
+                  onChange={item => {
+                    setloginas(item.value);
+                  }}
+                />
+                {loginas === 'College' && (
+                  <>
+                    <Text
+                      style={{
+                        fontFamily: 'Gilroy-SemiBold',
+                        fontSize: Height(12),
+                        marginTop: Height(10),
+                      }}>
+                      Please Select College
+                      <Text style={{color: primary}}> *</Text>
+                    </Text>
 
-                      <View>
-                        <RNInputField
-                          label="College Id"
-                          placeholder="Enter College Id"
-                          value={userid}
-                          onChangeText={data => setuserid(data)}
+                    {college?.length ? (
+                      <>
+                        <Dropdown
+                          style={styles.dropstyle}
+                          placeholderStyle={styles.placeholderStyle}
+                          selectedTextStyle={styles.selectedTextStyle}
+                          inputSearchStyle={styles.inputSearchStyle}
+                          iconStyle={styles.iconStyle}
+                          data={
+                            college &&
+                            college?.map(item => ({
+                              label: `${item?.institutename} ${item?.ClientCode}`,
+                              value: `${item?.institutename} ${item?.ClientCode}`,
+                            }))
+                          }
+                          search
+                          maxHeight={300}
+                          labelField="label"
+                          valueField="value"
+                          placeholder="Please Select"
+                          searchPlaceholder="Search..."
+                          value={loginfor}
+                          onChange={item => {
+                            setloginfor(item.value);
+                          }}
                         />
-                      </View>
-                      <View>
-                        <RNInputField
-                          label="Password"
-                          placeholder="Enter Password"
-                          ispassword
-                          passwordShow={showPassword}
-                          setShowPassword={setShowPassword}
-                          value={password}
-                          onChangeText={data => setpassword(data)}
-                        />
-                      </View>
-                    </>
-                  )}
+                      </>
+                    ) : (
+                      ''
+                    )}
 
-                  {loginas === 'School' && (
-                    <>
-                      <Text
-                        style={{
-                          fontFamily: 'Gilroy-SemiBold',
-                          fontSize: Height(12),
-                          marginTop: Height(10),
-                        }}>
-                        Please Select School
-                        <Text style={{color: primary}}> *</Text>
-                      </Text>
-                      {school ? (
-                        <>
-                          <Dropdown
-                            style={styles.dropstyle}
-                            onFocus={() => setIndex(9)}
-                            placeholderStyle={styles.placeholderStyle}
-                            selectedTextStyle={styles.selectedTextStyle}
-                            inputSearchStyle={styles.inputSearchStyle}
-                            iconStyle={styles.iconStyle}
-                            data={
-                              school &&
-                              school?.map(item => ({
-                                label: `${item?.institutename} ${item?.ClientCode}`,
-                                value: `${item?.institutename} ${item?.ClientCode}`,
-                              }))
-                            }
-                            search
-                            maxHeight={300}
-                            labelField="label"
-                            valueField="value"
-                            placeholder="Please Select"
-                            searchPlaceholder="Search..."
-                            value={loginfor}
-                            onChange={item => {
-                              setloginfor(item.value);
-                            }}
-                          />
-                        </>
-                      ) : (
-                        ''
-                      )}
-                      <View>
-                        <RNInputField
-                          label="School Id"
-                          placeholder="Enter College Id"
-                          value={userid}
-                          onChangeText={data => setuserid(data)}
-                        />
-                      </View>
+                    <View>
+                      <RNInputField
+                        label="College Id"
+                        placeholder="Enter College Id"
+                        value={userid}
+                        onChangeText={data => setuserid(data)}
+                      />
+                    </View>
+                    <View>
+                      <RNInputField
+                        label="Password"
+                        placeholder="Enter Password"
+                        ispassword
+                        passwordShow={showPassword}
+                        setShowPassword={setShowPassword}
+                        value={password}
+                        onChangeText={data => setpassword(data)}
+                      />
+                    </View>
+                  </>
+                )}
 
-                      <View>
-                        <RNInputField
-                          label="Password"
-                          placeholder="Enter Password"
-                          ispassword
-                          passwordShow={showPassword}
-                          setShowPassword={setShowPassword}
-                          value={password}
-                          onChangeText={data => setpassword(data)}
+                {loginas === 'School' && (
+                  <>
+                    <Text
+                      style={{
+                        fontFamily: 'Gilroy-SemiBold',
+                        fontSize: Height(12),
+                        marginTop: Height(10),
+                      }}>
+                      Please Select School
+                      <Text style={{color: primary}}> *</Text>
+                    </Text>
+                    {school ? (
+                      <>
+                        <Dropdown
+                          style={styles.dropstyle}
+                          onFocus={() => setIndex(9)}
+                          placeholderStyle={styles.placeholderStyle}
+                          selectedTextStyle={styles.selectedTextStyle}
+                          inputSearchStyle={styles.inputSearchStyle}
+                          iconStyle={styles.iconStyle}
+                          data={
+                            school &&
+                            school?.map(item => ({
+                              label: `${item?.institutename} ${item?.ClientCode}`,
+                              value: `${item?.institutename} ${item?.ClientCode}`,
+                            }))
+                          }
+                          search
+                          maxHeight={300}
+                          labelField="label"
+                          valueField="value"
+                          placeholder="Please Select"
+                          searchPlaceholder="Search..."
+                          value={loginfor}
+                          onChange={item => {
+                            setloginfor(item.value);
+                          }}
                         />
-                      </View>
-                    </>
-                  )}
+                      </>
+                    ) : (
+                      ''
+                    )}
+                    <View>
+                      <RNInputField
+                        label="School Id"
+                        placeholder="Enter College Id"
+                        value={userid}
+                        onChangeText={data => setuserid(data)}
+                      />
+                    </View>
 
-                  {loginas === 'Coaching Institute' && (
-                    <>
-                      <Text
-                        style={{
-                          fontFamily: 'Gilroy-SemiBold',
-                          fontSize: Height(12),
-                          marginTop: Height(10),
-                        }}>
-                        Please Select Coaching
-                        <Text style={{color: primary}}> *</Text>
-                      </Text>
-                      {coaching ? (
-                        <>
-                          <Dropdown
-                            style={styles.dropstyle}
-                            onFocus={() => setIndex(13)}
-                            placeholderStyle={styles.placeholderStyle}
-                            selectedTextStyle={styles.selectedTextStyle}
-                            inputSearchStyle={styles.inputSearchStyle}
-                            iconStyle={styles.iconStyle}
-                            data={
-                              coaching &&
-                              coaching?.map(item => ({
-                                label: `${item?.institutename} ${item?.ClientCode}`,
-                                value: `${item?.institutename} ${item?.ClientCode}`,
-                              }))
-                            }
-                            search
-                            maxHeight={300}
-                            labelField="label"
-                            valueField="value"
-                            placeholder="Please Select"
-                            searchPlaceholder="Search..."
-                            value={loginfor}
-                            onChange={item => {
-                              setloginfor(item.value);
-                            }}
-                          />
-                        </>
-                      ) : (
-                        ''
-                      )}
-                      <View>
-                        <RNInputField
-                          label="Coaching Id"
-                          placeholder="Enter Coaching Id"
-                          value={userid}
-                          onChangeText={data => setuserid(data)}
-                        />
-                      </View>
+                    <View>
+                      <RNInputField
+                        label="Password"
+                        placeholder="Enter Password"
+                        ispassword
+                        passwordShow={showPassword}
+                        setShowPassword={setShowPassword}
+                        value={password}
+                        onChangeText={data => setpassword(data)}
+                      />
+                    </View>
+                  </>
+                )}
 
-                      <View>
-                        <RNInputField
-                          label="Password"
-                          placeholder="Enter Password"
-                          ispassword
-                          passwordShow={showPassword}
-                          setShowPassword={setShowPassword}
-                          value={password}
-                          onChangeText={data => setpassword(data)}
+                {loginas === 'Coaching Institute' && (
+                  <>
+                    <Text
+                      style={{
+                        fontFamily: 'Gilroy-SemiBold',
+                        fontSize: Height(12),
+                        marginTop: Height(10),
+                      }}>
+                      Please Select Coaching
+                      <Text style={{color: primary}}> *</Text>
+                    </Text>
+                    {coaching ? (
+                      <>
+                        <Dropdown
+                          style={styles.dropstyle}
+                          onFocus={() => setIndex(13)}
+                          placeholderStyle={styles.placeholderStyle}
+                          selectedTextStyle={styles.selectedTextStyle}
+                          inputSearchStyle={styles.inputSearchStyle}
+                          iconStyle={styles.iconStyle}
+                          data={
+                            coaching &&
+                            coaching?.map(item => ({
+                              label: `${item?.institutename} ${item?.ClientCode}`,
+                              value: `${item?.institutename} ${item?.ClientCode}`,
+                            }))
+                          }
+                          search
+                          maxHeight={300}
+                          labelField="label"
+                          valueField="value"
+                          placeholder="Please Select"
+                          searchPlaceholder="Search..."
+                          value={loginfor}
+                          onChange={item => {
+                            setloginfor(item.value);
+                          }}
                         />
-                      </View>
-                    </>
-                  )}
-                  {loginas === 'Employee' && (
-                    <>
-                      <Text
-                        style={{
-                          fontFamily: 'Gilroy-SemiBold',
-                          fontSize: Height(12),
-                          marginTop: Height(10),
-                        }}>
-                        Please Select
-                        <Text style={{color: primary}}> *</Text>
-                      </Text>
-                      {client ? (
-                        <>
-                          <Dropdown
-                            style={styles.dropstyle}
-                            onFocus={() => setIndex(16)}
-                            placeholderStyle={styles.placeholderStyle}
-                            selectedTextStyle={styles.selectedTextStyle}
-                            inputSearchStyle={styles.inputSearchStyle}
-                            iconStyle={styles.iconStyle}
-                            data={
-                              client &&
-                              client?.map(item => ({
-                                label: `${item?.institutename} ${item?.ClientCode}`,
-                                value: `${item?.institutename} ${item?.ClientCode}`,
-                              }))
-                            }
-                            search
-                            maxHeight={300}
-                            labelField="label"
-                            valueField="value"
-                            placeholder="Please Select"
-                            searchPlaceholder="Search..."
-                            value={loginfor}
-                            onChange={item => {
-                              setloginfor(item.value);
-                            }}
-                          />
-                        </>
-                      ) : (
-                        ''
-                      )}
+                      </>
+                    ) : (
+                      ''
+                    )}
+                    <View>
+                      <RNInputField
+                        label="Coaching Id"
+                        placeholder="Enter Coaching Id"
+                        value={userid}
+                        onChangeText={data => setuserid(data)}
+                      />
+                    </View>
 
-                      <View>
-                        <RNInputField
-                          label="Employee Id"
-                          placeholder="Enter Employee Id"
-                          value={userid}
-                          onChangeText={data => setuserid(data)}
+                    <View>
+                      <RNInputField
+                        label="Password"
+                        placeholder="Enter Password"
+                        ispassword
+                        passwordShow={showPassword}
+                        setShowPassword={setShowPassword}
+                        value={password}
+                        onChangeText={data => setpassword(data)}
+                      />
+                    </View>
+                  </>
+                )}
+                {loginas === 'Employee' && (
+                  <>
+                    <Text
+                      style={{
+                        fontFamily: 'Gilroy-SemiBold',
+                        fontSize: Height(12),
+                        marginTop: Height(10),
+                      }}>
+                      Please Select
+                      <Text style={{color: primary}}> *</Text>
+                    </Text>
+                    {client ? (
+                      <>
+                        <Dropdown
+                          style={styles.dropstyle}
+                          onFocus={() => setIndex(16)}
+                          placeholderStyle={styles.placeholderStyle}
+                          selectedTextStyle={styles.selectedTextStyle}
+                          inputSearchStyle={styles.inputSearchStyle}
+                          iconStyle={styles.iconStyle}
+                          data={
+                            client &&
+                            client?.map(item => ({
+                              label: `${item?.institutename} ${item?.ClientCode}`,
+                              value: `${item?.institutename} ${item?.ClientCode}`,
+                            }))
+                          }
+                          search
+                          maxHeight={300}
+                          labelField="label"
+                          valueField="value"
+                          placeholder="Please Select"
+                          searchPlaceholder="Search..."
+                          value={loginfor}
+                          onChange={item => {
+                            setloginfor(item.value);
+                          }}
                         />
-                      </View>
+                      </>
+                    ) : (
+                      ''
+                    )}
 
-                      <View>
-                        <RNInputField
-                          label="Password"
-                          placeholder="Enter Password"
-                          ispassword
-                          passwordShow={showPassword}
-                          setShowPassword={setShowPassword}
-                          value={password}
-                          onChangeText={data => setpassword(data)}
-                        />
-                      </View>
-                    </>
-                  )}
-                  {loginas === 'Student' && (
-                    <>
-                      <Text
-                        style={{
-                          fontFamily: 'Gilroy-SemiBold',
-                          fontSize: Height(12),
-                          marginTop: Height(10),
-                        }}>
-                        Please Select
-                        <Text style={{color: primary}}> *</Text>
-                      </Text>
-                      {client ? (
-                        <>
-                          <Dropdown
-                            style={styles.dropstyle}
-                            onFocus={() => setIndex(19)}
-                            placeholderStyle={styles.placeholderStyle}
-                            selectedTextStyle={styles.selectedTextStyle}
-                            inputSearchStyle={styles.inputSearchStyle}
-                            iconStyle={styles.iconStyle}
-                            data={
-                              client &&
-                              client?.map(item => ({
-                                label: `${item?.institutename} ${item?.ClientCode}`,
-                                value: `${item?.institutename} ${item?.ClientCode}`,
-                              }))
-                            }
-                            search
-                            maxHeight={300}
-                            labelField="label"
-                            valueField="value"
-                            placeholder="Please Select"
-                            searchPlaceholder="Search..."
-                            value={loginfor}
-                            onChange={item => {
-                              setloginfor(item.value);
-                            }}
-                          />
-                        </>
-                      ) : (
-                        ''
-                      )}
-                      <View>
-                        <RNInputField
-                          label="Roll No"
-                          placeholder="Enter Roll No"
-                          value={userid}
-                          onChangeText={data => setuserid(data)}
-                        />
-                      </View>
+                    <View>
+                      <RNInputField
+                        label="Employee Id"
+                        placeholder="Enter Employee Id"
+                        value={userid}
+                        onChangeText={data => setuserid(data)}
+                      />
+                    </View>
 
-                      <View>
-                        <RNInputField
-                          label="Password"
-                          placeholder="Enter Password"
-                          ispassword
-                          passwordShow={showPassword}
-                          setShowPassword={setShowPassword}
-                          value={password}
-                          onChangeText={data => setpassword(data)}
+                    <View>
+                      <RNInputField
+                        label="Password"
+                        placeholder="Enter Password"
+                        ispassword
+                        passwordShow={showPassword}
+                        setShowPassword={setShowPassword}
+                        value={password}
+                        onChangeText={data => setpassword(data)}
+                      />
+                    </View>
+                  </>
+                )}
+                {loginas === 'Student' && (
+                  <>
+                    <Text
+                      style={{
+                        fontFamily: 'Gilroy-SemiBold',
+                        fontSize: Height(12),
+                        marginTop: Height(10),
+                      }}>
+                      Please Select
+                      <Text style={{color: primary}}> *</Text>
+                    </Text>
+                    {client ? (
+                      <>
+                        <Dropdown
+                          style={styles.dropstyle}
+                          onFocus={() => setIndex(19)}
+                          placeholderStyle={styles.placeholderStyle}
+                          selectedTextStyle={styles.selectedTextStyle}
+                          inputSearchStyle={styles.inputSearchStyle}
+                          iconStyle={styles.iconStyle}
+                          data={
+                            client &&
+                            client?.map(item => ({
+                              label: `${item?.institutename} ${item?.ClientCode}`,
+                              value: `${item?.institutename} ${item?.ClientCode}`,
+                            }))
+                          }
+                          search
+                          maxHeight={300}
+                          labelField="label"
+                          valueField="value"
+                          placeholder="Please Select"
+                          searchPlaceholder="Search..."
+                          value={loginfor}
+                          onChange={item => {
+                            setloginfor(item.value);
+                          }}
                         />
-                      </View>
-                    </>
-                  )}
+                      </>
+                    ) : (
+                      ''
+                    )}
+                    <View>
+                      <RNInputField
+                        label="Roll No"
+                        placeholder="Enter Roll No"
+                        value={userid}
+                        onChangeText={data => setuserid(data)}
+                      />
+                    </View>
 
-                  {loginas === 'Parent' && (
-                    <>
-                      <Text
-                        style={{
-                          fontFamily: 'Gilroy-SemiBold',
-                          fontSize: Height(12),
-                          marginTop: Height(10),
-                        }}>
-                        Please Select Organization
-                        <Text style={{color: primary}}> *</Text>
-                      </Text>
-                      {client ? (
-                        <>
-                          <Dropdown
-                            style={styles.dropstyle}
-                            onFocus={() => setIndex(22)}
-                            placeholderStyle={styles.placeholderStyle}
-                            selectedTextStyle={styles.selectedTextStyle}
-                            inputSearchStyle={styles.inputSearchStyle}
-                            iconStyle={styles.iconStyle}
-                            data={
-                              client &&
-                              client?.map(item => ({
-                                label: `${item?.institutename} ${item?.ClientCode}`,
-                                value: `${item?.institutename} ${item?.ClientCode}`,
-                              }))
-                            }
-                            search
-                            maxHeight={300}
-                            labelField="label"
-                            valueField="value"
-                            placeholder="Please Select Organization"
-                            searchPlaceholder="Search..."
-                            value={value}
-                            onChange={item => {
-                              setloginfor(item.value);
-                            }}
-                          />
-                        </>
-                      ) : (
-                        ''
-                      )}
-                      <View>
-                        <RNInputField
-                          label="Mobile No"
-                          placeholder="Enter Mobile NO"
-                          value={userid}
-                          onChangeText={data => setuserid(data)}
-                        />
-                      </View>
+                    <View>
+                      <RNInputField
+                        label="Password"
+                        placeholder="Enter Password"
+                        ispassword
+                        passwordShow={showPassword}
+                        setShowPassword={setShowPassword}
+                        value={password}
+                        onChangeText={data => setpassword(data)}
+                      />
+                    </View>
+                  </>
+                )}
 
-                      <View>
-                        <RNInputField
-                          label="Password"
-                          placeholder="Enter Password"
-                          ispassword
-                          passwordShow={showPassword}
-                          setShowPassword={setShowPassword}
-                          value={password}
-                          onChangeText={data => setpassword(data)}
+                {loginas === 'Parent' && (
+                  <>
+                    <Text
+                      style={{
+                        fontFamily: 'Gilroy-SemiBold',
+                        fontSize: Height(12),
+                        marginTop: Height(10),
+                      }}>
+                      Please Select Organization
+                      <Text style={{color: primary}}> *</Text>
+                    </Text>
+                    {client ? (
+                      <>
+                        <Dropdown
+                          style={styles.dropstyle}
+                          onFocus={() => setIndex(22)}
+                          placeholderStyle={styles.placeholderStyle}
+                          selectedTextStyle={styles.selectedTextStyle}
+                          inputSearchStyle={styles.inputSearchStyle}
+                          iconStyle={styles.iconStyle}
+                          data={
+                            client &&
+                            client?.map(item => ({
+                              label: `${item?.institutename} ${item?.ClientCode}`,
+                              value: `${item?.institutename} ${item?.ClientCode}`,
+                            }))
+                          }
+                          search
+                          maxHeight={300}
+                          labelField="label"
+                          valueField="value"
+                          placeholder="Please Select Organization"
+                          searchPlaceholder="Search..."
+                          value={value}
+                          onChange={item => {
+                            setloginfor(item.value);
+                          }}
                         />
-                      </View>
-                    </>
-                  )}
+                      </>
+                    ) : (
+                      ''
+                    )}
+                    <View>
+                      <RNInputField
+                        label="Mobile No"
+                        placeholder="Enter Mobile NO"
+                        value={userid}
+                        onChangeText={data => setuserid(data)}
+                      />
+                    </View>
 
-                  {loginas === 'Others' && (
-                    <>
-                      <View>
-                        <RNInputField
-                          label="Admin Id"
-                          placeholder="Enter Admin Id"
-                          value={userid}
-                          onChangeText={data => setuserid(data)}
-                        />
-                      </View>
+                    <View>
+                      <RNInputField
+                        label="Password"
+                        placeholder="Enter Password"
+                        ispassword
+                        passwordShow={showPassword}
+                        setShowPassword={setShowPassword}
+                        value={password}
+                        onChangeText={data => setpassword(data)}
+                      />
+                    </View>
+                  </>
+                )}
 
-                      <View>
-                        <RNInputField
-                          label="Password"
-                          placeholder="Enter Password"
-                          ispassword
-                          passwordShow={showPassword}
-                          setShowPassword={setShowPassword}
-                          value={password}
-                          onChangeText={data => setpassword(data)}
-                        />
-                      </View>
-                    </>
-                  )}
+                {loginas === 'Others' && (
+                  <>
+                    <View>
+                      <RNInputField
+                        label="Admin Id"
+                        placeholder="Enter Admin Id"
+                        value={userid}
+                        onChangeText={data => setuserid(data)}
+                      />
+                    </View>
+
+                    <View>
+                      <RNInputField
+                        label="Password"
+                        placeholder="Enter Password"
+                        ispassword
+                        passwordShow={showPassword}
+                        setShowPassword={setShowPassword}
+                        value={password}
+                        onChangeText={data => setpassword(data)}
+                      />
+                    </View>
+                  </>
+                )}
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    marginBottom: deviceHeight * 0.02,
+                  }}>
                   <View
                     style={{
-                      flexDirection: 'row',
                       alignItems: 'center',
                       justifyContent: 'space-between',
-                      marginBottom: deviceHeight * 0.02,
+                      flexDirection: 'row',
                     }}>
-                    <View
+                    <Checkbox status="checked" color={Colors.primary} />
+                    <Text
                       style={{
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                        flexDirection: 'row',
+                        fontSize: 13,
+                        fontWeight: '500',
+                        lineHeight: 18,
                       }}>
-                      <Checkbox status="checked" color={Colors.primary} />
+                      Remember Me!
+                    </Text>
+                  </View>
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate('Signup')}>
+                    <View>
                       <Text
                         style={{
                           fontSize: 13,
                           fontWeight: '500',
                           lineHeight: 18,
                         }}>
-                        Remember Me!
+                        Don't have An Account?
+                        <Text style={{color: Colors.primary}}>Sign-Up</Text>
                       </Text>
                     </View>
-                    <TouchableOpacity
-                      onPress={() => navigation.navigate('Signup')}>
-                      <View>
-                        <Text
-                          style={{
-                            fontSize: 13,
-                            fontWeight: '500',
-                            lineHeight: 18,
-                          }}>
-                          Don't have An Account?
-                          <Text style={{color: Colors.primary}}>Sign-Up</Text>
-                        </Text>
-                      </View>
-                    </TouchableOpacity>
-                  </View>
-                  <RNButton
-                    style={{paddingHorizontal: 25}}
-                    onPress={() => {
-                      submit();
-                    }}>
-                    Login
-                  </RNButton>
-                </>
-              )}
-            </ScrollView>
-          </View>
+                  </TouchableOpacity>
+                </View>
+                <RNButton
+                  style={{paddingHorizontal: 25}}
+                  onPress={() => {
+                    submit();
+                  }}>
+                  Login
+                </RNButton>
+              </>
+            )}
+          </ScrollView>
         </View>
+      </View>
       {/* </ImageBackground> */}
     </>
   );
