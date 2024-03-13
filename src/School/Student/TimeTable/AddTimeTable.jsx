@@ -6,7 +6,11 @@ import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import CardEnquiry from './Card';
 import {primary, Colors} from '../../../utils/Colors';
 import {AnimatedFAB} from 'react-native-paper';
-import {getcourse, getEmployee} from '../../../redux/action/commanAction';
+import {
+  getcourse,
+  getEmployee,
+  GetClassSubject,
+} from '../../../redux/action/commanAction';
 import {useDispatch, useSelector} from 'react-redux';
 import DashboardPlaceholderLoader from '../../../Component/DashboardPlaceholderLoader';
 import {deviceWidth} from '../../../utils/constant';
@@ -153,6 +157,7 @@ const AddTimeTable = ({navigation}) => {
   useEffect(() => {
     dispatch(getcourse());
     dispatch(getEmployee());
+    dispatch(GetClassSubject());
   }, []);
 
   return (

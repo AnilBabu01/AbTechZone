@@ -6,14 +6,12 @@ import {
   Image,
   Dimensions,
   StyleSheet,
-  ImageBackground,
   TouchableOpacity,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import {primary, secondary, Colors} from '../utils/Colors';
 import loginicon from '../assets/logoblue1.png';
 import {Height, Width} from '../utils/responsive';
-import {Dropdown} from 'react-native-element-dropdown';
 import {useDispatch, useSelector} from 'react-redux';
 import {login, loadUser} from '../redux/action/authActions';
 import {
@@ -29,8 +27,9 @@ import BackHeader from '../Component/Header/BackHeader';
 import RNButton from '../Component/RNButton';
 import RNInputField from '../Component/RNInputField';
 import {deviceHeight, deviceWidth} from '../utils/constant';
-import bgImg from '../assets/bg.jpeg';
 import {Checkbox} from 'react-native-paper';
+import RNBDropDown from '../Component/RNBDropDown';
+
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
@@ -220,35 +219,13 @@ const Login = () => {
             </View>
             {showloginoption === true && (
               <>
-                <Text
-                  style={{
-                    fontFamily: 'Gilroy-SemiBold',
-                    fontSize: Height(12),
-                    marginTop: Height(10),
-                    color: Colors.black,
-                    fontWeight: 'bold',
-                  }}>
-                  Login As<Text style={{color: primary}}> *</Text>
-                </Text>
-                <Dropdown
-                  style={styles.dropstyle}
-                  placeholderStyle={styles.placeholderStyle}
-                  selectedTextStyle={styles.selectedTextStyle}
-                  inputSearchStyle={styles.inputSearchStyle}
-                  iconStyle={styles.iconStyle}
-                  dropdownTextStyle={{color: Colors.black}}
-                  data={dataguest}
-                  search
-                  maxHeight={300}
-                  labelField="label"
-                  valueField="value"
-                  placeholder="Please Select"
-                  searchPlaceholder="Search..."
+                <RNBDropDown
+                  label="Login As"
                   value={guestloginas}
-                  onChange={item => {
-                    setguestloginas(item.value);
-                  }}
+                  OptionsList={dataguest}
+                  onChange={data => setguestloginas(data.value)}
                 />
+
                 <View>
                   <RNInputField
                     label="Full Name"
@@ -285,75 +262,28 @@ const Login = () => {
 
             {showloginoption === false && (
               <>
-                <Text
-                  style={{
-                    fontFamily: 'Gilroy-SemiBold',
-                    fontSize: Height(12),
-                    marginTop: Height(10),
-                    color: Colors.black,
-                    fontWeight: 'bold',
-                  }}>
-                  Login As<Text style={{color: primary}}> *</Text>
-                </Text>
-                <Dropdown
-                  style={styles.dropstyle}
-                  placeholderStyle={styles.placeholderStyle}
-                  selectedTextStyle={styles.selectedTextStyle}
-                  inputSearchStyle={styles.inputSearchStyle}
-                  iconStyle={styles.iconStyle}
-                  dropdownTextStyle={{color: Colors.black,fontSize: 16, fontWeight: 'bold',}}
-                  data={data}
-                  search
-                  maxHeight={300}
-                  labelField="label"
-                  valueField="value"
-                  placeholder="Please Select"
-                  searchPlaceholder="Search..."
+                <RNBDropDown
+                  label=" Login As"
                   value={loginas}
-                  onChange={item => {
-                    setloginas(item.value);
-                  }}
+                  OptionsList={data}
+                  onChange={data => setloginas(data.value)}
                 />
+
                 {loginas === 'College' && (
                   <>
-                    <Text
-                      style={{
-                        fontFamily: 'Gilroy-SemiBold',
-                        fontSize: Height(12),
-                        marginTop: Height(10),
-                        color: Colors.black,
-                        fontWeight: 'bold',
-                      }}>
-                      Please Select College
-                      <Text style={{color: primary}}> *</Text>
-                    </Text>
-
                     {college?.length ? (
                       <>
-                        <Dropdown
-                          style={styles.dropstyle}
-                          placeholderStyle={styles.placeholderStyle}
-                          selectedTextStyle={styles.selectedTextStyle}
-                          inputSearchStyle={styles.inputSearchStyle}
-                          iconStyle={styles.iconStyle}
-                          dropdownTextStyle={{color: Colors.black}}
-                          data={
+                        <RNBDropDown
+                          label=" Please Select College"
+                          value={loginfor}
+                          OptionsList={
                             college &&
                             college?.map(item => ({
                               label: `${item?.institutename} ${item?.ClientCode}`,
                               value: `${item?.institutename} ${item?.ClientCode}`,
                             }))
                           }
-                          search
-                          maxHeight={300}
-                          labelField="label"
-                          valueField="value"
-                          placeholder="Please Select"
-                          searchPlaceholder="Search..."
-                          value={loginfor}
-                          onChange={item => {
-                            setloginfor(item.value);
-                          }}
+                          onChange={data => setloginfor(data.value)}
                         />
                       </>
                     ) : (
@@ -384,44 +314,19 @@ const Login = () => {
 
                 {loginas === 'School' && (
                   <>
-                    <Text
-                      style={{
-                        fontFamily: 'Gilroy-SemiBold',
-                        fontSize: Height(12),
-                        marginTop: Height(10),
-                        color: Colors.black,
-                        fontWeight: 'bold',
-                      }}>
-                      Please Select School
-                      <Text style={{color: primary}}> *</Text>
-                    </Text>
                     {school ? (
                       <>
-                        <Dropdown
-                          style={styles.dropstyle}
-                          onFocus={() => setIndex(9)}
-                          placeholderStyle={styles.placeholderStyle}
-                          selectedTextStyle={styles.selectedTextStyle}
-                          inputSearchStyle={styles.inputSearchStyle}
-                          iconStyle={styles.iconStyle}
-                          dropdownTextStyle={{color: Colors.black}}
-                          data={
+                        <RNBDropDown
+                          label="Please Select School"
+                          value={loginfor}
+                          OptionsList={
                             school &&
                             school?.map(item => ({
                               label: `${item?.institutename} ${item?.ClientCode}`,
                               value: `${item?.institutename} ${item?.ClientCode}`,
                             }))
                           }
-                          search
-                          maxHeight={300}
-                          labelField="label"
-                          valueField="value"
-                          placeholder="Please Select"
-                          searchPlaceholder="Search..."
-                          value={loginfor}
-                          onChange={item => {
-                            setloginfor(item.value);
-                          }}
+                          onChange={data => setloginfor(data.value)}
                         />
                       </>
                     ) : (
@@ -452,44 +357,19 @@ const Login = () => {
 
                 {loginas === 'Coaching Institute' && (
                   <>
-                    <Text
-                      style={{
-                        fontFamily: 'Gilroy-SemiBold',
-                        fontSize: Height(12),
-                        marginTop: Height(10),
-                        color: Colors.black,
-                        fontWeight: 'bold',
-                      }}>
-                      Please Select Coaching
-                      <Text style={{color: primary}}> *</Text>
-                    </Text>
                     {coaching ? (
                       <>
-                        <Dropdown
-                          style={styles.dropstyle}
-                          onFocus={() => setIndex(13)}
-                          placeholderStyle={styles.placeholderStyle}
-                          selectedTextStyle={styles.selectedTextStyle}
-                          inputSearchStyle={styles.inputSearchStyle}
-                          iconStyle={styles.iconStyle}
-                          dropdownTextStyle={{color: Colors.black}}
-                          data={
+                        <RNBDropDown
+                          label="Please Select Coaching"
+                          value={loginfor}
+                          OptionsList={
                             coaching &&
                             coaching?.map(item => ({
                               label: `${item?.institutename} ${item?.ClientCode}`,
                               value: `${item?.institutename} ${item?.ClientCode}`,
                             }))
                           }
-                          search
-                          maxHeight={300}
-                          labelField="label"
-                          valueField="value"
-                          placeholder="Please Select"
-                          searchPlaceholder="Search..."
-                          value={loginfor}
-                          onChange={item => {
-                            setloginfor(item.value);
-                          }}
+                          onChange={data => setloginfor(data.value)}
                         />
                       </>
                     ) : (
@@ -532,31 +412,17 @@ const Login = () => {
                     </Text>
                     {client ? (
                       <>
-                        <Dropdown
-                          style={styles.dropstyle}
-                          onFocus={() => setIndex(16)}
-                          placeholderStyle={styles.placeholderStyle}
-                          selectedTextStyle={styles.selectedTextStyle}
-                          inputSearchStyle={styles.inputSearchStyle}
-                          iconStyle={styles.iconStyle}
-                          dropdownTextStyle={{color: Colors.black}}
-                          data={
+                        <RNBDropDown
+                          label="Please Select"
+                          value={loginfor}
+                          OptionsList={
                             client &&
                             client?.map(item => ({
                               label: `${item?.institutename} ${item?.ClientCode}`,
                               value: `${item?.institutename} ${item?.ClientCode}`,
                             }))
                           }
-                          search
-                          maxHeight={300}
-                          labelField="label"
-                          valueField="value"
-                          placeholder="Please Select"
-                          searchPlaceholder="Search..."
-                          value={loginfor}
-                          onChange={item => {
-                            setloginfor(item.value);
-                          }}
+                          onChange={data => setloginfor(data.value)}
                         />
                       </>
                     ) : (
@@ -587,44 +453,19 @@ const Login = () => {
                 )}
                 {loginas === 'Student' && (
                   <>
-                    <Text
-                      style={{
-                        fontFamily: 'Gilroy-SemiBold',
-                        fontSize: Height(12),
-                        marginTop: Height(10),
-                        color: Colors.black,
-                        fontWeight: 'bold',
-                      }}>
-                      Please Select
-                      <Text style={{color: primary}}> *</Text>
-                    </Text>
                     {client ? (
                       <>
-                        <Dropdown
-                          style={styles.dropstyle}
-                          onFocus={() => setIndex(19)}
-                          placeholderStyle={styles.placeholderStyle}
-                          selectedTextStyle={styles.selectedTextStyle}
-                          inputSearchStyle={styles.inputSearchStyle}
-                          iconStyle={styles.iconStyle}
-                          dropdownTextStyle={{color: Colors.black}}
-                          data={
+                        <RNBDropDown
+                          label="Please Select"
+                          value={loginfor}
+                          OptionsList={
                             client &&
                             client?.map(item => ({
                               label: `${item?.institutename} ${item?.ClientCode}`,
                               value: `${item?.institutename} ${item?.ClientCode}`,
                             }))
                           }
-                          search
-                          maxHeight={300}
-                          labelField="label"
-                          valueField="value"
-                          placeholder="Please Select"
-                          searchPlaceholder="Search..."
-                          value={loginfor}
-                          onChange={item => {
-                            setloginfor(item.value);
-                          }}
+                          onChange={data => setloginfor(data.value)}
                         />
                       </>
                     ) : (
@@ -655,44 +496,19 @@ const Login = () => {
 
                 {loginas === 'Parent' && (
                   <>
-                    <Text
-                      style={{
-                        fontFamily: 'Gilroy-SemiBold',
-                        fontSize: Height(12),
-                        marginTop: Height(10),
-                        color: Colors.black,
-                        fontWeight: 'bold',
-                      }}>
-                      Please Select Organization
-                      <Text style={{color: primary}}> *</Text>
-                    </Text>
                     {client ? (
                       <>
-                        <Dropdown
-                          style={styles.dropstyle}
-                          onFocus={() => setIndex(22)}
-                          placeholderStyle={styles.placeholderStyle}
-                          selectedTextStyle={styles.selectedTextStyle}
-                          inputSearchStyle={styles.inputSearchStyle}
-                          iconStyle={styles.iconStyle}
-                          dropdownTextStyle={{color: Colors.black}}
-                          data={
+                        <RNBDropDown
+                          label="Please Select Organization"
+                          value={loginfor}
+                          OptionsList={
                             client &&
                             client?.map(item => ({
                               label: `${item?.institutename} ${item?.ClientCode}`,
                               value: `${item?.institutename} ${item?.ClientCode}`,
                             }))
                           }
-                          search
-                          maxHeight={300}
-                          labelField="label"
-                          valueField="value"
-                          placeholder="Please Select Organization"
-                          searchPlaceholder="Search..."
-                          value={value}
-                          onChange={item => {
-                            setloginfor(item.value);
-                          }}
+                          onChange={data => setloginfor(data.value)}
                         />
                       </>
                     ) : (
@@ -878,7 +694,7 @@ const styles = StyleSheet.create({
   icon: {
     marginRight: 5,
   },
-  
+
   placeholderStyle: {
     fontSize: 16,
     borderColor: primary,
@@ -939,6 +755,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.lightGrey,
     color: Colors.black,
   },
+
   Content: {
     position: 'absolute',
     bottom: 0,

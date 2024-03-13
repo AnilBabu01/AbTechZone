@@ -15,7 +15,7 @@ import BackHeader from '../../../Component/Header/BackHeader';
 import {GetsSubject} from '../../../redux/action/commanAction';
 import {useSelector} from 'react-redux';
 import {getCurrentTime, handleTime} from '../../../utils/functions';
-
+import RNBDropDown from '../../../Component/RNBDropDown';
 const daylist = [
   {label: 'Monday', value: 'Monday'},
   {label: 'Tuesday', value: 'Tuesday'},
@@ -96,8 +96,6 @@ const AdTimeTable = () => {
     }
     if (Classsubject) {
       setSubjectList(Classsubject);
-
-      console.log('Subject list is ', SubjectList);
     }
   }, [course, employees, Classsubject, sections]);
 
@@ -110,27 +108,11 @@ const AdTimeTable = () => {
             <FlexRowWrapper>
               <View style={{width: '95%'}}>
                 <View style={{marginHorizontal: deviceWidth * 0.01}}>
-                  <Text
-                    style={{fontSize: 14, fontWeight: '600', lineHeight: 19}}>
-                    Day
-                  </Text>
-                  <Dropdown
-                    style={styles.dropstyle}
-                    placeholderStyle={styles.placeholderStyle}
-                    selectedTextStyle={styles.selectedTextStyle}
-                    inputSearchStyle={styles.inputSearchStyle}
-                    iconStyle={styles.iconStyle}
-                    data={daylist}
-                    search
-                    maxHeight={300}
-                    labelField="label"
-                    valueField="value"
-                    placeholder="Please Select"
-                    searchPlaceholder="Search..."
+                  <RNBDropDown
+                    label="Day"
                     value={dayname}
-                    onChange={item => {
-                      setdayname(item.value);
-                    }}
+                    OptionsList={daylist}
+                    onChange={data => setdayname(data.value)}
                   />
                 </View>
               </View>
@@ -138,33 +120,17 @@ const AdTimeTable = () => {
             <FlexRowWrapper>
               <View style={{width: '95%'}}>
                 <View style={{marginHorizontal: deviceWidth * 0.01}}>
-                  <Text
-                    style={{fontSize: 14, fontWeight: '600', lineHeight: 19}}>
-                    Class
-                  </Text>
-                  <Dropdown
-                    style={styles.dropstyle}
-                    placeholderStyle={styles.placeholderStyle}
-                    selectedTextStyle={styles.selectedTextStyle}
-                    inputSearchStyle={styles.inputSearchStyle}
-                    iconStyle={styles.iconStyle}
-                    data={
+                  <RNBDropDown
+                    label="Class"
+                    value={classId}
+                    OptionsList={
                       courseList &&
                       courseList?.map(item => ({
                         label: `${item?.coursename}`,
                         value: `${item?.id}`,
                       }))
                     }
-                    search
-                    maxHeight={300}
-                    labelField="label"
-                    valueField="value"
-                    placeholder="Please Select"
-                    searchPlaceholder="Search..."
-                    value={classId}
-                    onChange={item => {
-                      setclassId(item.value);
-                    }}
+                    onChange={data => setclassId(data.value)}
                   />
                 </View>
               </View>
@@ -172,33 +138,17 @@ const AdTimeTable = () => {
             <FlexRowWrapper>
               <View style={{width: '95%'}}>
                 <View style={{marginHorizontal: deviceWidth * 0.01}}>
-                  <Text
-                    style={{fontSize: 14, fontWeight: '600', lineHeight: 19}}>
-                    Section
-                  </Text>
-                  <Dropdown
-                    style={styles.dropstyle}
-                    placeholderStyle={styles.placeholderStyle}
-                    selectedTextStyle={styles.selectedTextStyle}
-                    inputSearchStyle={styles.inputSearchStyle}
-                    iconStyle={styles.iconStyle}
-                    data={
+                  <RNBDropDown
+                    label="Section"
+                    value={sectionname}
+                    OptionsList={
                       sectionlist &&
                       sectionlist?.map(item => ({
                         label: `${item?.section}`,
                         value: `${item?.section}`,
                       }))
                     }
-                    search
-                    maxHeight={300}
-                    labelField="label"
-                    valueField="value"
-                    placeholder="NONE"
-                    searchPlaceholder="Search..."
-                    value={sectionname}
-                    onChange={item => {
-                      setsectionname(item.value);
-                    }}
+                    onChange={data => setsectionname(data.value)}
                   />
                 </View>
               </View>
@@ -207,65 +157,33 @@ const AdTimeTable = () => {
             <FlexRowWrapper>
               <View style={{width: '47%'}}>
                 <View style={{marginHorizontal: deviceWidth * 0.01}}>
-                  <Text
-                    style={{fontSize: 14, fontWeight: '600', lineHeight: 19}}>
-                    Subject
-                  </Text>
-                  <Dropdown
-                    style={styles.dropstyle}
-                    placeholderStyle={styles.placeholderStyle}
-                    selectedTextStyle={styles.selectedTextStyle}
-                    inputSearchStyle={styles.inputSearchStyle}
-                    iconStyle={styles.iconStyle}
-                    data={
+                  <RNBDropDown
+                    label="Subject"
+                    value={subject}
+                    OptionsList={
                       SubjectList &&
                       SubjectList?.map(item => ({
                         label: `${item?.Subject}`,
                         value: `${item?.Subject}`,
                       }))
                     }
-                    search
-                    maxHeight={300}
-                    labelField="label"
-                    valueField="value"
-                    placeholder="Please Select"
-                    searchPlaceholder="Search..."
-                    value={subject}
-                    onChange={item => {
-                      setsubject(item.value);
-                    }}
+                    onChange={data => setsubject(data.value)}
                   />
                 </View>
               </View>
               <View style={{width: '47%'}}>
                 <View style={{marginHorizontal: deviceWidth * 0.01}}>
-                  <Text
-                    style={{fontSize: 14, fontWeight: '600', lineHeight: 19}}>
-                    Teacher
-                  </Text>
-                  <Dropdown
-                    style={styles.dropstyle}
-                    placeholderStyle={styles.placeholderStyle}
-                    selectedTextStyle={styles.selectedTextStyle}
-                    inputSearchStyle={styles.inputSearchStyle}
-                    iconStyle={styles.iconStyle}
-                    data={
+                  <RNBDropDown
+                    label="Teacher"
+                    value={empID}
+                    OptionsList={
                       EmpList &&
                       EmpList?.map(item => ({
                         label: `${item?.name} ${item?.empId}`,
                         value: `${item?.id}`,
                       }))
                     }
-                    search
-                    maxHeight={300}
-                    labelField="label"
-                    valueField="value"
-                    placeholder="Please Select"
-                    searchPlaceholder="Search..."
-                    value={empID}
-                    onChange={item => {
-                      setempID(item.value);
-                    }}
+                    onChange={data => setempID(data.value)}
                   />
                 </View>
               </View>

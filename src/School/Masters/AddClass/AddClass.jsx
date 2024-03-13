@@ -17,7 +17,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import DashboardPlaceholderLoader from '../../../Component/DashboardPlaceholderLoader';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import RNTable from '../../../Component/RNTable';
-import DownEnquiry from '../../../Component/school/DownEnquiry';
+import DownEnquiry from '../../../Component/school/DownloadExcel';
 import EnquiryFilter from '../../../Component/school/EnquiryFilter';
 import BackHeader from '../../../Component/Header/BackHeader';
 const AddClass = ({navigation}) => {

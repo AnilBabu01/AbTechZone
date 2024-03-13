@@ -12,12 +12,13 @@ import RNButton from '../../Component/RNButton';
 import RNInputField from '../../Component/RNInputField';
 import RNDatePicker from '../../Component/RNDatePicker';
 import {handleDate, getTodaysDate} from '../../utils/functions';
-import {Colors,primary} from '../../utils/Colors';
+import {Colors, primary} from '../../utils/Colors';
 import {deviceHeight, deviceWidth} from '../../utils/constant';
 import {FlexRowWrapper} from '../../Component/FlexRowWrapper';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import moment from 'moment';
 import BackHeader from '../../Component/Header/BackHeader';
+import RNBDropDown from '../../Component/RNBDropDown';
 const UpdateEnquiry = () => {
   const route = useRoute();
   const dispatch = useDispatch();
@@ -106,7 +107,6 @@ const UpdateEnquiry = () => {
 
   useEffect(() => {
     if (route.params?.data) {
-      console.log('enqury data from params ', route.params?.data);
       setisdata(route.params?.data);
       const d = new Date(route.params?.data?.EnquiryDate);
       let newdate = `${d.getDate()}/${(d.getMonth() + 1)
@@ -167,41 +167,18 @@ const UpdateEnquiry = () => {
                 />
               </View>
               <View style={{width: '45%'}}>
-                <View style={{marginHorizontal: deviceWidth * 0.01}}>
-                  <Text
-                    style={{fontSize: 14, fontWeight: '600', lineHeight: 19}}>
-                    Class
-                  </Text>
-                  <Dropdown
-                    style={styles.dropstyle}
-                    placeholderStyle={styles.placeholderStyle}
-                    selectedTextStyle={styles.selectedTextStyle}
-                    inputSearchStyle={styles.inputSearchStyle}
-                    iconStyle={styles.iconStyle}
-                    dropdownTextStyle={{
-                      color: Colors.black,
-                      fontSize: 16,
-                      fontWeight: 'bold',
-                    }}
-                    data={
-                      courselist &&
-                      courselist?.map(item => ({
-                        label: `${item?.coursename}`,
-                        value: `${item?.coursename}`,
-                      }))
-                    }
-                    search
-                    maxHeight={300}
-                    labelField="label"
-                    valueField="value"
-                    placeholder="Please Select"
-                    searchPlaceholder="Search..."
-                    value={coursename}
-                    onChange={item => {
-                      setcoursename(item.value);
-                    }}
-                  />
-                </View>
+                <RNBDropDown
+                  label="Class"
+                  value={coursename}
+                  OptionsList={
+                    courselist &&
+                    courselist?.map(item => ({
+                      label: `${item?.coursename}`,
+                      value: `${item?.coursename}`,
+                    }))
+                  }
+                  onChange={data => setcoursename(data.value)}
+                />
               </View>
             </FlexRowWrapper>
 

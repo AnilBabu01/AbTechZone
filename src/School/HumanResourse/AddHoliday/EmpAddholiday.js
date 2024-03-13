@@ -16,7 +16,7 @@ import DashboardPlaceholderLoader from '../../../Component/DashboardPlaceholderL
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import RNTable from '../../../Component/RNTable';
-import DownEnquiry from '../../../Component/school/DownEnquiry';
+import DownEnquiry from '../../../Component/school/DownloadExcel';
 import EmpHolidayFilter from '../../../Component/school/EmpHolidayFilter';
 import BackHeader from '../../../Component/Header/BackHeader';
 import {serverInstance} from '../../../API/ServerInstance';

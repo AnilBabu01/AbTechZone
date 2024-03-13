@@ -1,15 +1,16 @@
 import {StyleSheet, Text, View, ScrollView, Image} from 'react-native';
 import React from 'react';
 import {Width, Height} from '../../../utils/responsive';
+import {Colors} from '../../../utils/Colors';
 
 const TotalCard = ({img, value, name, bgcolor}) => {
   return (
     <ScrollView>
-      <View >
-        <View style={[styles.card10,{backgroundColor: bgcolor}]}>
+      <View>
+        <View style={[styles.card10, {backgroundColor: bgcolor}]}>
           <Image style={styles.img} source={img} alt="abc" />
-          <Text>{name}</Text>
-          <Text>{value}</Text>
+          <Text style={{color: Colors.black, fontWeight: 'bold'}}>{name}</Text>
+          <Text style={{color: Colors.black, fontWeight: 'bold'}}>{value}</Text>
         </View>
       </View>
     </ScrollView>

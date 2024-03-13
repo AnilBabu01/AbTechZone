@@ -167,8 +167,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   textstyle: {
-    color: Colors.primary,
-    fontSize: 15,
+    color: Colors.black,
     paddingLeft: deviceWidth * 0.02,
   },
   divider: {

@@ -10,7 +10,6 @@ import {
 import React, {useState, useEffect} from 'react';
 import {Height, Width} from '../../../utils/responsive';
 import {primary} from '../../../utils/Colors';
-import {Dropdown} from 'react-native-element-dropdown';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {RadioButton} from 'react-native-paper';
@@ -37,6 +36,7 @@ import moment from 'moment';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import BackHeader from '../../../Component/Header/BackHeader';
 import {indiaStatesData} from '../StaticData';
+import RNBDropDown from '../../../Component/RNBDropDown';
 const streamlist = [
   {label: 'NONE', value: 'NONE'},
   {label: 'Arts', value: 'Arts'},
@@ -231,7 +231,7 @@ const AddStudent = () => {
 
       formData.append('name', studentname);
       formData.append('email', studentemail);
-      formData.append('phoneno1',studentphone);
+      formData.append('phoneno1', studentphone);
       formData.append('Religion', Religion);
       formData.append('Nationality', Nationality);
       formData.append('Gender', gender);
@@ -240,8 +240,6 @@ const AddStudent = () => {
       formData.append('PreviousTcNo', PreviousTcNo);
       formData.append('PreviousSchoolName', PreviousSchool);
       formData.append('PreviousSchoolAddress', PreviousSchoolAddress);
-
-     
 
       formData.append('whatsappNo', fathersphone);
       formData.append('MathersName', mothersname);
@@ -339,19 +337,6 @@ const AddStudent = () => {
           ? Number(feepermonth) * 12
           : Number(monthlyfee) * 12,
       );
-      // formData.append(
-      //   'Studentpassword',
-      //   user?.data[0]?.Studentpassword
-      //     ? user?.data[0]?.Studentpassword
-      //     : 'student',
-      // );
-
-      // formData.append(
-      //   'Parentpassword',
-      //   user?.data[0]?.Parentpassword
-      //     ? user?.data[0]?.Parentpassword
-      //     : 'parent',
-      // );
 
       setloader(true);
 
@@ -783,17 +768,12 @@ const AddStudent = () => {
           setloading1(false);
           sethostelfeeperMonth(res?.data?.PermonthFee);
           setonlyHostelFee(res?.data?.PermonthFee?.toString());
-        
-         
-
         }
       });
     } catch (error) {
       setloading1(false);
     }
   };
-
- 
 
   const gettransportFee = () => {
     try {
@@ -813,7 +793,7 @@ const AddStudent = () => {
           setTransportFeePermonth(res?.data?.BusRentPermonth);
           setonlyTransport(res?.data?.BusRentPermonth?.toString());
 
-          console.log("transport fee is",res?.data?.BusRentPermonth)
+          console.log('transport fee is', res?.data?.BusRentPermonth);
         }
         if (res?.status === false) {
           setloading2(false);
@@ -826,7 +806,7 @@ const AddStudent = () => {
   };
   return (
     <View>
-      <BackHeader title={'Take Admission'} icon={'person'} />
+      <BackHeader title={'Add Student'} icon={'person'} />
       <Modal animationType={'fade'} transparent={true} visible={openModel}>
         <View
           style={{
@@ -902,95 +882,43 @@ const AddStudent = () => {
 
             <FlexRowWrapper>
               <View style={{width: '45%'}}>
-                <View style={{marginHorizontal: deviceWidth * 0.01}}>
-                  <Text
-                    style={{fontSize: 14, fontWeight: '600', lineHeight: 19}}>
-                    Session
-                  </Text>
-                  <Dropdown
-                    style={styles.dropstyle}
-                    placeholderStyle={styles.placeholderStyle}
-                    selectedTextStyle={styles.selectedTextStyle}
-                    inputSearchStyle={styles.inputSearchStyle}
-                    iconStyle={styles.iconStyle}
-                    data={
-                      sessionList &&
-                      sessionList?.map(item => ({
-                        label: `${item?.Session}`,
-                        value: `${item?.Session}`,
-                      }))
-                    }
-                    search
-                    maxHeight={300}
-                    labelField="label"
-                    valueField="value"
-                    placeholder="Select Session"
-                    searchPlaceholder="Search..."
-                    value={sessionname}
-                    onChange={item => {
-                      setsessionname(item.value);
-                    }}
-                  />
-                </View>
+                <RNBDropDown
+                  label="Session"
+                  value={sessionname}
+                  OptionsList={
+                    sessionList &&
+                    sessionList?.map(item => ({
+                      label: `${item?.Session}`,
+                      value: `${item?.Session}`,
+                    }))
+                  }
+                  onChange={data => setsessionname(data.value)}
+                />
               </View>
-              <View style={{width: '45%', marginBottom: deviceHeight * 0.02}}>
-                <View style={{marginHorizontal: deviceWidth * 0.01}}>
-                  <Text
-                    style={{fontSize: 14, fontWeight: '600', lineHeight: 19}}>
-                    Section
-                  </Text>
-                  <Dropdown
-                    style={styles.dropstyle}
-                    placeholderStyle={styles.placeholderStyle}
-                    selectedTextStyle={styles.selectedTextStyle}
-                    inputSearchStyle={styles.inputSearchStyle}
-                    iconStyle={styles.iconStyle}
-                    data={
-                      sectionlist &&
-                      sectionlist?.map(item => ({
-                        label: `${item?.section}`,
-                        value: `${item?.section}`,
-                      }))
-                    }
-                    search
-                    maxHeight={300}
-                    defaultValue={'NONE'}
-                    labelField="label"
-                    valueField="value"
-                    placeholder="NONE"
-                    searchPlaceholder="Search..."
-                    value={sectionname}
-                    onChange={item => {
-                      setsectionname(item.value);
-                    }}
-                  />
-                </View>
+              <View style={{width: '45%'}}>
+                <RNBDropDown
+                  label="Section"
+                  value={sectionname}
+                  OptionsList={
+                    sessionList &&
+                    sectionlist &&
+                    sectionlist?.map(item => ({
+                      label: `${item?.section}`,
+                      value: `${item?.section}`,
+                    }))
+                  }
+                  onChange={data => setsectionname(data.value)}
+                />
               </View>
             </FlexRowWrapper>
             <FlexRowWrapper>
               <View style={{width: '45%'}}>
                 <View style={{marginHorizontal: deviceWidth * 0.01}}>
-                  <Text
-                    style={{fontSize: 14, fontWeight: '600', lineHeight: 15}}>
-                    Caste
-                  </Text>
-                  <Dropdown
-                    style={styles.dropstyle}
-                    placeholderStyle={styles.placeholderStyle}
-                    selectedTextStyle={styles.selectedTextStyle}
-                    inputSearchStyle={styles.inputSearchStyle}
-                    iconStyle={styles.iconStyle}
-                    data={CasteList}
-                    search
-                    maxHeight={300}
-                    labelField="label"
-                    valueField="value"
-                    placeholder="Select Caste"
-                    searchPlaceholder="Search..."
+                  <RNBDropDown
+                    label="Caste"
                     value={categoryname}
-                    onChange={item => {
-                      setcategoryname(item.value);
-                    }}
+                    OptionsList={CasteList}
+                    onChange={data => setcategoryname(data.value)}
                   />
                 </View>
               </View>
@@ -1002,57 +930,25 @@ const AddStudent = () => {
                 />
               </View>
             </FlexRowWrapper>
+
             <FlexRowWrapper>
               <View style={{width: '45%'}}>
                 <View style={{marginHorizontal: deviceWidth * 0.01}}>
-                  <Text
-                    style={{fontSize: 14, fontWeight: '600', lineHeight: 19}}>
-                    Gender
-                  </Text>
-                  <Dropdown
-                    style={styles.dropstyle}
-                    placeholderStyle={styles.placeholderStyle}
-                    selectedTextStyle={styles.selectedTextStyle}
-                    inputSearchStyle={styles.inputSearchStyle}
-                    iconStyle={styles.iconStyle}
-                    data={GenderListList}
-                    search
-                    maxHeight={300}
-                    labelField="label"
-                    valueField="value"
-                    placeholder="Select"
-                    searchPlaceholder="Search..."
+                  <RNBDropDown
+                    label="Gender"
                     value={gender}
-                    onChange={item => {
-                      setgender(item.value);
-                    }}
+                    OptionsList={GenderListList}
+                    onChange={data => setgender(data.value)}
                   />
                 </View>
               </View>
               <View style={{width: '45%', marginBottom: deviceHeight * 0.02}}>
                 <View style={{marginHorizontal: deviceWidth * 0.01}}>
-                  <Text
-                    style={{fontSize: 14, fontWeight: '600', lineHeight: 19}}>
-                    Blood Group
-                  </Text>
-                  <Dropdown
-                    style={styles.dropstyle}
-                    placeholderStyle={styles.placeholderStyle}
-                    selectedTextStyle={styles.selectedTextStyle}
-                    inputSearchStyle={styles.inputSearchStyle}
-                    iconStyle={styles.iconStyle}
-                    data={BloodGroupList}
-                    search
-                    maxHeight={300}
-                    defaultValue={'NONE'}
-                    labelField="label"
-                    valueField="value"
-                    placeholder="Select"
-                    searchPlaceholder="Search..."
+                  <RNBDropDown
+                    label="Blood Group"
                     value={BloodGroup}
-                    onChange={item => {
-                      setBloodGroup(item.value);
-                    }}
+                    OptionsList={BloodGroupList}
+                    onChange={data => setBloodGroup(data.value)}
                   />
                 </View>
               </View>
@@ -1060,27 +956,11 @@ const AddStudent = () => {
             <FlexRowWrapper>
               <View style={{width: '45%'}}>
                 <View style={{marginHorizontal: deviceWidth * 0.01}}>
-                  <Text
-                    style={{fontSize: 14, fontWeight: '600', lineHeight: 19}}>
-                    Religion
-                  </Text>
-                  <Dropdown
-                    style={styles.dropstyle}
-                    placeholderStyle={styles.placeholderStyle}
-                    selectedTextStyle={styles.selectedTextStyle}
-                    inputSearchStyle={styles.inputSearchStyle}
-                    iconStyle={styles.iconStyle}
-                    data={religionList}
-                    search
-                    maxHeight={300}
-                    labelField="label"
-                    valueField="value"
-                    placeholder="Select"
-                    searchPlaceholder="Search..."
+                  <RNBDropDown
+                    label="Religion"
                     value={Religion}
-                    onChange={item => {
-                      setReligion(item.value);
-                    }}
+                    OptionsList={religionList}
+                    onChange={data => setReligion(data.value)}
                   />
                 </View>
               </View>
@@ -1230,34 +1110,18 @@ const AddStudent = () => {
                 position: 'relative',
               }}>
               <View style={{width: '100%'}}>
-                <View style={{marginHorizontal: deviceWidth * 0.01}}>
-                  <Text
-                    style={{fontSize: 14, fontWeight: '600', lineHeight: 19}}>
-                    Stream
-                  </Text>
-                  <Dropdown
-                    style={styles.dropstyleStream}
-                    placeholderStyle={styles.placeholderStyle}
-                    selectedTextStyle={styles.selectedTextStyle}
-                    inputSearchStyle={styles.inputSearchStyle}
-                    iconStyle={styles.iconStyle}
-                    data={
+                <View>
+                  <RNBDropDown
+                    label="Stream"
+                    value={stream}
+                    OptionsList={
                       streamlist &&
                       streamlist?.map(item => ({
                         label: `${item?.label}`,
                         value: `${item?.value}`,
                       }))
                     }
-                    search
-                    maxHeight={300}
-                    labelField="label"
-                    valueField="value"
-                    placeholder="Select Class"
-                    searchPlaceholder="Search..."
-                    value={stream}
-                    onChange={item => {
-                      setstream(item.value);
-                    }}
+                    onChange={data => setstream(data.value)}
                   />
                 </View>
               </View>
@@ -1318,89 +1182,61 @@ const AddStudent = () => {
             <FlexRowWrapper>
               <View style={{width: '45%'}}>
                 <View style={{marginHorizontal: deviceWidth * 0.01}}>
-                  <Text
-                    style={{fontSize: 14, fontWeight: '600', lineHeight: 19}}>
-                    Class
-                  </Text>
-                  <Dropdown
-                    style={styles.dropstyle}
-                    placeholderStyle={styles.placeholderStyle}
-                    selectedTextStyle={styles.selectedTextStyle}
-                    inputSearchStyle={styles.inputSearchStyle}
-                    iconStyle={styles.iconStyle}
-                    data={
+                  <RNBDropDown
+                    label="Class"
+                    value={stream}
+                    OptionsList={
                       isdata &&
                       isdata?.map(item => ({
                         label: `${item?.coursename}`,
                         value: `${item?.coursename} ${item?.courseduration} ${item?.feepermonth} ${item?.Registractionfee} ${item?.adminssionfee} ${item?.AnnualFee}`,
                       }))
                     }
-                    search
-                    maxHeight={300}
-                    labelField="label"
-                    valueField="value"
-                    placeholder="Select Class"
-                    searchPlaceholder="Search..."
-                    value={courses}
                     onChange={item => {
-                      setcourses(item.value);
+                      {
+                        setcourses(item.value);
 
-                      let valuesArray = item.value?.split(' ');
-                      let [
-                        coursename,
-                        courseduration,
-                        feepermonth,
-                        Registractionfee,
-                        adminssionfee,
-                        AnnualFee,
-                      ] = valuesArray;
+                        let valuesArray = item.value?.split(' ');
+                        let [
+                          coursename,
+                          courseduration,
+                          feepermonth,
+                          Registractionfee,
+                          adminssionfee,
+                          AnnualFee,
+                        ] = valuesArray;
 
-                      console.log(
-                        'data from select selct options',
-                        coursename,
-                        courseduration,
-                        feepermonth,
-                        Registractionfee,
-                        adminssionfee,
-                        AnnualFee,
-                      );
-                      setmonthlyfee(feepermonth);
-                      setamount(Registractionfee);
-                      setannualmanualfee(AnnualFee);
-                      setAdmissionFeeManual(adminssionfee);
+                        console.log(
+                          'data from select selct options',
+                          coursename,
+                          courseduration,
+                          feepermonth,
+                          Registractionfee,
+                          adminssionfee,
+                          AnnualFee,
+                        );
+                        setmonthlyfee(feepermonth);
+                        setamount(Registractionfee);
+                        setannualmanualfee(AnnualFee);
+                        setAdmissionFeeManual(adminssionfee);
+                      }
                     }}
                   />
                 </View>
               </View>
               <View style={{width: '45%', marginBottom: deviceHeight * 0.02}}>
                 <View style={{marginHorizontal: deviceWidth * 0.01}}>
-                  <Text
-                    style={{fontSize: 14, fontWeight: '600', lineHeight: 19}}>
-                    Status
-                  </Text>
-                  <Dropdown
-                    style={styles.dropstyle}
-                    placeholderStyle={styles.placeholderStyle}
-                    selectedTextStyle={styles.selectedTextStyle}
-                    inputSearchStyle={styles.inputSearchStyle}
-                    iconStyle={styles.iconStyle}
-                    data={
+                  <RNBDropDown
+                    label="Status"
+                    value={studentstatus}
+                    OptionsList={
                       studentStatus &&
                       studentStatus?.map(item => ({
                         label: `${item?.value}`,
                         value: `${item?.value}`,
                       }))
                     }
-                    search
-                    maxHeight={300}
-                    labelField="label"
-                    valueField="value"
-                    placeholder="Select Status"
-                    searchPlaceholder="Search..."
-                    value={studentstatus}
-                    onChange={item => {
-                      setstudentstatus(item.value);
-                    }}
+                    onChange={data => setstudentstatus(data.value)}
                   />
                 </View>
               </View>
@@ -1626,98 +1462,50 @@ const AddStudent = () => {
               <FlexRowWrapper>
                 <View style={{width: '45%'}}>
                   <View style={{marginHorizontal: deviceWidth * 0.01}}>
-                    <Text
-                      style={{fontSize: 14, fontWeight: '600', lineHeight: 19}}>
-                      Hostel Name
-                    </Text>
-                    <Dropdown
-                      style={styles.dropstyle}
-                      placeholderStyle={styles.placeholderStyle}
-                      selectedTextStyle={styles.selectedTextStyle}
-                      inputSearchStyle={styles.inputSearchStyle}
-                      iconStyle={styles.iconStyle}
-                      data={
+                    <RNBDropDown
+                      label="Hostel Name"
+                      value={hostelname}
+                      OptionsList={
                         hostellist &&
                         hostellist?.map(item => ({
                           label: `${item?.HostelName}`,
                           value: `${item?.HostelName}`,
                         }))
                       }
-                      search
-                      maxHeight={300}
-                      labelField="label"
-                      valueField="value"
-                      placeholder="Select Hostel"
-                      searchPlaceholder="Search..."
-                      value={hostelname}
-                      onChange={item => {
-                        sethostelname(item.value);
-                      }}
+                      onChange={data => sethostelname(data.value)}
                     />
                   </View>
                 </View>
                 <View style={{width: '45%', marginBottom: deviceHeight * 0.02}}>
                   <View style={{marginHorizontal: deviceWidth * 0.01}}>
-                    <Text
-                      style={{fontSize: 14, fontWeight: '600', lineHeight: 19}}>
-                      Category
-                    </Text>
-                    <Dropdown
-                      style={styles.dropstyle}
-                      placeholderStyle={styles.placeholderStyle}
-                      selectedTextStyle={styles.selectedTextStyle}
-                      inputSearchStyle={styles.inputSearchStyle}
-                      iconStyle={styles.iconStyle}
-                      data={
+                    <RNBDropDown
+                      label="Category"
+                      value={hostelcategoryname}
+                      OptionsList={
                         hostelcategorylist &&
                         hostelcategorylist?.map(item => ({
                           label: `${item?.roomCategory}`,
                           value: `${item?.roomCategory}`,
                         }))
                       }
-                      search
-                      maxHeight={300}
-                      labelField="label"
-                      valueField="value"
-                      placeholder="Select Category"
-                      searchPlaceholder="Search..."
-                      value={hostelcategoryname}
-                      onChange={item => {
-                        sethostelcategoryname(item.value);
-                      }}
+                      onChange={data => sethostelcategoryname(data.value)}
                     />
                   </View>
                 </View>
               </FlexRowWrapper>
               <View style={styles.getfeeview}>
                 <View style={{width: '45%'}}>
-                  <Text
-                    style={{fontSize: 14, fontWeight: '600', lineHeight: 19}}>
-                    Facility
-                  </Text>
-                  <Dropdown
-                    style={styles.dropstyle}
-                    placeholderStyle={styles.placeholderStyle}
-                    selectedTextStyle={styles.selectedTextStyle}
-                    inputSearchStyle={styles.inputSearchStyle}
-                    iconStyle={styles.iconStyle}
-                    data={
+                  <RNBDropDown
+                    label="Facility"
+                    value={hostlefacility}
+                    OptionsList={
                       hostelfacilitylist &&
                       hostelfacilitylist?.map(item => ({
                         label: `${item?.roomFacility}`,
                         value: `${item?.roomFacility}`,
                       }))
                     }
-                    search
-                    maxHeight={300}
-                    labelField="label"
-                    valueField="value"
-                    placeholder="Select Facility"
-                    searchPlaceholder="Search..."
-                    value={hostlefacility}
-                    onChange={item => {
-                      sethostlefacility(item.value);
-                    }}
+                    onChange={data => sethostlefacility(data.value)}
                   />
                 </View>
 
@@ -1842,66 +1630,33 @@ const AddStudent = () => {
               <FlexRowWrapper>
                 <View style={{width: '45%'}}>
                   <View style={{marginHorizontal: deviceWidth * 0.01}}>
-                    <Text
-                      style={{fontSize: 14, fontWeight: '600', lineHeight: 19}}>
-                      From Route
-                    </Text>
-                    <Dropdown
-                      style={styles.dropstyle}
-                      placeholderStyle={styles.placeholderStyle}
-                      selectedTextStyle={styles.selectedTextStyle}
-                      inputSearchStyle={styles.inputSearchStyle}
-                      iconStyle={styles.iconStyle}
-                      data={
+                    <RNBDropDown
+                      label="From Route"
+                      value={fromroute}
+                      OptionsList={
                         routelist &&
                         routelist?.map(item => ({
                           label: `${item?.routeName?.FromRoute}`,
                           value: `${item?.routeName?.FromRoute}`,
                         }))
                       }
-                      search
-                      maxHeight={300}
-                      labelField="label"
-                      valueField="value"
-                      placeholder="Select Route"
-                      searchPlaceholder="Search..."
-                      value={toroute}
-                      onChange={item => {
-                        settoroute(item.value);
-                      }}
+                      onChange={data => setfromroute(data.value)}
                     />
                   </View>
                 </View>
                 <View style={{width: '45%', marginBottom: deviceHeight * 0.02}}>
                   <View style={{marginHorizontal: deviceWidth * 0.01}}>
-                    <Text
-                      style={{fontSize: 14, fontWeight: '600', lineHeight: 19}}>
-                      To Route
-                    </Text>
-                    <Dropdown
-                      style={styles.dropstyle}
-                      placeholderStyle={styles.placeholderStyle}
-                      selectedTextStyle={styles.selectedTextStyle}
-                      inputSearchStyle={styles.inputSearchStyle}
-                      iconStyle={styles.iconStyle}
-                      data={
+                    <RNBDropDown
+                      label="To Route"
+                      value={toroute}
+                      OptionsList={
                         routelist &&
                         routelist?.map(item => ({
                           label: `${item?.routeName?.ToRoute}`,
                           value: `${item?.routeName?.ToRoute}`,
                         }))
                       }
-                      search
-                      maxHeight={300}
-                      labelField="label"
-                      valueField="value"
-                      placeholder="Selec Route"
-                      searchPlaceholder="Search..."
-                      value={fromroute}
-                      onChange={item => {
-                        value = {fromroute};
-                        setfromroute(item.value);
-                      }}
+                      onChange={data => settoroute(data.value)}
                     />
                   </View>
                 </View>
@@ -2026,6 +1781,7 @@ const AddStudent = () => {
               )}
             </>
           )}
+
           <View style={{paddingHorizontal: 10}}>
             <Text style={{fontSize: 20, marginBottom: 10, marginTop: 8}}>
               Password Size Photo
@@ -2334,7 +2090,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'flex-end',
+    alignItems: 'center',
     marginHorizontal: deviceWidth * 0.04,
   },
   inputview: {

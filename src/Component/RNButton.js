@@ -1,7 +1,6 @@
-import {View, Text} from 'react-native';
 import React from 'react';
-import {Button, ButtonProps} from 'react-native-paper';
-import {Colors,primary} from '../utils/Colors';
+import {Button} from 'react-native-paper';
+import {primary, Colors} from '../utils/Colors';
 
 const RNButton = props => {
   const {children, ...rest} = props;
@@ -14,6 +13,7 @@ const RNButton = props => {
         fontWeight: '600',
         lineHeight: 20,
         textTransform: 'uppercase',
+        color: Colors.white,
       }}
       contentStyle={{paddingVertical: 5}}
       onPress={() => console.log('Pressed')}

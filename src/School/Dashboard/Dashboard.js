@@ -467,7 +467,9 @@ const Dashboard = () => {
           ) : (
             <>
               <View style={styles.card}>
-                <Text>Monthly Fee Collection</Text>
+                <Text style={{color: Colors.black, fontWeight: 'bold'}}>
+                  Monthly Fee Collection
+                </Text>
                 <Linechart
                   color={''}
                   pdata={LinstFeepaidList?.pendingAmount?.sort(
@@ -486,7 +488,9 @@ const Dashboard = () => {
           ) : (
             <>
               <View style={styles.card}>
-                <Text>Monthly Expenses</Text>
+                <Text style={{color: Colors.black, fontWeight: 'bold'}}>
+                  Monthly Expenses
+                </Text>
                 {LinstExpensesList?.length > 0 && (
                   <>
                     <ExpensexLineChart

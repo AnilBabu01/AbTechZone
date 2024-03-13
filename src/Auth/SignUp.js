@@ -12,7 +12,6 @@ import React, {useState} from 'react';
 import {primary, secondary} from '../utils/Colors';
 import loginicon from '../assets/logoblue1.png';
 import {Height, Width} from '../utils/responsive';
-import {Dropdown} from 'react-native-element-dropdown';
 import {useDispatch} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import Loader from '../Component/Loader/Loader';
@@ -22,6 +21,7 @@ import RNInputField from '../Component/RNInputField';
 import {Colors} from '../utils/Colors';
 import {deviceHeight, deviceWidth} from '../utils/constant';
 import bgImg from '../assets/bg.jpeg';
+import RNBDropDown from '../Component/RNBDropDown';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
@@ -64,33 +64,14 @@ const SignUp = () => {
             <Loader loader={loader} sms={sms} />
             <ScrollView>
               <Text style={styles.creatstyle}>Create Account</Text>
-              <Text
-                style={{
-                  color: 'black',
-                  fontFamily: 'Gilroy-SemiBold',
-                  fontSize: Height(12),
-                  marginTop: Height(10),
-                }}>
-                Login As<Text style={{color: primary}}> *</Text>
-              </Text>
-              <Dropdown
-                style={styles.dropstyle}
-                placeholderStyle={styles.placeholderStyle}
-                selectedTextStyle={styles.selectedTextStyle}
-                inputSearchStyle={styles.inputSearchStyle}
-                iconStyle={styles.iconStyle}
-                data={data}
-                search
-                maxHeight={300}
-                labelField="label"
-                valueField="value"
-                placeholder="Please Select"
-                searchPlaceholder="Search..."
+
+              <RNBDropDown
+                label="Create As"
                 value={loginas}
-                onChange={item => {
-                  setloginas(item.value);
-                }}
+                OptionsList={data}
+                onChange={data => setloginas(data.value)}
               />
+
               <View>
                 <RNInputField
                   label="Full Name"

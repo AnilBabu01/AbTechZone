@@ -24,14 +24,14 @@ const RNTimePicker = ({value, title, onDateChange}) => {
           fontSize: 14,
           fontWeight: '600',
           lineHeight: 19,
-          color: Colors.textGrey,
+          color: Colors.black,
         }}>
         {title}
       </Text>
 
       <Pressable onPress={() => setOpen(true)} style={container}>
-        <Text>{value}</Text>
-        <FontAwesome6 name="clock" size={25} color={Colors.textGrey} />
+        <Text style={{color: Colors.black}}>{value}</Text>
+        <FontAwesome6 name="calendar" size={25} color={Colors.black} />
       </Pressable>
       <DatePicker
         modal

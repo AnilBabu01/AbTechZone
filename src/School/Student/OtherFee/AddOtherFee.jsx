@@ -38,6 +38,7 @@ import DownloadStudentData from '../../../Component/school/DownloadStudentData';
 import BackHeader from '../../../Component/Header/BackHeader';
 import FilterOtherFee from '../../../Component/school/FilterOtherFee';
 import moment from 'moment';
+import RNBDropDown from '../../../Component/RNBDropDown';
 const AddOtherFee = ({navigation}) => {
   const dispatch = useDispatch();
   const [isdata, setisdata] = useState([]);

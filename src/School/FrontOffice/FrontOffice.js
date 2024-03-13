@@ -12,7 +12,7 @@ import DashboardPlaceholderLoader from '../../Component/DashboardPlaceholderLoad
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import RNTable from '../../Component/RNTable';
-import DownEnquiry from '../../Component/school/DownEnquiry';
+import DownloadExcel from '../../Component/school/DownloadExcel';
 import EnquiryFilter from '../../Component/school/EnquiryFilter';
 
 const FrontOffice = ({navigation}) => {
@@ -216,7 +216,7 @@ const FrontOffice = ({navigation}) => {
           <EnquiryFilter setShowModal={setShowModal} showModal={showModal} />
         </>
       )}
-      <DownEnquiry
+      <DownloadExcel
         enquiry={enquiry}
         filename={'EnquiryList'}
         visible={showDocOptions}

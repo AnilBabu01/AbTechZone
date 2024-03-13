@@ -1,28 +1,28 @@
-import {StyleSheet, Text, View, Pressable, Alert} from 'react-native';
-import React from 'react';
+import {StyleSheet, Text, View, Pressable} from 'react-native';
+import React, {useState} from 'react';
 import {Colors} from '../../utils/Colors';
 import {Modal} from 'react-native-paper';
 import {deviceHeight, deviceWidth} from '../../utils/constant';
+import RNButton from '../RNButton';
 import RNFS from 'react-native-fs';
 import XLSX from 'xlsx';
 import Toast from 'react-native-toast-message';
-const DownEnquiry = ({visible, hideModal, filename, enquiry}) => {
+
+const DownloadExcel = ({visible, hideModal, filename, enquiry}) => {
+  const [downloading, setdownloading] = useState(false);
   const createAndSaveExcelFile = async () => {
     try {
-      // Create a worksheet object
+      setdownloading(true);
+
       const ws = XLSX.utils.json_to_sheet(enquiry);
 
-      // Create a workbook object
       const wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, 'Sheet 1');
+      XLSX.utils.book_append_sheet(wb, ws, filename);
 
-      // Generate Excel file data
       const excelData = XLSX.write(wb, {bookType: 'xlsx', type: 'base64'});
 
-      // Create a file path in the download folder
       const downloadPath = RNFS.DownloadDirectoryPath + `/${filename}.xlsx`;
 
-      // Write the file to the download folder
       RNFS.writeFile(downloadPath, excelData, 'base64')
         .then(response => {
           hideModal(false);
@@ -31,9 +31,11 @@ const DownEnquiry = ({visible, hideModal, filename, enquiry}) => {
             text1: 'Success',
             text2: 'Download File Successlly!!',
           });
+          setdownloading(false);
         })
         .catch(err => {
           console.log('Download error:', err);
+          setdownloading(false);
         });
 
       console.log('Excel file created and saved:', downloadPath);
@@ -51,17 +53,20 @@ const DownEnquiry = ({visible, hideModal, filename, enquiry}) => {
         <Text style={{color: '#fff'}}>Select Report</Text>
       </View>
       <View style={styles.buttonContainer}>
-        <Pressable
-          style={styles.reportBtn}
-          onPress={() => createAndSaveExcelFile()}>
-          <Text style={styles.textBtn}>Export Excel</Text>
-        </Pressable>
+        <View style={{width: '100%'}}>
+          <RNButton
+            loading={downloading}
+            style={{paddingHorizontal: 20}}
+            onPress={() => createAndSaveExcelFile()}>
+            Export Excel
+          </RNButton>
+        </View>
       </View>
     </Modal>
   );
 };
 
-export default DownEnquiry;
+export default DownloadExcel;
 
 const styles = StyleSheet.create({
   container: {
