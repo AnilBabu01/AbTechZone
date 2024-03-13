@@ -1,13 +1,4 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  Modal,
-  ScrollView,
-  Pressable,
-  PermissionsAndroid,
-  Platform,
-} from 'react-native';
+import {StyleSheet, Text, View, ScrollView, Pressable} from 'react-native';
 import React, {useState, useEffect} from 'react';
 import {Height, Width} from '../../utils/responsive';
 import CardEnquiry from './CardEnquiry';
@@ -33,8 +24,6 @@ const FrontOffice = ({navigation}) => {
   const [showModal, setShowModal] = useState(false);
   const [showDocOptions, setShowDocOptions] = useState(false);
   const {enquiry, loading} = useSelector(state => state.enquiry);
-  
-
 
   const enquiryTableList = [
     {
@@ -214,7 +203,7 @@ const FrontOffice = ({navigation}) => {
               </>
             ) : (
               <>
-                <ScrollView horizontal  showsHorizontalScrollIndicator={false}>
+                <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                   <RNTable theme="primary" data={Tabledata} />
                 </ScrollView>
               </>
@@ -227,7 +216,12 @@ const FrontOffice = ({navigation}) => {
           <EnquiryFilter setShowModal={setShowModal} showModal={showModal} />
         </>
       )}
-      <DownEnquiry enquiry={enquiry} filename={'EnquiryList'} visible={showDocOptions} hideModal={setShowDocOptions} />
+      <DownEnquiry
+        enquiry={enquiry}
+        filename={'EnquiryList'}
+        visible={showDocOptions}
+        hideModal={setShowDocOptions}
+      />
 
       <AnimatedFAB
         icon={'plus'}
