@@ -631,6 +631,7 @@ const AddCollectFee = () => {
                 <Text style={styles.radioLabel}>Online</Text>
               </View>
             </View>
+            
             {academinfee === true && (
               <>
                 <View

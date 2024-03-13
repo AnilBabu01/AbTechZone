@@ -16,7 +16,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import {Colors} from '../../utils/Colors';
 import Notification from './Notification';
-
+import {deviceHeight,deviceWidth}  from '../../utils/constant';
 const windowWidth = Dimensions.get('window').width;
 const Header = () => {
   const [notificationCount, setNotificationCount] = useState(3);
@@ -102,14 +102,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     paddingHorizontal: 10,
-    height: Height(50),
+    height: deviceHeight*0.06,
     backgroundColor: primary,
     paddingBottom: 5,
   },
   loginbtn: {
-    width: Width(80),
-    height: Height(35),
-    backgroundColor: hightlight,
+    width: deviceWidth*0.3,
+    height: deviceHeight*0.05,
+    // backgroundColor: hightlight,
     borderRadius: 10,
     display: 'flex',
     justifyContent: 'center',

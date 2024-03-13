@@ -15,26 +15,24 @@ import {FlexRowWrapper} from '../../../Component/FlexRowWrapper';
 import {useNavigation} from '@react-navigation/native';
 import BackHeader from '../../../Component/Header/BackHeader';
 import moment from 'moment';
-import {getcourse} from '../../../redux/action/commanAction';
+import {GetFacility} from '../../../redux/action/hostelActions';
 const statuslist = [
   {label: 'Enable', value: 'Enable'},
   {label: 'disabled', value: 'disabled'},
 ];
-const UpdateFacility = () => {
+const AddFacility = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const [studentclass, setstudentclass] = useState('');
-  const [courseduration, setcourseduration] = useState('');
   const [loading, setloading] = useState(false);
 
   const submit = () => {
     setloading(true);
 
     const data = {
-      coursename: studentclass,
-      courseduration: courseduration,
+      roomFacility: studentclass,
     };
-    serverInstance('comman/course', 'post', data).then(res => {
+    serverInstance('hostel/facility', 'post', data).then(res => {
       if (res?.status) {
         setloading(false);
         Toast.show({
@@ -43,7 +41,7 @@ const UpdateFacility = () => {
           text2: res?.msg,
         });
 
-        dispatch(getcourse());
+        dispatch(GetFacility());
         navigation.goBack();
       }
 
@@ -68,14 +66,14 @@ const UpdateFacility = () => {
               style={{
                 marginHorizontal: deviceWidth * 0.04,
                 position: 'relative',
-                marginTop: 30,
+                // marginTop: 30,
               }}>
               <RNInputField
                 style={{backgroundColor: Colors.fadeGray}}
-                label="Class"
+                label="Hostel Facility"
                 value={studentclass}
                 onChangeText={data => setstudentclass(data)}
-                placeholder="Enter Class"
+                placeholder="Enter Hostel Facility"
               />
             </View>
           </View>
@@ -92,7 +90,7 @@ const UpdateFacility = () => {
   );
 };
 
-export default UpdateFacility;
+export default AddFacility;
 
 const styles = StyleSheet.create({
   enquirymainview: {

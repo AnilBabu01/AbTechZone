@@ -15,6 +15,7 @@ import {Dropdown} from 'react-native-element-dropdown';
 import {serverInstance} from '../../API/ServerInstance';
 import Toast from 'react-native-toast-message';
 import {Width, Height} from '../../utils/responsive';
+import {useSelector,useDispatch} from 'react-redux';
 const monthlist = [
   {
     id: 1,
@@ -75,11 +76,13 @@ const EmpAnalasisAttendance = ({
   let currmonth = new Date().getMonth();
   const [month, setmonth] = useState(currmonth + 1);
   const [loading, setloading] = useState(false);
+  const {CURRENTSESSION:sessionname} = useSelector(state => state.GetCurrentSession);
   const {innerContainer, childContainer, mainContainer} = styles;
 
   const onSubmit = () => {
     const data = {
       month: Number(month),
+      session:sessionname
     };
     serverInstance('EmployeeAttendance/analysisattendance', 'post', data).then(
       res => {

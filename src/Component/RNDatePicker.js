@@ -25,7 +25,7 @@ const RNDatePicker = ({value, title, onDateChange}) => {
           fontSize: 14,
           fontWeight: '600',
           lineHeight: 19,
-          color: Colors.textGrey,
+          color:Colors.black
         }}>
         {title}
       </Text>
@@ -51,7 +51,7 @@ export default RNDatePicker;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: Colors.fadeGray,
+    backgroundColor: Colors.lightGrey,
     padding: deviceWidth * 0.04,
     flexDirection: 'row',
     justifyContent: 'space-between',

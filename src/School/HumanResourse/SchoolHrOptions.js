@@ -56,13 +56,13 @@ const SchoolHrOptions = () => {
             <Text style={styles.titlestyle}>Add Holiday</Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           onPress={() => navigation.navigate('CommunicationTabemp')}>
           <View style={styles.mainoption}>
             <FontAwesome6 name="comment-sms" color={Colors.primary} size={30} />
             <Text style={styles.titlestyle}>Communication</Text>
           </View>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <TouchableOpacity onPress={() => navigation.navigate('EmpAddpayroll')}>
           <View style={styles.mainoption}>
             <FontAwesome6

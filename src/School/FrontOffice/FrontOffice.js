@@ -214,7 +214,7 @@ const FrontOffice = ({navigation}) => {
               </>
             ) : (
               <>
-                <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                <ScrollView horizontal  showsHorizontalScrollIndicator={false}>
                   <RNTable theme="primary" data={Tabledata} />
                 </ScrollView>
               </>
@@ -227,7 +227,7 @@ const FrontOffice = ({navigation}) => {
           <EnquiryFilter setShowModal={setShowModal} showModal={showModal} />
         </>
       )}
-      <DownEnquiry visible={showDocOptions} hideModal={setShowDocOptions} />
+      <DownEnquiry enquiry={enquiry} filename={'EnquiryList'} visible={showDocOptions} hideModal={setShowDocOptions} />
 
       <AnimatedFAB
         icon={'plus'}

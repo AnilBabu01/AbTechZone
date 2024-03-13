@@ -94,13 +94,6 @@ import EmpAssignRole from '../School/HumanResourse/AssignRole/EmpAssignRole';
 import EmpAddpayroll from '../School/HumanResourse/AddPayRoll/EmpAddpayroll';
 import SearchAttendance from '../School/HumanResourse/SearchAttendance/SearchAttendance';
 import SendSmdEmp from '../School/HumanResourse/SendSmsEmp/SendSmdEmp';
-import Addhostel from '../School/Hostel/AddHostel/Addhostel';
-import AddRoom from '../School/Hostel/AddRoom/AddRoom';
-import AddStudentToHostel from '../School/Hostel/AddStudentToHostel/AddStudentToHostel';
-import TabCheckinOrCheckout from '../School/Hostel/CheckinOrCheckout/TabCheckinOrCheckout';
-import HostelCategory from '../School/Hostel/HostelCategory/HostelCategory';
-import HostelFacility from '../School/Hostel/HostelFaciliy/HostelFacility';
-import SearchHostel from '../School/Hostel/SearchHostel/SearchHostel';
 import AddBook from '../School/Library/AddBook/AddBook';
 import AddStudentToLibrary from '../School/Library/AddStudentToSchool/AddStudentToLibrary';
 import TabIssueOrReturn from '../School/Library/IssueOrReturn/TabIssueOrReturn';
@@ -185,10 +178,47 @@ import Analysie from '../School/Expenses/ExpensesAnalysie/Analysie';
 
 import ViewNotification from '../Component/Header/ViewNotification';
 import ReadMore from '../Component/Header/ReadMore';
-
 import FeeReceipt from '../School/Accounts/PrintReceipt/FeeReceipt';
 
+///Hostel
+import HosAddCategory from '../School/Hostel/HostelCategory/HosAddCategory';
+import UpdateCategory from '../School/Hostel/HostelCategory/UpdateCategory';
+import AddFacility from '../School/Hostel/HostelFaciliy/AddFacility';
+import UpdateFacility from '../School/Hostel/HostelFaciliy/UpdateFacility';
+import AdHostel from '../School/Hostel/AddHostel/AdHostel';
+import UpdateHostel from '../School/Hostel/AddHostel/UpdateHostel';
+import AdRooms from '../School/Hostel/AddRoom/AdRooms';
+import UpdateRooms from '../School/Hostel/AddRoom/UpdateRooms';
+import AddStudentInHostel from '../School/Hostel/AddStudentToHostel/AddStudentInHostel';
+import Addhostel from '../School/Hostel/AddHostel/Addhostel';
+import AddRoom from '../School/Hostel/AddRoom/AddRoom';
+import AddStudentToHostel from '../School/Hostel/AddStudentToHostel/AddStudentToHostel';
+import HostelCategory from '../School/Hostel/HostelCategory/HostelCategory';
+import HostelFacility from '../School/Hostel/HostelFaciliy/HostelFacility';
+import SearchHostel from '../School/Hostel/SearchHostel/SearchHostel';
+import Checking from '../School/Hostel/CheckinOrCheckout/Checking';
+import Checkout from '../School/Hostel/CheckinOrCheckout/Checkout';
+import RoomChange from '../School/Hostel/CheckinOrCheckout/RoomChange';
+import CheckinScreen from '../School/Hostel/CheckinOrCheckout/CheckinScreen';
 import {primary} from '../utils/Colors';
+import CheckoutScreen from '../School/Hostel/CheckinOrCheckout/CheckoutScreen';
+
+///Transport
+import AddVehicleType from '../School/Transport/VehicleType/AddVehicleType';
+import UpdateVehicle from '../School/Transport/VehicleType/UpdateVehicle';
+import AddNewRoute from '../School/Transport/VehicleRoute/AddNewRoute';
+import UpdateRoute from '../School/Transport/VehicleRoute/UpdateRoute';
+import AddNewBus from '../School/Transport/AddBus/AddNewBus';
+import UpdateBus from '../School/Transport/AddBus/UpdateBus';
+import AddSTInTransport from '../School/Transport/AddStudentToTransport/AddSTInTransport';
+import GiveBusRemove from '../School/Transport/GiveBusOrRemove/GiveBusRemove';
+
+///Library
+import AdBook from '../School/Library/AddBook/AdBook';
+import UpdateBook from '../School/Library/AddBook/UpdateBook';
+import AddStudentLibrary from '../School/Library/AddStudentToSchool/AddStudentLibrary';
+import IssueBookScreen from '../School/Library/IssueOrReturn/IssueBookScreen';
+import ReturnBookScreen from '../School/Library/IssueOrReturn/ReturnBookScreen';
 const Stack = createNativeStackNavigator();
 
 function StackNavigation() {
@@ -400,10 +430,7 @@ function StackNavigation() {
       <Stack.Screen name="Addhostel" component={Addhostel} />
       <Stack.Screen name="AddRoom" component={AddRoom} />
       <Stack.Screen name="AddStudentToHostel" component={AddStudentToHostel} />
-      <Stack.Screen
-        name="TabCheckinOrCheckout"
-        component={TabCheckinOrCheckout}
-      />
+      <Stack.Screen name="Checking" component={Checking} />
       <Stack.Screen name="HostelFacility" component={HostelFacility} />
       <Stack.Screen name="HostelCategory" component={HostelCategory} />
       <Stack.Screen name="SearchHostel" component={SearchHostel} />
@@ -528,7 +555,39 @@ function StackNavigation() {
       <Stack.Screen name="ViewNotification" component={ViewNotification} />
       <Stack.Screen name="ReadMore" component={ReadMore} />
       <Stack.Screen name="FeeReceipt" component={FeeReceipt} />
-      
+      {/* Hostel */}
+      <Stack.Screen name="CheckoutScreen" component={CheckoutScreen} />
+      <Stack.Screen name="Checkout" component={Checkout} />
+      <Stack.Screen name="RoomChange" component={RoomChange} />
+      <Stack.Screen name="CheckinScreen" component={CheckinScreen} />
+      <Stack.Screen name="AddStudentInHostel" component={AddStudentInHostel} />
+      <Stack.Screen name="AdRooms" component={AdRooms} />
+      <Stack.Screen name="UpdateRooms" component={UpdateRooms} />
+      <Stack.Screen name="AdHostel" component={AdHostel} />
+      <Stack.Screen name="UpdateHostel" component={UpdateHostel} />
+      <Stack.Screen name="AddFacility" component={AddFacility} />
+      <Stack.Screen name="UpdateFacility" component={UpdateFacility} />
+      <Stack.Screen name="HosAddCategory" component={HosAddCategory} />
+      <Stack.Screen name="UpdateCategory" component={UpdateCategory} />
+
+      {/* Transport */}
+
+      <Stack.Screen name="GiveBusRemove" component={GiveBusRemove} />
+      <Stack.Screen name="AddSTInTransport" component={AddSTInTransport} />
+      <Stack.Screen name="AddNewBus" component={AddNewBus} />
+      <Stack.Screen name="UpdateBus" component={UpdateBus} />
+      <Stack.Screen name="AddNewRoute" component={AddNewRoute} />
+      <Stack.Screen name="UpdateRoute" component={UpdateRoute} />
+      <Stack.Screen name="AddVehicleType" component={AddVehicleType} />
+      <Stack.Screen name="UpdateVehicle" component={UpdateVehicle} />
+      {/* Library */}
+
+      <Stack.Screen name="IssueBookScreen" component={IssueBookScreen} />
+      <Stack.Screen name="ReturnBookScreen" component={ReturnBookScreen} />
+      <Stack.Screen name="AddStudentLibrary" component={AddStudentLibrary} />
+      <Stack.Screen name="AdBook" component={AdBook} />
+      <Stack.Screen name="UpdateBook" component={UpdateBook} />
+
       <Stack.Screen name="DashboardCollege" component={DashboardCollege} />
       <Stack.Screen name="DashboardSchool" component={DashboardSchool} />
       <Stack.Screen name="DashboardEmplyee" component={DashboardEmplyee} />

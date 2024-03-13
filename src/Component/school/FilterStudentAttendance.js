@@ -27,6 +27,7 @@ const FilterStudentAttendance = ({showModal, setShowModal}) => {
   const [sectionlist, setsectionlist] = useState([]);
   const {course} = useSelector(state => state.getcourse);
   const {sections} = useSelector(state => state.GetSection);
+  const {CURRENTSESSION} = useSelector(state => state.GetCurrentSession);
   const {markattendance, loading} = useSelector(
     state => state.markatten,
   );
@@ -35,7 +36,9 @@ const FilterStudentAttendance = ({showModal, setShowModal}) => {
   const onSubmit = () => {
     var momentDate = moment(atttendanceDate, 'DD/MM/YYYY');
     var yyyyddmm = moment(momentDate).format('YYYY-MM-DD');
-    dispatch(MarkStudentAttendance(yyyyddmm, '', courseorclass, sectionname));
+    dispatch(MarkStudentAttendance(yyyyddmm,"",courseorclass, sectionname,CURRENTSESSION));
+
+    console.log("dnfdx",yyyyddmm, courseorclass, sectionname,CURRENTSESSION)
   };
 
   useEffect(() => {

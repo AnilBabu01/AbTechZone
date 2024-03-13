@@ -10,25 +10,22 @@ import {Colors} from '../../../utils/Colors';
 import {deviceHeight, deviceWidth} from '../../../utils/constant';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import BackHeader from '../../../Component/Header/BackHeader';
-import {getcourse} from '../../../redux/action/commanAction';
+import {GetCategory} from '../../../redux/action/hostelActions';
 const UpdateCategory = () => {
-  
   const route = useRoute();
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const [isdata, setisdata] = useState('');
   const [studentclass, setstudentclass] = useState('');
-  const [courseduration, setcourseduration] = useState('');
   const [loading, setloading] = useState(false);
 
   const submit = () => {
     setloading(true);
     const data = {
       id: isdata?.id,
-      coursename: studentclass,
-      courseduration: courseduration,
+      roomCategory: studentclass,
     };
-    serverInstance('comman/course', 'put', data).then(res => {
+    serverInstance('hostel/category', 'put', data).then(res => {
       if (res?.status) {
         setloading(false);
         Toast.show({
@@ -36,7 +33,7 @@ const UpdateCategory = () => {
           text1: 'Success',
           text2: res?.msg,
         });
-        dispatch(getcourse());
+        dispatch(GetCategory());
         navigation.goBack();
       }
 
@@ -54,7 +51,7 @@ const UpdateCategory = () => {
   useEffect(() => {
     if (route.params?.data) {
       setisdata(route.params?.data);
-      setstudentclass(route.params?.data?.coursename);
+      setstudentclass(route.params?.data?.roomCategory);
     }
   }, []);
 
@@ -68,14 +65,14 @@ const UpdateCategory = () => {
               style={{
                 marginHorizontal: deviceWidth * 0.04,
                 position: 'relative',
-                marginTop: 30,
+                // marginTop: 30,
               }}>
               <RNInputField
-                style={{backgroundColor: Colors.fadeGray, paddingTop: 10}}
-                label="Class"
+                style={{backgroundColor: Colors.fadeGray}}
+                label="Hostel Category"
                 value={studentclass}
                 onChangeText={data => setstudentclass(data)}
-                placeholder="Enter Class"
+                placeholder="Enter Hostel Category"
               />
             </View>
           </View>

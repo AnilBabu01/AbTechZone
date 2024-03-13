@@ -22,6 +22,7 @@ import RNTable from '../../../Component/RNTable';
 import DownEnquiry from '../../../Component/school/DownEnquiry';
 import EnquiryFilter from '../../../Component/school/EnquiryFilter';
 import BackHeader from '../../../Component/Header/BackHeader';
+import {GetVehicleType} from '../../../redux/action/transportActions';
 const VehicleType = ({navigation}) => {
   const dispatch = useDispatch();
   const [openModel, setopenModel] = useState(false);
@@ -30,8 +31,7 @@ const VehicleType = ({navigation}) => {
   const [viewdata, setviewdata] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [showDocOptions, setShowDocOptions] = useState(false);
-  const {enquiry, loading} = useSelector(state => state.enquiry);
-
+  const {vehicletype, loading} = useSelector(state => state.GetVehicleType);
   const enquiryTableList = [
     {
       title: 'Sr.No',
@@ -40,44 +40,7 @@ const VehicleType = ({navigation}) => {
       align: 'center',
     },
     {
-      title: 'Enquiry_Date',
-      items: [],
-      width: 0.33,
-      align: 'center',
-    },
-    {
-      title: 'Student_Name',
-      items: [],
-      width: 0.33,
-      align: 'center',
-    },
-    {
-      title: 'Student_Number',
-      items: [],
-      width: 0.33,
-      align: 'center',
-    },
-
-    {
-      title: 'Student_Email',
-      items: [],
-      width: 0.33,
-      align: 'center',
-    },
-    {
-      title: 'Address',
-      items: [],
-      width: 0.33,
-      align: 'center',
-    },
-    {
-      title: 'Class',
-      items: [],
-      width: 0.33,
-      align: 'center',
-    },
-    {
-      title: 'Comment',
+      title: 'Vehicle Type',
       items: [],
       width: 0.33,
       align: 'center',
@@ -92,45 +55,13 @@ const VehicleType = ({navigation}) => {
 
   const convertdata = async () => {
     await Promise.all(
-      enquiry?.map((item, index) => {
+      vehicletype?.map((item, index) => {
         enquiryTableList[0].items.push({id: index, value: index + 1});
         enquiryTableList[1].items.push({
           id: index,
-          value: item.EnquiryDate,
+          value: item.Vahicletype,
         });
-
-        console.log(
-          'from main function',
-          item?.StudentEmail,
-          'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
-        );
-
         enquiryTableList[2].items.push({
-          id: index,
-          value: item.StudentName,
-        });
-        enquiryTableList[3].items.push({
-          id: index,
-          value: item.StudentNumber,
-        });
-        enquiryTableList[4].items.push({
-          id: index,
-          value: item.StudentEmail,
-        });
-        enquiryTableList[5].items.push({
-          id: index,
-          value: item.Address,
-        });
-        enquiryTableList[6].items.push({
-          id: index,
-          value: item.Course,
-        });
-        enquiryTableList[7].items.push({
-          id: index,
-          value: item.Comment,
-        });
-
-        enquiryTableList[8].items.push({
           id: index,
           value: (
             <Ionicons
@@ -140,23 +71,27 @@ const VehicleType = ({navigation}) => {
             />
           ),
           allDetails: item,
-          redirect: 'UpdateEnquirySchool',
+          redirect: 'UpdateVehicle',
+          deleteUrl: 'transport/vehicletype',
+          Deleteicon: (
+            <Ionicons name="trash-outline" color={Colors.red} size={18.3} />
+          ),
         });
       }),
     );
     setTabledata(enquiryTableList);
-    console.log('convets data is', enquiry);
+   
   };
 
   useEffect(() => {
-    if (enquiry) {
-      setenquirylist(enquiry);
-      convertdata(enquiry);
+    if (vehicletype) {
+      setenquirylist(vehicletype);
+      convertdata(vehicletype);
     }
-  }, [enquiry]);
+  }, [vehicletype]);
 
   useEffect(() => {
-    dispatch(getenquiries());
+    dispatch(GetVehicleType());
   }, []);
   const {fabStyle} = styles;
 
@@ -165,10 +100,10 @@ const VehicleType = ({navigation}) => {
       <BackHeader title={'Add Vehicle Type'} />
       <View style={styles.headerTitleContainer}>
         <View>
-          <Text style={styles.secondaryTitle}>Front Office</Text>
+          <Text style={styles.secondaryTitle}>Vehicle Type</Text>
         </View>
         <View style={{flexDirection: 'row', gap: 10}}>
-          <Pressable
+          {/* <Pressable
             onPress={() => setShowDocOptions(true)}
             style={styles.filterBtnContainer}>
             <FontAwesome6 name="download" color={Colors.primary} size={25} />
@@ -190,7 +125,7 @@ const VehicleType = ({navigation}) => {
                 <FontAwesome6 name="table" color={Colors.primary} size={25} />
               </>
             )}
-          </Pressable>
+          </Pressable> */}
         </View>
       </View>
 
@@ -229,7 +164,7 @@ const VehicleType = ({navigation}) => {
 
       <AnimatedFAB
         icon={'plus'}
-        onPress={() => navigation.navigate('AddEnquirySchool')}
+        onPress={() => navigation.navigate('AddVehicleType')}
         label="Add"
         extended={false}
         color={Colors.white}

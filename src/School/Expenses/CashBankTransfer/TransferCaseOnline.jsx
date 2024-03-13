@@ -20,7 +20,13 @@ import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import RNTable from '../../../Component/RNTable';
 import DownEnquiry from '../../../Component/school/DownEnquiry';
 import EnquiryFilter from '../../../Component/school/EnquiryFilter';
+import FilterTrnsfer from '../../../Component/school/FilterTrnsfer';
 import BackHeader from '../../../Component/Header/BackHeader';
+import {
+  GetExpensesType,
+  GetTransferAmmount,
+} from '../../../redux/action/expensesActions';
+import moment from 'moment';
 const TransferCaseOnline = ({navigation}) => {
   const dispatch = useDispatch();
   const [openModel, setopenModel] = useState(false);
@@ -29,7 +35,10 @@ const TransferCaseOnline = ({navigation}) => {
   const [viewdata, setviewdata] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [showDocOptions, setShowDocOptions] = useState(false);
-  const {course, loading} = useSelector(state => state.getcourse);
+  const {transferamount, loading} = useSelector(
+    state => state.GetAmountTransfer,
+  );
+
   const enquiryTableList = [
     {
       title: 'Sr.No',
@@ -39,7 +48,34 @@ const TransferCaseOnline = ({navigation}) => {
     },
 
     {
-      title: 'Class',
+      title: 'Session',
+      items: [],
+      width: 0.33,
+      align: 'center',
+    },
+
+    {
+      title: 'Date',
+      items: [],
+      width: 0.33,
+      align: 'center',
+    },
+
+    {
+      title: 'Transfer_Amount',
+      items: [],
+      width: 0.33,
+      align: 'center',
+    },
+
+    {
+      title: 'Transfer_Mode',
+      items: [],
+      width: 0.33,
+      align: 'center',
+    },
+    {
+      title: 'Comment',
       items: [],
       width: 0.33,
       align: 'center',
@@ -47,20 +83,37 @@ const TransferCaseOnline = ({navigation}) => {
     {
       title: 'Action',
       items: [],
-      width: 0.40,
+      width: 0.4,
       align: 'center',
     },
   ];
 
   const convertdata = async () => {
     await Promise.all(
-      course?.map((item, index) => {
+      transferamount?.map((item, index) => {
         enquiryTableList[0].items.push({id: index, value: index + 1});
         enquiryTableList[1].items.push({
           id: index,
-          value: item.coursename,
+          value: item.Session,
         });
         enquiryTableList[2].items.push({
+          id: index,
+          value: moment(item?.Date).format('DD/MM/YYYY'),
+        });
+        enquiryTableList[3].items.push({
+          id: index,
+          value: item.Transfer_Amount,
+        });
+        enquiryTableList[4].items.push({
+          id: index,
+          value: item.Transfer_Mode,
+        });
+        enquiryTableList[5].items.push({
+          id: index,
+          value: item.Comment,
+        });
+
+        enquiryTableList[6].items.push({
           id: index,
           value: (
             <Ionicons
@@ -73,8 +126,8 @@ const TransferCaseOnline = ({navigation}) => {
             <Ionicons name="trash-outline" color={Colors.red} size={18.3} />
           ),
           allDetails: item,
-          redirect: 'UpdateClass',
-          deleteUrl: 'comman/course',
+          redirect: 'UpdateTranscashOnline',
+          deleteUrl: 'expenses/amounttransfer',
         });
       }),
     );
@@ -82,37 +135,38 @@ const TransferCaseOnline = ({navigation}) => {
   };
 
   useEffect(() => {
-    if (course) {
-      setenquirylist(course);
-      convertdata(course);
+    if (transferamount) {
+      setenquirylist(transferamount);
+      convertdata(transferamount);
+      setShowModal(false);
     }
-  }, [course]);
+  }, [transferamount]);
 
   useEffect(() => {
-    dispatch(getcourse());
+    dispatch(GetTransferAmmount());
   }, []);
 
   const {fabStyle} = styles;
 
   return (
     <View style={{flex: 1}}>
-      <BackHeader title={'Add Class'} />
+      <BackHeader title={'Cash/Online Transfer'} />
       <View style={styles.headerTitleContainer}>
         <View>
-          <Text style={styles.secondaryTitle}>Class Master</Text>
+          <Text style={styles.secondaryTitle}>Transfer Management</Text>
         </View>
         <View style={{flexDirection: 'row', gap: 10}}>
-          {/* <Pressable
+          <Pressable
             onPress={() => setShowDocOptions(true)}
             style={styles.filterBtnContainer}>
             <FontAwesome6 name="download" color={Colors.primary} size={25} />
-          </Pressable> */}
-          {/* <Pressable
+          </Pressable>
+          <Pressable
             onPress={() => setShowModal(true)}
             style={styles.filterBtnContainer}>
             <Ionicons name="filter" color={Colors.primary} size={25} />
           </Pressable>
-          <Pressable
+          {/* <Pressable
             onPress={() => setviewdata(!viewdata)}
             style={styles.filterBtnContainer}>
             {viewdata ? (
@@ -156,14 +210,14 @@ const TransferCaseOnline = ({navigation}) => {
       </ScrollView>
       {showModal && (
         <>
-          <EnquiryFilter setShowModal={setShowModal} showModal={showModal} />
+          <FilterTrnsfer setShowModal={setShowModal} showModal={showModal} />
         </>
       )}
       <DownEnquiry visible={showDocOptions} hideModal={setShowDocOptions} />
 
       <AnimatedFAB
         icon={'plus'}
-        onPress={() => navigation.navigate('Addclss')}
+        onPress={() => navigation.navigate('TransferCachOnline')}
         label="Add"
         extended={false}
         color={Colors.white}

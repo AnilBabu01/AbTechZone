@@ -35,7 +35,7 @@ const SchoolLibraryOptions = () => {
             <Text style={styles.titlestyle}>Issue-Or-Return</Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('SearchBook')}>
+        {/* <TouchableOpacity onPress={() => navigation.navigate('SearchBook')}>
           <View style={styles.mainoption}>
             <FontAwesome6
               name="magnifying-glass"
@@ -44,7 +44,7 @@ const SchoolLibraryOptions = () => {
             />
             <Text style={styles.titlestyle}>Search</Text>
           </View>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
     </>
   );

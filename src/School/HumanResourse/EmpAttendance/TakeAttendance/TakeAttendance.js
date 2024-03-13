@@ -14,6 +14,7 @@ import {
   getbatch,
   GetSession,
   GetSection,
+  getcurrentsession
 } from '../../../../redux/action/commanAction';
 import {useDispatch} from 'react-redux';
 import {Colors} from '../../../../utils/Colors';
@@ -73,6 +74,7 @@ const TakeAttendance = () => {
     dispatch(getbatch());
     dispatch(GetSession());
     dispatch(GetSection());
+    dispatch(getcurrentsession);
   }, []);
 
   return (

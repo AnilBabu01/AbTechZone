@@ -21,6 +21,20 @@ import {
   getstudent,
 } from '../redux/action/commanAction';
 import {getenquiries} from '../redux/action/coachingAction';
+import {
+  GetCategory,
+  GetFacility,
+  GetHostel,
+  GetRoom,
+  GetCheckin,
+} from '../redux/action/hostelActions';
+import {
+  GetVehicleType,
+  GetRoute,
+  GetVehiclelist,
+} from '../redux/action/transportActions';
+import {GetBooks} from '../redux/action/liraryAction';
+import {GetExpenses, GetTransferAmmount} from '../redux/action/expensesActions';
 import {useDispatch} from 'react-redux';
 import Toast from 'react-native-toast-message';
 const RNTable = ({data, theme, isBorderCurve}) => {
@@ -35,10 +49,15 @@ const RNTable = ({data, theme, isBorderCurve}) => {
   };
 
   const ToDelete = data => {
-    console.log('jhgchxcv', data?.allDetails?.id);
-
+    let deleteid = data?.allDetails?.id;
+    if (data?.allDetails?.routeName?.id) {
+      deleteid = data?.allDetails?.routeName?.id;
+    }
+    if (data?.allDetails?.bus?.id) {
+      deleteid = data?.allDetails?.bus?.id;
+    }
     serverInstance(`${data?.deleteUrl}`, 'delete', {
-      id: data?.allDetails?.id,
+      id: deleteid,
     }).then(res => {
       if (res?.status) {
         setloader(false);
@@ -90,6 +109,36 @@ const RNTable = ({data, theme, isBorderCurve}) => {
         if (data?.deleteUrl === 'coaching/enquiry') {
           dispatch(getenquiries());
         }
+        if (data?.deleteUrl === 'hostel/category') {
+          dispatch(GetCategory());
+        }
+        if (data?.deleteUrl === 'hostel/facility') {
+          dispatch(GetFacility());
+        }
+        if (data?.deleteUrl === 'hostel/addhostel') {
+          dispatch(GetHostel());
+        }
+        if (data?.deleteUrl === 'hostel/addroom') {
+          dispatch(GetRoom());
+        }
+        if (data?.deleteUrl === 'transport/vehicletype') {
+          dispatch(GetVehicleType());
+        }
+        if (data?.deleteUrl === 'transport/vehicleroute') {
+          dispatch(GetRoute());
+        }
+        if (data?.deleteUrl == 'transport/vehicledetails') {
+          dispatch(GetVehiclelist());
+        }
+        if (data?.deleteUrl === 'library/addbook') {
+          dispatch(GetBooks());
+        }
+        if (data?.deleteUrl === 'expenses/addexpenses') {
+          dispatch(GetExpenses());
+        }
+        if (data?.deleteUrl === 'expenses/amounttransfer') {
+          dispatch(GetTransferAmmount());
+        }
       }
 
       if (res?.status === false) {
@@ -127,6 +176,58 @@ const RNTable = ({data, theme, isBorderCurve}) => {
     return true;
   };
 
+  const ToCheckout = data => {
+    serverInstance(`${data?.redirect}`, 'put', {
+      id: data?.allDetails,
+    }).then(res => {
+      if (res?.status) {
+        setloader(false);
+        setsms('');
+        Toast.show({
+          type: 'success',
+          text1: 'Success',
+          text2: res?.msg,
+        });
+
+        console.log('chekout', res);
+
+        dispatch(GetCheckin());
+      }
+
+      if (res?.status === false) {
+        setloader(false);
+        setsms('');
+        Toast.show({
+          type: 'error',
+          text1: 'Error',
+          text2: res?.msg,
+        });
+        console.log('chekout', res);
+        dispatch(GetCheckin());
+      }
+    });
+  };
+
+  const confirmationCheckout = data => {
+    Alert.alert(
+      'Delete',
+      'Do you really want to Checkout?',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'OK',
+          onPress: () => ToCheckout(data),
+        },
+      ],
+      {
+        cancelable: false,
+      },
+    );
+    return true;
+  };
   return (
     <View style={{flexDirection: 'row'}}>
       <Loader loader={loader} sms={sms} />
@@ -163,8 +264,9 @@ const RNTable = ({data, theme, isBorderCurve}) => {
                     alignItems: item.align,
                     paddingVertical: 8,
                     paddingHorizontal: deviceWidth * (item.width * 0.06),
+                    backgroundColor: Colors.lightGrey
                   },
-                  index % 2 !== 0 && {backgroundColor: Colors.lightGrey},
+                  // index % 2 !== 0 && {backgroundColor: Colors.lightGrey},
                 ]}>
                 <>
                   {data?.allDetails ? (
@@ -186,11 +288,21 @@ const RNTable = ({data, theme, isBorderCurve}) => {
                             </TouchableOpacity>
                           </>
                         )}
+
+                        {data?.checkout && (
+                          <>
+                            <TouchableOpacity
+                              style={styles.deleteIcon}
+                              onPress={() => confirmationCheckout(data)}>
+                              <View numberOfLines={1}>{data?.checkout}</View>
+                            </TouchableOpacity>
+                          </>
+                        )}
                       </View>
                     </>
                   ) : (
                     <>
-                      <Text numberOfLines={1} style={{}}>
+                      <Text numberOfLines={1} style={{color:Colors.black}}>
                         {data?.value}
                       </Text>
                     </>

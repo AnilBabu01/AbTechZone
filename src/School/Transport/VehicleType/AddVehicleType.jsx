@@ -15,12 +15,12 @@ import {FlexRowWrapper} from '../../../Component/FlexRowWrapper';
 import {useNavigation} from '@react-navigation/native';
 import BackHeader from '../../../Component/Header/BackHeader';
 import moment from 'moment';
-import {getcourse} from '../../../redux/action/commanAction';
+import {GetVehicleType} from '../../../redux/action/transportActions';
 const statuslist = [
   {label: 'Enable', value: 'Enable'},
   {label: 'disabled', value: 'disabled'},
 ];
-const Addclss = () => {
+const AddVehicleType = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const [studentclass, setstudentclass] = useState('');
@@ -31,10 +31,9 @@ const Addclss = () => {
     setloading(true);
 
     const data = {
-      coursename: studentclass,
-      courseduration: courseduration,
+      Vahicletype: studentclass,
     };
-    serverInstance('comman/course', 'post', data).then(res => {
+    serverInstance('transport/vehicletype', 'post', data).then(res => {
       if (res?.status) {
         setloading(false);
         Toast.show({
@@ -43,7 +42,7 @@ const Addclss = () => {
           text2: res?.msg,
         });
 
-        dispatch(getcourse());
+        dispatch(GetVehicleType());
         navigation.goBack();
       }
 
@@ -60,7 +59,7 @@ const Addclss = () => {
 
   return (
     <View>
-      <BackHeader title={'Add Class'} />
+      <BackHeader title={'Add Vehicle Type'} />
       <ScrollView>
         <View style={styles.enquirymainview}>
           <View style={styles.dateview}>
@@ -68,14 +67,13 @@ const Addclss = () => {
               style={{
                 marginHorizontal: deviceWidth * 0.04,
                 position: 'relative',
-                marginTop: 30,
               }}>
               <RNInputField
                 style={{backgroundColor: Colors.fadeGray}}
-                label="Class"
+                label="Vehicle Type"
                 value={studentclass}
                 onChangeText={data => setstudentclass(data)}
-                placeholder="Enter Class"
+                placeholder="Enter Vehice Type"
               />
             </View>
           </View>
@@ -92,7 +90,7 @@ const Addclss = () => {
   );
 };
 
-export default Addclss;
+export default AddVehicleType;
 
 const styles = StyleSheet.create({
   enquirymainview: {

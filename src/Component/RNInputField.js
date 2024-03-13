@@ -26,6 +26,7 @@ const RNInputField = props => {
           fontWeight: '600',
           lineHeight: 19,
           marginBottom: 9,
+          color:Colors.black
         }}>
         {label}
       </Text>
@@ -37,7 +38,7 @@ const RNInputField = props => {
         outlineStyle={{borderRadius: 15, borderWidth: 0}}
         onChangeText={onChange}
         value={value}
-        style={{backgroundColor: Colors.fadeGray}}
+        style={{backgroundColor: Colors.lightGrey,color:Colors.black}}
         secureTextEntry={passwordShow}
         right={
           ispassword ? (

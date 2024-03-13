@@ -17,6 +17,7 @@ import {Width, Height} from '../../utils/responsive';
 import moment from 'moment';
 import {serverInstance} from '../../API/ServerInstance';
 import Toast from 'react-native-toast-message';
+import {useSelector, useDispatch} from 'react-redux';
 const EmpTakeAttendanceFilter = ({
   showModal,
   setShowModal,
@@ -24,6 +25,9 @@ const EmpTakeAttendanceFilter = ({
 }) => {
   const [atttendanceDate, setatttendanceDate] = useState(getTodaysDate());
   const [loading, setloading] = useState(false);
+  const {CURRENTSESSION: sessionname} = useSelector(
+    state => state.GetCurrentSession,
+  );
   const {innerContainer, childContainer, mainContainer} = styles;
 
   const onSubmit = () => {
@@ -32,6 +36,7 @@ const EmpTakeAttendanceFilter = ({
     var yyyyddmm = moment(momentDate).format('YYYY-MM-DD');
     const data = {
       Attendancedate: yyyyddmm,
+      session: sessionname,
     };
 
     serverInstance('EmployeeAttendance/attendance', 'post', data).then(res => {
@@ -42,11 +47,10 @@ const EmpTakeAttendanceFilter = ({
           text2: res?.msg,
         });
         setShowModal(false);
-        setattendancedetails(res?.data)
+        setattendancedetails(res?.data);
         setloading(false);
-        
-        console.log("employee attendance is",res);
 
+        console.log('employee attendance is', res);
       }
 
       if (res?.status === false) {

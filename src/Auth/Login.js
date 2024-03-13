@@ -10,7 +10,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
-import {primary, secondary} from '../utils/Colors';
+import {primary, secondary, Colors} from '../utils/Colors';
 import loginicon from '../assets/logoblue1.png';
 import {Height, Width} from '../utils/responsive';
 import {Dropdown} from 'react-native-element-dropdown';
@@ -28,7 +28,6 @@ import Loader from '../Component/Loader/Loader';
 import BackHeader from '../Component/Header/BackHeader';
 import RNButton from '../Component/RNButton';
 import RNInputField from '../Component/RNInputField';
-import {Colors} from '../utils/Colors';
 import {deviceHeight, deviceWidth} from '../utils/constant';
 import bgImg from '../assets/bg.jpeg';
 import {Checkbox} from 'react-native-paper';
@@ -76,8 +75,6 @@ const Login = () => {
   const {school} = useSelector(state => state.school);
   const {client} = useSelector(state => state.client);
 
-
-
   const submit = () => {
     if (showloginoption === false) {
       if (userid === '') {
@@ -114,7 +111,7 @@ const Login = () => {
   };
 
   useEffect(() => {
-    if (isAuthenticated&&user) {
+    if (isAuthenticated && user) {
       if (user?.data[0]?.token) {
         setauthtoken();
         dispatch(loadUser());
@@ -228,6 +225,8 @@ const Login = () => {
                     fontFamily: 'Gilroy-SemiBold',
                     fontSize: Height(12),
                     marginTop: Height(10),
+                    color: Colors.black,
+                    fontWeight: 'bold',
                   }}>
                   Login As<Text style={{color: primary}}> *</Text>
                 </Text>
@@ -237,6 +236,7 @@ const Login = () => {
                   selectedTextStyle={styles.selectedTextStyle}
                   inputSearchStyle={styles.inputSearchStyle}
                   iconStyle={styles.iconStyle}
+                  dropdownTextStyle={{color: Colors.black}}
                   data={dataguest}
                   search
                   maxHeight={300}
@@ -290,6 +290,8 @@ const Login = () => {
                     fontFamily: 'Gilroy-SemiBold',
                     fontSize: Height(12),
                     marginTop: Height(10),
+                    color: Colors.black,
+                    fontWeight: 'bold',
                   }}>
                   Login As<Text style={{color: primary}}> *</Text>
                 </Text>
@@ -299,6 +301,7 @@ const Login = () => {
                   selectedTextStyle={styles.selectedTextStyle}
                   inputSearchStyle={styles.inputSearchStyle}
                   iconStyle={styles.iconStyle}
+                  dropdownTextStyle={{color: Colors.black,fontSize: 16, fontWeight: 'bold',}}
                   data={data}
                   search
                   maxHeight={300}
@@ -318,6 +321,8 @@ const Login = () => {
                         fontFamily: 'Gilroy-SemiBold',
                         fontSize: Height(12),
                         marginTop: Height(10),
+                        color: Colors.black,
+                        fontWeight: 'bold',
                       }}>
                       Please Select College
                       <Text style={{color: primary}}> *</Text>
@@ -331,6 +336,7 @@ const Login = () => {
                           selectedTextStyle={styles.selectedTextStyle}
                           inputSearchStyle={styles.inputSearchStyle}
                           iconStyle={styles.iconStyle}
+                          dropdownTextStyle={{color: Colors.black}}
                           data={
                             college &&
                             college?.map(item => ({
@@ -383,6 +389,8 @@ const Login = () => {
                         fontFamily: 'Gilroy-SemiBold',
                         fontSize: Height(12),
                         marginTop: Height(10),
+                        color: Colors.black,
+                        fontWeight: 'bold',
                       }}>
                       Please Select School
                       <Text style={{color: primary}}> *</Text>
@@ -396,6 +404,7 @@ const Login = () => {
                           selectedTextStyle={styles.selectedTextStyle}
                           inputSearchStyle={styles.inputSearchStyle}
                           iconStyle={styles.iconStyle}
+                          dropdownTextStyle={{color: Colors.black}}
                           data={
                             school &&
                             school?.map(item => ({
@@ -448,6 +457,8 @@ const Login = () => {
                         fontFamily: 'Gilroy-SemiBold',
                         fontSize: Height(12),
                         marginTop: Height(10),
+                        color: Colors.black,
+                        fontWeight: 'bold',
                       }}>
                       Please Select Coaching
                       <Text style={{color: primary}}> *</Text>
@@ -461,6 +472,7 @@ const Login = () => {
                           selectedTextStyle={styles.selectedTextStyle}
                           inputSearchStyle={styles.inputSearchStyle}
                           iconStyle={styles.iconStyle}
+                          dropdownTextStyle={{color: Colors.black}}
                           data={
                             coaching &&
                             coaching?.map(item => ({
@@ -512,6 +524,8 @@ const Login = () => {
                         fontFamily: 'Gilroy-SemiBold',
                         fontSize: Height(12),
                         marginTop: Height(10),
+                        color: Colors.black,
+                        fontWeight: 'bold',
                       }}>
                       Please Select
                       <Text style={{color: primary}}> *</Text>
@@ -525,6 +539,7 @@ const Login = () => {
                           selectedTextStyle={styles.selectedTextStyle}
                           inputSearchStyle={styles.inputSearchStyle}
                           iconStyle={styles.iconStyle}
+                          dropdownTextStyle={{color: Colors.black}}
                           data={
                             client &&
                             client?.map(item => ({
@@ -577,6 +592,8 @@ const Login = () => {
                         fontFamily: 'Gilroy-SemiBold',
                         fontSize: Height(12),
                         marginTop: Height(10),
+                        color: Colors.black,
+                        fontWeight: 'bold',
                       }}>
                       Please Select
                       <Text style={{color: primary}}> *</Text>
@@ -590,6 +607,7 @@ const Login = () => {
                           selectedTextStyle={styles.selectedTextStyle}
                           inputSearchStyle={styles.inputSearchStyle}
                           iconStyle={styles.iconStyle}
+                          dropdownTextStyle={{color: Colors.black}}
                           data={
                             client &&
                             client?.map(item => ({
@@ -642,6 +660,8 @@ const Login = () => {
                         fontFamily: 'Gilroy-SemiBold',
                         fontSize: Height(12),
                         marginTop: Height(10),
+                        color: Colors.black,
+                        fontWeight: 'bold',
                       }}>
                       Please Select Organization
                       <Text style={{color: primary}}> *</Text>
@@ -655,6 +675,7 @@ const Login = () => {
                           selectedTextStyle={styles.selectedTextStyle}
                           inputSearchStyle={styles.inputSearchStyle}
                           iconStyle={styles.iconStyle}
+                          dropdownTextStyle={{color: Colors.black}}
                           data={
                             client &&
                             client?.map(item => ({
@@ -737,12 +758,13 @@ const Login = () => {
                       justifyContent: 'space-between',
                       flexDirection: 'row',
                     }}>
-                    <Checkbox status="checked" color={Colors.primary} />
+                    <Checkbox status="checked" color={Colors.black} />
                     <Text
                       style={{
                         fontSize: 13,
                         fontWeight: '500',
                         lineHeight: 18,
+                        color: Colors.primary,
                       }}>
                       Remember Me!
                     </Text>
@@ -755,9 +777,10 @@ const Login = () => {
                           fontSize: 13,
                           fontWeight: '500',
                           lineHeight: 18,
+                          color: Colors.primary,
                         }}>
                         Don't have An Account?
-                        <Text style={{color: Colors.primary}}>Sign-Up</Text>
+                        <Text style={{color: Colors.black}}>Sign-Up</Text>
                       </Text>
                     </View>
                   </TouchableOpacity>
@@ -855,6 +878,7 @@ const styles = StyleSheet.create({
   icon: {
     marginRight: 5,
   },
+  
   placeholderStyle: {
     fontSize: 16,
     borderColor: primary,
@@ -864,6 +888,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     borderColor: primary,
     borderRadius: 10,
+    color: Colors.black,
   },
   iconStyle: {
     width: 20,
@@ -874,6 +899,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     borderColor: primary,
     borderRadius: 5,
+    color: Colors.black,
   },
   showpassView: {
     position: 'relative',
@@ -910,8 +936,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: Width(20),
     fontSize: Height(16),
     marginTop: Height(10),
-    backgroundColor: Colors.fadeGray,
-    color: 'white',
+    backgroundColor: Colors.lightGrey,
+    color: Colors.black,
   },
   Content: {
     position: 'absolute',

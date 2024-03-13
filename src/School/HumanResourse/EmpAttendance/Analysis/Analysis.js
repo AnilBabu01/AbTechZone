@@ -7,6 +7,7 @@ import {
   getbatch,
   GetSession,
   GetSection,
+  getcurrentsession,
 } from '../../../../redux/action/commanAction';
 import {useDispatch} from 'react-redux';
 import {Colors} from '../../../../utils/Colors';
@@ -50,13 +51,6 @@ const Analysis = () => {
   const [showModal, setShowModal] = useState(false);
   const [showDocOptions, setShowDocOptions] = useState(false);
   const [attendancedetails, setattendancedetails] = useState([]);
-
-  useEffect(() => {
-    dispatch(getcourse());
-    dispatch(getbatch());
-    dispatch(GetSession());
-    dispatch(GetSection());
-  }, []);
 
   const AttendanceTableList = [
     {
@@ -130,6 +124,13 @@ const Analysis = () => {
 
     convertdata(attendancedetails);
   }, [attendancedetails]);
+  useEffect(() => {
+    dispatch(getcourse());
+    dispatch(getbatch());
+    dispatch(GetSession());
+    dispatch(GetSection());
+    dispatch(getcurrentsession());
+  }, []);
 
   return (
     <View style={{flex: 1}}>

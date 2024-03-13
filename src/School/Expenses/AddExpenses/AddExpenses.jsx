@@ -1,19 +1,19 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  Modal,
-  ScrollView,
-  Pressable,
-} from 'react-native';
+import {StyleSheet, Text, View, ScrollView, Pressable} from 'react-native';
 import React, {useState, useEffect} from 'react';
 import {Height, Width} from '../../../utils/responsive';
 import CardEnquiry from './Card';
 import {primary} from '../../../utils/Colors';
-import {getcourse} from '../../../redux/action/commanAction';
 import {
- GetExpenses,
-} from "../../../redux/action/expensesActions";
+  GetRoute,
+  GetVehicleType,
+  GetVehiclelist,
+} from '../../../redux/action/transportActions';
+import {
+  GetExpenses,
+  GetExpensesType,
+} from '../../../redux/action/expensesActions';
+import {GetSession} from '../../../redux/action/commanAction';
+import moment from 'moment';
 import {AnimatedFAB} from 'react-native-paper';
 import {Colors} from '../../../utils/Colors';
 import {useDispatch, useSelector} from 'react-redux';
@@ -23,6 +23,7 @@ import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import RNTable from '../../../Component/RNTable';
 import DownEnquiry from '../../../Component/school/DownEnquiry';
 import EnquiryFilter from '../../../Component/school/EnquiryFilter';
+import FilterExpenses from '../../../Component/school/FilterExpenses';
 import BackHeader from '../../../Component/Header/BackHeader';
 const AddExpenses = ({navigation}) => {
   const dispatch = useDispatch();
@@ -32,8 +33,8 @@ const AddExpenses = ({navigation}) => {
   const [viewdata, setviewdata] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [showDocOptions, setShowDocOptions] = useState(false);
-  const {course} = useSelector(state => state.getcourse);
-  const { expenses, loading } = useSelector((state) => state.GetExpenses);
+  const {expenses, loading} = useSelector(state => state.GetExpenses);
+
   const enquiryTableList = [
     {
       title: 'Sr.No',
@@ -96,28 +97,28 @@ const AddExpenses = ({navigation}) => {
         enquiryTableList[0].items.push({id: index, value: index + 1});
         enquiryTableList[1].items.push({
           id: index,
-          value: item.coursename,
+          value: item.Session,
         });
 
         enquiryTableList[2].items.push({
           id: index,
-          value: item.coursename,
+          value: moment(item?.Date).format('DD/MM/YYYY'),
         });
         enquiryTableList[3].items.push({
           id: index,
-          value: item.coursename,
+          value: item.Expensestype,
         });
         enquiryTableList[4].items.push({
           id: index,
-          value: item.coursename,
+          value: item.ExpensesAmount,
         });
         enquiryTableList[5].items.push({
           id: index,
-          value: item.coursename,
+          value: item.PayOption,
         });
         enquiryTableList[6].items.push({
           id: index,
-          value: item.coursename,
+          value: item.Comment,
         });
         enquiryTableList[7].items.push({
           id: index,
@@ -133,7 +134,7 @@ const AddExpenses = ({navigation}) => {
           ),
           allDetails: item,
           redirect: 'UpdateExpenses',
-          deleteUrl: 'comman/course',
+          deleteUrl: 'expenses/addexpenses',
         });
       }),
     );
@@ -144,13 +145,17 @@ const AddExpenses = ({navigation}) => {
     if (expenses) {
       setenquirylist(expenses);
       convertdata(expenses);
+      setShowModal(false);
     }
   }, [expenses]);
 
   useEffect(() => {
-    dispatch(getcourse());
     dispatch(GetExpenses());
-  
+    dispatch(GetRoute());
+    dispatch(GetVehicleType());
+    dispatch(GetVehiclelist());
+    dispatch(GetExpenses());
+    dispatch(GetSession());
   }, []);
 
   const {fabStyle} = styles;
@@ -217,7 +222,7 @@ const AddExpenses = ({navigation}) => {
       </ScrollView>
       {showModal && (
         <>
-          <EnquiryFilter setShowModal={setShowModal} showModal={showModal} />
+          <FilterExpenses setShowModal={setShowModal} showModal={showModal} />
         </>
       )}
       <DownEnquiry visible={showDocOptions} hideModal={setShowDocOptions} />

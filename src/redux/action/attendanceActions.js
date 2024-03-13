@@ -21,7 +21,7 @@ import {
 } from '../constants/attendanceConstants';
 
 export const MarkStudentAttendance =
-  (date, batch, classname, sectionname) => async dispatch => {
+  (date, batch, classname, sectionname, sessionname) => async dispatch => {
     try {
       let token = await AsyncStorage.getItem('erptoken');
       const config = {
@@ -34,10 +34,16 @@ export const MarkStudentAttendance =
       const {data} = await axios.post(
         `${backendApiUrl}attendanceatudent/attendance`,
         {
+          // Attendancedate: date,
+          // batch: batch,
+          // classname: classname,
+          // sectionname: sectionname,
+          // sessionname: sessionname,
           Attendancedate: date,
-          batch: batch,
+          batch: '',
           classname: classname,
           sectionname: sectionname,
+          sessionname: sessionname,
         },
         config,
       );
@@ -111,7 +117,16 @@ export const DoneStudentAttendance = udata => async dispatch => {
 };
 
 export const MonthlyStudentAttendance =
-  (udata, months, rollname, studentname, status, classname, sectionname) =>
+  (
+    udata,
+    months,
+    rollname,
+    studentname,
+    status,
+    classname,
+    sectionname,
+    sessionname,
+  ) =>
   async dispatch => {
     try {
       let token = await AsyncStorage.getItem('erptoken');
@@ -132,6 +147,15 @@ export const MonthlyStudentAttendance =
           status: status,
           classname: classname,
           sectionname: sectionname,
+          session: sessionname,
+          // batch: '',
+          // classname: 'I',
+          // month: 3,
+          // rollname: '',
+          // sectionname: 'NONE',
+          // session: '2023-2024',
+          // status: '',
+          // studentname: '',
         },
         config,
       );
@@ -192,8 +216,6 @@ export const getHolidays = month => async dispatch => {
   }
 };
 
-
-
 // Get all Enquiry
 export const getEmpHolidays = month => async dispatch => {
   try {
@@ -214,8 +236,8 @@ export const getEmpHolidays = month => async dispatch => {
       config,
     );
 
-     console.log("Attendace from action",data);
-     
+    console.log('Attendace from action', data);
+
     dispatch({
       type: ALL_EMPLOYEE_HOLIDAY_ATTENDANCE_SUCCESS,
       payload: data?.data,

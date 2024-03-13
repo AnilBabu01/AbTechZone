@@ -81,21 +81,33 @@ const FilterAttendanceAnalasis = ({showModal, setShowModal}) => {
   const [sectionlist, setsectionlist] = useState([]);
   const {course} = useSelector(state => state.getcourse);
   const {sections} = useSelector(state => state.GetSection);
+  const {CURRENTSESSION:sessionname} = useSelector(state => state.GetCurrentSession);
   const {monthlyattendance, loading} = useSelector(state => state.monthlyatten);
   const {innerContainer, childContainer, mainContainer} = styles;
 
   const onSubmit = () => {
+
     dispatch(
       MonthlyStudentAttendance(
-        '',
-       Number(month),
-        '',
-        '',
-        '',
-        courseorclass,
+        "",
+        Number(month),
+        "",
+        "",
+        "",
+        "",
         sectionname,
+        sessionname
       ),
     );
+
+    console.log(  "",
+    month,
+    "",
+    "",
+    "",
+    "",
+    sectionname,
+    sessionname)
   };
 
   useEffect(() => {

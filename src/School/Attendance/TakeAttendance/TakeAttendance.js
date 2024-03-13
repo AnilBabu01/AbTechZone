@@ -14,7 +14,9 @@ import {
   getbatch,
   GetSession,
   GetSection,
+  getcurrentsession
 } from '../../../redux/action/commanAction';
+
 import {
   DoneStudentAttendance,
   MonthlyStudentAttendance,
@@ -32,6 +34,9 @@ const TakeAttendance = () => {
   const [showDocOptions, setShowDocOptions] = useState(false);
   const [attendancedetails, setattendancedetails] = useState([]);
   const {markattendance} = useSelector(state => state.markatten);
+
+  console.log("hfd",markattendance)
+
   function handleItemUpdate(originalItem, key, value) {
     setattendancedetails(
       attendancedetails.map(Item =>
@@ -53,6 +58,7 @@ const TakeAttendance = () => {
     dispatch(getbatch());
     dispatch(GetSession());
     dispatch(GetSection());
+    dispatch(getcurrentsession());
   }, []);
 
   useEffect(() => {

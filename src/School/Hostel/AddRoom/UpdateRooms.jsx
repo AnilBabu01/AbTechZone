@@ -15,37 +15,58 @@ import {FlexRowWrapper} from '../../../Component/FlexRowWrapper';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import BackHeader from '../../../Component/Header/BackHeader';
 import moment from 'moment';
-import {getcourse} from '../../../redux/action/commanAction';
-const UpdateClass = () => {
+import {GetRoom} from '../../../redux/action/hostelActions';
+const UpdateRooms = () => {
   const route = useRoute();
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const [isdata, setisdata] = useState('');
-  const [studentclass, setstudentclass] = useState('');
-  const [courseduration, setcourseduration] = useState('');
-  const [loading, setloading] = useState(false);
+  const [loader, setloader] = useState(false);
+  const [Facilitys, setFacilitys] = useState([]);
+  const [Categorys, setCategorys] = useState([]);
+  const [hostels, sethostels] = useState([]);
+
+  const [hostelId, sethostelId] = useState('');
+  const [CategoryId, setCategoryId] = useState('');
+  const [FacilityId, setFacilityId] = useState('');
+  const [Facilityname, setFacilityname] = useState('');
+  const [categoryname, setcategoryname] = useState('');
+  const [hostelname, sethostelname] = useState('');
+  const [fromroom, setfromroom] = useState('');
+  const [toroom, settoroom] = useState('');
+  const [amountpermonth, setamountpermonth] = useState('');
+  const {roomfacility} = useSelector(state => state.GetFacility);
+  const {roomcategory} = useSelector(state => state.GetCategory);
+  const {hostel} = useSelector(state => state.GetHostel);
 
   const submit = () => {
-    setloading(true);
+    setloader(true);
     const data = {
       id: isdata?.id,
-      coursename: studentclass,
-      courseduration: courseduration,
+      HostelName: hostelname,
+      Category: categoryname,
+      Facility: Facilityname,
+      hostelId: hostelId,
+      CategoryId: CategoryId,
+      FacilityId: FacilityId,
+      FromRoom: fromroom,
+      ToRoom: toroom,
+      PermonthFee: amountpermonth,
     };
-    serverInstance('comman/course', 'put', data).then(res => {
+    serverInstance('hostel/addroom', 'put', data).then(res => {
       if (res?.status) {
-        setloading(false);
+        setloader(false);
         Toast.show({
           type: 'success',
           text1: 'Success',
           text2: res?.msg,
         });
-        dispatch(getcourse());
+        dispatch(GetRoom());
         navigation.goBack();
       }
 
       if (res?.status === false) {
-        setloading(false);
+        setloader(false);
         Toast.show({
           type: 'error',
           text1: 'Error',
@@ -58,34 +79,174 @@ const UpdateClass = () => {
   useEffect(() => {
     if (route.params?.data) {
       setisdata(route.params?.data);
-      setstudentclass(route.params?.data?.coursename);
+      console.log('type erroe is', route.params?.data);
+      sethostelId(route.params?.data?.hostelId?.toString());
+      setCategoryId(route.params?.data?.CategoryId?.toString());
+      setFacilityId(route.params?.data?.FacilityId?.toString());
+
+      setFacilityname(route.params?.data?.Facility);
+      sethostelname(route.params?.data?.hostelname);
+      setcategoryname(route.params?.data?.Category);
+
+      setfromroom(route.params?.data?.FromRoom?.toString());
+      settoroom(route.params?.data?.ToRoom?.toString());
+      // setcomment(route.params?.data?.comment);
+      setamountpermonth(route.params?.data?.PermonthFee?.toString());
     }
   }, []);
 
+  useEffect(() => {
+    if (roomcategory) {
+      setCategorys(roomcategory);
+    }
+    if (roomfacility) {
+      setFacilitys(roomfacility);
+    }
+    if (hostel) {
+      sethostels(hostel);
+    }
+  }, [roomcategory, roomfacility, hostel]);
   return (
     <View>
-      <BackHeader title={'Update Class'} />
+      <BackHeader title={'Update Room'} />
       <ScrollView>
         <View style={styles.enquirymainview}>
           <View style={styles.dateview}>
-            <View
-              style={{
-                marginHorizontal: deviceWidth * 0.04,
-                position: 'relative',
-                marginTop: 30,
-              }}>
-              <RNInputField
-                style={{backgroundColor: Colors.fadeGray, paddingTop: 10}}
-                label="Class"
-                value={studentclass}
-                onChangeText={data => setstudentclass(data)}
-                placeholder="Enter Class"
-              />
-            </View>
+            <FlexRowWrapper>
+              <View style={{width: '45%'}}>
+                <View style={{marginHorizontal: deviceWidth * 0.01}}>
+                  <Text
+                    style={{fontSize: 14, fontWeight: '600', lineHeight: 19}}>
+                    Hostel Name
+                  </Text>
+                  <Dropdown
+                    style={styles.dropstyle}
+                    placeholderStyle={styles.placeholderStyle}
+                    selectedTextStyle={styles.selectedTextStyle}
+                    inputSearchStyle={styles.inputSearchStyle}
+                    iconStyle={styles.iconStyle}
+                    data={
+                      hostels &&
+                      hostels?.map(item => ({
+                        label: `${item?.HostelName}`,
+                        value: `${item?.id}`,
+                      }))
+                    }
+                    search
+                    maxHeight={300}
+                    labelField="label"
+                    valueField="value"
+                    placeholder="Please Select"
+                    searchPlaceholder="Search..."
+                    value={hostelId}
+                    onChange={item => {
+                      sethostelId(item.value);
+                      sethostelname(item.label);
+                    }}
+                  />
+                </View>
+              </View>
+              <View style={{width: '45%'}}>
+                <View style={{marginHorizontal: deviceWidth * 0.01}}>
+                  <Text
+                    style={{fontSize: 14, fontWeight: '600', lineHeight: 19}}>
+                    Hostel Category
+                  </Text>
+                  <Dropdown
+                    style={styles.dropstyle}
+                    placeholderStyle={styles.placeholderStyle}
+                    selectedTextStyle={styles.selectedTextStyle}
+                    inputSearchStyle={styles.inputSearchStyle}
+                    iconStyle={styles.iconStyle}
+                    data={
+                      Categorys &&
+                      Categorys?.map(item => ({
+                        label: `${item?.roomCategory}`,
+                        value: `${item?.id}`,
+                      }))
+                    }
+                    search
+                    maxHeight={300}
+                    labelField="label"
+                    valueField="value"
+                    placeholder="Please Select"
+                    searchPlaceholder="Search..."
+                    value={CategoryId}
+                    onChange={item => {
+                      setcategoryname(item.label);
+                      setCategoryId(item.value);
+                    }}
+                  />
+                </View>
+              </View>
+            </FlexRowWrapper>
+
+            <FlexRowWrapper>
+              <View style={{width: '45%'}}>
+                <View style={{marginHorizontal: deviceWidth * 0.01}}>
+                  <Text
+                    style={{fontSize: 14, fontWeight: '600', lineHeight: 19}}>
+                    Hostel Facility
+                  </Text>
+                  <Dropdown
+                    style={styles.dropstyle}
+                    placeholderStyle={styles.placeholderStyle}
+                    selectedTextStyle={styles.selectedTextStyle}
+                    inputSearchStyle={styles.inputSearchStyle}
+                    iconStyle={styles.iconStyle}
+                    data={
+                      Facilitys &&
+                      Facilitys?.map(item => ({
+                        label: `${item?.roomFacility}`,
+                        value: `${item?.id}`,
+                      }))
+                    }
+                    search
+                    maxHeight={300}
+                    labelField="label"
+                    valueField="value"
+                    placeholder="Please Select"
+                    searchPlaceholder="Search..."
+                    value={FacilityId}
+                    onChange={item => {
+                      setFacilityname(item.label);
+                      setFacilityId(item.value);
+                    }}
+                  />
+                </View>
+              </View>
+              <View style={{width: '45%'}}>
+                <RNInputField
+                  label="From Range"
+                  placeholder="Enter From Range"
+                  value={fromroom}
+                  onChangeText={data => setfromroom(data)}
+                />
+              </View>
+            </FlexRowWrapper>
+
+            <FlexRowWrapper>
+              <View style={{width: '45%'}}>
+                <RNInputField
+                  label="To Range"
+                  placeholder="Enter To Range"
+                  value={toroom}
+                  onChangeText={data => settoroom(data)}
+                />
+              </View>
+              <View style={{width: '45%'}}>
+                <RNInputField
+                  label="Fee Per Month"
+                  placeholder="Enter Fee"
+                  value={amountpermonth}
+                  onChangeText={data => setamountpermonth(data)}
+                />
+              </View>
+            </FlexRowWrapper>
           </View>
 
           <RNButton
-            loading={loading}
+            loading={loader}
             onPress={submit}
             style={{marginHorizontal: 20, marginTop: 20}}>
             Update & Next
@@ -96,7 +257,7 @@ const UpdateClass = () => {
   );
 };
 
-export default UpdateClass;
+export default UpdateRooms;
 
 const styles = StyleSheet.create({
   enquirymainview: {

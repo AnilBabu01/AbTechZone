@@ -1,40 +1,30 @@
 import {StyleSheet, View, ScrollView, Text} from 'react-native';
 import React, {useState} from 'react';
 import {Height, Width} from '../../../utils/responsive';
-import {Dropdown} from 'react-native-element-dropdown';
 import {useDispatch} from 'react-redux';
 import {serverInstance} from '../../../API/ServerInstance';
 import Toast from 'react-native-toast-message';
 import RNButton from '../../../Component/RNButton';
 import RNInputField from '../../../Component/RNInputField';
-import RNDatePicker from '../../../Component/RNDatePicker';
-import {handleDate, getTodaysDate} from '../../../utils/functions';
 import {Colors} from '../../../utils/Colors';
 import {deviceHeight, deviceWidth} from '../../../utils/constant';
-import {FlexRowWrapper} from '../../../Component/FlexRowWrapper';
 import {useNavigation} from '@react-navigation/native';
 import BackHeader from '../../../Component/Header/BackHeader';
-import moment from 'moment';
-import {getcourse} from '../../../redux/action/commanAction';
-const statuslist = [
-  {label: 'Enable', value: 'Enable'},
-  {label: 'disabled', value: 'disabled'},
-];
+import {GetCategory} from '../../../redux/action/hostelActions';
+
 const HosAddCategory = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const [studentclass, setstudentclass] = useState('');
-  const [courseduration, setcourseduration] = useState('');
   const [loading, setloading] = useState(false);
 
   const submit = () => {
     setloading(true);
 
     const data = {
-      coursename: studentclass,
-      courseduration: courseduration,
+      roomCategory: studentclass,
     };
-    serverInstance('comman/course', 'post', data).then(res => {
+    serverInstance('hostel/category', 'post', data).then(res => {
       if (res?.status) {
         setloading(false);
         Toast.show({
@@ -43,7 +33,7 @@ const HosAddCategory = () => {
           text2: res?.msg,
         });
 
-        dispatch(getcourse());
+        dispatch(GetCategory());
         navigation.goBack();
       }
 
@@ -68,14 +58,14 @@ const HosAddCategory = () => {
               style={{
                 marginHorizontal: deviceWidth * 0.04,
                 position: 'relative',
-                marginTop: 30,
+                // marginTop: 20,
               }}>
               <RNInputField
                 style={{backgroundColor: Colors.fadeGray}}
-                label="Class"
+                label="Hostel Category"
                 value={studentclass}
                 onChangeText={data => setstudentclass(data)}
-                placeholder="Enter Class"
+                placeholder="Enter Hostel Category"
               />
             </View>
           </View>

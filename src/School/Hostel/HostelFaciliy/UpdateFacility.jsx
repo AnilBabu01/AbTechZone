@@ -15,8 +15,8 @@ import {FlexRowWrapper} from '../../../Component/FlexRowWrapper';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import BackHeader from '../../../Component/Header/BackHeader';
 import moment from 'moment';
-import {getcourse} from '../../../redux/action/commanAction';
-const UpdateClass = () => {
+import {GetFacility} from '../../../redux/action/hostelActions';
+const UpdateFacility = () => {
   const route = useRoute();
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -29,10 +29,9 @@ const UpdateClass = () => {
     setloading(true);
     const data = {
       id: isdata?.id,
-      coursename: studentclass,
-      courseduration: courseduration,
+      roomFacility: studentclass,
     };
-    serverInstance('comman/course', 'put', data).then(res => {
+    serverInstance('hostel/facility', 'put', data).then(res => {
       if (res?.status) {
         setloading(false);
         Toast.show({
@@ -40,7 +39,7 @@ const UpdateClass = () => {
           text1: 'Success',
           text2: res?.msg,
         });
-        dispatch(getcourse());
+        dispatch(GetFacility());
         navigation.goBack();
       }
 
@@ -58,7 +57,7 @@ const UpdateClass = () => {
   useEffect(() => {
     if (route.params?.data) {
       setisdata(route.params?.data);
-      setstudentclass(route.params?.data?.coursename);
+      setstudentclass(route.params?.data?.roomFacility);
     }
   }, []);
 
@@ -72,14 +71,14 @@ const UpdateClass = () => {
               style={{
                 marginHorizontal: deviceWidth * 0.04,
                 position: 'relative',
-                marginTop: 30,
+                // marginTop: 30,
               }}>
               <RNInputField
-                style={{backgroundColor: Colors.fadeGray, paddingTop: 10}}
-                label="Class"
+                style={{backgroundColor: Colors.fadeGray,}}
+                label="Hostel Facility"
                 value={studentclass}
                 onChangeText={data => setstudentclass(data)}
-                placeholder="Enter Class"
+                placeholder="Enter Hostel Facility"
               />
             </View>
           </View>
@@ -96,7 +95,7 @@ const UpdateClass = () => {
   );
 };
 
-export default UpdateClass;
+export default UpdateFacility;
 
 const styles = StyleSheet.create({
   enquirymainview: {

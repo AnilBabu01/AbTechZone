@@ -14,6 +14,7 @@ import {
   getbatch,
   GetSession,
   GetSection,
+  getcurrentsession
 } from '../../../redux/action/commanAction';
 import {useDispatch, useSelector} from 'react-redux';
 import {Colors} from '../../../utils/Colors';
@@ -44,12 +45,7 @@ const Analysis = () => {
     );
   }
 
-  useEffect(() => {
-    dispatch(getcourse());
-    dispatch(getbatch());
-    dispatch(GetSession());
-    dispatch(GetSection());
-  }, []);
+
 
   const AttendanceTableList = [
     {
@@ -140,6 +136,15 @@ const Analysis = () => {
     }
   }, [monthlyattendance]);
 
+
+  useEffect(() => {
+    dispatch(getcourse());
+    dispatch(getbatch());
+    dispatch(GetSession());
+    dispatch(GetSection());
+    dispatch(getcurrentsession());
+  }, []);
+  
   return (
     <View style={{flex: 1}}>
       <View style={styles.headerTitleContainer}>
@@ -157,7 +162,7 @@ const Analysis = () => {
             style={styles.filterBtnContainer}>
             <Ionicons name="filter" color={Colors.primary} size={25} />
           </Pressable>
-          <Pressable
+          {/* <Pressable
             onPress={() => setviewdata(!viewdata)}
             style={styles.filterBtnContainer}>
             {viewdata ? (
@@ -169,7 +174,7 @@ const Analysis = () => {
                 <FontAwesome6 name="table" color={Colors.primary} size={25} />
               </>
             )}
-          </Pressable>
+          </Pressable> */}
         </View>
       </View>
 

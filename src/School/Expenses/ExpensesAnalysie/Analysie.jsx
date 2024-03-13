@@ -20,17 +20,58 @@ import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import RNTable from '../../../Component/RNTable';
 import DownEnquiry from '../../../Component/school/DownEnquiry';
 import EnquiryFilter from '../../../Component/school/EnquiryFilter';
+import FilterAnalysie from '../../../Component/school/FilterAnalysie';
 import BackHeader from '../../../Component/Header/BackHeader';
+import moment from 'moment';
+import Toast from 'react-native-toast-message';
+import {serverInstance} from '../../../API/ServerInstance';
 const Analysie = ({navigation}) => {
   const dispatch = useDispatch();
   const [openModel, setopenModel] = useState(false);
+  let currmonth = new Date().getMonth();
+  const [month, setmonth] = useState(currmonth + 1);
   const [enquirylist, setenquirylist] = useState('');
-  const [Tabledata, setTabledata] = useState([]);
+  const [alltransferamount, setalltransferamount] = useState([]);
   const [viewdata, setviewdata] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [showDocOptions, setShowDocOptions] = useState(false);
   const {course, loading} = useSelector(state => state.getcourse);
-  const enquiryTableList = [
+  const [assetlist, setassetlist] = useState([]);
+  const [allExpensesList, setallExpensesList] = useState([]);
+  const [allRecoveryList, setallRecoveryList] = useState([]);
+
+  const [expensesTable, setexpensesTable] = useState([]);
+  const [receveryTable, setreceveryTable] = useState([]);
+
+  const ExpensesTableList = [
+    {
+      title: 'Sr.No',
+      items: [],
+      width: 0.33,
+      align: 'center',
+    },
+
+    {
+      title: 'Type',
+      items: [],
+      width: 0.33,
+      align: 'center',
+    },
+    {
+      title: 'Amount',
+      items: [],
+      width: 0.33,
+      align: 'center',
+    },
+    {
+      title: 'Mode',
+      items: [],
+      width: 0.33,
+      align: 'center',
+    },
+  ];
+
+  const ReconveryTableList = [
     {
       title: 'Sr.No',
       items: [],
@@ -45,74 +86,193 @@ const Analysie = ({navigation}) => {
       align: 'center',
     },
     {
-      title: 'Action',
+      title: 'Amount',
       items: [],
-      width: 0.40,
+      width: 0.33,
+      align: 'center',
+    },
+
+    {
+      title: 'Mode',
+      items: [],
+      width: 0.33,
       align: 'center',
     },
   ];
 
-  const convertdata = async () => {
+  const convertdata = async data => {
     await Promise.all(
-      course?.map((item, index) => {
-        enquiryTableList[0].items.push({id: index, value: index + 1});
-        enquiryTableList[1].items.push({
+      data?.map((item, index) => {
+        ExpensesTableList[0].items.push({id: index, value: index + 1});
+        ExpensesTableList[1].items.push({
           id: index,
-          value: item.coursename,
+          value: item.Expensestype,
         });
-        enquiryTableList[2].items.push({
+        ExpensesTableList[2].items.push({
           id: index,
-          value: (
-            <Ionicons
-              name="create-outline"
-              color={Colors.primary}
-              size={18.3}
-            />
-          ),
-          Deleteicon: (
-            <Ionicons name="trash-outline" color={Colors.red} size={18.3} />
-          ),
-          allDetails: item,
-          redirect: 'UpdateClass',
-          deleteUrl: 'comman/course',
+          value: item.total_paidamount,
+        });
+        ExpensesTableList[3].items.push({
+          id: index,
+          value: item.PayOption,
         });
       }),
     );
-    setTabledata(enquiryTableList);
+    setexpensesTable(ExpensesTableList);
+  };
+
+  const convertdataRecovery = async data => {
+    await Promise.all(
+      data?.map((item, index) => {
+        ReconveryTableList[0].items.push({id: index, value: index + 1});
+        ReconveryTableList[1].items.push({
+          id: index,
+          value: item.Course,
+        });
+        ReconveryTableList[2].items.push({
+          id: index,
+          value: item.total_paidamount,
+        });
+        ReconveryTableList[3].items.push({
+          id: index,
+          value: item.PayOption,
+        });
+      }),
+    );
+    setreceveryTable(ReconveryTableList);
+  };
+
+  const filterdata = () => {
+    try {
+      let date = new Date();
+      let fullyear = date.getFullYear();
+      let lastyear = date.getFullYear() - 1;
+      let combine = `${lastyear}-${fullyear}`;
+
+      serverInstance('expenses/getexpensesanalysis', 'post', {
+        sessionname: combine,
+        month: month,
+      }).then(res => {
+        if (res?.status === true) {
+          // Toast.show({
+          //   type: 'success',
+          //   text1: 'Success',
+          //   text2: res?.msg,
+          // });
+
+          setallExpensesList(res?.data[0]?.allexpenses);
+          setallRecoveryList(res?.data[0]?.allreceiptdata);
+          setassetlist(res?.data[0]?.allexpensesAsset);
+
+          convertdata(res?.data[0]?.allexpenses);
+          convertdataRecovery(res?.data[0]?.allreceiptdata);
+         
+        }
+
+        if (res?.status === false) {
+          // Toast.show({
+          //   type: 'error',
+          //   text1: 'Error',
+          //   text2: res?.msg,
+          // });
+        }
+      });
+    } catch (error) {}
+  };
+
+  const totalcashexpenses = data => {
+    let total = 0;
+    data?.map(item => {
+      if (item?.PayOption === 'Cash') {
+        total = total + Number(item?.total_paidamount);
+      }
+    });
+    return total;
+  };
+
+  const totalonlineexpenses = data => {
+    let total = 0;
+    data?.map(item => {
+      if (item?.PayOption === 'Online') {
+        total = total + Number(item?.total_paidamount);
+      }
+    });
+    return total;
+  };
+
+  const totalcashrecovery = data => {
+    let total = 0;
+    data?.map(item => {
+      if (item?.PayOption === 'Cash') {
+        total = total + Number(item?.total_paidamount);
+      }
+    });
+    return total;
+  };
+
+  const totalonlineexrecovery = data => {
+    let total = 0;
+    data?.map(item => {
+      if (item?.PayOption === 'Online') {
+        total = total + Number(item?.total_paidamount);
+      }
+    });
+    return total;
+  };
+
+  const GetTransferAmmountConslated = () => {
+    serverInstance('expenses/GetTransferAmmountConslated', 'get').then(res => {
+      if (res.status) {
+        setalltransferamount(res?.data);
+      }
+    });
+  };
+
+  const totalcashTransferAmount = data => {
+    let total = 0;
+    alltransferamount?.map(item => {
+      if (item?.Transfer_Mode === 'Cash') {
+        total = total + Number(item?.total_amount);
+      }
+    });
+    return total;
+  };
+
+  const totalonlineTransferAmount = data => {
+    let total = 0;
+    alltransferamount?.map(item => {
+      if (item?.Transfer_Mode === 'Online') {
+        total = total + Number(item?.total_amount);
+      }
+    });
+    return total;
   };
 
   useEffect(() => {
-    if (course) {
-      setenquirylist(course);
-      convertdata(course);
-    }
-  }, [course]);
-
-  useEffect(() => {
     dispatch(getcourse());
+    filterdata();
+    GetTransferAmmountConslated();
   }, []);
-
-  const {fabStyle} = styles;
 
   return (
     <View style={{flex: 1}}>
-      <BackHeader title={'Add Class'} />
+      <BackHeader title={'Analysie'} />
       <View style={styles.headerTitleContainer}>
         <View>
-          <Text style={styles.secondaryTitle}>Class Master</Text>
+          <Text style={styles.secondaryTitle}>Analysie Management</Text>
         </View>
         <View style={{flexDirection: 'row', gap: 10}}>
-          {/* <Pressable
+          <Pressable
             onPress={() => setShowDocOptions(true)}
             style={styles.filterBtnContainer}>
             <FontAwesome6 name="download" color={Colors.primary} size={25} />
-          </Pressable> */}
-          {/* <Pressable
+          </Pressable>
+          <Pressable
             onPress={() => setShowModal(true)}
             style={styles.filterBtnContainer}>
             <Ionicons name="filter" color={Colors.primary} size={25} />
           </Pressable>
-          <Pressable
+          {/* <Pressable
             onPress={() => setviewdata(!viewdata)}
             style={styles.filterBtnContainer}>
             {viewdata ? (
@@ -146,29 +306,75 @@ const Analysie = ({navigation}) => {
               </>
             ) : (
               <>
+                <View style={{padding: 15}}>
+                  <Text>Expenses</Text>
+                </View>
                 <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                  <RNTable theme="primary" data={Tabledata} />
+                  <RNTable theme="primary" data={expensesTable} />
                 </ScrollView>
+                <View style={{padding: 15}}>
+                  <Text>
+                    Total Cash Out : {totalcashexpenses(allExpensesList)}
+                  </Text>
+                  <Text>
+                    Total Online Out : {totalonlineexpenses(allExpensesList)}{' '}
+                  </Text>
+                </View>
+
+                <View
+                  style={{
+                    padding: 15,
+                    borderTopWidth: 2,
+                    borderTopColor: Colors.primary,
+                  }}>
+                  <Text>Recovery</Text>
+                </View>
+                <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                  <RNTable theme="primary" data={receveryTable} />
+                </ScrollView>
+
+                <View style={{padding: 15}}>
+                  <Text>
+                    Total Cash :
+                    {totalcashrecovery(allRecoveryList) -
+                      totalcashexpenses(assetlist) +
+                      totalcashTransferAmount()}
+                  </Text>
+                  <Text>
+                    Total Bank :
+                    {totalonlineexrecovery(allRecoveryList) -
+                      totalonlineexpenses(assetlist) +
+                      totalonlineTransferAmount()}
+                  </Text>
+
+                  <Text>
+                    Total Profit :
+                    {totalcashrecovery(allRecoveryList) +
+                      totalonlineexrecovery(allRecoveryList) -
+                      (totalcashexpenses(allExpensesList) +
+                        totalonlineexpenses(allExpensesList))}
+                  </Text>
+                </View>
               </>
             )}
           </>
         )}
       </ScrollView>
+
       {showModal && (
         <>
-          <EnquiryFilter setShowModal={setShowModal} showModal={showModal} />
+          <FilterAnalysie
+            setallExpensesList={setallExpensesList}
+            setallRecoveryList={setallRecoveryList}
+            setassetlist={setassetlist}
+            setShowModal={setShowModal}
+            convertdata={convertdata}
+            convertdataRecovery={convertdataRecovery}
+            showModal={showModal}
+          />
         </>
       )}
       <DownEnquiry visible={showDocOptions} hideModal={setShowDocOptions} />
-
-      <AnimatedFAB
-        icon={'plus'}
-        onPress={() => navigation.navigate('Addclss')}
-        label="Add"
-        extended={false}
-        color={Colors.white}
-        style={[fabStyle]}
-      />
     </View>
   );
 };

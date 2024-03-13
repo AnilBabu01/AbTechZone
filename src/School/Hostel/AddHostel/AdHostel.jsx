@@ -7,19 +7,14 @@ import {serverInstance} from '../../../API/ServerInstance';
 import Toast from 'react-native-toast-message';
 import RNButton from '../../../Component/RNButton';
 import RNInputField from '../../../Component/RNInputField';
-import RNDatePicker from '../../../Component/RNDatePicker';
-import {handleDate, getTodaysDate} from '../../../utils/functions';
 import {Colors} from '../../../utils/Colors';
 import {deviceHeight, deviceWidth} from '../../../utils/constant';
 import {FlexRowWrapper} from '../../../Component/FlexRowWrapper';
 import {useNavigation} from '@react-navigation/native';
 import BackHeader from '../../../Component/Header/BackHeader';
 import moment from 'moment';
-import {getcourse} from '../../../redux/action/commanAction';
-const statuslist = [
-  {label: 'Enable', value: 'Enable'},
-  {label: 'disabled', value: 'disabled'},
-];
+import {GetHostel} from '../../../redux/action/hostelActions';
+
 const AdHostel = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -31,10 +26,11 @@ const AdHostel = () => {
     setloading(true);
 
     const data = {
-      coursename: studentclass,
-      courseduration: courseduration,
+      HostelName: studentclass,
+      DescripTion: courseduration,
     };
-    serverInstance('comman/course', 'post', data).then(res => {
+
+    serverInstance('hostel/addhostel', 'post', data).then(res => {
       if (res?.status) {
         setloading(false);
         Toast.show({
@@ -43,7 +39,7 @@ const AdHostel = () => {
           text2: res?.msg,
         });
 
-        dispatch(getcourse());
+        dispatch(GetHostel());
         navigation.goBack();
       }
 
@@ -60,7 +56,7 @@ const AdHostel = () => {
 
   return (
     <View>
-      <BackHeader title={'Add Class'} />
+      <BackHeader title={'Add Hostel'} />
       <ScrollView>
         <View style={styles.enquirymainview}>
           <View style={styles.dateview}>
@@ -68,14 +64,20 @@ const AdHostel = () => {
               style={{
                 marginHorizontal: deviceWidth * 0.04,
                 position: 'relative',
-                marginTop: 30,
               }}>
               <RNInputField
                 style={{backgroundColor: Colors.fadeGray}}
-                label="Class"
+                label="Hostel Name"
                 value={studentclass}
                 onChangeText={data => setstudentclass(data)}
-                placeholder="Enter Class"
+                placeholder="Enter Hostel Name"
+              />
+              <RNInputField
+                style={{backgroundColor: Colors.fadeGray}}
+                label="Description"
+                value={courseduration}
+                onChangeText={data => setcourseduration(data)}
+                placeholder="Enter Hostel Description"
               />
             </View>
           </View>

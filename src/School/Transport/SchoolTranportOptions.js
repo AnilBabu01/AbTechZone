@@ -12,7 +12,7 @@ const SchoolTranportOptions = () => {
   const navigation = useNavigation();
   return (
     <>
-     <Header/>
+      <Header />
       <View style={styles.mainview}>
         <TouchableOpacity onPress={() => navigation.navigate('VehicleType')}>
           <View style={styles.mainoption}>
@@ -51,14 +51,16 @@ const SchoolTranportOptions = () => {
             <Text style={styles.titlestyle}>Assign Bus</Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity
+
+        <View style={styles.fakeview}></View>
+        {/* <TouchableOpacity
           onPress={() => navigation.navigate('SendSmsToBusStudent')}>
           <View style={styles.mainoption}>
             <FontAwesome6 name="comment-sms" color={Colors.primary} size={30} />
             <Text style={styles.titlestyle}>Communication</Text>
           </View>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('SearchBus')}>
+        </TouchableOpacity> */}
+        {/* <TouchableOpacity onPress={() => navigation.navigate('SearchBus')}>
           <View style={styles.mainoption}>
             <FontAwesome6
               name="magnifying-glass"
@@ -67,7 +69,7 @@ const SchoolTranportOptions = () => {
             />
             <Text style={styles.titlestyle}>Search</Text>
           </View>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
     </>
   );
@@ -84,6 +86,16 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     marginVertical: deviceHeight * 0.01,
     paddingHorizontal: deviceWidth * 0.01,
+  },
+
+  fakeview: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: Width(110),
+    height: Height(80),
+    margin: deviceWidth * 0.01,
+    borderRadius: 10,
   },
 
   mainoption: {

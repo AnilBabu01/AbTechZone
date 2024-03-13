@@ -10,7 +10,7 @@ import React, {useState, useEffect} from 'react';
 import {Height, Width} from '../../../utils/responsive';
 import CardEnquiry from './Card';
 import {primary} from '../../../utils/Colors';
-import {getenquiries} from '../../../redux/action/coachingAction';
+import {GetHostel} from '../../../redux/action/hostelActions';
 import {AnimatedFAB} from 'react-native-paper';
 import {Colors} from '../../../utils/Colors';
 import {useDispatch, useSelector} from 'react-redux';
@@ -29,8 +29,7 @@ const Addhostel = ({navigation}) => {
   const [viewdata, setviewdata] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [showDocOptions, setShowDocOptions] = useState(false);
-  const {enquiry, loading} = useSelector(state => state.enquiry);
-
+  const {hostel, loading} = useSelector(state => state.GetHostel);
   const enquiryTableList = [
     {
       title: 'Sr.No',
@@ -39,44 +38,13 @@ const Addhostel = ({navigation}) => {
       align: 'center',
     },
     {
-      title: 'Enquiry_Date',
+      title: 'Hostel_Name',
       items: [],
       width: 0.33,
       align: 'center',
     },
     {
-      title: 'Student_Name',
-      items: [],
-      width: 0.33,
-      align: 'center',
-    },
-    {
-      title: 'Student_Number',
-      items: [],
-      width: 0.33,
-      align: 'center',
-    },
-
-    {
-      title: 'Student_Email',
-      items: [],
-      width: 0.33,
-      align: 'center',
-    },
-    {
-      title: 'Address',
-      items: [],
-      width: 0.33,
-      align: 'center',
-    },
-    {
-      title: 'Class',
-      items: [],
-      width: 0.33,
-      align: 'center',
-    },
-    {
-      title: 'Comment',
+      title: 'Description',
       items: [],
       width: 0.33,
       align: 'center',
@@ -91,45 +59,18 @@ const Addhostel = ({navigation}) => {
 
   const convertdata = async () => {
     await Promise.all(
-      enquiry?.map((item, index) => {
+      hostel?.map((item, index) => {
         enquiryTableList[0].items.push({id: index, value: index + 1});
         enquiryTableList[1].items.push({
           id: index,
-          value: item.EnquiryDate,
+          value: item.HostelName,
         });
-
-        console.log(
-          'from main function',
-          item?.StudentEmail,
-          'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
-        );
-
         enquiryTableList[2].items.push({
           id: index,
-          value: item.StudentName,
-        });
-        enquiryTableList[3].items.push({
-          id: index,
-          value: item.StudentNumber,
-        });
-        enquiryTableList[4].items.push({
-          id: index,
-          value: item.StudentEmail,
-        });
-        enquiryTableList[5].items.push({
-          id: index,
-          value: item.Address,
-        });
-        enquiryTableList[6].items.push({
-          id: index,
-          value: item.Course,
-        });
-        enquiryTableList[7].items.push({
-          id: index,
-          value: item.Comment,
+          value: item.DescripTion?.toString().slice(0, 8),
         });
 
-        enquiryTableList[8].items.push({
+        enquiryTableList[3].items.push({
           id: index,
           value: (
             <Ionicons
@@ -139,23 +80,26 @@ const Addhostel = ({navigation}) => {
             />
           ),
           allDetails: item,
-          redirect: 'UpdateEnquirySchool',
+          redirect: 'UpdateHostel',
+          deleteUrl: 'hostel/addhostel',
+          Deleteicon: (
+            <Ionicons name="trash-outline" color={Colors.red} size={18.3} />
+          ),
         });
       }),
     );
     setTabledata(enquiryTableList);
-    console.log('convets data is', enquiry);
   };
 
   useEffect(() => {
-    if (enquiry) {
-      setenquirylist(enquiry);
-      convertdata(enquiry);
+    if (hostel) {
+      setenquirylist(hostel);
+      convertdata(hostel);
     }
-  }, [enquiry]);
+  }, [hostel]);
 
   useEffect(() => {
-    dispatch(getenquiries());
+    dispatch(GetHostel());
   }, []);
   const {fabStyle} = styles;
 
@@ -164,10 +108,10 @@ const Addhostel = ({navigation}) => {
       <BackHeader title={'Add Hostel'} />
       <View style={styles.headerTitleContainer}>
         <View>
-          <Text style={styles.secondaryTitle}>Front Office</Text>
+          <Text style={styles.secondaryTitle}>Hostel List</Text>
         </View>
         <View style={{flexDirection: 'row', gap: 10}}>
-          <Pressable
+          {/* <Pressable
             onPress={() => setShowDocOptions(true)}
             style={styles.filterBtnContainer}>
             <FontAwesome6 name="download" color={Colors.primary} size={25} />
@@ -189,7 +133,7 @@ const Addhostel = ({navigation}) => {
                 <FontAwesome6 name="table" color={Colors.primary} size={25} />
               </>
             )}
-          </Pressable>
+          </Pressable> */}
         </View>
       </View>
 
@@ -228,7 +172,7 @@ const Addhostel = ({navigation}) => {
 
       <AnimatedFAB
         icon={'plus'}
-        onPress={() => navigation.navigate('AddEnquirySchool')}
+        onPress={() => navigation.navigate('AdHostel')}
         label="Add"
         extended={false}
         color={Colors.white}

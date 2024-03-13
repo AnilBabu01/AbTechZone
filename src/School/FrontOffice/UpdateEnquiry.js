@@ -12,7 +12,7 @@ import RNButton from '../../Component/RNButton';
 import RNInputField from '../../Component/RNInputField';
 import RNDatePicker from '../../Component/RNDatePicker';
 import {handleDate, getTodaysDate} from '../../utils/functions';
-import {Colors} from '../../utils/Colors';
+import {Colors,primary} from '../../utils/Colors';
 import {deviceHeight, deviceWidth} from '../../utils/constant';
 import {FlexRowWrapper} from '../../Component/FlexRowWrapper';
 import {useNavigation, useRoute} from '@react-navigation/native';
@@ -33,7 +33,7 @@ const UpdateEnquiry = () => {
   const [email, setemail] = useState('');
   const [address, setaddress] = useState('');
   const [comment, setcomment] = useState('');
-  const {enquiry, error,loading} = useSelector(state => state.updatenequiry);
+  const {enquiry, error, loading} = useSelector(state => state.updatenequiry);
   const {course} = useSelector(state => state.getcourse);
 
   const submit = () => {
@@ -123,7 +123,6 @@ const UpdateEnquiry = () => {
   }, []);
   return (
     <View>
-    
       <BackHeader title={'Update Enquiry'} />
       <ScrollView>
         <View style={styles.enquirymainview}>
@@ -179,6 +178,11 @@ const UpdateEnquiry = () => {
                     selectedTextStyle={styles.selectedTextStyle}
                     inputSearchStyle={styles.inputSearchStyle}
                     iconStyle={styles.iconStyle}
+                    dropdownTextStyle={{
+                      color: Colors.black,
+                      fontSize: 16,
+                      fontWeight: 'bold',
+                    }}
                     data={
                       courselist &&
                       courselist?.map(item => ({
@@ -282,5 +286,27 @@ const styles = StyleSheet.create({
     marginTop: Height(10),
     backgroundColor: Colors.fadeGray,
     color: 'white',
+    placeholderStyle: {
+      fontSize: 16,
+      borderColor: primary,
+      borderRadius: 10,
+    },
+    selectedTextStyle: {
+      fontSize: 16,
+      borderColor: primary,
+      borderRadius: 10,
+      color: Colors.black,
+    },
+    iconStyle: {
+      width: 20,
+      height: 20,
+    },
+    inputSearchStyle: {
+      height: 40,
+      fontSize: 16,
+      borderColor: primary,
+      borderRadius: 5,
+      color: Colors.black,
+    },
   },
 });
