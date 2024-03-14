@@ -13,6 +13,7 @@ import {deviceHeight, deviceWidth} from '../../../utils/constant';
 import {FlexRowWrapper} from '../../../Component/FlexRowWrapper';
 import {useNavigation} from '@react-navigation/native';
 import BackHeader from '../../../Component/Header/BackHeader';
+import RNBDropDown from '../../../Component/RNBDropDown';
 const AdRooms = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -51,7 +52,7 @@ const AdRooms = () => {
     serverInstance('hostel/addroom', 'post', data).then(res => {
       if (res?.status) {
         setloader(false);
-       
+
         Toast.show({
           type: 'success',
           text1: 'Success',
@@ -63,7 +64,7 @@ const AdRooms = () => {
 
       if (res?.status === false) {
         setloader(false);
-       
+
         Toast.show({
           type: 'error',
           text1: 'Error',
@@ -94,106 +95,58 @@ const AdRooms = () => {
           <View style={styles.dateview}>
             <FlexRowWrapper>
               <View style={{width: '45%'}}>
-                <View style={{marginHorizontal: deviceWidth * 0.01}}>
-                  <Text
-                    style={{fontSize: 14, fontWeight: '600', lineHeight: 19}}>
-                    Hostel Name
-                  </Text>
-                  <Dropdown
-                    style={styles.dropstyle}
-                    placeholderStyle={styles.placeholderStyle}
-                    selectedTextStyle={styles.selectedTextStyle}
-                    inputSearchStyle={styles.inputSearchStyle}
-                    iconStyle={styles.iconStyle}
-                    data={
-                      hostels &&
-                      hostels?.map(item => ({
-                        label: `${item?.HostelName}`,
-                        value: `${item?.id}`,
-                      }))
-                    }
-                    search
-                    maxHeight={300}
-                    labelField="label"
-                    valueField="value"
-                    placeholder="Please Select"
-                    searchPlaceholder="Search..."
-                    value={hostelname}
-                    onChange={item => {
-                      sethostelId(item.value);
-                      sethostelname(item.label);
-                    }}
-                  />
-                </View>
+                <RNBDropDown
+                  label="Hostel Name"
+                  value={hostelname}
+                  OptionsList={
+                    hostels &&
+                    hostels?.map(item => ({
+                      label: `${item?.HostelName}`,
+                      value: `${item?.id}`,
+                    }))
+                  }
+                  onChange={item => {
+                    sethostelId(item.value);
+                    sethostelname(item.label);
+                  }}
+                />
               </View>
               <View style={{width: '45%'}}>
-                <View style={{marginHorizontal: deviceWidth * 0.01}}>
-                  <Text
-                    style={{fontSize: 14, fontWeight: '600', lineHeight: 19}}>
-                    Hostel Category
-                  </Text>
-                  <Dropdown
-                    style={styles.dropstyle}
-                    placeholderStyle={styles.placeholderStyle}
-                    selectedTextStyle={styles.selectedTextStyle}
-                    inputSearchStyle={styles.inputSearchStyle}
-                    iconStyle={styles.iconStyle}
-                    data={
-                      Categorys &&
-                      Categorys?.map(item => ({
-                        label: `${item?.roomCategory}`,
-                        value: `${item?.id}`,
-                      }))
-                    }
-                    search
-                    maxHeight={300}
-                    labelField="label"
-                    valueField="value"
-                    placeholder="Please Select"
-                    searchPlaceholder="Search..."
-                    value={categoryname}
-                    onChange={item => {
-                      setcategoryname(item.label);
-                      setCategoryId(item.value);
-                    }}
-                  />
-                </View>
+                <RNBDropDown
+                  label="Hostel Category"
+                  value={categoryname}
+                  OptionsList={
+                    Categorys &&
+                    Categorys?.map(item => ({
+                      label: `${item?.roomCategory}`,
+                      value: `${item?.id}`,
+                    }))
+                  }
+                  onChange={item => {
+                    setcategoryname(item.label);
+                    setCategoryId(item.value);
+                  }}
+                />
               </View>
             </FlexRowWrapper>
 
             <FlexRowWrapper>
               <View style={{width: '45%'}}>
-                <View style={{marginHorizontal: deviceWidth * 0.01}}>
-                  <Text
-                    style={{fontSize: 14, fontWeight: '600', lineHeight: 19}}>
-                    Hostel Facility
-                  </Text>
-                  <Dropdown
-                    style={styles.dropstyle}
-                    placeholderStyle={styles.placeholderStyle}
-                    selectedTextStyle={styles.selectedTextStyle}
-                    inputSearchStyle={styles.inputSearchStyle}
-                    iconStyle={styles.iconStyle}
-                    data={
-                      Facilitys &&
-                      Facilitys?.map(item => ({
-                        label: `${item?.roomFacility}`,
-                        value: `${item?.id}`,
-                      }))
-                    }
-                    search
-                    maxHeight={300}
-                    labelField="label"
-                    valueField="value"
-                    placeholder="Please Select"
-                    searchPlaceholder="Search..."
-                    value={Facilityname}
-                    onChange={item => {
-                      setFacilityname(item.label);
-                      setFacilityId(item.value);
-                    }}
-                  />
-                </View>
+                <RNBDropDown
+                  label="Hostel Facility"
+                  value={Facilityname}
+                  OptionsList={
+                    Facilitys &&
+                    Facilitys?.map(item => ({
+                      label: `${item?.roomFacility}`,
+                      value: `${item?.id}`,
+                    }))
+                  }
+                  onChange={item => {
+                    setFacilityname(item.label);
+                    setFacilityId(item.value);
+                  }}
+                />
               </View>
               <View style={{width: '45%'}}>
                 <RNInputField

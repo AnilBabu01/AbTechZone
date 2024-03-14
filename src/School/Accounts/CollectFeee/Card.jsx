@@ -268,6 +268,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 14,
     color: Colors.black,
+    fontWeight: 'bold',
   },
   datatext: {
     fontSize: 17,

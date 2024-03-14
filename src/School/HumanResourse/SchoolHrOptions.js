@@ -39,7 +39,7 @@ const SchoolHrOptions = () => {
             <Text style={styles.titlestyle}>Attendance</Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           onPress={() => navigation.navigate('SearchAttendance')}>
           <View style={styles.mainoption}>
             <FontAwesome6
@@ -49,7 +49,7 @@ const SchoolHrOptions = () => {
             />
             <Text style={styles.titlestyle}>Search</Text>
           </View>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <TouchableOpacity onPress={() => navigation.navigate('EmpAddholiday')}>
           <View style={styles.mainoption}>
             <FontAwesome6 name="mug-hot" color={Colors.primary} size={30} />
@@ -95,8 +95,8 @@ const styles = StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    width: Width(110),
-    height: Height(80),
+    width: deviceWidth*0.3,
+    paddingVertical: 5,
     backgroundColor: Colors.fadeGray,
     margin: deviceWidth * 0.01,
     borderRadius: 10,

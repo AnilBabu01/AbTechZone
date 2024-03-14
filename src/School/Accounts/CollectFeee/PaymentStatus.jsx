@@ -10,17 +10,20 @@ import React from 'react';
 import check from '../../../assets/check1.png';
 import {primary} from '../../../utils/Colors';
 import {Width, Height} from '../../../utils/responsive';
-import {useNavigation, useRoute} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import RNHTMLtoPDF from 'react-native-html-to-pdf';
 import RNFS from 'react-native-fs';
-const PaymentStatus = ({receiptdata, setopenModel}) => {
+
+const PaymentStatus = ({receiptdata}) => {
   const navigation = useNavigation();
+
+  console.log('receiptdata', receiptdata);
 
   const DownloadReciept = async () => {
     try {
       const options = {
-        html: '<html><body><h1>Hello, world!</h1></body></html>', // Your HTML content here
-        fileName: 'example', // PDF file name
+        html: '<html><body><h1>Hello, world!</h1></body></html>',
+        fileName: 'example',
         directory: 'Documents',
       };
       const directoryPath = RNFS.DocumentDirectoryPath + '/Documents';
@@ -29,12 +32,12 @@ const PaymentStatus = ({receiptdata, setopenModel}) => {
       }
       const pdf = await RNHTMLtoPDF.convert(options);
       console.log('filede path', pdf.filePath);
-
-      // Now you can use the generated PDF file (pdf.filePath) as needed.
     } catch (error) {
       console.error('Error generating PDF:', error);
     }
   };
+
+  
 
   return (
     <View
@@ -59,7 +62,6 @@ const PaymentStatus = ({receiptdata, setopenModel}) => {
             </View>
           </TouchableOpacity>
           <TouchableOpacity
-            // onPress={() => navigation.goBack()}
             onPress={() => navigation.navigate('FeeCollectSchool')}
             style={styles.okbtn}>
             <View>

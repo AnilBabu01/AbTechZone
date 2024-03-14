@@ -16,6 +16,7 @@ import BackHeader from '../../../Component/Header/BackHeader';
 import {primary} from '../../../utils/Colors';
 import {Checkbox} from 'react-native-paper';
 import {Switch} from 'react-native-paper';
+import RNBDropDown from '../../../Component/RNBDropDown';
 const GiveBusRemove = () => {
   const dispatch = useDispatch();
   const NewRoute = useRoute();
@@ -170,39 +171,18 @@ const GiveBusRemove = () => {
           </View>
           <FlexRowWrapper>
             <View style={{width: '95%'}}>
-              <View style={{marginHorizontal: deviceWidth * 0.01}}>
-                <Text style={{fontSize: 14, fontWeight: '600', lineHeight: 19}}>
-                  Route
-                </Text>
-                <Dropdown
-                  style={styles.dropstyle10}
-                  placeholderStyle={styles.placeholderStyle}
-                  selectedTextStyle={styles.selectedTextStyle}
-                  inputSearchStyle={styles.inputSearchStyle}
-                  iconStyle={styles.iconStyle}
-                  data={
-                    routelist &&
-                    routelist?.map(item => ({
-                      label: `${item?.routeName?.FromRoute} TO ${item?.routeName?.ToRoute}`,
-                      value: `${item?.routeName?.id}`,
-                    }))
-                  }
-                  search
-                  maxHeight={300}
-                  labelField="label"
-                  valueField="value"
-                  placeholder="Please Select"
-                  searchPlaceholder="Search..."
-                  value={routeid}
-                  onChange={item => {
-                    setrouteid(item?.value);
-                    let valuesArray = item?.label?.toString()?.split(' ');
-                    let [FromRoute, To, ToRoute] = valuesArray;
-                    setcfromroute(FromRoute);
-                    setctoroute(ToRoute);
-                  }}
-                />
-              </View>
+              <RNBDropDown
+                label="Route"
+                value={routeid}
+                OptionsList={
+                  routelist &&
+                  routelist?.map(item => ({
+                    label: `${item?.routeName?.FromRoute} TO ${item?.routeName?.ToRoute}`,
+                    value: `${item?.routeName?.id}`,
+                  }))
+                }
+                onChange={data => setrouteid(data.value)}
+              />
             </View>
           </FlexRowWrapper>
         </View>

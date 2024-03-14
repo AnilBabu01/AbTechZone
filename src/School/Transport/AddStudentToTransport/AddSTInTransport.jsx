@@ -33,6 +33,7 @@ import {Colors} from '../../../utils/Colors';
 import {UPDATE_STUDENT_RESET} from '../../../redux/constants/commanConstants';
 import moment from 'moment';
 import BackHeader from '../../../Component/Header/BackHeader';
+import RNBDropDown from '../../../Component/RNBDropDown';
 
 let formData = new FormData();
 const AddSTInTransport = () => {
@@ -514,67 +515,32 @@ const AddSTInTransport = () => {
             <>
               <FlexRowWrapper>
                 <View style={{width: '45%'}}>
-                  <View style={{marginHorizontal: deviceWidth * 0.01}}>
-                    <Text
-                      style={{fontSize: 14, fontWeight: '600', lineHeight: 19}}>
-                      From Route
-                    </Text>
-                    <Dropdown
-                      style={styles.dropstyle}
-                      placeholderStyle={styles.placeholderStyle}
-                      selectedTextStyle={styles.selectedTextStyle}
-                      inputSearchStyle={styles.inputSearchStyle}
-                      iconStyle={styles.iconStyle}
-                      data={
-                        routelist &&
-                        routelist?.map(item => ({
-                          label: `${item?.routeName?.FromRoute}`,
-                          value: `${item?.routeName?.FromRoute}`,
-                        }))
-                      }
-                      search
-                      maxHeight={300}
-                      labelField="label"
-                      valueField="value"
-                      placeholder="Select Route"
-                      searchPlaceholder="Search..."
-                      value={toroute}
-                      onChange={item => {
-                        settoroute(item.value);
-                      }}
-                    />
-                  </View>
+                  <RNBDropDown
+                    label="From Route"
+                    value={toroute}
+                    OptionsList={
+                      routelist &&
+                      routelist?.map(item => ({
+                        label: `${item?.routeName?.FromRoute}`,
+                        value: `${item?.routeName?.FromRoute}`,
+                      }))
+                    }
+                    onChange={data => settoroute(data.value)}
+                  />
                 </View>
                 <View style={{width: '45%', marginBottom: deviceHeight * 0.02}}>
                   <View style={{marginHorizontal: deviceWidth * 0.01}}>
-                    <Text
-                      style={{fontSize: 14, fontWeight: '600', lineHeight: 19}}>
-                      To Route
-                    </Text>
-                    <Dropdown
-                      style={styles.dropstyle}
-                      placeholderStyle={styles.placeholderStyle}
-                      selectedTextStyle={styles.selectedTextStyle}
-                      inputSearchStyle={styles.inputSearchStyle}
-                      iconStyle={styles.iconStyle}
-                      data={
+                    <RNBDropDown
+                      label="To Route"
+                      value={fromroute}
+                      OptionsList={
                         routelist &&
                         routelist?.map(item => ({
                           label: `${item?.routeName?.ToRoute}`,
                           value: `${item?.routeName?.ToRoute}`,
                         }))
                       }
-                      search
-                      maxHeight={300}
-                      labelField="label"
-                      valueField="value"
-                      placeholder="Selec Route"
-                      searchPlaceholder="Search..."
-                      value={fromroute}
-                      onChange={item => {
-                        value = {fromroute};
-                        setfromroute(item.value);
-                      }}
+                      onChange={data => setfromroute(data.value)}
                     />
                   </View>
                 </View>
@@ -942,12 +908,15 @@ const styles = StyleSheet.create({
     width: '100%',
     height: Height(52),
     fontFamily: 'Gilroy-SemiBold',
-    borderRadius: Width(15),
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: Colors.primary,
     fontSize: Height(16),
-    marginTop: Height(10),
-    backgroundColor: Colors.fadeGray,
+    display: 'flex',
+    justifyContent: 'center',
+    backgroundColor: Colors.white,
     color: 'white',
-    paddingTop: deviceHeight * 0.01,
+    // paddingVertical: deviceHeight * 0.02,
   },
   inputLabel: {
     fontSize: 16,

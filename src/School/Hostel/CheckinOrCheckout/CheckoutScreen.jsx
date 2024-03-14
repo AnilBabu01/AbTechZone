@@ -15,7 +15,7 @@ import {useNavigation, useRoute} from '@react-navigation/native';
 import BackHeader from '../../../Component/Header/BackHeader';
 import {primary} from '../../../utils/Colors';
 import {Checkbox} from 'react-native-paper';
-
+import RNBDropDown from '../../../Component/RNBDropDown';
 const CheckoutScreen = () => {
   const dispatch = useDispatch();
   const route = useRoute();
@@ -161,69 +161,39 @@ const CheckoutScreen = () => {
           </View>
           <FlexRowWrapper>
             <View style={{width: '45%'}}>
-              <View style={{marginHorizontal: deviceWidth * 0.01}}>
-                <Text style={{fontSize: 14, fontWeight: '600', lineHeight: 19}}>
-                  Hostel Name
-                </Text>
-                <Dropdown
-                  style={styles.dropstyle}
-                  placeholderStyle={styles.placeholderStyle}
-                  selectedTextStyle={styles.selectedTextStyle}
-                  inputSearchStyle={styles.inputSearchStyle}
-                  iconStyle={styles.iconStyle}
-                  data={
-                    hostels &&
-                    hostels?.map(item => ({
-                      label: `${item?.HostelName}`,
-                      value: `${item?.id}`,
-                    }))
-                  }
-                  search
-                  maxHeight={300}
-                  labelField="label"
-                  valueField="value"
-                  placeholder="Please Select"
-                  searchPlaceholder="Search..."
-                  value={hostelname}
-                  onChange={item => {
-                    sethostelId(item.value);
-                    sethostelname(item.label);
-                  }}
-                />
-              </View>
+              <RNBDropDown
+                label="Hostel Name"
+                value={hostelname}
+                OptionsList={
+                  hostels &&
+                  hostels?.map(item => ({
+                    label: `${item?.HostelName}`,
+                    value: `${item?.id}`,
+                  }))
+                }
+                onChange={item => {
+                  sethostelId(item.value);
+                  sethostelname(item.label);
+                }}
+              />
             </View>
 
             <View style={{width: '45%'}}>
-              <View style={{marginHorizontal: deviceWidth * 0.01}}>
-                <Text style={{fontSize: 14, fontWeight: '600', lineHeight: 19}}>
-                  Hostel Category
-                </Text>
-                <Dropdown
-                  style={styles.dropstyle}
-                  placeholderStyle={styles.placeholderStyle}
-                  selectedTextStyle={styles.selectedTextStyle}
-                  inputSearchStyle={styles.inputSearchStyle}
-                  iconStyle={styles.iconStyle}
-                  data={
-                    Categorys &&
-                    Categorys?.map(item => ({
-                      label: `${item?.roomCategory}`,
-                      value: `${item?.id}`,
-                    }))
-                  }
-                  search
-                  maxHeight={300}
-                  labelField="label"
-                  valueField="value"
-                  placeholder="Please Select"
-                  searchPlaceholder="Search..."
-                  value={categoryname}
-                  onChange={item => {
-                    setcategoryname(item.label);
-                    setCategoryId(item.value);
-                  }}
-                />
-              </View>
+              <RNBDropDown
+                label=" Hostel Category"
+                value={categoryname}
+                OptionsList={
+                  Categorys &&
+                  Categorys?.map(item => ({
+                    label: `${item?.roomCategory}`,
+                    value: `${item?.id}`,
+                  }))
+                }
+                onChange={item => {
+                  setcategoryname(item.label);
+                  setCategoryId(item.value);
+                }}
+              />
             </View>
           </FlexRowWrapper>
         </View>

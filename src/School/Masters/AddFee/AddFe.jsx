@@ -14,6 +14,7 @@ import {useNavigation} from '@react-navigation/native';
 import BackHeader from '../../../Component/Header/BackHeader';
 import {getfee} from '../../../redux/action/commanAction';
 import {useSelector} from 'react-redux';
+import RNBDropDown from '../../../Component/RNBDropDown';
 const AddFe = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -76,36 +77,18 @@ const AddFe = () => {
           <View style={styles.dateview}>
             <FlexRowWrapper>
               <View style={{width: '95%'}}>
-                <View style={{marginHorizontal: deviceWidth * 0.01}}>
-                  <Text
-                    style={{fontSize: 14, fontWeight: '600', lineHeight: 19}}>
-                    Class
-                  </Text>
-                  <Dropdown
-                    style={styles.dropstyle}
-                    placeholderStyle={styles.placeholderStyle}
-                    selectedTextStyle={styles.selectedTextStyle}
-                    inputSearchStyle={styles.inputSearchStyle}
-                    iconStyle={styles.iconStyle}
-                    data={
-                      courselist &&
-                      courselist?.map(item => ({
-                        label: `${item?.coursename}`,
-                        value: `${item?.coursename}`,
-                      }))
-                    }
-                    search
-                    maxHeight={300}
-                    labelField="label"
-                    valueField="value"
-                    placeholder="Please Select"
-                    searchPlaceholder="Search..."
-                    value={studentClassName}
-                    onChange={item => {
-                      setstudentClassName(item.value);
-                    }}
-                  />
-                </View>
+                <RNBDropDown
+                  label="Class"
+                  value={studentClassName}
+                  OptionsList={
+                    courselist &&
+                    courselist?.map(item => ({
+                      label: `${item?.coursename}`,
+                      value: `${item?.coursename}`,
+                    }))
+                  }
+                  onChange={data => setstudentClassName(data.value)}
+                />
               </View>
             </FlexRowWrapper>
             <View>
@@ -113,7 +96,7 @@ const AddFe = () => {
                 style={{
                   marginHorizontal: deviceWidth * 0.04,
                   position: 'relative',
-                  marginTop: 30,
+                  // marginTop: 30,
                 }}>
                 <RNInputField
                   style={{backgroundColor: Colors.fadeGray}}
@@ -129,7 +112,7 @@ const AddFe = () => {
                 style={{
                   marginHorizontal: deviceWidth * 0.04,
                   position: 'relative',
-                  marginTop: 30,
+                  // marginTop: 30,
                 }}>
                 <RNInputField
                   style={{backgroundColor: Colors.fadeGray}}
@@ -145,7 +128,7 @@ const AddFe = () => {
                 style={{
                   marginHorizontal: deviceWidth * 0.04,
                   position: 'relative',
-                  marginTop: 30,
+                  // marginTop: 30,
                 }}>
                 <RNInputField
                   style={{backgroundColor: Colors.fadeGray}}
@@ -162,7 +145,7 @@ const AddFe = () => {
                 style={{
                   marginHorizontal: deviceWidth * 0.04,
                   position: 'relative',
-                  marginTop: 30,
+                  // marginTop: 30,
                 }}>
                 <RNInputField
                   style={{backgroundColor: Colors.fadeGray}}

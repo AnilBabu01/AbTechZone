@@ -16,6 +16,7 @@ import {GetBooks} from '../../../redux/action/liraryAction';
 import {handleDate, getTodaysDate} from '../../../utils/functions';
 import RNDatePicker from '../../../Component/RNDatePicker';
 import moment from 'moment';
+import RNBDropDown from '../../../Component/RNBDropDown';
 const streamlist = [
   {
     label: 'NONE',
@@ -121,62 +122,28 @@ const UpdateBook = () => {
           <View style={styles.dateview}>
             <FlexRowWrapper>
               <View style={{width: '45%'}}>
-                <View style={{marginHorizontal: deviceWidth * 0.01}}>
-                  <Text
-                    style={{fontSize: 14, fontWeight: '600', lineHeight: 19}}>
-                    Stream
-                  </Text>
-                  <Dropdown
-                    style={styles.dropstyle}
-                    placeholderStyle={styles.placeholderStyle}
-                    selectedTextStyle={styles.selectedTextStyle}
-                    inputSearchStyle={styles.inputSearchStyle}
-                    iconStyle={styles.iconStyle}
-                    data={streamlist}
-                    search
-                    maxHeight={300}
-                    labelField="label"
-                    valueField="value"
-                    placeholder="Please Select"
-                    searchPlaceholder="Search..."
-                    value={stream}
-                    onChange={item => {
-                      setstream(item.value);
-                    }}
-                  />
-                </View>
+                <RNBDropDown
+                  label="Stream"
+                  value={stream}
+                  OptionsList={streamlist}
+                  onChange={data => setstream(data.value)}
+                />
               </View>
               <View style={{width: '45%'}}>
-                <View style={{marginHorizontal: deviceWidth * 0.01}}>
-                  <Text
-                    style={{fontSize: 14, fontWeight: '600', lineHeight: 19}}>
-                    Class
-                  </Text>
-                  <Dropdown
-                    style={styles.dropstyle}
-                    placeholderStyle={styles.placeholderStyle}
-                    selectedTextStyle={styles.selectedTextStyle}
-                    inputSearchStyle={styles.inputSearchStyle}
-                    iconStyle={styles.iconStyle}
-                    data={
-                      classlist &&
-                      classlist?.map(item => ({
-                        label: `${item?.coursename}`,
-                        value: `${item?.coursename}`,
-                      }))
-                    }
-                    search
-                    maxHeight={300}
-                    labelField="label"
-                    valueField="value"
-                    placeholder="Please Select"
-                    searchPlaceholder="Search..."
-                    value={courseorclass}
-                    onChange={item => {
-                      setcourseorclass(item.value);
-                    }}
-                  />
-                </View>
+                <RNBDropDown
+                  label="Class"
+                  value={courseorclass}
+                  OptionsList={
+                    classlist &&
+                    classlist?.map(item => ({
+                      label: `${item?.coursename}`,
+                      value: `${item?.coursename}`,
+                    }))
+                  }
+                  onChange={item => {
+                    setcourseorclass(item.value);
+                  }}
+                />
               </View>
             </FlexRowWrapper>
 

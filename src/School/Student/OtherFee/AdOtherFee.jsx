@@ -196,12 +196,14 @@ const AdOtherFee = () => {
               </View>
             </View>
           </View>
-          <RNButton
-            loading={loading}
-            onPress={submit}
-            style={{marginHorizontal: 20, marginTop: 20}}>
-            Save & Next
-          </RNButton>
+          <View style={{marginBottom: 20}}>
+            <RNButton
+              loading={loading}
+              onPress={submit}
+              style={{marginHorizontal: 20, marginTop: 20}}>
+              Save & Next
+            </RNButton>
+          </View>
         </View>
       </ScrollView>
     </View>

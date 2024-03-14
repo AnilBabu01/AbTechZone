@@ -33,7 +33,7 @@ import {Colors} from '../../../utils/Colors';
 import {UPDATE_STUDENT_RESET} from '../../../redux/constants/commanConstants';
 import moment from 'moment';
 import BackHeader from '../../../Component/Header/BackHeader';
-
+import RNBDropDown from '../../../Component/RNBDropDown';
 let formData = new FormData();
 const AddStudentInHostel = () => {
   const newroute = useRoute();
@@ -515,30 +515,16 @@ const AddStudentInHostel = () => {
               <FlexRowWrapper>
                 <View style={{width: '45%'}}>
                   <View style={{marginHorizontal: deviceWidth * 0.01}}>
-                    <Text
-                      style={{fontSize: 14, fontWeight: '600', lineHeight: 19}}>
-                      Hostel Name
-                    </Text>
-                    <Dropdown
-                      style={styles.dropstyle}
-                      placeholderStyle={styles.placeholderStyle}
-                      selectedTextStyle={styles.selectedTextStyle}
-                      inputSearchStyle={styles.inputSearchStyle}
-                      iconStyle={styles.iconStyle}
-                      data={
+                    <RNBDropDown
+                      label="Hostel Name"
+                      value={hostelname}
+                      OptionsList={
                         hostellist &&
                         hostellist?.map(item => ({
                           label: `${item?.HostelName}`,
                           value: `${item?.HostelName}`,
                         }))
                       }
-                      search
-                      maxHeight={300}
-                      labelField="label"
-                      valueField="value"
-                      placeholder="Select Hostel"
-                      searchPlaceholder="Search..."
-                      value={hostelname}
                       onChange={item => {
                         sethostelname(item.value);
                       }}
@@ -547,32 +533,18 @@ const AddStudentInHostel = () => {
                 </View>
                 <View style={{width: '45%', marginBottom: deviceHeight * 0.02}}>
                   <View style={{marginHorizontal: deviceWidth * 0.01}}>
-                    <Text
-                      style={{fontSize: 14, fontWeight: '600', lineHeight: 19}}>
-                      Category
-                    </Text>
-                    <Dropdown
-                      style={styles.dropstyle}
-                      placeholderStyle={styles.placeholderStyle}
-                      selectedTextStyle={styles.selectedTextStyle}
-                      inputSearchStyle={styles.inputSearchStyle}
-                      iconStyle={styles.iconStyle}
-                      data={
+                    <RNBDropDown
+                      label="Category"
+                      value={hostelcategoryname}
+                      OptionsList={
                         hostelcategorylist &&
                         hostelcategorylist?.map(item => ({
                           label: `${item?.roomCategory}`,
                           value: `${item?.roomCategory}`,
                         }))
                       }
-                      search
-                      maxHeight={300}
-                      labelField="label"
-                      valueField="value"
-                      placeholder="Select Category"
-                      searchPlaceholder="Search..."
-                      value={hostelcategoryname}
                       onChange={item => {
-                        sethostelcategoryname(item.value);
+                        sethostelname(item.value);
                       }}
                     />
                   </View>
@@ -580,30 +552,16 @@ const AddStudentInHostel = () => {
               </FlexRowWrapper>
               <View style={styles.getfeeview}>
                 <View style={{width: '45%'}}>
-                  <Text
-                    style={{fontSize: 14, fontWeight: '600', lineHeight: 19}}>
-                    Facility
-                  </Text>
-                  <Dropdown
-                    style={styles.dropstyle}
-                    placeholderStyle={styles.placeholderStyle}
-                    selectedTextStyle={styles.selectedTextStyle}
-                    inputSearchStyle={styles.inputSearchStyle}
-                    iconStyle={styles.iconStyle}
-                    data={
+                  <RNBDropDown
+                    label="Facility"
+                    value={hostlefacility}
+                    OptionsList={
                       hostelfacilitylist &&
                       hostelfacilitylist?.map(item => ({
                         label: `${item?.roomFacility}`,
                         value: `${item?.roomFacility}`,
                       }))
                     }
-                    search
-                    maxHeight={300}
-                    labelField="label"
-                    valueField="value"
-                    placeholder="Select Facility"
-                    searchPlaceholder="Search..."
-                    value={hostlefacility}
                     onChange={item => {
                       sethostlefacility(item.value);
                     }}
@@ -968,12 +926,14 @@ const styles = StyleSheet.create({
     width: '100%',
     height: Height(52),
     fontFamily: 'Gilroy-SemiBold',
-    borderRadius: Width(15),
+    borderRadius: 5,
     fontSize: Height(16),
-    marginTop: Height(10),
-    backgroundColor: Colors.fadeGray,
+    marginTop: 9,
+    backgroundColor: Colors.white,
     color: 'white',
     paddingTop: deviceHeight * 0.01,
+    borderWidth: 1,
+    borderColor: Colors.primary,
   },
   inputLabel: {
     fontSize: 16,

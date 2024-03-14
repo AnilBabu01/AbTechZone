@@ -14,6 +14,7 @@ import {FlexRowWrapper} from '../../../Component/FlexRowWrapper';
 import {useNavigation} from '@react-navigation/native';
 import BackHeader from '../../../Component/Header/BackHeader';
 import {GetVehiclelist} from '../../../redux/action/transportActions';
+import RNBDropDown from '../../../Component/RNBDropDown';
 const AddNewBus = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -98,69 +99,35 @@ const AddNewBus = () => {
           <View style={styles.dateview}>
             <FlexRowWrapper>
               <View style={{width: '95%'}}>
-                <View style={{marginHorizontal: deviceWidth * 0.01}}>
-                  <Text
-                    style={{fontSize: 14, fontWeight: '600', lineHeight: 19}}>
-                    Vehicle Type
-                  </Text>
-                  <Dropdown
-                    style={styles.dropstyle10}
-                    placeholderStyle={styles.placeholderStyle}
-                    selectedTextStyle={styles.selectedTextStyle}
-                    inputSearchStyle={styles.inputSearchStyle}
-                    iconStyle={styles.iconStyle}
-                    data={
-                      vehiclelist &&
-                      vehiclelist?.map(item => ({
-                        label: `${item?.Vahicletype}`,
-                        value: `${item?.id}`,
-                      }))
-                    }
-                    search
-                    maxHeight={300}
-                    labelField="label"
-                    valueField="value"
-                    placeholder="Please Select"
-                    searchPlaceholder="Search..."
-                    value={vehicletypename}
-                    onChange={item => {
-                      setvehicletypename(item.value);
-                    }}
-                  />
-                </View>
+                <RNBDropDown
+                  label="Vehicle Type"
+                  value={vehicletypename}
+                  OptionsList={
+                    vehiclelist &&
+                    vehiclelist?.map(item => ({
+                      label: `${item?.Vahicletype}`,
+                      value: `${item?.id}`,
+                    }))
+                  }
+                  onChange={data => setvehicletypename(data.value)}
+                />
               </View>
             </FlexRowWrapper>
 
             <FlexRowWrapper>
               <View style={{width: '95%'}}>
                 <View style={{marginHorizontal: deviceWidth * 0.01}}>
-                  <Text
-                    style={{fontSize: 14, fontWeight: '600', lineHeight: 19}}>
-                    Routes
-                  </Text>
-                  <Dropdown
-                    style={styles.dropstyle10}
-                    placeholderStyle={styles.placeholderStyle}
-                    selectedTextStyle={styles.selectedTextStyle}
-                    inputSearchStyle={styles.inputSearchStyle}
-                    iconStyle={styles.iconStyle}
-                    data={
+                  <RNBDropDown
+                    label="Routes"
+                    value={routeId}
+                    OptionsList={
                       routelist &&
                       routelist?.map(item => ({
                         label: `${item?.routeName?.FromRoute} To ${item?.routeName?.ToRoute}`,
                         value: `${item?.routeName?.id}`,
                       }))
                     }
-                    search
-                    maxHeight={300}
-                    labelField="label"
-                    valueField="value"
-                    placeholder="Please Select"
-                    searchPlaceholder="Search..."
-                    value={routeId}
-                    onChange={item => {
-                      setrouteId(item.value);
-                    }}
+                    onChange={data => setrouteId(data.value)}
                   />
                 </View>
               </View>
@@ -168,141 +135,69 @@ const AddNewBus = () => {
 
             <FlexRowWrapper>
               <View style={{width: '95%'}}>
-                <View style={{marginHorizontal: deviceWidth * 0.01}}>
-                  <Text
-                    style={{fontSize: 14, fontWeight: '600', lineHeight: 19}}>
-                    Driver No 1
-                  </Text>
-                  <Dropdown
-                    style={styles.dropstyle10}
-                    placeholderStyle={styles.placeholderStyle}
-                    selectedTextStyle={styles.selectedTextStyle}
-                    inputSearchStyle={styles.inputSearchStyle}
-                    iconStyle={styles.iconStyle}
-                    data={
-                      emplist &&
-                      emplist?.map(item => ({
-                        label: ` ${item?.name}(${item?.empId} ${item?.employeeof}`,
-                        value: `${item?.id}`,
-                      }))
-                    }
-                    search
-                    maxHeight={300}
-                    labelField="label"
-                    valueField="value"
-                    placeholder="Please Select"
-                    searchPlaceholder="Search..."
-                    value={driverid1}
-                    onChange={item => {
-                      setdriverid1(item.value);
-                    }}
-                  />
-                </View>
+                <RNBDropDown
+                  label="Driver No 1"
+                  value={driverid1}
+                  OptionsList={
+                    emplist &&
+                    emplist?.map(item => ({
+                      label: ` ${item?.name}(${item?.empId} ${item?.employeeof}`,
+                      value: `${item?.id}`,
+                    }))
+                  }
+                  onChange={data => setdriverid1(data.value)}
+                />
               </View>
             </FlexRowWrapper>
 
             <FlexRowWrapper>
               <View style={{width: '95%'}}>
-                <View style={{marginHorizontal: deviceWidth * 0.01}}>
-                  <Text
-                    style={{fontSize: 14, fontWeight: '600', lineHeight: 19}}>
-                    Helper No 1
-                  </Text>
-                  <Dropdown
-                    style={styles.dropstyle10}
-                    placeholderStyle={styles.placeholderStyle}
-                    selectedTextStyle={styles.selectedTextStyle}
-                    inputSearchStyle={styles.inputSearchStyle}
-                    iconStyle={styles.iconStyle}
-                    data={
-                      emplist &&
-                      emplist?.map(item => ({
-                        label: ` ${item?.name}(${item?.empId} ${item?.employeeof}`,
-                        value: `${item?.id}`,
-                      }))
-                    }
-                    search
-                    maxHeight={300}
-                    labelField="label"
-                    valueField="value"
-                    placeholder="Please Select"
-                    searchPlaceholder="Search..."
-                    value={helperid1}
-                    onChange={item => {
-                      sethelperid1(item.value);
-                    }}
-                  />
-                </View>
+                <RNBDropDown
+                  label="Helper No 1"
+                  value={helperid1}
+                  OptionsList={
+                    emplist &&
+                    emplist?.map(item => ({
+                      label: ` ${item?.name}(${item?.empId} ${item?.employeeof}`,
+                      value: `${item?.id}`,
+                    }))
+                  }
+                  onChange={data => sethelperid1(data.value)}
+                />
               </View>
             </FlexRowWrapper>
 
             <FlexRowWrapper>
               <View style={{width: '95%'}}>
-                <View style={{marginHorizontal: deviceWidth * 0.01}}>
-                  <Text
-                    style={{fontSize: 14, fontWeight: '600', lineHeight: 19}}>
-                    Driver No 2
-                  </Text>
-                  <Dropdown
-                    style={styles.dropstyle10}
-                    placeholderStyle={styles.placeholderStyle}
-                    selectedTextStyle={styles.selectedTextStyle}
-                    inputSearchStyle={styles.inputSearchStyle}
-                    iconStyle={styles.iconStyle}
-                    data={
-                      emplist &&
-                      emplist?.map(item => ({
-                        label: ` ${item?.name}(${item?.empId} ${item?.employeeof}`,
-                        value: `${item?.id}`,
-                      }))
-                    }
-                    search
-                    maxHeight={300}
-                    labelField="label"
-                    valueField="value"
-                    placeholder="Please Select"
-                    searchPlaceholder="Search..."
-                    value={driverid2}
-                    onChange={item => {
-                      setdriverid2(item.value);
-                    }}
-                  />
-                </View>
+                <RNBDropDown
+                  label="Driver No 2"
+                  value={driverid2}
+                  OptionsList={
+                    emplist &&
+                    emplist?.map(item => ({
+                      label: ` ${item?.name}(${item?.empId} ${item?.employeeof}`,
+                      value: `${item?.id}`,
+                    }))
+                  }
+                  onChange={data => setdriverid2(data.value)}
+                />
               </View>
             </FlexRowWrapper>
 
             <FlexRowWrapper>
               <View style={{width: '95%'}}>
-                <View style={{marginHorizontal: deviceWidth * 0.01}}>
-                  <Text
-                    style={{fontSize: 14, fontWeight: '600', lineHeight: 19}}>
-                    Helper No 2
-                  </Text>
-                  <Dropdown
-                    style={styles.dropstyle10}
-                    placeholderStyle={styles.placeholderStyle}
-                    selectedTextStyle={styles.selectedTextStyle}
-                    inputSearchStyle={styles.inputSearchStyle}
-                    iconStyle={styles.iconStyle}
-                    data={
-                      emplist &&
-                      emplist?.map(item => ({
-                        label: ` ${item?.name}(${item?.empId} ${item?.employeeof}`,
-                        value: `${item?.id}`,
-                      }))
-                    }
-                    search
-                    maxHeight={300}
-                    labelField="label"
-                    valueField="value"
-                    placeholder="Please Select"
-                    searchPlaceholder="Search..."
-                    value={helperid2}
-                    onChange={item => {
-                      sethelperid2(item.value);
-                    }}
-                  />
-                </View>
+                <RNBDropDown
+                  label="Helper No 2"
+                  value={helperid2}
+                  OptionsList={
+                    emplist &&
+                    emplist?.map(item => ({
+                      label: ` ${item?.name}(${item?.empId} ${item?.employeeof}`,
+                      value: `${item?.id}`,
+                    }))
+                  }
+                  onChange={data => sethelperid2(data.value)}
+                />
               </View>
             </FlexRowWrapper>
 

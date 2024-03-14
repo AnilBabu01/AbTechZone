@@ -80,8 +80,6 @@ const AddCollectFee = () => {
   const [isSwitchOn, setIsSwitchOn] = useState(false);
   const {batch, error} = useSelector(state => state.addbatch);
 
-  console.log('ncd', payDate, discountallow);
-
   const toggleSwitch = () => {
     setIsSwitchOn(!isSwitchOn);
     seteditacadminArray([]);
@@ -168,7 +166,6 @@ const AddCollectFee = () => {
     setacadminArray(updatedMonths);
 
     if (updatedMonths[index].checked) {
-      // If checked, add to selectedMonths
       setsendacadminArray(prevSelectedMonths => [
         ...prevSelectedMonths,
         updatedMonths[index],
@@ -178,8 +175,6 @@ const AddCollectFee = () => {
         updatedMonths[index],
       ]);
     } else {
-      // If unchecked, remove from selectedMonths
-
       setsendacadminArray(prevSelectedMonths =>
         prevSelectedMonths.filter(
           month => month?.MonthName !== updatedMonths[index].MonthName,
@@ -194,8 +189,6 @@ const AddCollectFee = () => {
     }
   };
 
-  console.log('edit ', editacadminArray);
-
   const handleCheckboxhostelArrayToggle = index => {
     const updatedMonths = [...hostelArray];
     updatedMonths[index].checked = !updatedMonths[index].checked;
@@ -206,7 +199,6 @@ const AddCollectFee = () => {
     sethostelArray(updatedMonths);
 
     if (updatedMonths[index].checked) {
-      // If checked, add to selectedMonths
       setsendhostelArray(prevSelectedMonths => [
         ...prevSelectedMonths,
         updatedMonths[index],
@@ -217,7 +209,6 @@ const AddCollectFee = () => {
         updatedMonths[index],
       ]);
     } else {
-      // If unchecked, remove from selectedMonths
       setsendhostelArray(prevSelectedMonths =>
         prevSelectedMonths.filter(
           month => month?.MonthName !== updatedMonths[index].MonthName,
@@ -242,7 +233,6 @@ const AddCollectFee = () => {
     settransportArray(updatedMonths);
 
     if (updatedMonths[index].checked) {
-      // If checked, add to selectedMonths
       setsendtransportArray(prevSelectedMonths => [
         ...prevSelectedMonths,
         updatedMonths[index],
@@ -252,7 +242,6 @@ const AddCollectFee = () => {
         updatedMonths[index],
       ]);
     } else {
-      // If unchecked, remove from selectedMonths
       setsendtransportArray(prevSelectedMonths =>
         prevSelectedMonths.filter(
           month => month?.MonthName !== updatedMonths[index].MonthName,
@@ -267,6 +256,8 @@ const AddCollectFee = () => {
     }
   };
 
+  console.log('edit   edittransportArray', edittransportArray);
+
   const handleCheckboxotherfeearrayToggle = index => {
     const updatedMonths = [...otherfeearray];
     updatedMonths[index].checked = !updatedMonths[index].checked;
@@ -275,7 +266,6 @@ const AddCollectFee = () => {
     setotherfeearray(updatedMonths);
 
     if (updatedMonths[index].checked) {
-      // If checked, add to selectedMonths
       setsendotherfeearray(prevSelectedMonths => [
         ...prevSelectedMonths,
         updatedMonths[index],
@@ -285,7 +275,6 @@ const AddCollectFee = () => {
         updatedMonths[index],
       ]);
     } else {
-      // If unchecked, remove from selectedMonths
       setsendotherfeearray(prevSelectedMonths =>
         prevSelectedMonths.filter(
           month => month?.MonthName !== updatedMonths[index].MonthName,
@@ -376,12 +365,6 @@ const AddCollectFee = () => {
           setshowreceiptotions(true);
           setreceiptdata(res?.data);
 
-          console.log('Receipt data is  from add screen ', res);
-
-          // navigation.navigate('StatusSreenFeeSchool', {
-          //   receiptdata: res?.data[0]?.receiptdata,
-          // });
-
           if (
             isSwitchOn === true ||
             discountallow === true ||
@@ -421,13 +404,14 @@ const AddCollectFee = () => {
         PayOption: PayOption,
         paymentdate: moment(payDate, 'YYYY-MM-DD'),
         unlockfeeOptions: isSwitchOn,
-        editacadminArray: editacadminArray,
+        edithostelArray: edithostelArray,
         discountallow: discountallow,
         editdiscount: editdiscount,
       };
 
       serverInstance('Student/addhostelfee', 'post', datas).then(res => {
-        console.log('Receipt data is ', res);
+        console.log('Receipt data is addhostelfee ', res);
+
         if (res?.status) {
           Toast.show({
             type: 'success',
@@ -438,7 +422,7 @@ const AddCollectFee = () => {
           getallfee();
           setloading(false);
           setshowreceiptotions(true);
-          setreceiptdata(res?.data[0]?.receiptdata);
+          setreceiptdata(res?.data);
           if (
             isSwitchOn === true ||
             discountallow === true ||
@@ -476,9 +460,10 @@ const AddCollectFee = () => {
         studentData: studentdatais,
         feetype: 'Transport Fee',
         PayOption: PayOption,
+        paymentdate: paymentdate,
         paymentdate: moment(payDate, 'YYYY-MM-DD'),
         unlockfeeOptions: isSwitchOn,
-        editacadminArray: editacadminArray,
+        edittransportArray: edittransportArray,
         discountallow: discountallow,
         editdiscount: editdiscount,
       };
@@ -495,7 +480,7 @@ const AddCollectFee = () => {
           setloading(false);
           getallfee();
           setshowreceiptotions(true);
-          setreceiptdata(res?.data[0]?.receiptdata);
+          setreceiptdata(res?.data);
           if (
             isSwitchOn === true ||
             discountallow === true ||
@@ -534,7 +519,7 @@ const AddCollectFee = () => {
         PayOption: PayOption,
         paymentdate: moment(payDate, 'YYYY-MM-DD'),
         unlockfeeOptions: isSwitchOn,
-        editacadminArray: editacadminArray,
+        editacadminArray: editotherfeearray,
         discountallow: discountallow,
         editdiscount: editdiscount,
       };
@@ -551,7 +536,7 @@ const AddCollectFee = () => {
           setloading(false);
           getallfee();
           setshowreceiptotions(true);
-          setreceiptdata(res?.data[0]?.receiptdata);
+          setreceiptdata(res?.data);
           if (isSwitchOn === true || discountallow === true) {
             navigation.navigate('FeeCollectSchool');
           } else {
@@ -611,58 +596,59 @@ const AddCollectFee = () => {
               <Checkbox.Android
                 status={academinfee ? 'checked' : 'unchecked'}
                 onPress={() => {
-                  setacademinfee(!academinfee);
+                  setacademinfee(true);
                   sethostelfee(false);
                   settransportfee(false);
                   setotherfee(false);
                 }}
               />
               <Text style={{color: Colors.black, fontWeight: 'bold'}}>
-                Academin
+                Academic
               </Text>
 
-              <Checkbox.Android
-                status={hostelfee ? 'checked' : 'unchecked'}
-                onPress={() => {
-                  sethostelfee(!hostelfee);
-                  setacademinfee(false);
-                  settransportfee(false);
-                  setotherfee(false);
-                }}
-              />
               {studentdatais?.hostal && (
                 <>
-                  <Text style={{color: Colors.black, fontWeight: 'bold'}}>
-                    Hostel
-                  </Text>
                   <Checkbox.Android
-                    status={transportfee ? 'checked' : 'unchecked'}
+                    status={hostelfee ? 'checked' : 'unchecked'}
                     onPress={() => {
-                      settransportfee(!transportfee);
+                      settransportfee(false);
                       setacademinfee(false);
-                      sethostelfee(false);
+                      sethostelfee(true);
                       setotherfee(false);
                     }}
                   />
+                  <Text style={{color: Colors.black, fontWeight: 'bold'}}>
+                    Hostel
+                  </Text>
                 </>
               )}
 
               {studentdatais?.Transport && (
                 <>
+                  <Checkbox.Android
+                    status={transportfee ? 'checked' : 'unchecked'}
+                    onPress={() => {
+                      settransportfee(true);
+                      setacademinfee(false);
+                      sethostelfee(false);
+                      setotherfee(false);
+                    }}
+                  />
                   <Text style={{color: Colors.black, fontWeight: 'bold'}}>
                     Transport
                   </Text>
-                  <Checkbox.Android
-                    status={otherfee ? 'checked' : 'unchecked'}
-                    onPress={() => {
-                      settransportfee(false);
-                      setacademinfee(false);
-                      sethostelfee(false);
-                      setotherfee(!otherfee);
-                    }}
-                  />
                 </>
               )}
+
+              <Checkbox.Android
+                status={otherfee ? 'checked' : 'unchecked'}
+                onPress={() => {
+                  sethostelfee(false);
+                  setacademinfee(false);
+                  settransportfee(false);
+                  setotherfee(true);
+                }}
+              />
 
               <Text style={{color: Colors.black, fontWeight: 'bold'}}>
                 Other
@@ -985,7 +971,11 @@ const AddCollectFee = () => {
                             )}
 
                             <View style={{width: deviceWidth * 0.3}}>
-                              <Text>
+                              <Text
+                                style={{
+                                  color: Colors.black,
+                                  fontWeight: 'bold',
+                                }}>
                                 {item?.MonthName} {item?.Year}
                               </Text>
                             </View>
@@ -1220,27 +1210,14 @@ const AddCollectFee = () => {
                   ?.map((item, index) => {
                     return (
                       <View key={index} style={styles.Sdataview}>
-                        {item?.paidStatus ? (
+                        {item?.Discount ? (
                           <>
                             <Checkbox.Android
                               disabled={
-                                isSwitchOn === false && item?.paidStatus
+                                editdiscount === false && item?.Discount
                               }
-                              status={item.paidStatus ? 'checked' : 'unchecked'}
-                              onPress={() =>
-                                handleCheckboxhostelArrayToggle(index)
-                              }
-                            />
-                          </>
-                        ) : (
-                          <>
-                            <Checkbox.Android
                               status={
-                                isSwitchOn === true
-                                  ? item?.paidStatus
-                                    ? 'checked'
-                                    : 'unchecked'
-                                  : item.checked
+                                item.checked === false && item?.Discount
                                   ? 'checked'
                                   : 'unchecked'
                               }
@@ -1249,8 +1226,59 @@ const AddCollectFee = () => {
                               }
                             />
                           </>
+                        ) : (
+                          <>
+                            {item?.paidStatus ? (
+                              <>
+                                <Checkbox.Android
+                                  disabled={
+                                    isSwitchOn === false && item?.paidStatus
+                                  }
+                                  status={
+                                    item.paidStatus ? 'checked' : 'unchecked'
+                                  }
+                                  onPress={() =>
+                                    handleCheckboxhostelArrayToggle(index)
+                                  }
+                                />
+                              </>
+                            ) : (
+                              <>
+                                {editdiscount === true ? (
+                                  <>
+                                    <Checkbox.Android
+                                      status={
+                                        item.checked === false && item?.Discount
+                                          ? 'checked'
+                                          : 'unchecked'
+                                      }
+                                      onPress={() =>
+                                        handleCheckboxhostelArrayToggle(index)
+                                      }
+                                    />
+                                  </>
+                                ) : (
+                                  <>
+                                    <Checkbox.Android
+                                      status={
+                                        isSwitchOn === true
+                                          ? item?.paidStatus
+                                            ? 'checked'
+                                            : 'unchecked'
+                                          : item.checked
+                                          ? 'checked'
+                                          : 'unchecked'
+                                      }
+                                      onPress={() =>
+                                        handleCheckboxhostelArrayToggle(index)
+                                      }
+                                    />
+                                  </>
+                                )}
+                              </>
+                            )}
+                          </>
                         )}
-
                         <View style={{width: deviceWidth * 0.3}}>
                           <Text>
                             {item?.MonthName} {item?.Year}
@@ -1482,29 +1510,14 @@ const AddCollectFee = () => {
                   ?.map((item, index) => {
                     return (
                       <View key={index} style={styles.Sdataview}>
-
-                        
-                        {item?.paidStatus ? (
+                        {item?.Discount ? (
                           <>
                             <Checkbox.Android
                               disabled={
-                                isSwitchOn === false && item?.paidStatus
+                                editdiscount === false && item?.Discount
                               }
-                              status={item.paidStatus ? 'checked' : 'unchecked'}
-                              onPress={() =>
-                                handleCheckboxtransportArrayToggle(index)
-                              }
-                            />
-                          </>
-                        ) : (
-                          <>
-                            <Checkbox.Android
                               status={
-                                isSwitchOn === true
-                                  ? item?.paidStatus
-                                    ? 'checked'
-                                    : 'unchecked'
-                                  : item.checked
+                                item.checked === false && item?.Discount
                                   ? 'checked'
                                   : 'unchecked'
                               }
@@ -1512,6 +1525,62 @@ const AddCollectFee = () => {
                                 handleCheckboxtransportArrayToggle(index)
                               }
                             />
+                          </>
+                        ) : (
+                          <>
+                            {item?.paidStatus ? (
+                              <>
+                                <Checkbox.Android
+                                  disabled={
+                                    isSwitchOn === false && item?.paidStatus
+                                  }
+                                  status={
+                                    item.paidStatus ? 'checked' : 'unchecked'
+                                  }
+                                  onPress={() =>
+                                    handleCheckboxtransportArrayToggle(index)
+                                  }
+                                />
+                              </>
+                            ) : (
+                              <>
+                                {editdiscount === true ? (
+                                  <>
+                                    <Checkbox.Android
+                                      status={
+                                        item.checked === false && item?.Discount
+                                          ? 'checked'
+                                          : 'unchecked'
+                                      }
+                                      onPress={() =>
+                                        handleCheckboxtransportArrayToggle(
+                                          index,
+                                        )
+                                      }
+                                    />
+                                  </>
+                                ) : (
+                                  <>
+                                    <Checkbox.Android
+                                      status={
+                                        isSwitchOn === true
+                                          ? item?.paidStatus
+                                            ? 'checked'
+                                            : 'unchecked'
+                                          : item.checked
+                                          ? 'checked'
+                                          : 'unchecked'
+                                      }
+                                      onPress={() =>
+                                        handleCheckboxtransportArrayToggle(
+                                          index,
+                                        )
+                                      }
+                                    />
+                                  </>
+                                )}
+                              </>
+                            )}
                           </>
                         )}
 

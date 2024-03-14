@@ -34,6 +34,7 @@ import {backendApiUrl} from '../../../Config/config';
 import axios from 'axios';
 import Toast from 'react-native-toast-message';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import RNBDropDown from '../../../Component/RNBDropDown';
 const EmpStatusList = [
   {label: 'Active', value: 'Active'},
   {label: 'On Leave', value: 'On Leave'},
@@ -1183,54 +1184,21 @@ const UpdateEmployee = () => {
             <FlexRowWrapper>
               <View style={{width: '45%'}}>
                 <View style={{marginHorizontal: deviceWidth * 0.01}}>
-                  <Text
-                    style={{fontSize: 14, fontWeight: '600', lineHeight: 19}}>
-                    Gender
-                  </Text>
-                  <Dropdown
-                    style={styles.dropstyle}
-                    placeholderStyle={styles.placeholderStyle}
-                    selectedTextStyle={styles.selectedTextStyle}
-                    inputSearchStyle={styles.inputSearchStyle}
-                    iconStyle={styles.iconStyle}
-                    data={GenderListList}
-                    search
-                    maxHeight={300}
-                    labelField="label"
-                    valueField="value"
-                    placeholder="Select"
-                    searchPlaceholder="Search..."
+                  <RNBDropDown
+                    label="Gender"
                     value={gender}
-                    onChange={item => {
-                      setgender(item.value);
-                    }}
+                    OptionsList={GenderListList}
+                    onChange={data => setgender(data.value)}
                   />
                 </View>
               </View>
               <View style={{width: '45%', marginBottom: deviceHeight * 0.02}}>
                 <View style={{marginHorizontal: deviceWidth * 0.01}}>
-                  <Text
-                    style={{fontSize: 14, fontWeight: '600', lineHeight: 19}}>
-                    Blood Group
-                  </Text>
-                  <Dropdown
-                    style={styles.dropstyle}
-                    placeholderStyle={styles.placeholderStyle}
-                    selectedTextStyle={styles.selectedTextStyle}
-                    inputSearchStyle={styles.inputSearchStyle}
-                    iconStyle={styles.iconStyle}
-                    data={BloodGroupList}
-                    search
-                    maxHeight={300}
-                    defaultValue={'NONE'}
-                    labelField="label"
-                    valueField="value"
-                    placeholder="Select"
-                    searchPlaceholder="Search..."
+                  <RNBDropDown
+                    label="Blood Group"
                     value={BloodGroup}
-                    onChange={item => {
-                      setBloodGroup(item.value);
-                    }}
+                    OptionsList={BloodGroupList}
+                    onChange={data => setBloodGroup(data.value)}
                   />
                 </View>
               </View>
@@ -1238,27 +1206,11 @@ const UpdateEmployee = () => {
             <FlexRowWrapper>
               <View style={{width: '45%'}}>
                 <View style={{marginHorizontal: deviceWidth * 0.01}}>
-                  <Text
-                    style={{fontSize: 14, fontWeight: '600', lineHeight: 19}}>
-                    Religion
-                  </Text>
-                  <Dropdown
-                    style={styles.dropstyle}
-                    placeholderStyle={styles.placeholderStyle}
-                    selectedTextStyle={styles.selectedTextStyle}
-                    inputSearchStyle={styles.inputSearchStyle}
-                    iconStyle={styles.iconStyle}
-                    data={religionList}
-                    search
-                    maxHeight={300}
-                    labelField="label"
-                    valueField="value"
-                    placeholder="Select"
-                    searchPlaceholder="Search..."
+                  <RNBDropDown
+                    label="Religion"
                     value={Religion}
-                    onChange={item => {
-                      setReligion(item.value);
-                    }}
+                    OptionsList={religionList}
+                    onChange={data => setReligion(data.value)}
                   />
                 </View>
               </View>
@@ -1275,27 +1227,11 @@ const UpdateEmployee = () => {
             <FlexRowWrapper>
               <View style={{width: '45%'}}>
                 <View style={{marginHorizontal: deviceWidth * 0.01}}>
-                  <Text
-                    style={{fontSize: 14, fontWeight: '600', lineHeight: 19}}>
-                    Caste
-                  </Text>
-                  <Dropdown
-                    style={styles.dropstyle}
-                    placeholderStyle={styles.placeholderStyle}
-                    selectedTextStyle={styles.selectedTextStyle}
-                    inputSearchStyle={styles.inputSearchStyle}
-                    iconStyle={styles.iconStyle}
-                    data={CasteList}
-                    search
-                    maxHeight={300}
-                    labelField="label"
-                    valueField="value"
-                    placeholder="Select"
-                    searchPlaceholder="Search..."
+                  <RNBDropDown
+                    label="Caste"
                     value={categoryname}
-                    onChange={item => {
-                      setcategoryname(item.value);
-                    }}
+                    OptionsList={CasteList}
+                    onChange={data => setcategoryname(data.value)}
                   />
                 </View>
               </View>
@@ -1386,60 +1322,27 @@ const UpdateEmployee = () => {
             <FlexRowWrapper>
               <View style={{width: '45%'}}>
                 <View style={{marginHorizontal: deviceWidth * 0.01}}>
-                  <Text
-                    style={{fontSize: 14, fontWeight: '600', lineHeight: 19}}>
-                    Status
-                  </Text>
-                  <Dropdown
-                    style={styles.dropstyle}
-                    placeholderStyle={styles.placeholderStyle}
-                    selectedTextStyle={styles.selectedTextStyle}
-                    inputSearchStyle={styles.inputSearchStyle}
-                    iconStyle={styles.iconStyle}
-                    data={EmpStatusList}
-                    search
-                    maxHeight={300}
-                    labelField="label"
-                    valueField="value"
-                    placeholder="Select Status"
-                    searchPlaceholder="Search..."
+                  <RNBDropDown
+                    label="Status"
                     value={status}
-                    onChange={item => {
-                      setstatus(item.value);
-                    }}
+                    OptionsList={EmpStatusList}
+                    onChange={data => setstatus(data.value)}
                   />
                 </View>
               </View>
               <View style={{width: '45%', marginBottom: deviceHeight * 0.02}}>
                 <View style={{marginHorizontal: deviceWidth * 0.01}}>
-                  <Text
-                    style={{fontSize: 14, fontWeight: '600', lineHeight: 19}}>
-                    Designation
-                  </Text>
-                  <Dropdown
-                    style={styles.dropstyle}
-                    placeholderStyle={styles.placeholderStyle}
-                    selectedTextStyle={styles.selectedTextStyle}
-                    inputSearchStyle={styles.inputSearchStyle}
-                    iconStyle={styles.iconStyle}
-                    data={
+                  <RNBDropDown
+                    label="Designation"
+                    value={designationname}
+                    OptionsList={
                       isdata &&
                       isdata?.map(item => ({
                         label: `${item?.employeetype}`,
                         value: `${item?.employeetype}`,
                       }))
                     }
-                    search
-                    maxHeight={300}
-                    defaultValue={'Select Designation'}
-                    labelField="label"
-                    valueField="value"
-                    placeholder="Select Desi"
-                    searchPlaceholder="Search..."
-                    value={designationname}
-                    onChange={item => {
-                      setdesignationname(item.value);
-                    }}
+                    onChange={data => setdesignationname(data.value)}
                   />
                 </View>
               </View>
@@ -1447,33 +1350,17 @@ const UpdateEmployee = () => {
             <FlexRowWrapper>
               <View style={{width: '45%'}}>
                 <View style={{marginHorizontal: deviceWidth * 0.01}}>
-                  <Text
-                    style={{fontSize: 14, fontWeight: '600', lineHeight: 15}}>
-                    Deparment
-                  </Text>
-                  <Dropdown
-                    style={styles.dropstyle}
-                    placeholderStyle={styles.placeholderStyle}
-                    selectedTextStyle={styles.selectedTextStyle}
-                    inputSearchStyle={styles.inputSearchStyle}
-                    iconStyle={styles.iconStyle}
-                    data={
+                  <RNBDropDown
+                    label="Deparment"
+                    value={depart}
+                    OptionsList={
                       isdata1 &&
                       isdata1?.map(item => ({
                         label: `${item?.DepartmentName}`,
                         value: `${item?.DepartmentName}`,
                       }))
                     }
-                    search
-                    maxHeight={300}
-                    labelField="label"
-                    valueField="value"
-                    placeholder="Select Depart"
-                    searchPlaceholder="Search..."
-                    value={depart}
-                    onChange={item => {
-                      setdepart(item.value);
-                    }}
+                    onChange={data => setdepart(data.value)}
                   />
                 </View>
               </View>
