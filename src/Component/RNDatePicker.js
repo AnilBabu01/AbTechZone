@@ -50,12 +50,14 @@ export default RNDatePicker;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: Colors.lightGrey,
+    backgroundColor: Colors.white,
     padding: deviceWidth * 0.04,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    borderRadius: 15,
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: Colors.primary,
     marginTop: 6,
   },
 });

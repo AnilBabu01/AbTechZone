@@ -62,12 +62,14 @@ const styles = StyleSheet.create({
   dropstyle: {
     alignSelf: 'center',
     width: '100%',
-    padding: deviceWidth * 0.029,
+    padding: deviceWidth * 0.023,
     fontFamily: 'Gilroy-SemiBold',
-    borderRadius: 15,
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: Colors.primary,
     marginTop: 6,
     paddingHorizontal: deviceWidth * 0.028,
-    backgroundColor: Colors.lightGrey,
+    backgroundColor: Colors.white,
     color: Colors.black,
   },
 
@@ -78,7 +80,8 @@ const styles = StyleSheet.create({
   selectedTextStyle: {
     fontSize: 16,
     borderColor: primary,
-    borderRadius: 10,
+    // borderRadius: 10,
+
     color: Colors.black,
   },
   iconStyle: {
@@ -89,7 +92,9 @@ const styles = StyleSheet.create({
     height: 40,
     fontSize: 16,
     borderColor: primary,
-    borderRadius: 5,
+    // borderRadius: 5,
+    // borderWidth: 1,
+    borderColor: Colors.primary,
     color: Colors.black,
   },
 });

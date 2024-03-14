@@ -35,10 +35,10 @@ const RNInputField = props => {
         placeholder={placeholder}
         mode="outlined"
         activeOutlineColor={Colors.black}
-        outlineStyle={{borderRadius: 15, borderWidth: 0}}
+        // outlineStyle={{borderRadius: 15, borderWidth: 0}}
         onChangeText={onChange}
         value={value}
-        style={{backgroundColor: Colors.lightGrey, color: Colors.black}}
+        style={{backgroundColor:Colors.white, color: Colors.black}}
         secureTextEntry={passwordShow}
         right={
           ispassword ? (

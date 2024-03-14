@@ -61,7 +61,7 @@ export default RNSelectInput;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: Colors.lightGrey,
+    backgroundColor: Colors.white,
     padding: deviceWidth * 0.035,
     flexDirection: 'row',
     justifyContent: 'space-between',

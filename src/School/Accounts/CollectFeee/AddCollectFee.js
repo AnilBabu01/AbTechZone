@@ -185,6 +185,12 @@ const AddCollectFee = () => {
           month => month?.MonthName !== updatedMonths[index].MonthName,
         ),
       );
+
+      seteditacadminArray(prevSelectedMonths =>
+        prevSelectedMonths.filter(
+          month => month?.MonthName !== updatedMonths[index].MonthName,
+        ),
+      );
     }
   };
 
@@ -213,6 +219,12 @@ const AddCollectFee = () => {
     } else {
       // If unchecked, remove from selectedMonths
       setsendhostelArray(prevSelectedMonths =>
+        prevSelectedMonths.filter(
+          month => month?.MonthName !== updatedMonths[index].MonthName,
+        ),
+      );
+
+      setedithostelArray(prevSelectedMonths =>
         prevSelectedMonths.filter(
           month => month?.MonthName !== updatedMonths[index].MonthName,
         ),
@@ -246,6 +258,12 @@ const AddCollectFee = () => {
           month => month?.MonthName !== updatedMonths[index].MonthName,
         ),
       );
+
+      setedittransportArray(prevSelectedMonths =>
+        prevSelectedMonths.filter(
+          month => month?.MonthName !== updatedMonths[index].MonthName,
+        ),
+      );
     }
   };
 
@@ -269,6 +287,12 @@ const AddCollectFee = () => {
     } else {
       // If unchecked, remove from selectedMonths
       setsendotherfeearray(prevSelectedMonths =>
+        prevSelectedMonths.filter(
+          month => month?.MonthName !== updatedMonths[index].MonthName,
+        ),
+      );
+
+      seteditotherfeearray(prevSelectedMonths =>
         prevSelectedMonths.filter(
           month => month?.MonthName !== updatedMonths[index].MonthName,
         ),
@@ -358,7 +382,11 @@ const AddCollectFee = () => {
           //   receiptdata: res?.data[0]?.receiptdata,
           // });
 
-          if (isSwitchOn === true || discountallow === true) {
+          if (
+            isSwitchOn === true ||
+            discountallow === true ||
+            editdiscount === true
+          ) {
             navigation.navigate('FeeCollectSchool');
           } else {
             setopenModel(true);
@@ -411,7 +439,11 @@ const AddCollectFee = () => {
           setloading(false);
           setshowreceiptotions(true);
           setreceiptdata(res?.data[0]?.receiptdata);
-          if (isSwitchOn === true || discountallow === true) {
+          if (
+            isSwitchOn === true ||
+            discountallow === true ||
+            editdiscount === true
+          ) {
             navigation.navigate('FeeCollectSchool');
           } else {
             setopenModel(true);
@@ -464,7 +496,11 @@ const AddCollectFee = () => {
           getallfee();
           setshowreceiptotions(true);
           setreceiptdata(res?.data[0]?.receiptdata);
-          if (isSwitchOn === true) {
+          if (
+            isSwitchOn === true ||
+            discountallow === true ||
+            editdiscount === true
+          ) {
             navigation.navigate('FeeCollectSchool');
           } else {
             setopenModel(true);
@@ -798,6 +834,7 @@ const AddCollectFee = () => {
                     <View style={styles.cardContent}></View>
                   </View>
                 </View>
+
                 <View style={{paddingHorizontal: 20}}>
                   <View
                     style={{
@@ -839,9 +876,9 @@ const AddCollectFee = () => {
                     />
                   </View>
 
-                  <View style={{width: '100%'}}>
+                  <View style={{width: '100%', marginBottom: 6}}>
                     <RNDatePicker
-                      title="From Date"
+                      title="Pay Date"
                       value={payDate}
                       onDateChange={date => setpayDate(handleDate(date))}
                     />
@@ -870,43 +907,21 @@ const AddCollectFee = () => {
                       ?.map((item, index) => {
                         return (
                           <View key={index} style={styles.Sdataview}>
-                            {item?.Discount === true ? (
+                            {item?.Discount ? (
                               <>
-                                {item?.Discount === true ? (
-                                  <>
-                                    <Checkbox.Android
-                                      disabled={
-                                        item?.Discount === true &&
-                                        item?.Discount
-                                      }
-                                      
-                                      status={
-                                        item.Discount ? 'checked' : 'unchecked'
-                                      }
-
-                                      onPress={() =>
-                                        handleCheckboxAcadminArrayToggle(index)
-                                      }
-                                    />
-                                  </>
-                                ) : (
-                                  <>
-                                    <Checkbox.Android
-                                      status={
-                                        editdiscount === true
-                                          ? item?.Discount
-                                            ? 'checked'
-                                            : 'unchecked'
-                                          : item.checked
-                                          ? 'checked'
-                                          : 'unchecked'
-                                      }
-                                      onPress={() =>
-                                        handleCheckboxAcadminArrayToggle(index)
-                                      }
-                                    />
-                                  </>
-                                )}
+                                <Checkbox.Android
+                                  disabled={
+                                    editdiscount === false && item?.Discount
+                                  }
+                                  status={
+                                    item.checked === false && item?.Discount
+                                      ? 'checked'
+                                      : 'unchecked'
+                                  }
+                                  onPress={() =>
+                                    handleCheckboxAcadminArrayToggle(index)
+                                  }
+                                />
                               </>
                             ) : (
                               <>
@@ -928,20 +943,42 @@ const AddCollectFee = () => {
                                   </>
                                 ) : (
                                   <>
-                                    <Checkbox.Android
-                                      status={
-                                        isSwitchOn === true
-                                          ? item?.paidStatus
-                                            ? 'checked'
-                                            : 'unchecked'
-                                          : item.checked
-                                          ? 'checked'
-                                          : 'unchecked'
-                                      }
-                                      onPress={() =>
-                                        handleCheckboxAcadminArrayToggle(index)
-                                      }
-                                    />
+                                    {editdiscount === true ? (
+                                      <>
+                                        <Checkbox.Android
+                                          status={
+                                            item.checked === false &&
+                                            item?.Discount
+                                              ? 'checked'
+                                              : 'unchecked'
+                                          }
+                                          onPress={() =>
+                                            handleCheckboxAcadminArrayToggle(
+                                              index,
+                                            )
+                                          }
+                                        />
+                                      </>
+                                    ) : (
+                                      <>
+                                        <Checkbox.Android
+                                          status={
+                                            isSwitchOn === true
+                                              ? item?.paidStatus
+                                                ? 'checked'
+                                                : 'unchecked'
+                                              : item.checked
+                                              ? 'checked'
+                                              : 'unchecked'
+                                          }
+                                          onPress={() =>
+                                            handleCheckboxAcadminArrayToggle(
+                                              index,
+                                            )
+                                          }
+                                        />
+                                      </>
+                                    )}
                                   </>
                                 )}
                               </>
@@ -1109,7 +1146,62 @@ const AddCollectFee = () => {
                         )}
                     </Text>
                   </View>
+
                   <View style={styles.cardContent}></View>
+                </View>
+
+                <View
+                  style={{
+                    paddingHorizontal: 20,
+                    borderTopWidth: 2,
+                    borderTopColor: Colors.primary,
+                  }}>
+                  <View
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      flexDirection: 'row',
+                    }}>
+                    <Text
+                      style={{
+                        color: Colors.black,
+                        fontWeight: 'bold',
+                        marginRight: 10,
+                      }}>
+                      Discount On/Off
+                    </Text>
+                    <Switch
+                      value={discountallow}
+                      onValueChange={togglePaySwitch}
+                    />
+                  </View>
+                  <View
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      flexDirection: 'row',
+                    }}>
+                    <Text
+                      style={{
+                        color: Colors.black,
+                        fontWeight: 'bold',
+                        marginRight: 10,
+                      }}>
+                      Edit Discount On/Off
+                    </Text>
+                    <Switch
+                      value={editdiscount}
+                      onValueChange={toggleEditPaySwitch}
+                    />
+                  </View>
+
+                  <View style={{width: '100%', marginBottom: 6}}>
+                    <RNDatePicker
+                      title="Pay Date"
+                      value={payDate}
+                      onDateChange={date => setpayDate(handleDate(date))}
+                    />
+                  </View>
                 </View>
 
                 <View style={styles.titleview}>
@@ -1321,6 +1413,59 @@ const AddCollectFee = () => {
                   <View style={styles.cardContent}></View>
                 </View>
 
+                <View
+                  style={{
+                    paddingHorizontal: 20,
+                    borderTopWidth: 2,
+                    borderTopColor: Colors.primary,
+                  }}>
+                  <View
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      flexDirection: 'row',
+                    }}>
+                    <Text
+                      style={{
+                        color: Colors.black,
+                        fontWeight: 'bold',
+                        marginRight: 10,
+                      }}>
+                      Discount On/Off
+                    </Text>
+                    <Switch
+                      value={discountallow}
+                      onValueChange={togglePaySwitch}
+                    />
+                  </View>
+                  <View
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      flexDirection: 'row',
+                    }}>
+                    <Text
+                      style={{
+                        color: Colors.black,
+                        fontWeight: 'bold',
+                        marginRight: 10,
+                      }}>
+                      Edit Discount On/Off
+                    </Text>
+                    <Switch
+                      value={editdiscount}
+                      onValueChange={toggleEditPaySwitch}
+                    />
+                  </View>
+
+                  <View style={{width: '100%', marginBottom: 6}}>
+                    <RNDatePicker
+                      title="Pay Date"
+                      value={payDate}
+                      onDateChange={date => setpayDate(handleDate(date))}
+                    />
+                  </View>
+                </View>
                 <View style={styles.titleview}>
                   <Text style={{color: 'white'}}>Mark</Text>
                   <View style={{width: deviceWidth * 0.2}}>
@@ -1337,6 +1482,8 @@ const AddCollectFee = () => {
                   ?.map((item, index) => {
                     return (
                       <View key={index} style={styles.Sdataview}>
+
+                        
                         {item?.paidStatus ? (
                           <>
                             <Checkbox.Android
@@ -1502,6 +1649,20 @@ const AddCollectFee = () => {
                   <View style={styles.cardContent}></View>
                 </View>
 
+                <View
+                  style={{
+                    paddingHorizontal: 20,
+                    borderTopWidth: 2,
+                    borderTopColor: Colors.primary,
+                  }}>
+                  <View style={{width: '100%', marginBottom: 6}}>
+                    <RNDatePicker
+                      title="Pay Date"
+                      value={payDate}
+                      onDateChange={date => setpayDate(handleDate(date))}
+                    />
+                  </View>
+                </View>
                 <View style={styles.titleview}>
                   <Text style={{color: 'white'}}>Mark</Text>
                   <View style={{width: deviceWidth * 0.2}}>

@@ -177,8 +177,8 @@ const Login = () => {
       <BackHeader title={'Sign-in'} />
       <StatusBar backgroundColor={primary} />
       {/* <ImageBackground  style={styles.imagestyle}> */}
-      <View style={{flex: 1}}>
-        <View style={styles.mainprofile}>
+      <View>
+        {/* <View style={styles.mainprofile}>
           <View style={styles.innearviewprofile}>
             <Image
               source={loginicon}
@@ -189,7 +189,7 @@ const Login = () => {
               }}
             />
           </View>
-        </View>
+        </View> */}
         <View style={styles.Content}>
           <Loader loader={loader} sms={sms} />
           <ScrollView>
@@ -198,6 +198,7 @@ const Login = () => {
                 display: 'flex',
                 flexDirection: 'row',
                 justifyContent: 'space-between',
+                marginBottom: 20,
               }}>
               <View style={{width: '45%'}}>
                 <RNButton
@@ -757,11 +758,11 @@ const styles = StyleSheet.create({
   },
 
   Content: {
-    position: 'absolute',
+    // position: 'absolute',
     bottom: 0,
     backgroundColor: Colors.white,
-    borderTopRightRadius: 31,
-    borderTopLeftRadius: 31,
+    // borderTopRightRadius: 31,
+    // borderTopLeftRadius: 31,
     paddingTop: 28,
     paddingHorizontal: deviceWidth * 0.05,
     height: deviceHeight * 0.7,
