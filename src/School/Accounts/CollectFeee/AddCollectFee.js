@@ -410,7 +410,7 @@ const AddCollectFee = () => {
       };
 
       serverInstance('Student/addhostelfee', 'post', datas).then(res => {
-        console.log('Receipt data is addhostelfee ', res);
+        console.log('Receipt data is addhostelfee', res?.data[0]?.receiptdata);
 
         if (res?.status) {
           Toast.show({
@@ -422,7 +422,7 @@ const AddCollectFee = () => {
           getallfee();
           setloading(false);
           setshowreceiptotions(true);
-          setreceiptdata(res?.data);
+          setreceiptdata(res?.data[0]?.receiptdata);
           if (
             isSwitchOn === true ||
             discountallow === true ||
