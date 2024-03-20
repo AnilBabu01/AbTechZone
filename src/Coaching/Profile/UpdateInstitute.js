@@ -1,333 +1,207 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  Modal,
-  TouchableOpacity,
-  ScrollView,
-  TextInput,
-} from 'react-native';
-import React, {useState} from 'react';
-import {Height, Width} from '../../utils/responsive';
-import {primary} from '../../utils/Colors';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import DateTimePickerModal from 'react-native-modal-datetime-picker';
-import moment from 'moment';
-import {Dropdown} from 'react-native-element-dropdown';
-const data = [
-  {label: 'DCA', value: 'DCA'},
-  {label: 'ADCA', value: 'ADCA'},
-  {label: 'CCC', value: 'CCC'},
-  {label: 'O-LEVEL', value: 'O-LEVEL'},
-];
+import {StyleSheet, View, ScrollView} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import BackHeader from '../../Component/Header/BackHeader';
+import RNInputField from '../../Component/RNInputField';
+import RNButton from '../../Component/RNButton';
+import {useSelector, useDispatch} from 'react-redux';
+import axios from 'axios';
+import Toast from 'react-native-toast-message';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {backendApiUrl} from '../../Config/config';
+import {useNavigation} from '@react-navigation/native';
+import {loadUser} from '../../redux/action/authActions';
+let formData = new FormData();
 const UpdateInstitute = () => {
-  const [index, setIndex] = useState(0);
-  const [fromdate, setfromdate] = useState('');
-  const [course, setcourse] = useState('');
-  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
+  const [loading, setloading] = useState(false);
+  const [owername, setowername] = useState('');
+  const [email, setemail] = useState('');
+  const [phoneno1, setphoneno1] = useState('');
+  const [phoneno2, setphoneno2] = useState('');
+  const [organizationName, setorganizationName] = useState('');
+  const [address, setaddress] = useState('');
+  const [city, setcity] = useState('');
+  const [state, setstate] = useState('');
+  const [pincode, setpincode] = useState('');
+  const {user} = useSelector(state => state.auth);
 
-  const showDatePicker = () => {
-    setDatePickerVisibility(true);
-  };
+  const submit = async () => {
+    try {
+      setloading(true);
+      formData.append('name', owername);
+      formData.append('email', email);
+      formData.append('institutename', organizationName);
+      formData.append('phoneno1', phoneno1);
+      formData.append('phoneno2', phoneno2);
+      formData.append('address', address);
+      formData.append('city', city);
+      formData.append('state', state);
+      formData.append('pincode', pincode);
+    
+      formData.append('profileurl', user?.data?.CredentailsData?.profileurl);
+      formData.append(
+        'certificatelogo',
+        user?.data?.CredentailsData?.certificatelogo,
+      );
+      formData.append('logourl', user?.data?.CredentailsData?.logourl);
 
-  const hideDatePicker = () => {
-    setDatePickerVisibility(false);
-  };
+      let token = await AsyncStorage.getItem('erptoken');
 
-  const handleConfirm = date => {
-    hideDatePicker();
-    setfromdate(date);
+      const config = {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `${token}`,
+        },
+      };
+
+      const {data} = await axios.put(
+        `${backendApiUrl}comman/credentials`,
+        formData,
+        config,
+      );
+
+      if (data?.status) {
+        Toast.show({
+          type: 'success',
+          text1: 'Success',
+          text2: data?.msg,
+        });
+        navigation.goBack();
+        dispatch(loadUser());
+        formData = new FormData();
+      }
+
+      if (data?.status === false) {
+        Toast.show({
+          type: 'success',
+          text1: 'Success',
+          text2: data?.msg,
+        });
+
+        formData = new FormData();
+      }
+    } catch (error) {
+      formData = new FormData();
+    }
   };
+  useEffect(() => {
+    if (user) {
+      setowername(user?.data?.CredentailsData?.name);
+      setemail(user?.data?.CredentailsData?.email);
+      setaddress(user?.data?.CredentailsData?.address);
+      setcity(user?.data?.CredentailsData?.city);
+      setorganizationName(user?.data?.CredentailsData?.institutename);
+      setpincode(user?.data?.CredentailsData?.pincode);
+      setstate(user?.data?.CredentailsData?.state);
+      setphoneno1(user?.data?.CredentailsData?.phoneno1);
+      setphoneno2(user?.data?.CredentailsData?.phoneno1);
+    
+    }
+  }, []);
+
+  useEffect(() => {
+    formData = new FormData();
+  }, []);
 
   return (
     <View>
+      <BackHeader title={'Edit Profile'} />
       <ScrollView>
         <View style={styles.enquirymainview}>
-          <View style={styles.dateview}>
-            <View
-              style={{
-                width: Width(360),
-                height: Height(45),
-                alignSelf: 'center',
-                flexDirection: 'row',
-                alignItems: 'center',
-                borderWidth: 1.5,
-                borderRadius: Width(5),
-                borderColor: index === 3 ? primary : '#a9a9a9',
-                marginTop: Height(10),
-              }}
-              onStartShouldSetResponder={() => setIndex(3)}>
-              <TextInput
-                placeholder="Owner Name"
-                placeholderTextColor="rgba(0, 0, 0, 0.6)"
-                style={{
-                  width: Width(280),
-                  fontFamily: 'Gilroy-SemiBold',
-                  paddingHorizontal: Width(20),
-                  fontSize: Height(16),
-                }}
-                // secureTextEntry={passwordVisible}
-                // onBlur={() => Validation()}
-                // value={address}
-                // onChangeText={text => setaddress(text)}
-                // onPressIn={() => setIndex(3)}
-                onFocus={() => setIndex(3)}
+          <View style={styles.flexViewWrap}>
+            <View style={{width: '49%'}}>
+              <RNInputField
+                label="Owner Name"
+                placeholder="Enter Owner Name"
+                value={owername}
+                onChangeText={data => setowername(data)}
               />
             </View>
-
-            <View
-              style={{
-                width: Width(360),
-                height: Height(45),
-                alignSelf: 'center',
-                flexDirection: 'row',
-                alignItems: 'center',
-                borderWidth: 1.5,
-                borderRadius: Width(5),
-                borderColor: index === 4 ? primary : '#a9a9a9',
-                marginTop: Height(10),
-              }}
-              onStartShouldSetResponder={() => setIndex(4)}>
-              <TextInput
-                placeholder="Official Email"
-                placeholderTextColor="rgba(0, 0, 0, 0.6)"
-                style={{
-                  width: Width(280),
-                  fontFamily: 'Gilroy-SemiBold',
-                  paddingHorizontal: Width(20),
-                  fontSize: Height(16),
-                }}
-                // secureTextEntry={passwordVisible}
-                // onBlur={() => Validation()}
-                // value={address}
-                // onChangeText={text => setaddress(text)}
-                // onPressIn={() => setIndex(3)}
-                onFocus={() => setIndex(4)}
+            <View style={{width: '49%'}}>
+              <RNInputField
+                label="Official Email"
+                placeholder="Enter Official Email"
+                value={email}
+                onChangeText={data => setemail(data)}
               />
             </View>
-
-            <View
-              style={{
-                width: Width(360),
-                height: Height(45),
-                alignSelf: 'center',
-                flexDirection: 'row',
-                alignItems: 'center',
-                borderWidth: 1.5,
-                borderRadius: Width(5),
-                borderColor: index === 5 ? primary : '#a9a9a9',
-                marginTop: Height(10),
-              }}
-              onStartShouldSetResponder={() => setIndex(5)}>
-              <TextInput
-                placeholder="Institute Name"
-                placeholderTextColor="rgba(0, 0, 0, 0.6)"
-                style={{
-                  width: Width(280),
-                  fontFamily: 'Gilroy-SemiBold',
-                  paddingHorizontal: Width(20),
-                  fontSize: Height(16),
-                }}
-                // secureTextEntry={passwordVisible}
-                // onBlur={() => Validation()}
-                // value={address}
-                // onChangeText={text => setaddress(text)}
-                // onPressIn={() => setIndex(3)}
-                onFocus={() => setIndex(5)}
-              />
-            </View>
-
-            <View
-              style={{
-                width: Width(360),
-                height: Height(45),
-                alignSelf: 'center',
-                flexDirection: 'row',
-                alignItems: 'center',
-                borderWidth: 1.5,
-                borderRadius: Width(5),
-                borderColor: index === 6 ? primary : '#a9a9a9',
-                marginTop: Height(10),
-              }}
-              onStartShouldSetResponder={() => setIndex(6)}>
-              <TextInput
-                placeholder="Phone No1"
-                placeholderTextColor="rgba(0, 0, 0, 0.6)"
-                style={{
-                  width: Width(280),
-                  fontFamily: 'Gilroy-SemiBold',
-                  paddingHorizontal: Width(20),
-                  fontSize: Height(16),
-                }}
-                // secureTextEntry={passwordVisible}
-                // onBlur={() => Validation()}
-                // value={address}
-                // onChangeText={text => setaddress(text)}
-                // onPressIn={() => setIndex(3)}
-                onFocus={() => setIndex(6)}
-              />
-            </View>
-
-            <View
-              style={{
-                width: Width(360),
-                height: Height(45),
-                alignSelf: 'center',
-                flexDirection: 'row',
-                alignItems: 'center',
-                borderWidth: 1.5,
-                borderRadius: Width(5),
-                borderColor: index === 7 ? primary : '#a9a9a9',
-                marginTop: Height(10),
-              }}
-              onStartShouldSetResponder={() => setIndex(7)}>
-              <TextInput
-                placeholder="Phone No2"
-                placeholderTextColor="rgba(0, 0, 0, 0.6)"
-                style={{
-                  width: Width(280),
-                  fontFamily: 'Gilroy-SemiBold',
-                  paddingHorizontal: Width(20),
-                  fontSize: Height(16),
-                }}
-                // secureTextEntry={passwordVisible}
-                // onBlur={() => Validation()}
-                // value={address}
-                // onChangeText={text => setaddress(text)}
-                // onPressIn={() => setIndex(3)}
-                onFocus={() => setIndex(7)}
-              />
-            </View>
-            <View
-              style={{
-                width: Width(360),
-                height: Height(45),
-                alignSelf: 'center',
-                flexDirection: 'row',
-                alignItems: 'center',
-                borderWidth: 1.5,
-                borderRadius: Width(5),
-                borderColor: index === 7 ? primary : '#a9a9a9',
-                marginTop: Height(10),
-              }}
-              onStartShouldSetResponder={() => setIndex(7)}>
-              <TextInput
-                placeholder="State"
-                placeholderTextColor="rgba(0, 0, 0, 0.6)"
-                style={{
-                  width: Width(280),
-                  fontFamily: 'Gilroy-SemiBold',
-                  paddingHorizontal: Width(20),
-                  fontSize: Height(16),
-                }}
-                // secureTextEntry={passwordVisible}
-                // onBlur={() => Validation()}
-                // value={address}
-                // onChangeText={text => setaddress(text)}
-                // onPressIn={() => setIndex(3)}
-                onFocus={() => setIndex(7)}
-              />
-            </View>
-            <View
-              style={{
-                width: Width(360),
-                height: Height(45),
-                alignSelf: 'center',
-                flexDirection: 'row',
-                alignItems: 'center',
-                borderWidth: 1.5,
-                borderRadius: Width(5),
-                borderColor: index === 7 ? primary : '#a9a9a9',
-                marginTop: Height(10),
-              }}
-              onStartShouldSetResponder={() => setIndex(7)}>
-              <TextInput
-                placeholder="City"
-                placeholderTextColor="rgba(0, 0, 0, 0.6)"
-                style={{
-                  width: Width(280),
-                  fontFamily: 'Gilroy-SemiBold',
-                  paddingHorizontal: Width(20),
-                  fontSize: Height(16),
-                }}
-                // secureTextEntry={passwordVisible}
-                // onBlur={() => Validation()}
-                // value={address}
-                // onChangeText={text => setaddress(text)}
-                // onPressIn={() => setIndex(3)}
-                onFocus={() => setIndex(7)}
-              />
-            </View>
-            <View
-              style={{
-                width: Width(360),
-                height: Height(45),
-                alignSelf: 'center',
-                flexDirection: 'row',
-                alignItems: 'center',
-                borderWidth: 1.5,
-                borderRadius: Width(5),
-                borderColor: index === 7 ? primary : '#a9a9a9',
-                marginTop: Height(10),
-              }}
-              onStartShouldSetResponder={() => setIndex(7)}>
-              <TextInput
-                placeholder="Address"
-                placeholderTextColor="rgba(0, 0, 0, 0.6)"
-                style={{
-                  width: Width(280),
-                  fontFamily: 'Gilroy-SemiBold',
-                  paddingHorizontal: Width(20),
-                  fontSize: Height(16),
-                }}
-                // secureTextEntry={passwordVisible}
-                // onBlur={() => Validation()}
-                // value={address}
-                // onChangeText={text => setaddress(text)}
-                // onPressIn={() => setIndex(3)}
-                onFocus={() => setIndex(7)}
-              />
-            </View>
-            <View
-              style={{
-                width: Width(360),
-                height: Height(45),
-                alignSelf: 'center',
-                flexDirection: 'row',
-                alignItems: 'center',
-                borderWidth: 1.5,
-                borderRadius: Width(5),
-                borderColor: index === 7 ? primary : '#a9a9a9',
-                marginTop: Height(10),
-              }}
-              onStartShouldSetResponder={() => setIndex(7)}>
-              <TextInput
-                placeholder="PinCode"
-                placeholderTextColor="rgba(0, 0, 0, 0.6)"
-                style={{
-                  width: Width(280),
-                  fontFamily: 'Gilroy-SemiBold',
-                  paddingHorizontal: Width(20),
-                  fontSize: Height(16),
-                }}
-                // secureTextEntry={passwordVisible}
-                // onBlur={() => Validation()}
-                // value={address}
-                // onChangeText={text => setaddress(text)}
-                // onPressIn={() => setIndex(3)}
-                onFocus={() => setIndex(7)}
-              />
-            </View>
-            
           </View>
 
-          <View style={styles.loginbtndiv}>
-            <TouchableOpacity onPress={() => setopenModel(true)}>
-              <View style={styles.loginbtn}>
-                <Text style={styles.logintextstyle}>Update</Text>
-              </View>
-            </TouchableOpacity>
+          <View style={styles.flexViewWrap}>
+            <View style={{width: '49%'}}>
+              <RNInputField
+                label="Institute Name"
+                placeholder="Enter Institute Name"
+                value={organizationName}
+                onChangeText={data => setorganizationName(data)}
+              />
+            </View>
+            <View style={{width: '49%'}}>
+              <RNInputField
+                label="Phone No1"
+                placeholder="Enter Phone No1"
+                value={phoneno1}
+                onChangeText={data => setphoneno1(data)}
+              />
+            </View>
           </View>
+
+          <View style={styles.flexViewWrap}>
+            <View style={{width: '49%'}}>
+              <RNInputField
+                label="Phone No2"
+                placeholder="Enter Phone No1"
+                value={phoneno2}
+                onChangeText={data => phoneno2(data)}
+              />
+            </View>
+            <View style={{width: '49%'}}>
+              <RNInputField
+                label="City"
+                placeholder="Enter City"
+                value={city}
+                onChangeText={data => setcity(data)}
+              />
+            </View>
+          </View>
+          <View style={styles.flexViewWrap}>
+            <View style={{width: '100%'}}>
+              <RNInputField
+                label="Address"
+                placeholder="Enter Address"
+                value={address}
+                onChangeText={data => setaddress(data)}
+              />
+            </View>
+          </View>
+          <View style={styles.flexViewWrap}>
+            <View style={{width: '49%'}}>
+              <RNInputField
+                label="State"
+                placeholder="Enter State"
+                value={state}
+                onChangeText={data => setstate(data)}
+              />
+            </View>
+            <View style={{width: '49%'}}>
+              <RNInputField
+                label="Pin Code"
+                placeholder="Enter Pin Code"
+                value={pincode}
+                onChangeText={data => setpincode(data)}
+              />
+            </View>
+          </View>
+
+          <RNButton
+            loading={loading}
+            style={{paddingHorizontal: 25}}
+            onPress={() => {
+              submit();
+            }}>
+            Update $ Next
+          </RNButton>
         </View>
       </ScrollView>
     </View>
@@ -337,84 +211,15 @@ const UpdateInstitute = () => {
 export default UpdateInstitute;
 
 const styles = StyleSheet.create({
-  inputview: {
-    width: Width(360),
-    height: Height(50),
-    backgroundColor: '#E9EAEC',
-    alignSelf: 'center',
-    borderRadius: Width(5),
+  flexViewWrap: {
+    display: 'flex',
     flexDirection: 'row',
-    alignItems: 'center',
     justifyContent: 'space-between',
-    marginTop: Height(10),
-  },
-  inputsaerch: {
-    paddingLeft: Width(30),
-    fontFamily: 'Gilroy-SemiBold',
-    color: 'black',
-    fontSize: Height(16),
-    width: Width(260),
   },
   enquirymainview: {
     paddingHorizontal: 2,
     height: 'auto',
-  },
-  baseinput: {
-    width: Width(310),
-    height: Height(40),
-    alignSelf: 'center',
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderWidth: 1.5,
-    borderRadius: Width(10),
-    // borderColor: index === 3 ? primary: '#a9a9a9',
-    marginTop: Height(10),
-  },
-
-  addinput: {
-    height: Height(45),
-    width: Width(360),
-    borderWidth: 1.5,
-    // borderColor: index === 7 ? primary : '#a9a9a9',
-    alignSelf: 'center',
-    borderRadius: Width(5),
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: Height(10),
-  },
-  loginbtndiv: {
-    alignSelf: 'center',
-    display: 'flex',
-    justifyContent: 'flex-end',
-    flexDirection: 'row',
-  },
-  loginbtn: {
-    width: Width(360),
-    height: Height(45),
-    backgroundColor: primary,
-    borderRadius: 10,
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 10,
-  },
-  logintextstyle: {
-    color: 'white',
-    // fontWeight: 700,
-    fontSize: 16,
-  },
-  placeholderStyle: {
-    fontSize: 16,
-  },
-  selectedTextStyle: {
-    fontSize: 16,
-  },
-  iconStyle: {
-    width: 20,
-    height: 20,
-  },
-  inputSearchStyle: {
-    height: 40,
-    fontSize: 16,
+    paddingHorizontal: 10,
+    paddingVertical: 10,
   },
 });

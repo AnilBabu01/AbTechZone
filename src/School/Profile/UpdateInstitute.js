@@ -14,6 +14,7 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import moment from 'moment';
 import {Dropdown} from 'react-native-element-dropdown';
+import BackHeader from '../../Component/Header/BackHeader';
 const data = [
   {label: 'DCA', value: 'DCA'},
   {label: 'ADCA', value: 'ADCA'},
@@ -41,6 +42,7 @@ const UpdateInstitute = () => {
 
   return (
     <View>
+      <BackHeader/>
       <ScrollView>
         <View style={styles.enquirymainview}>
           <View style={styles.dateview}>
@@ -58,7 +60,7 @@ const UpdateInstitute = () => {
               }}
               onStartShouldSetResponder={() => setIndex(3)}>
               <TextInput
-                placeholder="Owner Name"
+                placeholder="Owner Namehhh"
                 placeholderTextColor="rgba(0, 0, 0, 0.6)"
                 style={{
                   width: Width(280),

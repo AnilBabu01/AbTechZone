@@ -1939,6 +1939,8 @@ const UpdateAdmission = () => {
                         </View>
                       </TouchableOpacity>
                     </View>
+
+                    
                     <Image
                       source={{uri: adharno ? adharno : updatedata?.adharcard}}
                       style={styles.imgprestyle}

@@ -21,118 +21,143 @@ import {deviceHeight, deviceWidth} from '../../utils/constant';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import DashboardPlaceholderLoader from '../../Component/DashboardPlaceholderLoader';
 import Toast from 'react-native-toast-message';
+import RNBDropDown from '../../Component/RNBDropDown';
+import RNButton from '../../Component/RNButton';
+
+const searchbydata = [
+  {
+    label: 'Search By Month',
+    value: 'Month',
+  },
+  {
+    label: 'Search By Session',
+    value: 'session',
+  },
+];
 
 const monthlist = [
   {
     id: 1,
-    name: 'January',
-  },
-  {
-    id: 2,
-    name: 'February',
-  },
-  {
-    id: 3,
-    name: 'March',
-  },
-  {
-    id: 4,
     name: 'April',
   },
   ,
   {
-    id: 5,
+    id: 2,
     name: 'May',
   },
   {
-    id: 6,
-    name: 'Jun',
+    id: 3,
+    name: 'June',
   },
   {
-    id: 7,
+    id: 4,
     name: 'July',
   },
   {
-    id: 8,
+    id: 5,
     name: 'August',
   },
   {
-    id: 8,
+    id: 6,
     name: 'September',
   },
   {
-    id: 10,
+    id: 7,
     name: 'October',
   },
   {
-    id: 11,
+    id: 8,
     name: 'November',
   },
   {
-    id: 12,
+    id: 9,
     name: 'December',
+  },
+  {
+    id: 10,
+    name: 'January',
+  },
+  {
+    id: 11,
+    name: 'February',
+  },
+  {
+    id: 12,
+    name: 'March',
   },
 ];
 
 const monthnamelist = {
-  1: 'January',
+  1: 'April',
 
-  2: 'February',
+  2: 'May',
 
-  3: 'March',
+  3: 'June',
 
-  4: 'April',
+  4: 'July',
 
-  5: 'May',
+  5: 'August',
 
-  6: 'Jun',
+  6: 'September',
 
-  7: 'July',
+  7: 'October',
 
-  8: 'August',
+  8: 'November',
 
-  9: 'September',
+  9: 'December',
+  10: 'January',
 
-  10: 'October',
+  11: 'February',
 
-  11: 'November',
-
-  12: 'December',
+  12: 'March',
 };
 
 const MonthNolist = {
+  April: 1,
+  May: 2,
+  June: 3,
+  July: 4,
+  August: 5,
+  September: 6,
+  October: 7,
+  November: 8,
+  December: 9,
+  January: 10,
+  February: 11,
+  March: 12,
+};
+
+const MonthNolistForExpenses = {
   January: 1,
-
   February: 2,
-
   March: 3,
-
   April: 4,
-
   May: 5,
-
-  Jun: 6,
-
+  June: 6,
   July: 7,
-
   August: 8,
-
   September: 9,
-
   October: 10,
-
   November: 11,
-
   December: 12,
 };
 
 const Dashboard = () => {
   const dispatch = useDispatch();
+  const [searching, setsearching] = useState(false);
   let currmonth = new Date().getMonth();
-  const [searchMon, setsearchMon] = useState(monthnamelist[currmonth + 1]);
+
+  const currentDate = new Date();
+  const currentMonthName = currentDate.toLocaleString('default', {
+    month: 'long',
+  });
+  const currentMonthNumber = MonthNolist[currentMonthName];
+  const [searchMon, setsearchMon] = useState(monthnamelist[currentMonthNumber]);
+
   const [monthExpenses, setmonthExpenses] = useState(currmonth + 1);
   const [searchoptiond, setsearchoptiond] = useState('Month');
   const [searchsession, setsearchsession] = useState('');
+
   const [loading, setloading] = useState(false);
   const [loadingpaidfee, setloadingpaidfee] = useState(false);
   const [loadingexpenses, setloadingexpenses] = useState(false);
@@ -158,11 +183,13 @@ const Dashboard = () => {
   const getTotalDashborData = () => {
     try {
       setloading(true);
+
       serverInstance('dashboard/GetAllTotalData', 'post', {
         searchmonth: searchMon,
         searchsession: searchsession,
         searchoption: searchoptiond,
         monthExpenses: MonthNolist[searchMon],
+        originMonthNo: MonthNolistForExpenses[searchMon],
       }).then(res => {
         if (res?.status === true) {
           setalltotaldata(res?.data);
@@ -177,6 +204,8 @@ const Dashboard = () => {
           });
           setloading(false);
         }
+
+        console.log('res?.data', res?.data?.OverallCollectedFee);
 
         if (res?.status === false) {
           setloading(false);
@@ -271,11 +300,13 @@ const Dashboard = () => {
     return total;
   };
   const totalrecovery = data => {
-    let total = 0;
-    data?.map(item => {
-      total = total + Number(item?.total_paidamount);
+    let totalamount = 0;
+
+    data?.OverallCollectedFee?.map(item => {
+      totalamount = totalamount + Number(item?.PaidAmount);
     });
-    return total;
+
+    return totalamount;
   };
 
   useEffect(() => {
@@ -295,7 +326,7 @@ const Dashboard = () => {
     setBarCharSessionExpenses(CURRENTSESSION);
     if (CURRENTSESSION) {
       getPaidFeeLineChart();
-
+      setsearchsession(CURRENTSESSION);
       // getPaidFeeBarChart();
 
       // getExpensesBarChart();
@@ -393,12 +424,72 @@ const Dashboard = () => {
                   }
                   name={'Today Collected Fee'}
                 />
+
+                <View style={{width: '97%', paddingBottom: 20}}>
+                  <View>
+                    <View style={{width: '100%'}}>
+                      <RNBDropDown
+                        label="Search By"
+                        value={searchoptiond}
+                        OptionsList={searchbydata}
+                        onChange={data => setsearchoptiond(data.value)}
+                      />
+                    </View>
+
+                    <View style={{width: '100%'}}>
+                      {searchoptiond === 'Month' && (
+                        <>
+                          <RNBDropDown
+                            label="Select Month"
+                            value={searchMon}
+                            OptionsList={
+                              monthlist &&
+                              monthlist?.map(item => ({
+                                label: `${item?.name}`,
+                                value: `${item?.name}`,
+                              }))
+                            }
+                            onChange={data => setsearchMon(data.value)}
+                          />
+                        </>
+                      )}
+
+                      {searchoptiond === 'session' && (
+                        <>
+                          <RNBDropDown
+                            label="Select Session"
+                            value={searchsession}
+                            OptionsList={
+                              sessionList &&
+                              sessionList?.map(item => ({
+                                label: `${item?.Session}`,
+                                value: `${item?.Session}`,
+                              }))
+                            }
+                            onChange={data => setsearchsession(data.value)}
+                          />
+                        </>
+                      )}
+                    </View>
+                  </View>
+                  <View style={{width: '100%'}}>
+                    <RNButton
+                      loading={loading}
+                      style={{paddingHorizontal: 25}}
+                      onPress={() => {
+                        getTotalDashborData();
+                      }}>
+                      Search
+                    </RNButton>
+                  </View>
+                </View>
+
                 <TotalCard
                   bgcolor="#FFEBD8"
                   img={Rupee1}
                   value={
                     alltotaldata?.allreceiptdata
-                      ? `₹${totalrecovery(alltotaldata?.allreceiptdata)}`
+                      ? `₹${totalrecovery(alltotaldata)}`
                       : '₹0'
                   }
                   name={'Overall Collected Fee'}
@@ -447,7 +538,7 @@ const Dashboard = () => {
                   bgcolor="#F5FFBA"
                   img={Rupee2}
                   value={
-                    Number(totalrecovery(alltotaldata?.allreceiptdata)) -
+                    Number(totalrecovery(alltotaldata)) -
                     (totalexpenses(alltotaldata?.allexpenses)
                       ? totalexpenses(alltotaldata?.allexpenses)
                       : 0)

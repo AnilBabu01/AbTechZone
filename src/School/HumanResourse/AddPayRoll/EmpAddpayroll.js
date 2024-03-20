@@ -1,36 +1,34 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  Modal,
-  ScrollView,
-  Pressable,
-} from 'react-native';
+import {StyleSheet, Text, View, ScrollView, Pressable} from 'react-native';
 import React, {useState, useEffect} from 'react';
 import {Height, Width} from '../../../utils/responsive';
 import CardEnquiry from './Card';
-import Header from '../../../Component/Header/Header';
+import {GetPayRoll} from '../../../redux/action/payrollActions';
+import {
+  getEmployee,
+  GetSession,
+  getcurrentsession,
+} from '../../../redux/action/commanAction';
 import {primary} from '../../../utils/Colors';
-import {getenquiries} from '../../../redux/action/coachingAction';
 import {AnimatedFAB} from 'react-native-paper';
 import {Colors} from '../../../utils/Colors';
 import {useDispatch, useSelector} from 'react-redux';
-import DashboardPlaceholderLoader from '../../../Component/DashboardPlaceholderLoader';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import RNTable from '../../../Component/RNTable';
 import DownEnquiry from '../../../Component/school/DownloadExcel';
 import EnquiryFilter from '../../../Component/school/EnquiryFilter';
 import BackHeader from '../../../Component/Header/BackHeader';
+import moment from 'moment';
+import {ActivityIndicator, MD2Colors} from 'react-native-paper';
+import SalaryFilter from '../../../Component/school/SalaryFilter';
 const EmpAddpayroll = ({navigation}) => {
   const dispatch = useDispatch();
-  const [openModel, setopenModel] = useState(false);
   const [enquirylist, setenquirylist] = useState('');
   const [Tabledata, setTabledata] = useState([]);
-  const [viewdata, setviewdata] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [showDocOptions, setShowDocOptions] = useState(false);
-  const {enquiry, loading} = useSelector(state => state.enquiry);
+  const {user} = useSelector(state => state.auth);
+  const {loading, payroll} = useSelector(state => state.GetPayRoll);
 
   const enquiryTableList = [
     {
@@ -40,44 +38,50 @@ const EmpAddpayroll = ({navigation}) => {
       align: 'center',
     },
     {
-      title: 'Enquiry_Date',
+      title: 'Session',
       items: [],
       width: 0.33,
       align: 'center',
     },
     {
-      title: 'Student_Name',
+      title: 'Month Name',
       items: [],
       width: 0.33,
       align: 'center',
     },
     {
-      title: 'Student_Number',
+      title: 'Emp_ID',
       items: [],
       width: 0.33,
       align: 'center',
     },
 
     {
-      title: 'Student_Email',
+      title: 'Emp_Name',
       items: [],
       width: 0.33,
       align: 'center',
     },
     {
-      title: 'Address',
+      title: 'Designation',
       items: [],
       width: 0.33,
       align: 'center',
     },
     {
-      title: 'Class',
+      title: 'Department',
       items: [],
       width: 0.33,
       align: 'center',
     },
     {
-      title: 'Comment',
+      title: 'Paid Amount',
+      items: [],
+      width: 0.33,
+      align: 'center',
+    },
+    {
+      title: 'Paid Date',
       items: [],
       width: 0.33,
       align: 'center',
@@ -92,45 +96,44 @@ const EmpAddpayroll = ({navigation}) => {
 
   const convertdata = async () => {
     await Promise.all(
-      enquiry?.map((item, index) => {
+      payroll?.map((item, index) => {
         enquiryTableList[0].items.push({id: index, value: index + 1});
         enquiryTableList[1].items.push({
           id: index,
-          value: item.EnquiryDate,
+          value: item?.monthdetials?.Session,
         });
-
-        console.log(
-          'from main function',
-          item?.StudentEmail,
-          'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
-        );
 
         enquiryTableList[2].items.push({
           id: index,
-          value: item.StudentName,
+          value: item?.monthdetials?.MonthName,
         });
         enquiryTableList[3].items.push({
           id: index,
-          value: item.StudentNumber,
+          value: item?.monthdetials?.OrEmpId,
         });
         enquiryTableList[4].items.push({
           id: index,
-          value: item.StudentEmail,
+          value: item?.monthdetials?.name,
         });
         enquiryTableList[5].items.push({
           id: index,
-          value: item.Address,
+          value: item?.monthdetials?.employeeof,
         });
         enquiryTableList[6].items.push({
           id: index,
-          value: item.Course,
+          value: item?.monthdetials?.department,
         });
         enquiryTableList[7].items.push({
           id: index,
-          value: item.Comment,
+          value: item?.monthdetials?.PaidAmount,
         });
 
         enquiryTableList[8].items.push({
+          id: index,
+          value: moment(item?.monthdetials?.PaidDate).format('DD/MM/YYYY'),
+        });
+
+        enquiryTableList[9].items.push({
           id: index,
           value: (
             <Ionicons
@@ -145,18 +148,21 @@ const EmpAddpayroll = ({navigation}) => {
       }),
     );
     setTabledata(enquiryTableList);
-    console.log('convets data is', enquiry);
   };
 
   useEffect(() => {
-    if (enquiry) {
-      setenquirylist(enquiry);
-      convertdata(enquiry);
+    if (payroll) {
+      setenquirylist(payroll);
+      convertdata(payroll);
+      setShowModal(false);
     }
-  }, [enquiry]);
+  }, [payroll]);
 
   useEffect(() => {
-    dispatch(getenquiries());
+    dispatch(getEmployee());
+    dispatch(GetSession());
+    dispatch(getcurrentsession());
+    dispatch(GetPayRoll());
   }, []);
   const {fabStyle} = styles;
 
@@ -178,7 +184,7 @@ const EmpAddpayroll = ({navigation}) => {
             style={styles.filterBtnContainer}>
             <Ionicons name="filter" color={Colors.primary} size={25} />
           </Pressable>
-          <Pressable
+          {/* <Pressable
             onPress={() => setviewdata(!viewdata)}
             style={styles.filterBtnContainer}>
             {viewdata ? (
@@ -190,46 +196,42 @@ const EmpAddpayroll = ({navigation}) => {
                 <FontAwesome6 name="table" color={Colors.primary} size={25} />
               </>
             )}
-          </Pressable>
+          </Pressable> */}
         </View>
       </View>
 
       <ScrollView>
         {loading ? (
           <>
-            <DashboardPlaceholderLoader type="table" />
+            <View style={styles.loaderCenter}>
+              <ActivityIndicator
+                size="large"
+                animating={true}
+                color={MD2Colors.red800}
+              />
+            </View>
           </>
         ) : (
           <>
-            {viewdata ? (
-              <>
-                <View style={styles.enquirymainview}>
-                  {enquirylist?.length > 0 &&
-                    enquirylist?.map((item, index) => {
-                      return <CardEnquiry key={index} data={item} />;
-                    })}
-                </View>
-              </>
-            ) : (
-              <>
-                <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                  <RNTable theme="primary" data={Tabledata} />
-                </ScrollView>
-              </>
-            )}
+            <View style={styles.enquirymainview}>
+              {enquirylist?.length > 0 &&
+                enquirylist?.map((item, index) => {
+                  return <CardEnquiry key={index} allDetails={item} />;
+                })}
+            </View>
           </>
         )}
       </ScrollView>
       {showModal && (
         <>
-          <EnquiryFilter setShowModal={setShowModal} showModal={showModal} />
+          <SalaryFilter setShowModal={setShowModal} showModal={showModal} />
         </>
       )}
       <DownEnquiry visible={showDocOptions} hideModal={setShowDocOptions} />
 
       <AnimatedFAB
         icon={'plus'}
-        onPress={() => navigation.navigate('AddEnquirySchool')}
+        onPress={() => navigation.navigate('AddPayRool')}
         label="Add"
         extended={false}
         color={Colors.white}
@@ -358,5 +360,11 @@ const styles = StyleSheet.create({
     right: 16,
     position: 'absolute',
     backgroundColor: primary,
+  },
+  loaderCenter: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingTop: '50%',
   },
 });

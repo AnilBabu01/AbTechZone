@@ -56,13 +56,7 @@ const SchoolHrOptions = () => {
             <Text style={styles.titlestyle}>Add Holiday</Text>
           </View>
         </TouchableOpacity>
-        {/* <TouchableOpacity
-          onPress={() => navigation.navigate('CommunicationTabemp')}>
-          <View style={styles.mainoption}>
-            <FontAwesome6 name="comment-sms" color={Colors.primary} size={30} />
-            <Text style={styles.titlestyle}>Communication</Text>
-          </View>
-        </TouchableOpacity> */}
+
         <TouchableOpacity onPress={() => navigation.navigate('EmpAddpayroll')}>
           <View style={styles.mainoption}>
             <FontAwesome6
@@ -73,6 +67,8 @@ const SchoolHrOptions = () => {
             <Text style={styles.titlestyle}>Add Payroll</Text>
           </View>
         </TouchableOpacity>
+
+        <View style={styles.mainoptionWhite}></View>
       </View>
     </>
   );
@@ -95,9 +91,18 @@ const styles = StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    width: deviceWidth*0.3,
+    width: deviceWidth * 0.3,
     paddingVertical: 5,
     backgroundColor: Colors.fadeGray,
+    margin: deviceWidth * 0.01,
+    borderRadius: 10,
+  },
+  mainoptionWhite: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: deviceWidth * 0.3,
+    paddingVertical: 5,
     margin: deviceWidth * 0.01,
     borderRadius: 10,
   },

@@ -3,7 +3,6 @@ import {
   View,
   StatusBar,
   ScrollView,
-  Image,
   Dimensions,
   StyleSheet,
   TouchableOpacity,
@@ -41,6 +40,7 @@ const data = [
   {label: 'Parent', value: 'Parent'},
   {label: 'Others', value: 'Others'},
 ];
+
 const dataguest = [
   {label: 'college', value: 'college'},
   {label: 'school', value: 'school'},
@@ -173,8 +173,6 @@ const Login = () => {
 
   return (
     <>
-
-
       <BackHeader title={'Sign-in'} />
       <StatusBar backgroundColor={primary} />
       <Loader loader={loader} sms={sms} />
@@ -183,7 +181,7 @@ const Login = () => {
           <View
             style={{
               display: 'flex',
-              
+
               flexDirection: 'row',
               justifyContent: 'space-between',
               marginBottom: 20,
@@ -594,7 +592,7 @@ const Login = () => {
                 onPress={() => {
                   submit();
                 }}>
-                Login
+                Sign-in
               </RNButton>
             </>
           )}

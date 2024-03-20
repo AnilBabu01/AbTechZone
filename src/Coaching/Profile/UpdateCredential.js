@@ -1,124 +1,163 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  Modal,
-  TouchableOpacity,
-  ScrollView,
-  TextInput,
-} from 'react-native';
-import React, {useState} from 'react';
-import {Height, Width} from '../../utils/responsive';
-import {primary} from '../../utils/Colors';
-
+import {StyleSheet, View, ScrollView} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import BackHeader from '../../Component/Header/BackHeader';
+import RNInputField from '../../Component/RNInputField';
+import RNButton from '../../Component/RNButton';
+import {useSelector, useDispatch} from 'react-redux';
+import axios from 'axios';
+import Toast from 'react-native-toast-message';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {backendApiUrl} from '../../Config/config';
+import {useNavigation} from '@react-navigation/native';
+import {loadUser} from '../../redux/action/authActions';
+let formData = new FormData();
 const UpdateCredential = () => {
-  const [index, setIndex] = useState(0);
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
+  const [loading, setloading] = useState(false);
+  const [owername, setowername] = useState('');
+  const [email, setemail] = useState('');
+  const [phoneno1, setphoneno1] = useState('');
+  const [phoneno2, setphoneno2] = useState('');
+  const [organizationName, setorganizationName] = useState('');
+  const [address, setaddress] = useState('');
+  const [city, setcity] = useState('');
+  const [state, setstate] = useState('');
+  const [pincode, setpincode] = useState('');
+  const [studentpassword, setstudentpassword] = useState('');
+  const [parentpassword, setparentpassword] = useState('');
+  const [Employeepassword, setEmployeepassword] = useState('');
+  const {user} = useSelector(state => state.auth);
+
+  const submit = async () => {
+    try {
+      setloading(true);
+      formData.append('name', owername);
+      formData.append('email', email);
+      formData.append('institutename', organizationName);
+      formData.append('phoneno1', phoneno1);
+      formData.append('phoneno2', phoneno2);
+      formData.append('address', address);
+      formData.append('city', city);
+      formData.append('state', state);
+      formData.append('pincode', pincode);
+      formData.append('Studentpassword', studentpassword);
+      formData.append('Parentpassword', parentpassword);
+      formData.append('Employeepassword', Employeepassword);
+      formData.append('profileurl', user?.data?.CredentailsData?.profileurl);
+      formData.append(
+        'certificatelogo',
+        user?.data?.CredentailsData?.certificatelogo,
+      );
+      formData.append('logourl', user?.data?.CredentailsData?.logourl);
+
+      let token = await AsyncStorage.getItem('erptoken');
+
+      const config = {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `${token}`,
+        },
+      };
+
+      const {data} = await axios.put(
+        `${backendApiUrl}comman/credentials`,
+        formData,
+        config,
+      );
+
+      console.log("'data", data);
+
+      if (data?.status) {
+        Toast.show({
+          type: 'success',
+          text1: 'Success',
+          text2: data?.msg,
+        });
+        navigation.goBack();
+        dispatch(loadUser());
+        formData = new FormData();
+      }
+
+      if (data?.status === false) {
+        Toast.show({
+          type: 'success',
+          text1: 'Success',
+          text2: data?.msg,
+        });
+
+        formData = new FormData();
+      }
+    } catch (error) {
+      formData = new FormData();
+    }
+  };
+  useEffect(() => {
+    if (user) {
+      setowername(user?.data?.CredentailsData?.name);
+      setemail(user?.data?.CredentailsData?.email);
+      setaddress(user?.data?.CredentailsData?.address);
+      setcity(user?.data?.CredentailsData?.city);
+      setorganizationName(user?.data?.CredentailsData?.institutename);
+      setpincode(user?.data?.CredentailsData?.pincode);
+      setstate(user?.data?.CredentailsData?.state);
+      setphoneno1(user?.data?.CredentailsData?.phoneno1);
+      setphoneno2(user?.data?.CredentailsData?.phoneno1);
+
+      setstudentpassword(user?.data?.CredentailsData?.Studentpassword);
+      setparentpassword(user?.data?.CredentailsData?.Parentpassword);
+      setEmployeepassword(user?.data?.CredentailsData?.Employeepassword);
+    }
+  }, []);
+
+  useEffect(() => {
+    formData = new FormData();
+  }, []);
+
   return (
     <View>
+      <BackHeader title={'Edit Profile'} />
       <ScrollView>
         <View style={styles.enquirymainview}>
-          <View style={styles.dateview}>
-            <View
-              style={{
-                width: Width(360),
-                height: Height(45),
-                alignSelf: 'center',
-                flexDirection: 'row',
-                alignItems: 'center',
-                borderWidth: 1.5,
-                borderRadius: Width(5),
-                borderColor: index === 3 ? primary : '#a9a9a9',
-                marginTop: Height(10),
-              }}
-              onStartShouldSetResponder={() => setIndex(3)}>
-              <TextInput
-                placeholder="Student Password"
-                placeholderTextColor="rgba(0, 0, 0, 0.6)"
-                style={{
-                  width: Width(280),
-                  fontFamily: 'Gilroy-SemiBold',
-                  paddingHorizontal: Width(20),
-                  fontSize: Height(16),
-                }}
-                // secureTextEntry={passwordVisible}
-                // onBlur={() => Validation()}
-                // value={address}
-                // onChangeText={text => setaddress(text)}
-                // onPressIn={() => setIndex(3)}
-                onFocus={() => setIndex(3)}
+          <View style={styles.flexViewWrap}>
+            <View style={{width: '100%'}}>
+              <RNInputField
+                label="Student Default Password"
+                placeholder="Enter Student Default Password"
+                value={studentpassword}
+                onChangeText={data => setstudentpassword(data)}
               />
             </View>
-
-            <View
-              style={{
-                width: Width(360),
-                height: Height(45),
-                alignSelf: 'center',
-                flexDirection: 'row',
-                alignItems: 'center',
-                borderWidth: 1.5,
-                borderRadius: Width(5),
-                borderColor: index === 4 ? primary : '#a9a9a9',
-                marginTop: Height(10),
-              }}
-              onStartShouldSetResponder={() => setIndex(4)}>
-              <TextInput
-                placeholder="Parent Password"
-                placeholderTextColor="rgba(0, 0, 0, 0.6)"
-                style={{
-                  width: Width(280),
-                  fontFamily: 'Gilroy-SemiBold',
-                  paddingHorizontal: Width(20),
-                  fontSize: Height(16),
-                }}
-                // secureTextEntry={passwordVisible}
-                // onBlur={() => Validation()}
-                // value={address}
-                // onChangeText={text => setaddress(text)}
-                // onPressIn={() => setIndex(3)}
-                onFocus={() => setIndex(4)}
+          </View>
+          <View style={styles.flexViewWrap}>
+            <View style={{width: '100%'}}>
+              <RNInputField
+                label="Parent Default Password"
+                placeholder="Enter Parent Default Password"
+                value={parentpassword}
+                onChangeText={data => setparentpassword(data)}
               />
             </View>
-
-            <View
-              style={{
-                width: Width(360),
-                height: Height(45),
-                alignSelf: 'center',
-                flexDirection: 'row',
-                alignItems: 'center',
-                borderWidth: 1.5,
-                borderRadius: Width(5),
-                borderColor: index === 5 ? primary : '#a9a9a9',
-                marginTop: Height(10),
-              }}
-              onStartShouldSetResponder={() => setIndex(5)}>
-              <TextInput
-                placeholder="Employee Password"
-                placeholderTextColor="rgba(0, 0, 0, 0.6)"
-                style={{
-                  width: Width(280),
-                  fontFamily: 'Gilroy-SemiBold',
-                  paddingHorizontal: Width(20),
-                  fontSize: Height(16),
-                }}
-                // secureTextEntry={passwordVisible}
-                // onBlur={() => Validation()}
-                // value={address}
-                // onChangeText={text => setaddress(text)}
-                // onPressIn={() => setIndex(3)}
-                onFocus={() => setIndex(5)}
+          </View>
+          <View style={styles.flexViewWrap}>
+            <View style={{width: '100%'}}>
+              <RNInputField
+                label="Employee Default Password"
+                placeholder="Enter Employee Default Password"
+                value={Employeepassword}
+                onChangeText={data => setEmployeepassword(data)}
               />
             </View>
           </View>
 
-          <View style={styles.loginbtndiv}>
-            <TouchableOpacity onPress={() => setopenModel(true)}>
-              <View style={styles.loginbtn}>
-                <Text style={styles.logintextstyle}>Update</Text>
-              </View>
-            </TouchableOpacity>
-          </View>
+          <RNButton
+            loading={loading}
+            style={{paddingHorizontal: 25}}
+            onPress={() => {
+              submit();
+            }}>
+            Update $ Next
+          </RNButton>
         </View>
       </ScrollView>
     </View>
@@ -128,84 +167,15 @@ const UpdateCredential = () => {
 export default UpdateCredential;
 
 const styles = StyleSheet.create({
-  inputview: {
-    width: Width(360),
-    height: Height(50),
-    backgroundColor: '#E9EAEC',
-    alignSelf: 'center',
-    borderRadius: Width(5),
+  flexViewWrap: {
+    display: 'flex',
     flexDirection: 'row',
-    alignItems: 'center',
     justifyContent: 'space-between',
-    marginTop: Height(10),
-  },
-  inputsaerch: {
-    paddingLeft: Width(30),
-    fontFamily: 'Gilroy-SemiBold',
-    color: 'black',
-    fontSize: Height(16),
-    width: Width(260),
   },
   enquirymainview: {
     paddingHorizontal: 2,
     height: 'auto',
-  },
-  baseinput: {
-    width: Width(310),
-    height: Height(40),
-    alignSelf: 'center',
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderWidth: 1.5,
-    borderRadius: Width(10),
-    // borderColor: index === 3 ? primary: '#a9a9a9',
-    marginTop: Height(10),
-  },
-
-  addinput: {
-    height: Height(45),
-    width: Width(360),
-    borderWidth: 1.5,
-    // borderColor: index === 7 ? primary : '#a9a9a9',
-    alignSelf: 'center',
-    borderRadius: Width(5),
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: Height(10),
-  },
-  loginbtndiv: {
-    alignSelf: 'center',
-    display: 'flex',
-    justifyContent: 'flex-end',
-    flexDirection: 'row',
-  },
-  loginbtn: {
-    width: Width(360),
-    height: Height(45),
-    backgroundColor: primary,
-    borderRadius: 10,
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 10,
-  },
-  logintextstyle: {
-    color: 'white',
-    // fontWeight: 700,
-    fontSize: 16,
-  },
-  placeholderStyle: {
-    fontSize: 16,
-  },
-  selectedTextStyle: {
-    fontSize: 16,
-  },
-  iconStyle: {
-    width: 20,
-    height: 20,
-  },
-  inputSearchStyle: {
-    height: 40,
-    fontSize: 16,
+    paddingHorizontal: 10,
+    paddingVertical: 10,
   },
 });

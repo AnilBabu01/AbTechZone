@@ -13,8 +13,11 @@ import Img from '../../assets/Img.png';
 import {Width, Height} from '../../utils/responsive';
 import {useNavigation} from '@react-navigation/native';
 import Header from '../../Component/Header/Header';
+import {useSelector}  from 'react-redux';
 const Profile = () => {
   const navigation = useNavigation();
+
+
   return (
     <>
       <Header />
@@ -66,6 +69,7 @@ const Profile = () => {
               <Text>Computer Coaching</Text>
               <Text>CNO-900</Text>
             </View>
+
             <View style={styles.viewdel}>
               <Text></Text>
               <TouchableOpacity

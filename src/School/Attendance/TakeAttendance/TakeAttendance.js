@@ -14,7 +14,7 @@ import {
   getbatch,
   GetSession,
   GetSection,
-  getcurrentsession
+  getcurrentsession,
 } from '../../../redux/action/commanAction';
 
 import {
@@ -25,7 +25,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {Colors} from '../../../utils/Colors';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
-import DownloadStudentAttendance from '../../../Component/school/DownloadStudentAttendance';
+import DownloadStudentAttendance from '../../../Component/school/DownloadExcel';
 import FilterStudentAttendance from '../../../Component/school/FilterStudentAttendance';
 import RNButton from '../../../Component/RNButton';
 const TakeAttendance = () => {
@@ -35,7 +35,7 @@ const TakeAttendance = () => {
   const [attendancedetails, setattendancedetails] = useState([]);
   const {markattendance} = useSelector(state => state.markatten);
 
-  console.log("hfd",markattendance)
+  console.log('hfd', markattendance);
 
   function handleItemUpdate(originalItem, key, value) {
     setattendancedetails(
@@ -75,11 +75,11 @@ const TakeAttendance = () => {
           <Text style={styles.secondaryTitle}>Take Attendance</Text>
         </View>
         <View style={{flexDirection: 'row', gap: 10}}>
-          {/* <Pressable
+          <Pressable
             onPress={() => setShowDocOptions(true)}
             style={styles.filterBtnContainer}>
             <FontAwesome6 name="download" color={Colors.primary} size={25} />
-          </Pressable> */}
+          </Pressable>
           <Pressable
             onPress={() => setShowModal(true)}
             style={styles.filterBtnContainer}>
@@ -169,6 +169,8 @@ const TakeAttendance = () => {
       )}
 
       <DownloadStudentAttendance
+        enquiry={attendancedetails}
+        filename={'StudentattendancedetailsList'}
         visible={showDocOptions}
         hideModal={setShowDocOptions}
       />

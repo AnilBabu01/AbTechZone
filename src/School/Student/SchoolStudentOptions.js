@@ -80,16 +80,23 @@ const SchoolStudentOptions = () => {
           </View>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => navigation.navigate('TransferCer')}>
+        <TouchableOpacity onPress={() => navigation.navigate('TCTab')}>
           <View style={styles.mainoption}>
             <FontAwesome6 name="certificate" color={Colors.primary} size={30} />
             <Text style={styles.titlestyle}>TC</Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('CharacterC')}>
+        <TouchableOpacity onPress={() => navigation.navigate('CCTab')}>
           <View style={styles.mainoption}>
             <FontAwesome6 name="certificate" color={Colors.primary} size={30} />
             <Text style={styles.titlestyle}>CC</Text>
+          </View>
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={() => navigation.navigate('IdCardView')}>
+          <View style={styles.mainoption}>
+            <FontAwesome6 name="certificate" color={Colors.primary} size={30} />
+            <Text style={styles.titlestyle}>Id Card</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity
@@ -99,7 +106,6 @@ const SchoolStudentOptions = () => {
             <Text style={styles.titlestyle}>Send SMS</Text>
           </View>
         </TouchableOpacity>
-        <View style={styles.mainoptionface}></View>
       </View>
     </>
   );
@@ -122,9 +128,9 @@ const styles = StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    width: deviceWidth*0.3,
+    width: deviceWidth * 0.3,
     paddingVertical: 5,
-    backgroundColor: Colors.fadeGray,
+    backgroundColor: Colors.white,
     margin: deviceWidth * 0.01,
     borderRadius: 10,
   },
@@ -142,5 +148,7 @@ const styles = StyleSheet.create({
     marginVertical: deviceHeight * 0.01,
     fontSize: 14,
     textAlign: 'center',
+    color: Colors.primary,
+    fontWeight: 'bold',
   },
 });

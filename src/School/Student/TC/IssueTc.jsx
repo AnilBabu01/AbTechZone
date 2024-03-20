@@ -20,7 +20,7 @@ const statuslist = [
   {label: 'Enable', value: 'Enable'},
   {label: 'disabled', value: 'disabled'},
 ];
-const Addclss = () => {
+const IssueTc = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const [studentclass, setstudentclass] = useState('');
@@ -92,7 +92,7 @@ const Addclss = () => {
   );
 };
 
-export default Addclss;
+export default IssueTc;
 
 const styles = StyleSheet.create({
   enquirymainview: {

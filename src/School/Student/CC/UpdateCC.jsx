@@ -16,7 +16,7 @@ import {useNavigation, useRoute} from '@react-navigation/native';
 import BackHeader from '../../../Component/Header/BackHeader';
 import moment from 'moment';
 import {getcourse} from '../../../redux/action/commanAction';
-const UpdateClass = () => {
+const UpdateCC = () => {
   const route = useRoute();
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -96,7 +96,7 @@ const UpdateClass = () => {
   );
 };
 
-export default UpdateClass;
+export default UpdateCC;
 
 const styles = StyleSheet.create({
   enquirymainview: {

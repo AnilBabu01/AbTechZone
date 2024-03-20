@@ -219,6 +219,42 @@ import UpdateBook from '../School/Library/AddBook/UpdateBook';
 import AddStudentLibrary from '../School/Library/AddStudentToSchool/AddStudentLibrary';
 import IssueBookScreen from '../School/Library/IssueOrReturn/IssueBookScreen';
 import ReturnBookScreen from '../School/Library/IssueOrReturn/ReturnBookScreen';
+
+///pay roll
+import AddPayRool from '../School/HumanResourse/AddPayRoll/AddPayRool';
+import IdCardView from '../School/Student/IdCard/IdCardView';
+
+import TCTab from '../School/Student/TC/TCTab';
+import UpdateTC from '../School/Student/TC/UpdateTC';
+import IssueTc from '../School/Student/TC/IssueTc';
+
+import CCTab from '../School/Student/CC/CCTab';
+import IssueCC from '../School/Student/CC/IssueCC';
+import UpdateCC from '../School/Student/CC/UpdateCC';
+
+///Report Screens
+import AvailableRoomReport from '../School/Reports/AvailableRoomReport';
+import BookReport from '../School/Reports/BookReport';
+import BookReturnreport from '../School/Reports/BookReturnreport';
+import IssueBookReport from '../School/Reports/IssueBookReport';
+import BusAvaialbleSheets from '../School/Reports/BusAvaialbleSheets';
+import BusReport from '../School/Reports/BusReport';
+import FeeByMonthReport from '../School/Reports/FeeByMonthReport';
+import HostelDuesFeeReport from '../School/Reports/HostelDuesFeeReport';
+import HostelPaidReport from '../School/Reports/HostelPaidReport';
+import OccuipiedRoomReport from '../School/Reports/OccuipiedRoomReport';
+import PaidFeeReport from '../School/Reports/PaidFeeReport';
+import StaffAttendanceReport from '../School/Reports/StaffAttendanceReport';
+import StaffReport from '../School/Reports/StaffReport';
+import StaffSalaryReport from '../School/Reports/StaffSalaryReport';
+import StudentAttendanceReport from '../School/Reports/StudentAttendanceReport';
+import StudentInRoom from '../School/Reports/StudentInRoom';
+import StudentListReport from '../School/Reports/StudentListReport';
+import StudentTestReport from '../School/Reports/StudentTestReport';
+import TransDuesReport from '../School/Reports/TransDuesReport';
+import TransPaidFee from '../School/Reports/TransPaidFee';
+import PendingFeeReport from '../School/Reports/PendingFeeReport';
+
 const Stack = createNativeStackNavigator();
 
 function StackNavigation() {
@@ -582,11 +618,61 @@ function StackNavigation() {
       <Stack.Screen name="UpdateVehicle" component={UpdateVehicle} />
       {/* Library */}
 
+      <Stack.Screen name="CCTab" component={CCTab} />
+      <Stack.Screen name="IssueCC" component={IssueCC} />
+      <Stack.Screen name="UpdateCC" component={UpdateCC} />
+
+      <Stack.Screen name="TCTab" component={TCTab} />
+      <Stack.Screen name="IssueTc" component={IssueTc} />
+      <Stack.Screen name="UpdateTC" component={UpdateTC} />
+      <Stack.Screen name="AddPayRool" component={AddPayRool} />
+      <Stack.Screen name="IdCardView" component={IdCardView} />
+
       <Stack.Screen name="IssueBookScreen" component={IssueBookScreen} />
       <Stack.Screen name="ReturnBookScreen" component={ReturnBookScreen} />
       <Stack.Screen name="AddStudentLibrary" component={AddStudentLibrary} />
       <Stack.Screen name="AdBook" component={AdBook} />
       <Stack.Screen name="UpdateBook" component={UpdateBook} />
+
+      {/* reports */}
+      <Stack.Screen
+        name="AvailableRoomReport"
+        component={AvailableRoomReport}
+      />
+      <Stack.Screen name="BookReport" component={BookReport} />
+      <Stack.Screen name="BookReturnreport" component={BookReturnreport} />
+      <Stack.Screen name="IssueBookReport" component={IssueBookReport} />
+      <Stack.Screen name="BusAvaialbleSheets" component={BusAvaialbleSheets} />
+      <Stack.Screen name="BusReport" component={BusReport} />
+      <Stack.Screen name="FeeByMonthReport" component={FeeByMonthReport} />
+      <Stack.Screen
+        name="HostelDuesFeeReport"
+        component={HostelDuesFeeReport}
+      />
+      <Stack.Screen name="HostelPaidReport" component={HostelPaidReport} />
+      <Stack.Screen
+        name="OccuipiedRoomReport"
+        component={OccuipiedRoomReport}
+      />
+      
+      <Stack.Screen name="PendingFeeReport" component={PendingFeeReport} />
+      <Stack.Screen name="PaidFeeReport" component={PaidFeeReport} />
+      <Stack.Screen name="StudentInRoom" component={StudentInRoom} />
+      <Stack.Screen name="StudentListReport" component={StudentListReport} />
+      <Stack.Screen name="StudentTestReport" component={StudentTestReport} />
+      <Stack.Screen name="TransDuesReport" component={TransDuesReport} />
+      <Stack.Screen name="TransPaidFee" component={TransPaidFee} />
+
+      <Stack.Screen
+        name="StaffAttendanceReport"
+        component={StaffAttendanceReport}
+      />
+      <Stack.Screen name="StaffReport" component={StaffReport} />
+      <Stack.Screen name="StaffSalaryReport" component={StaffSalaryReport} />
+      <Stack.Screen
+        name="StudentAttendanceReport"
+        component={StudentAttendanceReport}
+      />
 
       <Stack.Screen name="DashboardCollege" component={DashboardCollege} />
       <Stack.Screen name="DashboardSchool" component={DashboardSchool} />

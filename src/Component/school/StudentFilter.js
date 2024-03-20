@@ -76,7 +76,6 @@ const StudentFilter = ({showModal, setShowModal}) => {
   }, [sections, CURRENTSESSION, Sessions, course, category]);
 
   const onSubmit = () => {
-    console.log('cliecked on filters');
     dispatch(
       getstudent(
         '',
@@ -402,7 +401,6 @@ const StudentFilter = ({showModal, setShowModal}) => {
 export default StudentFilter;
 
 const styles = StyleSheet.create({
-  
   bottomBtn: {
     marginBottom: deviceHeight * 0.01,
     width: '100%',

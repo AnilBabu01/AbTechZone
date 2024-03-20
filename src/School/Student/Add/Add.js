@@ -33,7 +33,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import DashboardPlaceholderLoader from '../../../Component/DashboardPlaceholderLoader';
 import {deviceHeight, deviceWidth} from '../../../utils/constant';
 import RNTable from '../../../Component/RNTable';
-import DownloadStudentData from '../../../Component/school/DownloadStudentData';
+import DownloadStudentData from '../../../Component/school/DownloadExcel';
 import BackHeader from '../../../Component/Header/BackHeader';
 import StudentFilter from '../../../Component/school/StudentFilter';
 const Add = ({navigation}) => {
@@ -297,6 +297,8 @@ const Add = ({navigation}) => {
         <DownloadStudentData
           visible={showDocOptions}
           hideModal={setShowDocOptions}
+          enquiry={student}
+          filename={'StudentList'}
         />
 
         <AnimatedFAB

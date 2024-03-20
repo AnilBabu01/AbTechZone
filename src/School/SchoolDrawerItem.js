@@ -124,11 +124,11 @@ const SchoolDrawerItem = ({navigation, setuserData}) => {
       />
       <CommonBTN routename="ExpensesOptions" title="Finance" icon="receipt" />
       <CommonBTN routename="SchoolTestOptions" title="Test" icon="receipt" />
-      <CommonBTN
+      {/* <CommonBTN
         routename="HelpCenter"
         title="Help Center"
         icon="help-circle"
-      />
+      /> */}
       <TouchableOpacity style={styles.menu} onPress={() => logout()}>
         <View style={styles.innearview}>
           <View style={styles.inneartitle}>

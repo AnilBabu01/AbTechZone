@@ -20,7 +20,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {Colors} from '../../../utils/Colors';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
-import DownloadStudentAttendance from '../../../Component/school/DownloadStudentAttendance';
+import DownloadStudentAttendance from '../../../Component/school/DownloadExcel';
 import FilterAttendanceAnalasis from '../../../Component/school/FilterAttendanceAnalasis';
 import RNTable from '../../../Component/RNTable';
 import DashboardPlaceholderLoader from '../../../Component/DashboardPlaceholderLoader';
@@ -271,6 +271,8 @@ const Analysis = () => {
       )}
 
       <DownloadStudentAttendance
+        enquiry={monthlyattendance}
+        filename={'StudentAttendanceList'}
         visible={showDocOptions}
         hideModal={setShowDocOptions}
       />

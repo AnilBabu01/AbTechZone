@@ -262,7 +262,7 @@ const Card = ({data}) => {
               <p>${data?.Feetype}</p>
             </div>
             <div class="textdivonly">
-              <p>${data?.RollNo}/p>
+              <p>${data?.RollNo}</p>
             </div>
             <div class="textdivonly">
               <p>Total Amount- ${data?.PaidAmount}</p>
@@ -385,13 +385,13 @@ const Card = ({data}) => {
             <Pressable onPress={() => handlePrint()}>
               <FontAwesome6 name="print" color={Colors.primary} size={25} />
             </Pressable>
-            <Pressable onPress={() => sharePDF()}>
+            {/* <Pressable onPress={() => sharePDF()}>
               <FontAwesome6
                 name="share-nodes"
                 color={Colors.primary}
                 size={25}
               />
-            </Pressable>
+            </Pressable> */}
           </View>
         </View>
       </ScrollView>

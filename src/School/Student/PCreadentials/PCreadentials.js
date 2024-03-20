@@ -26,7 +26,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import DashboardPlaceholderLoader from '../../../Component/DashboardPlaceholderLoader';
 import {deviceWidth} from '../../../utils/constant';
 import RNTable from '../../../Component/RNTable';
-import DownloadStudentData from '../../../Component/school/DownloadStudentData';
+import DownloadStudentData from '../../../Component/school/DownloadExcel';
 import BackHeader from '../../../Component/Header/BackHeader';
 import StudentFilter from '../../../Component/school/StudentFilter';
 import moment from 'moment';
@@ -194,6 +194,8 @@ const PCreadentials = ({navigation}) => {
         )}
 
         <DownloadStudentData
+          enquiry={student}
+          filename={'StudentList'}
           visible={showDocOptions}
           hideModal={setShowDocOptions}
         />

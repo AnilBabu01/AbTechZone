@@ -10,6 +10,7 @@ import {
 import React, {useState} from 'react';
 import {Height, Width} from '../../utils/responsive';
 import {primary} from '../../utils/Colors';
+
 const data = [
   {label: 'DCA', value: 'DCA'},
   {label: 'ADCA', value: 'ADCA'},

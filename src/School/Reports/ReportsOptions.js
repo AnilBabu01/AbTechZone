@@ -12,34 +12,36 @@ const ReportsOptions = () => {
   const navigation = useNavigation();
   return (
     <>
-       <Header/>
+      <Header />
       <View style={styles.mainview}>
-        <TouchableOpacity onPress={() => navigation.navigate('BatchCoaching')}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('StudentListReport')}>
           <View style={styles.mainoption}>
             <FontAwesome6 name="users" color={Colors.primary} size={30} />
             <Text style={styles.titlestyle}>Student</Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('CourseCoaching')}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('StudentAttendanceReport')}>
           <View style={styles.mainoption}>
             <FontAwesome6 name="users" color={Colors.primary} size={30} />
             <Text style={styles.titlestyle}>Student Attendance</Text>
           </View>
         </TouchableOpacity>
 
-        <TouchableOpacity
-          onPress={() => navigation.navigate('CategoryCoaching')}>
+        <TouchableOpacity onPress={() => navigation.navigate('PaidFeeReport')}>
           <View style={styles.mainoption}>
             <FontAwesome6
               name="indian-rupee-sign"
               color={Colors.primary}
               size={30}
             />
-            <Text style={styles.titlestyle}>Paid Fee</Text>
+            <Text style={styles.titlestyle}>Fee Report</Text>
           </View>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => navigation.navigate('FeesCoaching')}>
+        {/* <TouchableOpacity
+          onPress={() => navigation.navigate('PendingFeeReport')}>
           <View style={styles.mainoption}>
             <FontAwesome6
               name="indian-rupee-sign"
@@ -48,9 +50,10 @@ const ReportsOptions = () => {
             />
             <Text style={styles.titlestyle}>Pending Fee</Text>
           </View>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
+
         <TouchableOpacity
-          onPress={() => navigation.navigate('DepartmentCoaching')}>
+          onPress={() => navigation.navigate('FeeByMonthReport')}>
           <View style={styles.mainoption}>
             <FontAwesome6
               name="indian-rupee-sign"
@@ -60,18 +63,18 @@ const ReportsOptions = () => {
             <Text style={styles.titlestyle}>Fee By Month</Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => navigation.navigate('DesignationCoaching')}>
+        {/* <TouchableOpacity
+          onPress={() => navigation.navigate('StudentTestReport')}>
           <View style={styles.mainoption}>
             <FontAwesome6 name="receipt" color={Colors.primary} size={30} />
             <Text style={styles.titlestyle}>Student Test</Text>
           </View>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
 
-        <TouchableOpacity onPress={() => navigation.navigate('FeesCoaching')}>
+        <TouchableOpacity onPress={() => navigation.navigate('StaffReport')}>
           <View style={styles.mainoption}>
             <FontAwesome6
-              name="indian-rupee-sign"
+              name="person"
               color={Colors.primary}
               size={30}
             />
@@ -79,60 +82,61 @@ const ReportsOptions = () => {
           </View>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => navigation.navigate('DepartmentCoaching')}>
+          onPress={() => navigation.navigate('StaffAttendanceReport')}>
           <View style={styles.mainoption}>
             <FontAwesome6 name="calendar" color={Colors.primary} size={30} />
             <Text style={styles.titlestyle}>Staff Attendance</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => navigation.navigate('DesignationCoaching')}>
+          onPress={() => navigation.navigate('StaffSalaryReport')}>
           <View style={styles.mainoption}>
             <FontAwesome6 name="database" color={Colors.primary} size={30} />
             <Text style={styles.titlestyle}>Staff Salary Paid</Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('FeesCoaching')}>
+        <TouchableOpacity onPress={() => navigation.navigate('BookReport')}>
           <View style={styles.mainoption}>
             <FontAwesome6 name="book" color={Colors.primary} size={30} />
             <Text style={styles.titlestyle}>Book</Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => navigation.navigate('DepartmentCoaching')}>
+        {/* <TouchableOpacity
+          onPress={() => navigation.navigate('IssueBookReport')}>
           <View style={styles.mainoption}>
             <FontAwesome6 name="book" color={Colors.primary} size={30} />
             <Text style={styles.titlestyle}>Issue Book</Text>
           </View>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => navigation.navigate('DesignationCoaching')}>
+        </TouchableOpacity> */}
+        {/* <TouchableOpacity
+          onPress={() => navigation.navigate('BookReturnreport')}>
           <View style={styles.mainoption}>
             <FontAwesome6 name="book" color={Colors.primary} size={30} />
             <Text style={styles.titlestyle}>Return Book</Text>
           </View>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('FeesCoaching')}>
+        </TouchableOpacity> */}
+        {/* <TouchableOpacity
+          onPress={() => navigation.navigate('AvailableRoomReport')}>
           <View style={styles.mainoption}>
             <FontAwesome6 name="hotel" color={Colors.primary} size={30} />
             <Text style={styles.titlestyle}>Available Rooms</Text>
           </View>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => navigation.navigate('DepartmentCoaching')}>
+        </TouchableOpacity> */}
+        {/* <TouchableOpacity
+          onPress={() => navigation.navigate('OccuipiedRoomReport')}>
           <View style={styles.mainoption}>
             <FontAwesome6 name="hotel" color={Colors.primary} size={30} />
             <Text style={styles.titlestyle}>Occupied Rooms</Text>
           </View>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => navigation.navigate('DesignationCoaching')}>
+        </TouchableOpacity> */}
+        {/* <TouchableOpacity onPress={() => navigation.navigate('StudentInRoom')}>
           <View style={styles.mainoption}>
             <FontAwesome6 name="hotel" color={Colors.primary} size={30} />
             <Text style={styles.titlestyle}>Students-in-Room</Text>
           </View>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('FeesCoaching')}>
+        </TouchableOpacity> */}
+        {/* <TouchableOpacity
+          onPress={() => navigation.navigate('HostelPaidReport')}>
           <View style={styles.mainoption}>
             <FontAwesome6
               name="indian-rupee-sign"
@@ -141,42 +145,41 @@ const ReportsOptions = () => {
             />
             <Text style={styles.titlestyle}>Hostel-Paid-Fee</Text>
           </View>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => navigation.navigate('DepartmentCoaching')}>
+        </TouchableOpacity> */}
+        {/* <TouchableOpacity
+          onPress={() => navigation.navigate('HostelDuesFeeReport')}>
           <View style={styles.mainoption}>
             <FontAwesome6 name="calendar" color={Colors.primary} size={30} />
             <Text style={styles.titlestyle}>Hostel-Dues-Fee</Text>
           </View>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => navigation.navigate('DesignationCoaching')}>
-          <View style={styles.mainoption}>
-            <FontAwesome6 name="bus" color={Colors.primary} size={30} />
-            <Text style={styles.titlestyle}>Available Sheets</Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => navigation.navigate('DesignationCoaching')}>
+        </TouchableOpacity> */}
+        <TouchableOpacity onPress={() => navigation.navigate('BusReport')}>
           <View style={styles.mainoption}>
             <FontAwesome6 name="bus" color={Colors.primary} size={30} />
             <Text style={styles.titlestyle}>Bus</Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => navigation.navigate('DesignationCoaching')}>
+        {/* <TouchableOpacity
+          onPress={() => navigation.navigate('BusAvaialbleSheets')}>
+          <View style={styles.mainoption}>
+            <FontAwesome6 name="bus" color={Colors.primary} size={30} />
+            <Text style={styles.titlestyle}>Available Sheets</Text>
+          </View>
+        </TouchableOpacity> */}
+        
+        {/* <TouchableOpacity onPress={() => navigation.navigate('TransPaidFee')}>
           <View style={styles.mainoption}>
             <FontAwesome6 name="bus" color={Colors.primary} size={30} />
             <Text style={styles.titlestyle}>Tport-paid-fee</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => navigation.navigate('DesignationCoaching')}>
+          onPress={() => navigation.navigate('TransDuesReport')}>
           <View style={styles.mainoption}>
             <FontAwesome6 name="bus" color={Colors.primary} size={30} />
             <Text style={styles.titlestyle}>Tport-Dues-Fee</Text>
           </View>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
     </>
   );
@@ -199,7 +202,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    width: deviceWidth*0.3,
+    width: deviceWidth * 0.3,
     paddingVertical: 5,
     backgroundColor: Colors.fadeGray,
     margin: deviceWidth * 0.01,
