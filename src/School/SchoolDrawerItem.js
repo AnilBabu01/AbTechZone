@@ -85,7 +85,7 @@ const SchoolDrawerItem = ({navigation, setuserData}) => {
       <CommonBTN routename="DashboardSchool" title="DashBoard" icon="grid" />
 
       <CommonBTN
-        routename="FrontOfficeSchool"
+        routename="FrontOfficeOptions"
         title="Front Office"
         icon="storefront"
       />
@@ -95,6 +95,7 @@ const SchoolDrawerItem = ({navigation, setuserData}) => {
         title="Student"
         icon="people"
       />
+
       <CommonBTN
         routename="FeeCollectOptions"
         title="Account"
@@ -152,7 +153,7 @@ export default SchoolDrawerItem;
 const styles = StyleSheet.create({
   mainprofile: {
     paddingHorizontal: 10,
-    width:'100%'
+    width: '100%',
   },
 
   innearview: {
@@ -174,7 +175,7 @@ const styles = StyleSheet.create({
     paddingVertical: deviceWidth * 0.02,
     paddingRight: deviceWidth * 0.07,
   },
-  
+
   inneartitle: {
     display: 'flex',
     flexDirection: 'row',
@@ -184,7 +185,7 @@ const styles = StyleSheet.create({
   textstyle: {
     color: Colors.primary,
     paddingLeft: deviceWidth * 0.02,
-    fontWeight:"bold"
+    fontWeight: 'bold',
   },
   divider: {
     borderWidth: 1,

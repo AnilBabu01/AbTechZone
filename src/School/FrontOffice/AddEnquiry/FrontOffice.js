@@ -1,19 +1,20 @@
 import {StyleSheet, Text, View, ScrollView, Pressable} from 'react-native';
 import React, {useState, useEffect} from 'react';
-import {Height, Width} from '../../utils/responsive';
+import {Height, Width} from '../../../utils/responsive';
 import CardEnquiry from './CardEnquiry';
-import Header from '../../Component/Header/Header';
-import {primary} from '../../utils/Colors';
-import {getenquiries} from '../../redux/action/coachingAction';
+import Header from '../../../Component/Header/Header';
+import {primary} from '../../../utils/Colors';
+import {getenquiries} from '../../../redux/action/coachingAction';
 import {AnimatedFAB} from 'react-native-paper';
-import {Colors} from '../../utils/Colors';
+import {Colors} from '../../../utils/Colors';
 import {useDispatch, useSelector} from 'react-redux';
-import DashboardPlaceholderLoader from '../../Component/DashboardPlaceholderLoader';
+import DashboardPlaceholderLoader from '../../../Component/DashboardPlaceholderLoader';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
-import RNTable from '../../Component/RNTable';
-import DownloadExcel from '../../Component/school/DownloadExcel';
-import EnquiryFilter from '../../Component/school/EnquiryFilter';
+import RNTable from '../../../Component/RNTable';
+import DownloadExcel from '../../../Component/school/DownloadExcel';
+import EnquiryFilter from '../../../Component/school/EnquiryFilter';
+import BackHeader from '../../../Component/Header/BackHeader';
 
 const FrontOffice = ({navigation}) => {
   const dispatch = useDispatch();
@@ -153,10 +154,10 @@ const FrontOffice = ({navigation}) => {
 
   return (
     <View style={{flex: 1}}>
-      <Header />
+     <BackHeader title={'Add Enquiry'}/>
       <View style={styles.headerTitleContainer}>
         <View>
-          <Text style={styles.secondaryTitle}>Front Office</Text>
+          <Text style={styles.secondaryTitle}>Enquiry Management</Text>
         </View>
         <View style={{flexDirection: 'row', gap: 10}}>
           <Pressable

@@ -1,25 +1,24 @@
 import {StyleSheet, View, ScrollView, TextInput, Text} from 'react-native';
 import React, {useState, useEffect} from 'react';
-import {Height, Width} from '../../utils/responsive';
+import {Height, Width} from '../../../utils/responsive';
 import {Dropdown} from 'react-native-element-dropdown';
-import {getenquiries} from '../../redux/action/coachingAction';
-import {getcourse} from '../../redux/action/commanAction';
+import {getenquiries} from '../../../redux/action/coachingAction';
+import {getcourse} from '../../../redux/action/commanAction';
 import {useDispatch, useSelector} from 'react-redux';
-import Loader from '../../Component/Loader/Loader';
-import {serverInstance} from '../../API/ServerInstance';
+import {serverInstance} from '../../../API/ServerInstance';
 import Toast from 'react-native-toast-message';
-import RNButton from '../../Component/RNButton';
-import RNInputField from '../../Component/RNInputField';
-import RNDatePicker from '../../Component/RNDatePicker';
-import {handleDate, getTodaysDate} from '../../utils/functions';
-import {Colors, primary} from '../../utils/Colors';
-import {deviceHeight, deviceWidth} from '../../utils/constant';
-import {FlexRowWrapper} from '../../Component/FlexRowWrapper';
+import RNButton from '../../../Component/RNButton';
+import RNInputField from '../../../Component/RNInputField';
+import RNDatePicker from '../../../Component/RNDatePicker';
+import {handleDate, getTodaysDate} from '../../../utils/functions';
+import {Colors, primary} from '../../../utils/Colors';
+import {deviceHeight, deviceWidth} from '../../../utils/constant';
+import {FlexRowWrapper} from '../../../Component/FlexRowWrapper';
 import {useNavigation} from '@react-navigation/native';
 import moment from 'moment';
-import BackHeader from '../../Component/Header/BackHeader';
-import RNBDropDown from '../../Component/RNBDropDown';
-const AddEnquiry = () => {
+import BackHeader from '../../../Component/Header/BackHeader';
+import RNBDropDown from '../../../Component/RNBDropDown';
+const AddComplain = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const [sms, setsms] = useState('');
@@ -104,7 +103,7 @@ const AddEnquiry = () => {
 
   return (
     <View>
-      <BackHeader title={'Add Enquiry'} />
+      <BackHeader title={'Add Complain'} />
       <ScrollView>
         <View style={styles.enquirymainview}>
           <View style={styles.dateview}>
@@ -114,7 +113,7 @@ const AddEnquiry = () => {
                 position: 'relative',
               }}>
               <RNDatePicker
-                title="Enquiry Date"
+                title="Complain Date"
                 value={enquirydate}
                 onDateChange={date => setenquirydate(handleDate(date))}
               />
@@ -122,7 +121,7 @@ const AddEnquiry = () => {
             <FlexRowWrapper>
               <View style={{width: '45%'}}>
                 <RNInputField
-                  label="Student Name"
+                  label="Complainer Name"
                   placeholder="Enter Name"
                   value={studentname}
                   onChangeText={data => setstudentname(data)}
@@ -130,7 +129,7 @@ const AddEnquiry = () => {
               </View>
               <View style={{width: '45%'}}>
                 <RNInputField
-                  label="Student Mobile No"
+                  label="Complainer Mobile"
                   placeholder="Enter Mobile No"
                   value={studentPhone}
                   onChangeText={data => setstudentPhone(data)}
@@ -138,56 +137,6 @@ const AddEnquiry = () => {
                 />
               </View>
             </FlexRowWrapper>
-            <FlexRowWrapper>
-              <View style={{width: '45%'}}>
-                <RNInputField
-                  label="Student Email"
-                  placeholder="Enter Email"
-                  value={email}
-                  onChangeText={data => setemail(data)}
-                />
-              </View>
-              <View style={{width: '45%'}}>
-                <RNBDropDown
-                  label="Class"
-                  value={coursename}
-                  OptionsList={
-                    courselist &&
-                    courselist?.map(item => ({
-                      label: `${item?.coursename}`,
-                      value: `${item?.coursename}`,
-                    }))
-                  }
-                  onChange={data => setcoursename(data.value)}
-                />
-              </View>
-            </FlexRowWrapper>
-
-            <View
-              style={{
-                marginHorizontal: deviceWidth * 0.04,
-                position: 'relative',
-              }}>
-              <Text
-                style={{
-                  textAlign: 'right',
-                  fontWeight: '800',
-                  position: 'absolute',
-                  right: deviceWidth * 0.05,
-                }}>
-                {address.length} / 500
-              </Text>
-              <RNInputField
-                style={{backgroundColor: Colors.fadeGray, paddingTop: 10}}
-                label="address"
-                value={address}
-                onChangeText={data => setaddress(data)}
-                placeholder="Enter Address"
-                multiline
-                numberOfLines={5}
-                maxLength={500}
-              />
-            </View>
 
             <View
               style={{
@@ -230,7 +179,7 @@ const AddEnquiry = () => {
   );
 };
 
-export default AddEnquiry;
+export default AddComplain;
 
 const styles = StyleSheet.create({
   enquirymainview: {

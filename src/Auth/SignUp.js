@@ -165,6 +165,7 @@ const SignUp = () => {
   };
 
   const PhoneOtpVerify = () => {
+    setverifyphone(true);
     serverInstance('clientVerify/phondverification', 'put', {
       otp: phoneotp,
     }).then(res => {
@@ -177,6 +178,7 @@ const SignUp = () => {
         stopTimer();
         setIsRunning(false);
         setisPhoneVerify(true);
+        setverifyphone(false);
       }
 
       if (res?.status === false) {
@@ -185,6 +187,7 @@ const SignUp = () => {
           text1: 'Error',
           text2: res?.msg,
         });
+        setverifyphone(false);
       }
     });
   };
@@ -214,6 +217,7 @@ const SignUp = () => {
   };
 
   const EmailOtpVerify = () => {
+    setverifyemail(true);
     serverInstance('clientVerify/emailverification', 'put', {
       otp: emailOtp,
       email: email,
@@ -228,6 +232,7 @@ const SignUp = () => {
         stopTimeremail();
         setIsRunningemail(false);
         setproceed(true);
+        setverifyemail(false);
       }
       if (res?.status === false) {
         Toast.show({
@@ -236,13 +241,13 @@ const SignUp = () => {
           text2: res?.msg,
         });
         stopTimeremail();
+        setverifyemail(false);
       }
     });
   };
 
   const submit = async () => {
-    console.log('passwordconfirm', password, passwordconfirm);
-
+    setcreating(true);
     if (password !== passwordconfirm) {
       Toast.show({
         type: 'error',
@@ -287,6 +292,7 @@ const SignUp = () => {
       dispatch(allCollege());
       dispatch(allschool());
       dispatch(allClient());
+      setcreating(false);
 
       navigation.navigate('Login');
     }
@@ -323,7 +329,7 @@ const SignUp = () => {
                       onChangeText={data => setphoneno1(data)}
                     />
                   </View>
-                  <View>
+                  <View style={{marginBottom:10}}>
                     <RNButton
                       style={{paddingHorizontal: 25}}
                       loading={sendingPhone}
@@ -342,7 +348,7 @@ const SignUp = () => {
                       onChangeText={data => setphoneotp(data)}
                     />
                   </View>
-                  <View>
+                  <View style={{marginBottom:10}}>
                     <RNButton
                       style={{paddingHorizontal: 25}}
                       loading={verifyphone}
@@ -360,7 +366,7 @@ const SignUp = () => {
                       onChangeText={data => setemail(data)}
                     />
                   </View>
-                  <View>
+                  <View style={{marginBottom:10}}>
                     <RNButton
                       style={{paddingHorizontal: 25}}
                       loading={sendingEmail}
@@ -378,7 +384,7 @@ const SignUp = () => {
                       onChangeText={data => setemailOtp(data)}
                     />
                   </View>
-                  <View>
+                  <View style={{marginBottom:10}}>
                     <RNButton
                       loading={verifyemail}
                       onPress={() => EmailOtpVerify()}>

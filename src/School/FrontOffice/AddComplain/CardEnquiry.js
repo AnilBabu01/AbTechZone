@@ -9,20 +9,18 @@ import {
   Image,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
-import {primary} from '../../utils/Colors';
+import {primary} from '../../../utils/Colors';
 import moment from 'moment';
 import {useNavigation} from '@react-navigation/native';
-import Delete from '../../assets/Delete.png';
-import Edit from '../../assets/Edit.png';
-import {getenquiries} from '../../redux/action/coachingAction';
+import {getenquiries} from '../../../redux/action/coachingAction';
 import {useDispatch, useSelector} from 'react-redux';
-import Loader from '../../Component/Loader/Loader';
-import {serverInstance} from '../../API/ServerInstance';
+import Loader from '../../../Component/Loader/Loader';
+import {serverInstance} from '../../../API/ServerInstance';
 import Toast from 'react-native-toast-message';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {Height, Width} from '../../utils/responsive';
-import {Colors} from '../../utils/Colors';
-import {deviceHeight, deviceWidth} from '../../utils/constant';
+import {Height, Width} from '../../../utils/responsive';
+import {Colors} from '../../../utils/Colors';
+import {deviceHeight, deviceWidth} from '../../../utils/constant';
 const CardEnquiry = ({data}) => {
   const dispatch = useDispatch();
   const navigation = useNavigation();

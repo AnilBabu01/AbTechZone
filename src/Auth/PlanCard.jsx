@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.primary,
   },
   plannameActive: {
-    color: Colors.white,
+    color: hightlight,
     fontWeight: 'bold',
     fontSize: 25,
   },

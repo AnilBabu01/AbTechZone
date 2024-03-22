@@ -15,7 +15,6 @@ import DashboardOwner from '../Owner/Dashboard/Dashboard';
 ///Coaching screens
 
 import FrontOfficeCoaching from '../Coaching/FrontOffice/FrontOffice';
-import SearchEnquiryCoaching from '../Coaching/FrontOffice/SearchEnquiry';
 import StudentTabCoaching from '../Coaching/Student/StudentTab';
 import SearchaddCoaching from '../Coaching/Student/Add/Search';
 import SearchadminssionCoaching from '../Coaching/Student/admission/Search';
@@ -48,18 +47,13 @@ import SchoolLibraryOptions from '../School/Library/SchoolLibraryOptions';
 import SchoolTranportOptions from '../School/Transport/SchoolTranportOptions';
 import SchoolTestOptions from '../School/Test/SchoolTestOptions';
 import SchoolHrOptions from '../School/HumanResourse/SchoolHrOptions';
-import FrontOfficeSchool from '../School/FrontOffice/FrontOffice';
-import SearchEnquirySchool from '../School/FrontOffice/SearchEnquiry';
 import AddStudent from '../School/Student/Add/AddStudent';
 import Add from '../School/Student/Add/Add';
-import SearchaddSchool from '../School/Student/Add/Search';
 import Admission from '../School/Student/admission/Admission';
 import UpdateAdmission from '../School/Student/admission/UpdateAdmission';
 import TakeAdmissionSchool from '../School/Student/admission/TakeAdmission';
 import AddNewStudentSchool from '../School/Student/Add/AddNewStudent';
 import AttendanceTabSchool from '../School/Attendance/AttendanceTab';
-import AddEnquirySchool from '../School/FrontOffice/AddEnquiry';
-import UpdateEnquirySchool from '../School/FrontOffice/UpdateEnquiry';
 import AddTestSchool from '../School/Test/AddTest';
 import TestSchool from '../School/Test/Test';
 import UpdateTestSchool from '../School/Test/UpdateTest';
@@ -255,6 +249,18 @@ import TransDuesReport from '../School/Reports/TransDuesReport';
 import TransPaidFee from '../School/Reports/TransPaidFee';
 import PendingFeeReport from '../School/Reports/PendingFeeReport';
 
+///Front Office
+import AddEnquirySchool from '../School/FrontOffice/AddEnquiry/AddEnquiry';
+import UpdateEnquirySchool from '../School/FrontOffice/AddEnquiry/UpdateEnquiry';
+import FrontOfficeSchool from '../School/FrontOffice/AddEnquiry/FrontOffice';
+import AddComplain from '../School/FrontOffice/AddComplain/AddComplain';
+import Complain from '../School/FrontOffice/AddComplain/Complain';
+import UpdateComplain from '../School/FrontOffice/AddComplain/UpdateComplain';
+import AddVisitor from '../School/FrontOffice/AddVisitor/AddVisitor';
+import Visitor from '../School/FrontOffice/AddVisitor/Visitor';
+import UpdateVisitor from '../School/FrontOffice/AddVisitor/UpdateVisitor';
+import FrontOfficeOptions from '../School/FrontOffice/FrontOfficeOptions';
+
 const Stack = createNativeStackNavigator();
 
 function StackNavigation() {
@@ -293,10 +299,7 @@ function StackNavigation() {
       />
 
       <Stack.Screen name="AddNewStudent" component={AddNewStudentCoaching} />
-      <Stack.Screen
-        name="SearchEnquiryCoaching"
-        component={SearchEnquiryCoaching}
-      />
+
       <Stack.Screen name="AddEnquiryCoaching" component={AddEnquiryCoaching} />
       <Stack.Screen
         name="UpdateEnquiryCoaching"
@@ -401,8 +404,6 @@ function StackNavigation() {
         name="MasterOptionsSchool"
         component={MasterOptionsSchool}
       />
-      <Stack.Screen name="FrontOfficeSchool" component={FrontOfficeSchool} />
-      <Stack.Screen name="SearchaddSchool" component={SearchaddSchool} />
 
       <Stack.Screen
         name="TakeAdmissionSchool"
@@ -413,15 +414,7 @@ function StackNavigation() {
         name="AddNewStudentSchool"
         component={AddNewStudentSchool}
       />
-      <Stack.Screen
-        name="SearchEnquirySchool"
-        component={SearchEnquirySchool}
-      />
-      <Stack.Screen name="AddEnquirySchool" component={AddEnquirySchool} />
-      <Stack.Screen
-        name="UpdateEnquirySchool"
-        component={UpdateEnquirySchool}
-      />
+
       <Stack.Screen
         name="AttendanceTabSchool"
         component={AttendanceTabSchool}
@@ -654,7 +647,7 @@ function StackNavigation() {
         name="OccuipiedRoomReport"
         component={OccuipiedRoomReport}
       />
-      
+
       <Stack.Screen name="PendingFeeReport" component={PendingFeeReport} />
       <Stack.Screen name="PaidFeeReport" component={PaidFeeReport} />
       <Stack.Screen name="StudentInRoom" component={StudentInRoom} />
@@ -673,6 +666,22 @@ function StackNavigation() {
         name="StudentAttendanceReport"
         component={StudentAttendanceReport}
       />
+
+      {/* Front Office  */}
+
+      <Stack.Screen name="FrontOfficeOptions" component={FrontOfficeOptions} />
+      <Stack.Screen name="FrontOfficeSchool" component={FrontOfficeSchool} />
+      <Stack.Screen name="AddEnquirySchool" component={AddEnquirySchool} />
+      <Stack.Screen
+        name="UpdateEnquirySchool"
+        component={UpdateEnquirySchool}
+      />
+      <Stack.Screen name="AddComplain" component={AddComplain} />
+      <Stack.Screen name="Complain" component={Complain} />
+      <Stack.Screen name="UpdateComplain" component={UpdateComplain} />
+      <Stack.Screen name="AddVisitor" component={AddVisitor} />
+      <Stack.Screen name="Visitor" component={Visitor} />
+      <Stack.Screen name="UpdateVisitor" component={UpdateVisitor} />
 
       <Stack.Screen name="DashboardCollege" component={DashboardCollege} />
       <Stack.Screen name="DashboardSchool" component={DashboardSchool} />
