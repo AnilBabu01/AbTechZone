@@ -209,6 +209,9 @@ import {
   ALL_COACHINGRECEIPTDATA_REQUEST,
   ALL_COACHINGRECEIPTDATA_SUCCESS,
   ALL_COACHINGRECEIPTDATA_FAIL,
+  ALL_TC_REQUEST,
+  ALL_TC_SUCCESS,
+  ALL_TC_FAIL,
   CLEAR_ERRORS,
 } from '../constants/commanConstants';
 
@@ -2344,6 +2347,40 @@ export const getReceiptCoachingPrintReducer = (
       return {
         loading: false,
         receiptdata: null,
+        error: action.payload,
+      };
+
+    case CLEAR_ERRORS:
+      return {
+        ...state,
+        error: null,
+      };
+
+    default:
+      return state;
+  }
+};
+
+
+
+export const getTCReducer = (state = { TcList: [] }, action) => {
+  switch (action.type) {
+    case ALL_TC_REQUEST:
+      return {
+        loading: true,
+      };
+
+    case ALL_TC_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        TcList: action.payload,
+      };
+
+    case ALL_TC_FAIL:
+      return {
+        loading: false,
+        TcList: null,
         error: action.payload,
       };
 

@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     width: Width(110),
     height: Height(80),
-    backgroundColor: Colors.fadeGray,
+    backgroundColor: Colors.optionBGColor,
     margin: deviceWidth * 0.01,
     borderRadius: 10,
   },

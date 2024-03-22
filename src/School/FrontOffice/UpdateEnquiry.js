@@ -233,13 +233,14 @@ const UpdateEnquiry = () => {
               />
             </View>
           </View>
-
-          <RNButton
-            loading={loading}
-            onPress={submit}
-            style={{marginHorizontal: 20, marginTop: 20}}>
-            Update & Next
-          </RNButton>
+          <View style={{marginBottom: deviceHeight * 0.08}}>
+            <RNButton
+              loading={loading}
+              onPress={submit}
+              style={{marginHorizontal: 20, marginTop: 20}}>
+              Update & Next
+            </RNButton>
+          </View>
         </View>
       </ScrollView>
     </View>

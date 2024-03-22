@@ -2632,3 +2632,45 @@ export const getPrintReceipt =
       });
     }
   };
+
+
+  
+// Get all Enquiry
+export const getTC = (scoursename, sessionname, studentname, seno) => async (dispatch) => {
+  try {
+    let token = await AsyncStorage.getItem('erptoken');
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `${token}`,
+      },
+    };
+    if (scoursename||sessionname||studentname||seno) {
+      dispatch({ type: ALL_TC_REQUEST });
+      const { data } = await axios.get(
+        `${backendApiUrl}student/CreateTC?SrNo=${seno}&scoursename=${scoursename}&sessionname=${sessionname}&studentname=${studentname}`,
+        config
+      );
+      dispatch({
+        type: ALL_TC_SUCCESS,
+        payload: data?.data,
+      });
+    } else {
+      dispatch({ type: ALL_TC_REQUEST });
+      const { data } = await axios.get(
+        `${backendApiUrl}student/CreateTC`,
+
+        config
+      );
+      dispatch({
+        type: ALL_TC_SUCCESS,
+        payload: data?.data,
+      });
+    }
+  } catch (error) {
+    dispatch({
+      type: ALL_TC_FAIL,
+      payload: error?.response?.data?.msg,
+    });
+  }
+};

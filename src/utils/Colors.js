@@ -19,5 +19,6 @@ export const Colors = {
     fadeGray:'#F8F8F8',
     purple:'#800080',
     red:"red",
-    green:'green'
+    green:'green',
+    optionBGColor:'#98fb98'
 }

@@ -1,18 +1,10 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  ScrollView,
-  Pressable,
-  Image,
-} from 'react-native';
+import {StyleSheet, Text, View, ScrollView, Pressable} from 'react-native';
 import React, {useEffect, useState, useCallback} from 'react';
 import {Height, Width} from '../../../utils/responsive';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
-import CardEnquiry from './Card';
+import CardEnquiry from './PrintCard';
 import {primary, Colors} from '../../../utils/Colors';
-import {AnimatedFAB} from 'react-native-paper';
 import {
   getcourse,
   getbatch,
@@ -22,6 +14,7 @@ import {
   GetSession,
   GetSection,
   getcurrentsession,
+  getTC,
 } from '../../../redux/action/commanAction';
 
 import {
@@ -31,18 +24,15 @@ import {
 } from '../../../redux/action/hostelActions';
 import {GetRoute} from '../../../redux/action/transportActions';
 import {useDispatch, useSelector} from 'react-redux';
-import DashboardPlaceholderLoader from '../../../Component/DashboardPlaceholderLoader';
-import {deviceHeight, deviceWidth} from '../../../utils/constant';
-import RNTable from '../../../Component/RNTable';
+import {deviceWidth} from '../../../utils/constant';
 import DownloadStudentData from '../../../Component/school/DownloadStudentData';
-import BackHeader from '../../../Component/Header/BackHeader';
 import StudentFilter from '../../../Component/school/StudentFilter';
 import {ActivityIndicator, MD2Colors} from 'react-native-paper';
 import RNFS from 'react-native-fs';
 import RNHTMLtoPDF from 'react-native-html-to-pdf';
 import FileViewer from 'react-native-file-viewer';
 import RNPrint from 'react-native-print';
-import profileimg from '../../../assets/profileimg.jpg';
+
 const PrintTc = ({navigation}) => {
   const dispatch = useDispatch();
   const [isdata, setisdata] = useState([]);
@@ -53,7 +43,9 @@ const PrintTc = ({navigation}) => {
   const [viewdata, setviewdata] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [showDocOptions, setShowDocOptions] = useState(false);
-  const {loading, student} = useSelector(state => state.getstudent);
+  const [organizationdata, setorganizationdata] = useState('');
+  const {student} = useSelector(state => state.getstudent);
+  const {TcList, loading} = useSelector(state => state.getTCList);
   const {user} = useSelector(state => state.auth);
 
   useEffect(() => {
@@ -69,316 +61,309 @@ const PrintTc = ({navigation}) => {
     dispatch(GetFacility());
     dispatch(GetCategory());
     dispatch(GetRoute());
+    dispatch(getTC());
   }, []);
 
-  const StudentTableList = [
-    {
-      title: 'Sr.No',
-      items: [],
-      width: 0.33,
-      align: 'center',
-    },
-    {
-      title: 'Session',
-      items: [],
-      width: 0.33,
-      align: 'center',
-    },
-    {
-      title: 'SNO',
-      items: [],
-      width: 0.33,
-      align: 'center',
-    },
-    {
-      title: 'Roll_No',
-      items: [],
-      width: 0.33,
-      align: 'center',
-    },
-
-    {
-      title: 'Section',
-      items: [],
-      width: 0.33,
-      align: 'center',
-    },
-    {
-      title: 'Stream',
-      items: [],
-      width: 0.33,
-      align: 'center',
-    },
-    {
-      title: 'Student_Name',
-      items: [],
-      width: 0.33,
-      align: 'center',
-    },
-    {
-      title: 'Student_Email',
-      items: [],
-      width: 0.33,
-      align: 'center',
-    },
-    {
-      title: 'Student_Phone',
-      items: [],
-      width: 0.33,
-      align: 'center',
-    },
-    {
-      title: 'Adminssion_Date',
-      items: [],
-      width: 0.33,
-      align: 'center',
-    },
-
-    {
-      title: 'Class',
-      items: [],
-      width: 0.33,
-      align: 'center',
-    },
-    {
-      title: 'Category',
-      items: [],
-      width: 0.33,
-      align: 'center',
-    },
-    {
-      title: 'Student_Status',
-      items: [],
-      width: 0.33,
-      align: 'center',
-    },
-    {
-      title: 'Action',
-      items: [],
-      width: 0.33,
-      align: 'center',
-    },
-  ];
-
-  const convertdata = async () => {
-    if (StudentTableList?.length > 13) {
-      await Promise.all(
-        student?.length > 0 &&
-          student?.map((item, index) => {
-            StudentTableList[0].items.push({id: index, value: index + 1});
-            StudentTableList[1].items.push({id: index, value: item.Session});
-            StudentTableList[2].items.push({id: index, value: item.SrNumber});
-            StudentTableList[3].items.push({
-              id: index,
-              value: item.rollnumber,
-            });
-            StudentTableList[4].items.push({
-              id: index,
-              value: item.Section,
-            });
-            StudentTableList[5].items.push({
-              id: index,
-              value: item.Stream,
-            });
-            StudentTableList[6].items.push({
-              id: index,
-              value: item.name,
-            });
-            StudentTableList[7].items.push({
-              id: index,
-              value: item.email,
-            });
-            StudentTableList[8].items.push({
-              id: index,
-              value: item.phoneno1,
-            });
-            StudentTableList[9].items.push({
-              id: index,
-              value: item.admissionDate,
-            });
-            StudentTableList[10].items.push({
-              id: index,
-              value: item.courseorclass,
-            });
-            StudentTableList[11].items.push({
-              id: index,
-              value: item.StudentCategory,
-            });
-            StudentTableList[12].items.push({
-              id: index,
-              value: item.StudentStatus,
-            });
-            StudentTableList[13].items.push({
-              id: index,
-              value: (
-                <Ionicons
-                  name="create-outline"
-                  color={Colors.primary}
-                  size={18.3}
-                />
-              ),
-              allDetails: item,
-              redirect: 'UpdateAdmission',
-            });
-          }),
-      );
-      setTabledata(StudentTableList);
-    }
-  };
-
   const htmlContent = `<!DOCTYPE html>
-    <html lang="en">
-      <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Document</title>
-        <style>
-          .mainland {
-            border: 1px solid #093959;
-            width: auto;
-            margin-bottom: 2.5%;
-            margin: 1%;
-          }
-          .logoicon {
-            width: 4rem;
-            height: 4rem;
-          }
-          .logoicon10 {
-            width: 3rem;
-            height: 3rem;
-          }
-          .headermain {
-            display: flex;
-            border-bottom: 3px solid #093959;
-          }
-    
-          .headertext {
-            text-align: center;
-          }
-    
-          .headertext p {
-            line-height: 1.2rem;
-          }
-    
-          .maininfodiv {
-            padding: 0.2rem;
-            display: flex;
-          }
-          .profileicon {
-            width: 6rem;
-            height: 6rem;
-            border-radius: 4px;
-          }
-          .infodivtext {
-            padding-left: 2%;
-          }
-          .infodivtext p {
-            line-height: 1.2rem;
-          }
-    
-          .maininfodiv10 {
-            padding: 0.2rem;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-          }
-    
-          .headermain10 {
-            display: flex;
-            border-top: 3px solid #093959;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 0.3rem;
-          }
-          .maindivvvv {
-            display: flex;
-          }
-        </style>
-      </head>
-      <body>
-        <div class="maindivvvv">
-  
-        ${
-          isdata &&
-          isdata
-            ?.map(
-              data => `
-                       <div class="mainland">
-                          <div class="headermain">
-                            <img
-                              class="logoicon"
-                              src=${user?.data?.CredentailsData?.logourl}
-                              alt="Logo"
-                            />
-                            <div class="headertext">
-                              <p>${
-                                user?.data?.CredentailsData?.institutename
-                              }</p>
-                              <p>
-                                ${user?.data?.CredentailsData?.address}
-                                ${user?.data?.CredentailsData?.city}
-                                ${user?.data?.CredentailsData?.state} (
-                                ${user?.data?.CredentailsData?.pincode})
-                              </p>
-                              <p>
-                                PH: ${
-                                  user?.data?.CredentailsData?.phoneno1
-                                }&lsquo;
-                                ${user?.data?.CredentailsData?.phoneno2}&lsquo;
-                                ${user?.data?.CredentailsData?.email}&lsquo;
-                              </p>
-                            </div>
-                          </div>
-                          <div class="{style.maininfodiv}">
-                            ${
-                              data?.profileurl ? (
-                                <>
-                                  <img
-                                    alt="img"
-                                    class="profileicon"
-                                    src={data?.profileurl}
-                                  />
-                                </>
-                              ) : (
-                                <>
-                                  <img
-                                    alt="img"
-                                    class="profileicon"
-                                    src={profileimg}
-                                  />
-                                </>
-                              )
-                            }
-                            <div class="infodivtext">
-                              <p>Roll No : ${data?.rollnumber}</p>
-                              <p>Student Name : ${data?.name}</p>
-                              <p>Phono No : ${data?.phoneno1}</p>
-                              <p>Father&apos;s name : ${data?.fathersName}</p>
-                              <p>Father&apos;s No : ${data?.fathersPhoneNo}</p>
-                              <p>Address :</p>
-                              <p>${data?.city} ${data?.state} ${
-                data?.pincode
-              }</p>
-                            </div>
-                          </div>
-                        </div>
-                  
-                      `,
-            )
-            .join('')
+  <html lang="en">
+    <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>Document</title>
+      <style>
+        .TCMainTop {
+          padding: 1%;
         }
   
+        .TCMain {
+          padding-top: 4%;
+          border: 2px solid black;
+        }
+        .mainimgdivre {
+          display: flex;
+        }
+        .imgdivre {
+          width: 33.3%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          flex-direction: column;
+        }
+        .imgdivre img {
+          width: 5.1rem;
+          height: 5.1rem;
+          border-radius: 48%;
+        }
+        .imgdivre h2 {
+          margin-bottom: 0px;
+          margin-top: 0px;
+          font-size: 20px;
+          font-family: Helvetica;
+          color: red;
+        }
+        .imgdivre p {
+          margin-bottom: 0px;
+          margin-top: 0px;
+          font-family: Helvetica;
+        }
+  
+        .mantextSchool {
+          text-align: center;
+        }
+  
+        .transtextmain {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+        .transtextInnear {
+          background-color: #044e7c;
+          padding-left: 1%;
+          padding-right: 1%;
+          border-radius: 5px;
+        }
+        .transtextInnear p {
+          color: yellow;
+          font-weight: 500;
+          font-family: Helvetica;
+        }
+  
+        .TCNoDiv {
+          display: flex;
+          justify-content: space-between;
+          /* justify-items: inherit; */
+          padding-left: 1%;
+          margin-top: 1%;
+          padding-right: 1%;
+          padding-bottom: 1%;
+        }
+  
+        .maintopTextdiv {
+          width: 32%;
+          display: flex;
+          align-items: center;
+        }
+        .coachingtextaddress {
+          /* text-align: center; */
+          padding-left: 1%;
+          padding-right: 1%;
+          margin-top: 3%;
+        }
+        .coachingtextaddress p {
+          /* line-height: 3rem; */
+        }
+        .innearTcOption {
+          margin-bottom: 0.6%;
+        }
+  
+        .lebel1 {
+          width: 13%;
+        }
+        .signaturemain {
+          display: flex;
+          justify-content: space-between;
+          padding-left: 1%;
+          padding-right: 1%;
+          padding-top: 10%;
+        }
+        .signaturemainInnear {
+          border-top: 2px solid #044e7c;
+        }
+      </style>
+    </head>
+    <body>
+    ${
+      isdata &&
+      isdata
+        ?.map(
+          data => `
+    <div class="TCMainTop">
+    <div class="TCMain">
+      <div class="mainimgdivre">
+        <div class="imgdivre">
+          <img alt="img" src=${user?.data?.CredentailsData?.logourl} />
+        </div>
+        <div class="mantextSchool">
+          <h2>${user?.data?.CredentailsData?.institutename}</h2>
+          <p>${user?.data?.CredentailsData?.address}</p>
+          <p>${user?.data?.CredentailsData?.city} ${user?.data?.CredentailsData?.state}</p>
+          <p>${user?.data?.CredentailsData?.pincode}</p>
+        </div>
       </div>
-      </body>
-    </html>
-    `;
+      <div class="transtextmain">
+        <div class="transtextInnear">
+          <p>TRANSFER CERTIFICATE</p>
+        </div>
+      </div>
+      <div class="TCNoDiv">
+        <div class="maintopTextdiv">
+          <label>File No</label> &nbsp; : &nbsp; ${data?.fileNo}
+        </div>
+        <div class="maintopTextdiv">
+          <label>T.C No </label> &nbsp; : &nbsp; ${data?.TcNo}
+        </div>
+
+        <p>Sr Number (Admission No) ${data?.SrNo}</p>
+      </div>
+      <div class="coachingtextaddress">
+        <div class="innearTcOption">
+          <label class="lebel1">1. Name of Student</label>
+          &nbsp; : &nbsp; ${data?.NameofStudent}
+        </div>
+
+        <div class="innearTcOption">
+          <label class="lebel1"> 2. Name of Father&apos;s Name </label>
+          &nbsp; : &nbsp; ${data?.FathersName}
+        </div>
+
+        <div class="innearTcOption">
+          <label class="lebel1"> 3.Name of Mother&apos;s Name </label>
+          &nbsp; : &nbsp; ${data?.MothersName}
+        </div>
+
+        <div class="innearTcOption">
+          <label class="lebel1">4.Residential Address</label>
+          &nbsp; : &nbsp; ${data?.Address}
+        </div>
+
+        <div class="innearTcOption">
+          <label class="lebel1">5.Aadhar Number</label>
+          &nbsp; : &nbsp; ${data?.AadharNumber}
+        </div>
+
+        <div class="innearTcOption">
+          <label class="lebel1">
+            6. Nationality &nbsp; : &nbsp; ${data?.Nationality} Religion &
+            Community &nbsp; : &nbsp; ${data?.Religion}
+          </label>
+          &nbsp; : &nbsp; ${data?.DateofFirst}
+        </div>
+
+        <div class="innearTcOption">
+          <label class="lebel1">
+            7. Date of First admission in the school with class
+          </label>
+          &nbsp; : &nbsp; ${data?.DateofFirst}
+        </div>
+
+        <div class="innearTcOption">
+          <label class="lebel1">
+            8. Date of Birth-accoding to Admission Register (in figures). (In
+            words)
+          </label>
+          &nbsp; : &nbsp; ${data?.DateofBirth}
+        </div>
+
+        <div class="innearTcOption">
+          <label class="lebel1">
+            10. Class in Which the Student last studied (in figures). ...In
+            words
+          </label>
+          &nbsp; : &nbsp; ${data?.ClassinWhich}
+        </div>
+
+        <div class="innearTcOption">
+          <label class="lebel1">
+            10. Whether failed, if so once/twice in the same class
+          </label>
+          &nbsp; : &nbsp; ${data?.WhetherfailedinClass}
+        </div>
+
+        <div class="innearTcOption">
+          <label class="lebel1">11. Subjects studied</label>
+          &nbsp; : &nbsp; ${data?.Subjectsstudied}
+        </div>
+
+        <div class="innearTcOption">
+          <label class="lebel1">
+            12. Whether qualified for promotion to the higher class
+          </label>
+          &nbsp; : &nbsp; ${data?.qualifiedforpromotion}
+        </div>
+
+        <div class="innearTcOption">
+          <label class="lebel1">
+            If so to which class (in figures).. ..(In words)
+          </label>
+          &nbsp; : &nbsp; ${data?.Whetherqualified}
+        </div>
+
+        <div class="innearTcOption">
+          <label class="lebel1">
+            13.Whether the Student has paid all the dues to the school
+          </label>
+          &nbsp; : &nbsp; ${data?.paidallthedues}
+        </div>
+
+        <div class="innearTcOption">
+          <label class="lebel1"> 14. Total Number of working days </label>
+          &nbsp; : &nbsp; ${data?.workingdays}
+        </div>
+
+        <div class="innearTcOption">
+          <label class="lebel1">
+            15.Total Number of working days present
+          </label>
+          &nbsp; : &nbsp; ${data?.workingdayspresent}
+        </div>
+
+        <div class="innearTcOption">
+          <label class="lebel1">16. General Conduct</label>
+          &nbsp; : &nbsp; ${data?.GeneralConduct}
+        </div>
+
+        <div class="innearTcOption">
+          <label class="lebel1">
+            17.Date of application for certificate
+          </label>
+          &nbsp; : &nbsp; ${data?.Dateofapplication}
+        </div>
+
+        <div class="innearTcOption">
+          <label class="lebel1"> 18. Date of Issue of Certificate </label>
+          &nbsp; : &nbsp; ${data?.DateofIssue}
+        </div>
+
+        <div class="innearTcOption">
+          <label class="lebel1">
+            110.Reason for leaving the school
+          </label>
+          &nbsp; : &nbsp; ${data?.Reasonforleaving}
+        </div>
+
+        <div class="innearTcOption">
+          <label class="lebel1">20. Any others</label>
+          &nbsp; : &nbsp; ${data?.Anyothers}
+        </div>
+      </div>
+
+      <div class="signaturemain">
+        <div class="signaturemainInnear">
+          <p>PREPARED BY</p>
+        </div>
+        <div class="signaturemainInnear">
+          <p>CHECKED BY</p>
+        </div>
+        <div class="signaturemainInnear">
+          <p>PRINCIPAL</p>
+        </div>
+      </div>
+    </div>
+  </div>
+    `,
+        )
+        .join('')
+    }
+
+     
+    </body>
+  </html>
+  `;
 
   const convertHtmlToPdf = async html => {
     const options = {
       html,
-      fileName: `IDCard`,
+      fileName: `TC`,
       directory: 'Documents',
     };
 
@@ -388,7 +373,7 @@ const PrintTc = ({navigation}) => {
 
   const copyToDownloadFolder = async pdfPath => {
     const downloadFolderPath = RNFS.DownloadDirectoryPath;
-    const destinationPath = `${downloadFolderPath}/IDCard.pdf`;
+    const destinationPath = `${downloadFolderPath}/TC.pdf`;
 
     await RNFS.copyFile(pdfPath, destinationPath);
     return destinationPath;
@@ -430,13 +415,16 @@ const PrintTc = ({navigation}) => {
       await RNPrint.print({filePath: results.filePath});
     }
   };
+
   useEffect(() => {
-    if (student) {
-      convertdata(student);
-      setisdata(student);
+    if (TcList) {
+      setisdata(TcList);
       setShowModal(false);
     }
-  }, [student]);
+    if (user) {
+      setorganizationdata(user);
+    }
+  }, [TcList, user]);
 
   return (
     <>

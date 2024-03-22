@@ -13,6 +13,7 @@ import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import CardEnquiry from './Card';
 import {primary, Colors} from '../../../utils/Colors';
 import {AnimatedFAB} from 'react-native-paper';
+import { loadUser } from "../../../redux/action/authActions";
 import {
   getcourse,
   getbatch,
@@ -22,20 +23,22 @@ import {
   GetSession,
   GetSection,
   getcurrentsession,
-} from '../../../redux/action/commanAction';
-
+  getTC,
+} from "../../../redux/action/commanAction";
 import {
   GetHostel,
   GetFacility,
   GetCategory,
-} from '../../../redux/action/hostelActions';
-import {GetRoute} from '../../../redux/action/transportActions';
+} from "../../../redux/action/hostelActions";
+import { GetRoute } from "../../../redux/action/transportActions";
 import {useDispatch, useSelector} from 'react-redux';
 import DashboardPlaceholderLoader from '../../../Component/DashboardPlaceholderLoader';
 import {deviceHeight, deviceWidth} from '../../../utils/constant';
 import RNTable from '../../../Component/RNTable';
-import DownloadStudentData from '../../../Component/school/DownloadStudentData';
+import DownloadStudentData from '../../../Component/school/DownloadExcel';
 import BackHeader from '../../../Component/Header/BackHeader';
+import {ActivityIndicator, MD2Colors} from 'react-native-paper';
+
 const TransferCer = ({navigation}) => {
   const dispatch = useDispatch();
   const [isdata, setisdata] = useState([]);
@@ -58,6 +61,7 @@ const TransferCer = ({navigation}) => {
     dispatch(GetFacility());
     dispatch(GetCategory());
     dispatch(GetRoute());
+    dispatch(getTC());
   }, []);
 
   const StudentTableList = [
@@ -259,7 +263,13 @@ const TransferCer = ({navigation}) => {
         <ScrollView>
           {loading ? (
             <>
-              <DashboardPlaceholderLoader type="table" />
+              <View style={styles.loaderCenter}>
+                <ActivityIndicator
+                  size="large"
+                  animating={true}
+                  color={MD2Colors.red800}
+                />
+              </View>
             </>
           ) : (
             <>
@@ -281,15 +291,8 @@ const TransferCer = ({navigation}) => {
         <DownloadStudentData
           visible={showDocOptions}
           hideModal={setShowDocOptions}
-        />
-
-        <AnimatedFAB
-          icon={'plus'}
-          onPress={() => navigation.navigate('AddStudent')}
-          label="Add"
-          extended={false}
-          color={Colors.white}
-          style={styles.fabStyle}
+          enquiry={student}
+          filename={'StudentList'}
         />
       </View>
     </>
@@ -299,6 +302,12 @@ const TransferCer = ({navigation}) => {
 export default TransferCer;
 
 const styles = StyleSheet.create({
+  loaderCenter: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingTop: '50%',
+  },
   dateview: {
     display: 'flex',
     justifyContent: 'space-between',

@@ -9,8 +9,7 @@ import {
 import React, {useState, useEffect} from 'react';
 import {primary, secondary, Colors} from '../utils/Colors';
 import {Height, Width} from '../utils/responsive';
-import {useDispatch, useSelector} from 'react-redux';
-import {login, loadUser} from '../redux/action/authActions';
+import {useDispatch} from 'react-redux';
 import {
   alCoaching,
   allCollege,
@@ -18,32 +17,31 @@ import {
   allClient,
 } from '../redux/action/commanAction';
 import {useNavigation} from '@react-navigation/native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import Loader from '../Component/Loader/Loader';
 import BackHeader from '../Component/Header/BackHeader';
 import RNButton from '../Component/RNButton';
 import RNInputField from '../Component/RNInputField';
-import {deviceHeight, deviceWidth} from '../utils/constant';
-import {Checkbox} from 'react-native-paper';
-import RNBDropDown from '../Component/RNBDropDown';
+import {deviceWidth} from '../utils/constant';
 import PlansList from './PlansList';
 import {serverInstance} from '../API/ServerInstance';
 import {backendApiUrl} from '../Config/config';
 import axios from 'axios';
 import Toast from 'react-native-toast-message';
-
+import RNBDropDown from '../Component/RNBDropDown';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 const dataguest = [
-  {label: 'College', value: 'College'},
-  {label: 'School', value: 'School'},
-  {label: 'Coaching Institute', value: 'Coaching Institute'},
+  {label: 'College', value: 'college'},
+  {label: 'School', value: 'school'},
+  {label: 'Coaching Institute', value: 'institute'},
 ];
+
+let formData = new FormData();
 
 const SignUp = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const [isPhoneVerify, setisPhoneVerify] = useState(false);
   const [sendingPhone, setsendingPhone] = useState(false);
   const [sendingEmail, setsendingEmail] = useState(false);
   const [creating, setcreating] = useState(false);
@@ -177,9 +175,9 @@ const SignUp = () => {
           text2: res?.msg,
         });
         stopTimer();
+        setIsRunning(false);
+        setisPhoneVerify(true);
       }
-
-      console.log('fhfjhdgf', res);
 
       if (res?.status === false) {
         Toast.show({
@@ -228,6 +226,7 @@ const SignUp = () => {
           text2: res?.msg,
         });
         stopTimeremail();
+        setIsRunningemail(false);
         setproceed(true);
       }
       if (res?.status === false) {
@@ -242,26 +241,28 @@ const SignUp = () => {
   };
 
   const submit = async () => {
-    if (password !== confirmpassword) {
+    console.log('passwordconfirm', password, passwordconfirm);
+
+    if (password !== passwordconfirm) {
       Toast.show({
         type: 'error',
         text1: 'Error',
-        text2: 'Must be password and confirm password sam',
+        text2: 'Must be password and confirm password same',
       });
       return 0;
     }
 
-    formData.set('name', owername);
-    formData.set('email', email);
-    formData.set('password', password);
-    formData.set('institutename', organizationName);
-    formData.set('phoneno1', phoneno1);
-    formData.set('address', address);
-    formData.set('city', city);
-    formData.set('state', state);
-    formData.set('pincode', pincode);
-    formData.set('userType', guestloginas);
-    formData.set('planId', planId);
+    formData.append('name', owername);
+    formData.append('email', email);
+    formData.append('password', password);
+    formData.append('institutename', organizationName);
+    formData.append('phoneno1', phoneno1);
+    formData.append('address', address);
+    formData.append('city', city);
+    formData.append('state', state);
+    formData.append('pincode', pincode);
+    formData.append('userType', guestloginas);
+    formData.append('planId', planId);
 
     const config = {
       headers: {
@@ -279,9 +280,9 @@ const SignUp = () => {
       Toast.show({
         type: 'success',
         text1: 'Success',
-        text2: res?.msg,
+        text2: data?.msg,
       });
-
+      formData = new FormData();
       dispatch(alCoaching());
       dispatch(allCollege());
       dispatch(allschool());
@@ -290,6 +291,10 @@ const SignUp = () => {
       navigation.navigate('Login');
     }
   };
+
+  useEffect(() => {
+    formData = new FormData();
+  }, []);
 
   return (
     <>
@@ -349,7 +354,7 @@ const SignUp = () => {
                   </View>
                   <View>
                     <RNInputField
-                      label="Email"
+                      label="Email Optional"
                       placeholder="Enter Email"
                       value={email}
                       onChangeText={data => setemail(data)}
@@ -438,14 +443,14 @@ const SignUp = () => {
                     label="State"
                     placeholder="Enter State"
                     value={state}
-                    onChangeText={data => setState(data)}
+                    onChangeText={data => setstate(data)}
                   />
 
                   <RNInputField
                     label="District"
                     placeholder="Enter District"
-                    value={Fullname}
-                    onChangeText={data => setDistrict(data)}
+                    value={city}
+                    onChangeText={data => setcity(data)}
                   />
 
                   <RNInputField

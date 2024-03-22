@@ -9,7 +9,7 @@ const Tab = createMaterialTopTabNavigator();
 function CCTab() {
   return (
     <>
-      <BackHeader title={'Manage TC'} />
+      <BackHeader title={'Character Certificate'} />
       <Tab.Navigator
         headerMode={'screen'}
         screenOptions={{

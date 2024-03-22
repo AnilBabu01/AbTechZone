@@ -75,6 +75,7 @@ import {
   GetYearReducer,
   getReceiptCoachingPrintReducer,
   GetCoachingStudentReducer,
+  getTCReducer
 } from './commanReducers';
 
 import {
@@ -208,4 +209,5 @@ export default combineReducers({
   GetAmountTransfer: GetAmountTransferReducer,
   GetBookslist: GetBooks,
   geteMPHoliday: geteMPHolidayReducer,
+  getTCList: getTCReducer,
 });

@@ -23,7 +23,7 @@ import {deviceHeight, deviceWidth} from '../../../utils/constant';
 import profileimg from '../../../assets/profileimg.jpg';
 import RNButton from '../../../Component/RNButton';
 
-const Card = ({data}) => {
+const PrintCard = ({data}) => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const [showinfo, setshowinfo] = useState('');
@@ -31,6 +31,55 @@ const Card = ({data}) => {
   const [loader, setloader] = useState(false);
   const {enquiry, error} = useSelector(state => state.deleteenqury);
   const {user} = useSelector(state => state.auth);
+
+  
+  const submit = id => {
+    setsms('Deleting...');
+    setloader(true);
+    serverInstance('coaching/enquiry', 'delete', {
+      id: id,
+    }).then(res => {
+      if (res?.status) {
+        setloader(false);
+        setsms('');
+        Toast.show({
+          type: 'success',
+          text1: 'Success',
+          text2: res?.msg,
+        });
+        dispatch(getenquiries());
+      }
+
+      if (res?.status === false) {
+        setloader(false);
+        setsms('');
+        Toast.show({
+          type: 'error',
+          text1: 'Error',
+          text2: res?.msg,
+        });
+        dispatch(getenquiries());
+      }
+    });
+  };
+
+  useEffect(() => {
+    if (enquiry?.status) {
+      dispatch(getenquiries());
+      setsms('');
+      setloader(false);
+      setshowinfo(false);
+    }
+  }, [enquiry]);
+
+  useEffect(() => {
+    if (error) {
+      if (error?.status === false) {
+        setloader(false);
+        setsms('');
+      }
+    }
+  }, [error]);
 
   return (
     <View>
@@ -44,11 +93,16 @@ const Card = ({data}) => {
             </Text>
             <Text
               style={{fontSize: 16, fontWeight: 'bold', color: Colors.black}}>
-              Roll No : {data?.rollnumber}
+              File No : {data?.fileNo}
             </Text>
             <Text
               style={{fontSize: 16, fontWeight: 'bold', color: Colors.black}}>
-              Class : {data?.courseorclass}
+              TC No : {data?.TcNo}
+            </Text>
+
+            <Text
+              style={{fontSize: 16, fontWeight: 'bold', color: Colors.black}}>
+              Class : {data?.ClassinWhich}
             </Text>
             <Text
               style={{fontSize: 16, fontWeight: 'bold', color: Colors.black}}>
@@ -56,30 +110,12 @@ const Card = ({data}) => {
             </Text>
             <Text
               style={{fontSize: 16, fontWeight: 'bold', color: Colors.black}}>
-              Sr Number : {data?.SrNumber}
+              Sr Number : {data?.SrNo}
             </Text>
             <Text
               style={{fontSize: 16, fontWeight: 'bold', color: Colors.black}}>
-              Student Name : {data?.name}
+              Student Name : {data?.NameofStudent}
             </Text>
-
-            <Text
-              style={{fontSize: 16, fontWeight: 'bold', color: Colors.black}}>
-              Transfer Certificate Status :
-              {data?.TCStatus ? 'Issued' : 'Not Issued'}
-            </Text>
-            <View style={{marginVertical: 10}}>
-              <RNButton
-                style={{paddingHorizontal: 25}}
-                disable={data?.TCStatus}
-                onPress={() => {
-                  navigation.navigate('IssueTc', {
-                    data: data,
-                  });
-                }}>
-                {data?.TCStatus ? 'Issued' : 'Issue'}
-              </RNButton>
-            </View>
           </View>
         </View>
       </ScrollView>
@@ -87,7 +123,7 @@ const Card = ({data}) => {
   );
 };
 
-export default Card;
+export default PrintCard;
 
 const styles = StyleSheet.create({
   mainActionView: {

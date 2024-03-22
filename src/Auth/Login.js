@@ -561,7 +561,7 @@ const Login = () => {
                     justifyContent: 'space-between',
                     flexDirection: 'row',
                   }}>
-                  <Checkbox status="checked" color={Colors.black} />
+                  <Checkbox status="checked" />
                   <Text
                     style={{
                       fontSize: 13,
@@ -573,7 +573,7 @@ const Login = () => {
                   </Text>
                 </View>
                 <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
-                  <View>
+                  <View style={{display: 'flex', flexDirection: 'row'}}>
                     <Text
                       style={{
                         fontSize: 13,
@@ -582,7 +582,9 @@ const Login = () => {
                         color: Colors.primary,
                       }}>
                       Don't have An Account?
-                      <Text style={{color: Colors.black}}>Sign-Up</Text>
+                    </Text>
+                    <Text style={{color: Colors.black, marginLeft: 5}}>
+                      Sign-Up
                     </Text>
                   </View>
                 </TouchableOpacity>

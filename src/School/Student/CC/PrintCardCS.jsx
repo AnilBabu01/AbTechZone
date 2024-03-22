@@ -1,40 +1,68 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  ScrollView,
-  Dimensions,
-  TouchableOpacity,
-  Alert,
-  Image,
-} from 'react-native';
-import React, {useState, useEffect} from 'react';
+import {StyleSheet, Text, View, ScrollView, Alert} from 'react-native';
+import React, {useState} from 'react';
 import {primary, Colors} from '../../../utils/Colors';
-import moment from 'moment';
-import {useNavigation} from '@react-navigation/native';
-import {getenquiries} from '../../../redux/action/coachingAction';
-import {useDispatch, useSelector} from 'react-redux';
-import Loader from '../../../Component/Loader/Loader';
+import {useDispatch} from 'react-redux';
 import {serverInstance} from '../../../API/ServerInstance';
 import Toast from 'react-native-toast-message';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import {Height, Width} from '../../../utils/responsive';
-import {deviceHeight, deviceWidth} from '../../../utils/constant';
-import profileimg from '../../../assets/profileimg.jpg';
 import RNButton from '../../../Component/RNButton';
+import {getstudent} from '../../../redux/action/commanAction';
 
-const Card = ({data}) => {
+const PrintCardCS = ({data}) => {
   const dispatch = useDispatch();
-  const navigation = useNavigation();
-  const [showinfo, setshowinfo] = useState('');
-  const [sms, setsms] = useState('');
   const [loader, setloader] = useState(false);
-  const {enquiry, error} = useSelector(state => state.deleteenqury);
-  const {user} = useSelector(state => state.auth);
+
+  const submit = () => {
+    setloader(true);
+
+    serverInstance('student/IssueCC', 'post', {
+      student: data,
+      CCStatus: data?.CCStatus === false ? 1 : 0,
+    }).then(res => {
+      if (res?.status === true) {
+        Toast.show({
+          type: 'success',
+          text1: 'Success',
+          text2: res?.msg,
+        });
+
+        setloader(false);
+        dispatch(getstudent());
+      }
+      if (res?.status === false) {
+        Toast.show({
+          type: 'error',
+          text1: 'Error',
+          text2: res?.msg,
+        });
+
+        setloader(false);
+      }
+    });
+  };
+
+  const confirmation = () => {
+    Alert.alert(
+      'Delete',
+      'Do you really want to Issue CC?',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'OK',
+          onPress: () => submit(),
+        },
+      ],
+      {
+        cancelable: false,
+      },
+    );
+    return true;
+  };
 
   return (
     <View>
-      <Loader loader={loader} sms={sms} />
       <ScrollView>
         <View style={styles.connainer}>
           <View style={styles.card10}>
@@ -65,21 +93,9 @@ const Card = ({data}) => {
 
             <Text
               style={{fontSize: 16, fontWeight: 'bold', color: Colors.black}}>
-              Transfer Certificate Status :
-              {data?.TCStatus ? 'Issued' : 'Not Issued'}
+              Character Certificate Status :
+              {data?.CCStatus ? 'Issued' : 'Not Issued'}
             </Text>
-            <View style={{marginVertical: 10}}>
-              <RNButton
-                style={{paddingHorizontal: 25}}
-                disable={data?.TCStatus}
-                onPress={() => {
-                  navigation.navigate('IssueTc', {
-                    data: data,
-                  });
-                }}>
-                {data?.TCStatus ? 'Issued' : 'Issue'}
-              </RNButton>
-            </View>
           </View>
         </View>
       </ScrollView>
@@ -87,7 +103,7 @@ const Card = ({data}) => {
   );
 };
 
-export default Card;
+export default PrintCardCS;
 
 const styles = StyleSheet.create({
   mainActionView: {

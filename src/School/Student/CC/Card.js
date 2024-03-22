@@ -1,86 +1,49 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  ScrollView,
-  Dimensions,
-  TouchableOpacity,
-  Alert,
-  Image,
-} from 'react-native';
-import React, {useState, useEffect} from 'react';
+import {StyleSheet, Text, View, ScrollView, Alert} from 'react-native';
+import React, {useState} from 'react';
 import {primary, Colors} from '../../../utils/Colors';
-import moment from 'moment';
-import {useNavigation} from '@react-navigation/native';
-import {getenquiries} from '../../../redux/action/coachingAction';
-import {useDispatch, useSelector} from 'react-redux';
-import Loader from '../../../Component/Loader/Loader';
+import {useDispatch} from 'react-redux';
 import {serverInstance} from '../../../API/ServerInstance';
 import Toast from 'react-native-toast-message';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import {Height, Width} from '../../../utils/responsive';
-import {deviceHeight, deviceWidth} from '../../../utils/constant';
-import profileimg from '../../../assets/profileimg.jpg';
+import RNButton from '../../../Component/RNButton';
+import {getstudent} from '../../../redux/action/commanAction';
+
 const Card = ({data}) => {
   const dispatch = useDispatch();
-  const navigation = useNavigation();
-  const [showinfo, setshowinfo] = useState('');
-  const [sms, setsms] = useState('');
   const [loader, setloader] = useState(false);
-  const {enquiry, error} = useSelector(state => state.deleteenqury);
-  const {user} = useSelector(state => state.auth);
-  const submit = id => {
-    setsms('Deleting...');
+
+  const submit = () => {
     setloader(true);
-    serverInstance('coaching/enquiry', 'delete', {
-      id: id,
+
+    serverInstance('student/IssueCC', 'post', {
+      student: data,
+      CCStatus: data?.CCStatus === false ? 1 : 0,
     }).then(res => {
-      if (res?.status) {
-        setloader(false);
-        setsms('');
+      if (res?.status === true) {
         Toast.show({
           type: 'success',
           text1: 'Success',
           text2: res?.msg,
         });
-        dispatch(getenquiries());
-      }
 
-      if (res?.status === false) {
         setloader(false);
-        setsms('');
+        dispatch(getstudent());
+      }
+      if (res?.status === false) {
         Toast.show({
           type: 'error',
           text1: 'Error',
           text2: res?.msg,
         });
-        dispatch(getenquiries());
+
+        setloader(false);
       }
     });
   };
 
-  useEffect(() => {
-    if (enquiry?.status) {
-      dispatch(getenquiries());
-      setsms('');
-      setloader(false);
-      setshowinfo(false);
-    }
-  }, [enquiry]);
-
-  useEffect(() => {
-    if (error) {
-      if (error?.status === false) {
-        setloader(false);
-        setsms('');
-      }
-    }
-  }, [error]);
-
-  const confirmation = id => {
+  const confirmation = () => {
     Alert.alert(
       'Delete',
-      'Do you really want to Delete ?',
+      'Do you really want to Issue CC?',
       [
         {
           text: 'Cancel',
@@ -88,7 +51,7 @@ const Card = ({data}) => {
         },
         {
           text: 'OK',
-          onPress: () => submit(id),
+          onPress: () => submit(),
         },
       ],
       {
@@ -100,7 +63,6 @@ const Card = ({data}) => {
 
   return (
     <View>
-      <Loader loader={loader} sms={sms} />
       <ScrollView>
         <View style={styles.connainer}>
           <View style={styles.card10}>
@@ -128,6 +90,23 @@ const Card = ({data}) => {
               style={{fontSize: 16, fontWeight: 'bold', color: Colors.black}}>
               Student Name : {data?.name}
             </Text>
+
+            <Text
+              style={{fontSize: 16, fontWeight: 'bold', color: Colors.black}}>
+              Character Certificate Status :
+              {data?.CCStatus ? 'Issued' : 'Not Issued'}
+            </Text>
+            <View style={{marginVertical: 10}}>
+              <RNButton
+                loading={loader}
+                style={{paddingHorizontal: 25}}
+                disable={data?.CCStatus}
+                onPress={() => {
+                  confirmation();
+                }}>
+                {data?.CCStatus ? 'Issued' : 'Issue'}
+              </RNButton>
+            </View>
           </View>
         </View>
       </ScrollView>
