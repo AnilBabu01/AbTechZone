@@ -59,7 +59,7 @@ const PrintCC = ({navigation}) => {
               width: auto;
               margin-bottom: 2.5%;
               margin: 1%;
-              margin-bottom:10%
+              margin-bottom:13%
             }
             .logoicon {
               width: 4rem;
@@ -198,7 +198,7 @@ const PrintCC = ({navigation}) => {
   const convertHtmlToPdf = async html => {
     const options = {
       html,
-      fileName: `IDCard`,
+      fileName: `CharacterCertificateList`,
       directory: 'Documents',
     };
 
@@ -208,7 +208,7 @@ const PrintCC = ({navigation}) => {
 
   const copyToDownloadFolder = async pdfPath => {
     const downloadFolderPath = RNFS.DownloadDirectoryPath;
-    const destinationPath = `${downloadFolderPath}/IDCard.pdf`;
+    const destinationPath = `${downloadFolderPath}/CharacterCertificateList.pdf`;
 
     await RNFS.copyFile(pdfPath, destinationPath);
     return destinationPath;
@@ -242,7 +242,7 @@ const PrintCC = ({navigation}) => {
 
     const results = await RNHTMLtoPDF.convert({
       html: htmlContent,
-      fileName: `IDCard`,
+      fileName: `CharacterCertificateList`,
       base64: true,
     });
     if (results) {

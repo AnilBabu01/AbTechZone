@@ -8,66 +8,30 @@ import {
 } from 'react-native';
 import React, {useState} from 'react';
 import {deviceHeight, deviceWidth} from '../../utils/constant';
-import RNDatePicker from '../RNDatePicker';
+import RNInputField from '../RNInputField';
 import RNButton from '../RNButton';
 import {Colors} from '../../utils/Colors';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {handleDate, getTodaysDate} from '../../utils/functions';
-import {Width, Height} from '../../utils/responsive';
-import moment from 'moment';
-import {serverInstance} from '../../API/ServerInstance';
-import Toast from 'react-native-toast-message';
+import {getVisitor} from '../../redux/action/commanAction';
 import {useSelector, useDispatch} from 'react-redux';
-const EmpTakeAttendanceFilter = ({
-  showModal,
-  setShowModal,
-  setattendancedetails,
-}) => {
-  const [atttendanceDate, setatttendanceDate] = useState(getTodaysDate());
-  const [loading, setloading] = useState(false);
-  const {CURRENTSESSION: sessionname} = useSelector(
-    state => state.GetCurrentSession,
-  );
-  const {innerContainer, childContainer, mainContainer} = styles;
+
+const VistorFilter = ({showModal, setShowModal}) => {
+  const dispatch = useDispatch();
+  const [name, setname] = useState('');
+  const {loading} = useSelector(state => state.getVisitor);
+  const {container, innerContainer, childContainer, mainContainer} = styles;
 
   const onSubmit = () => {
-    setloading(true);
-    var momentDate = moment(atttendanceDate, 'DD/MM/YYYY');
-    var yyyyddmm = moment(momentDate).format('YYYY-MM-DD');
-    const data = {
-      Attendancedate: yyyyddmm,
-      session: sessionname,
-    };
-
-    serverInstance('EmployeeAttendance/attendance', 'post', data).then(res => {
-      if (res?.status) {
-        Toast.show({
-          type: 'success',
-          text1: 'Success',
-          text2: res?.msg,
-        });
-        setShowModal(false);
-        setattendancedetails(res?.data);
-        setloading(false);
-
-        console.log('employee attendance is', res);
-      }
-
-      if (res?.status === false) {
-        Toast.show({
-          type: 'error',
-          text1: 'Error',
-          text2: res?.msg,
-        });
-        setShowModal(false);
-        setloading(false);
-      }
-    });
+    dispatch(getVisitor('', '', name));
   };
 
   return (
     <>
-      <Modal animationType={'fade'} transparent={true} visible={showModal}>
+      <Modal
+        animationType={'fade'}
+        transparent={true}
+        visible={showModal}
+        contentContainerStyle={container}>
         <View style={[innerContainer, mainContainer]}>
           <Text
             style={{
@@ -89,14 +53,15 @@ const EmpTakeAttendanceFilter = ({
               backgroundColor: Colors.white,
             }}>
             <ScrollView
-              style={{height: deviceHeight * 0.3, paddingTop: 20}}
+              style={{height: deviceHeight * 0.3}}
               showsVerticalScrollIndicator={false}>
               <View style={styles.rowwrapper}>
                 <View style={{width: '100%'}}>
-                  <RNDatePicker
-                    title="Select Date"
-                    value={atttendanceDate}
-                    onDateChange={date => setatttendanceDate(handleDate(date))}
+                  <RNInputField
+                    label="Visitor Name"
+                    placeholder="Enter Name"
+                    value={name}
+                    onChangeText={data => setname(data)}
                   />
                 </View>
               </View>
@@ -113,17 +78,26 @@ const EmpTakeAttendanceFilter = ({
   );
 };
 
-export default EmpTakeAttendanceFilter;
+export default VistorFilter;
 
 const styles = StyleSheet.create({
   bottomBtn: {
-    marginBottom: deviceHeight * 0.02,
+    marginBottom: deviceHeight * 0.01,
     width: '100%',
     position: 'absolute',
     bottom: 0,
-    paddingHorizontal: 5,
   },
 
+  container: {
+    flex: 1,
+    justifyContent: 'flex-start',
+    backgroundColor: '#fff',
+    marginHorizontal: 15,
+    marginVertical: 30,
+    borderRadius: 20,
+    position: 'relative',
+    zIndex: 9999,
+  },
   innerContainer: {
     backgroundColor: Colors.primary,
     padding: 15,
@@ -148,16 +122,6 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     justifyContent: 'space-between',
     marginHorizontal: deviceWidth * 0.02,
-  },
-  dropstyle: {
-    width: Width(160),
-    height: Height(54),
-    fontFamily: 'Gilroy-SemiBold',
-    borderRadius: Width(15),
-    paddingHorizontal: Width(20),
-    fontSize: Height(16),
-    marginTop: Height(7),
-    backgroundColor: Colors.fadeGray,
-    color: 'white',
+    marginTop: 10,
   },
 });

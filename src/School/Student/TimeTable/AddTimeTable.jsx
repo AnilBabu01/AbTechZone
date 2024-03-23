@@ -10,14 +10,16 @@ import {
   getcourse,
   getEmployee,
   GetClassSubject,
+  GetSection,
 } from '../../../redux/action/commanAction';
 import {useDispatch, useSelector} from 'react-redux';
 import DashboardPlaceholderLoader from '../../../Component/DashboardPlaceholderLoader';
 import {deviceWidth} from '../../../utils/constant';
 import RNTable from '../../../Component/RNTable';
-import DownloadStudentData from '../../../Component/school/DownloadStudentData';
+import DownloadStudentData from '../../../Component/school/DownloadExcel';
 import BackHeader from '../../../Component/Header/BackHeader';
 import TimeTableFilter from '../../../Component/school/TimeTableFilter';
+
 const AddTimeTable = ({navigation}) => {
   const dispatch = useDispatch();
   const [isdata, setisdata] = useState([]);
@@ -138,7 +140,7 @@ const AddTimeTable = ({navigation}) => {
               <Ionicons name="trash-outline" color={Colors.red} size={18.3} />
             ),
             deleteUrl: 'comman/subject',
-            allDetails: item,
+            allDetails: item?.subject,
             redirect: 'UpdateTimeTable',
           });
         }),
@@ -158,6 +160,7 @@ const AddTimeTable = ({navigation}) => {
     dispatch(getcourse());
     dispatch(getEmployee());
     dispatch(GetClassSubject());
+    dispatch(GetSection());
   }, []);
 
   return (
@@ -233,6 +236,8 @@ const AddTimeTable = ({navigation}) => {
         <DownloadStudentData
           visible={showDocOptions}
           hideModal={setShowDocOptions}
+          enquiry={subject}
+          filename={'TimeTable'}
         />
 
         <AnimatedFAB

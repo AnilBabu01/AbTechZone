@@ -15,7 +15,8 @@ import {Dropdown} from 'react-native-element-dropdown';
 import {serverInstance} from '../../API/ServerInstance';
 import Toast from 'react-native-toast-message';
 import {Width, Height} from '../../utils/responsive';
-import {useSelector,useDispatch} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
+import RNBDropDown from '../RNBDropDown';
 const monthlist = [
   {
     id: 1,
@@ -76,13 +77,15 @@ const EmpAnalasisAttendance = ({
   let currmonth = new Date().getMonth();
   const [month, setmonth] = useState(currmonth + 1);
   const [loading, setloading] = useState(false);
-  const {CURRENTSESSION:sessionname} = useSelector(state => state.GetCurrentSession);
+  const {CURRENTSESSION: sessionname} = useSelector(
+    state => state.GetCurrentSession,
+  );
   const {innerContainer, childContainer, mainContainer} = styles;
 
   const onSubmit = () => {
     const data = {
       month: Number(month),
-      session:sessionname
+      session: sessionname,
     };
     serverInstance('EmployeeAttendance/analysisattendance', 'post', data).then(
       res => {
@@ -137,39 +140,19 @@ const EmpAnalasisAttendance = ({
             <ScrollView
               style={{height: deviceHeight * 0.3}}
               showsVerticalScrollIndicator={false}>
-              <View style={{width: '100%'}}>
-                <View style={{marginHorizontal: deviceWidth * 0.01}}>
-                  <Text
-                    style={{
-                      fontSize: 14,
-                      fontWeight: '600',
-                      lineHeight: 19,
-                    }}>
-                    Month
-                  </Text>
-                  <Dropdown
-                    style={styles.dropstyle}
-                    placeholderStyle={styles.placeholderStyle}
-                    selectedTextStyle={styles.selectedTextStyle}
-                    inputSearchStyle={styles.inputSearchStyle}
-                    iconStyle={styles.iconStyle}
-                    data={
+              <View style={styles.rowwrapper}>
+                <View style={{width: '100%'}}>
+                  <RNBDropDown
+                    label="Month"
+                    value={month}
+                    OptionsList={
                       monthlist &&
                       monthlist?.map(item => ({
                         label: `${item?.name}`,
                         value: `${item?.id}`,
                       }))
                     }
-                    search
-                    maxHeight={300}
-                    labelField="label"
-                    valueField="value"
-                    placeholder="Select Month"
-                    searchPlaceholder="Search..."
-                    value={month}
-                    onChange={item => {
-                      setmonth(item.value);
-                    }}
+                    onChange={data => setmonth(data.value)}
                   />
                 </View>
               </View>
@@ -221,6 +204,7 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     justifyContent: 'space-between',
     marginHorizontal: deviceWidth * 0.02,
+    paddingTop: 10,
   },
   dropstyle: {
     width: '100%',

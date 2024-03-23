@@ -32,18 +32,23 @@ import {useDispatch, useSelector} from 'react-redux';
 import DashboardPlaceholderLoader from '../../../Component/DashboardPlaceholderLoader';
 import {deviceWidth} from '../../../utils/constant';
 import RNTable from '../../../Component/RNTable';
-import DownloadStudentData from '../../../Component/school/DownloadStudentData';
+import DownloadStudentData from '../../../Component/school/DownloadExcel';
 import SearchAllFee from '../../../Component/school/SearchAllFee';
-const SearchFee = ({navigation}) => {
+const SearchFee = () => {
   const dispatch = useDispatch();
   const [loading, setloading] = useState(false);
   const [data, setdata] = useState('');
-  const [isdata, setisdata] = useState([]);
   const [Tabledata, setTabledata] = useState([]);
-  const [viewdata, setviewdata] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [showDocOptions, setShowDocOptions] = useState(false);
   const {student} = useSelector(state => state.getstudent);
+
+  useEffect(() => {
+    if (student) {
+      setShowModal(false);
+      setdata(student);
+    }
+  }, [student]);
 
   useEffect(() => {
     dispatch(getcourse());
@@ -59,161 +64,6 @@ const SearchFee = ({navigation}) => {
     dispatch(GetCategory());
     dispatch(GetRoute());
   }, []);
-
-  const StudentTableList = [
-    {
-      title: 'Sr.No',
-      items: [],
-      width: 0.33,
-      align: 'center',
-    },
-    {
-      title: 'Session',
-      items: [],
-      width: 0.33,
-      align: 'center',
-    },
-    {
-      title: 'SNO',
-      items: [],
-      width: 0.33,
-      align: 'center',
-    },
-    {
-      title: 'Roll_No',
-      items: [],
-      width: 0.33,
-      align: 'center',
-    },
-
-    {
-      title: 'Section',
-      items: [],
-      width: 0.33,
-      align: 'center',
-    },
-    {
-      title: 'Stream',
-      items: [],
-      width: 0.33,
-      align: 'center',
-    },
-    {
-      title: 'Student_Name',
-      items: [],
-      width: 0.33,
-      align: 'center',
-    },
-    {
-      title: 'Student_Email',
-      items: [],
-      width: 0.33,
-      align: 'center',
-    },
-    {
-      title: 'Student_Phone',
-      items: [],
-      width: 0.33,
-      align: 'center',
-    },
-    {
-      title: 'Adminssion_Date',
-      items: [],
-      width: 0.33,
-      align: 'center',
-    },
-
-    {
-      title: 'Class',
-      items: [],
-      width: 0.33,
-      align: 'center',
-    },
-    {
-      title: 'Category',
-      items: [],
-      width: 0.33,
-      align: 'center',
-    },
-    {
-      title: 'Student_Status',
-      items: [],
-      width: 0.33,
-      align: 'center',
-    },
-    {
-      title: 'Action',
-      items: [],
-      width: 0.33,
-      align: 'center',
-    },
-  ];
-
-  const convertdata = async () => {
-    if (StudentTableList?.length > 13) {
-      await Promise.all(
-        student?.length > 0 &&
-          student?.map((item, index) => {
-            StudentTableList[0].items.push({id: index, value: index + 1});
-            StudentTableList[1].items.push({id: index, value: item.Session});
-            StudentTableList[2].items.push({id: index, value: item.SrNumber});
-            StudentTableList[3].items.push({
-              id: index,
-              value: item.rollnumber,
-            });
-            StudentTableList[4].items.push({
-              id: index,
-              value: item.Section,
-            });
-            StudentTableList[5].items.push({
-              id: index,
-              value: item.Stream,
-            });
-            StudentTableList[6].items.push({
-              id: index,
-              value: item.name,
-            });
-            StudentTableList[7].items.push({
-              id: index,
-              value: item.email,
-            });
-            StudentTableList[8].items.push({
-              id: index,
-              value: item.phoneno1,
-            });
-            StudentTableList[9].items.push({
-              id: index,
-              value: item.admissionDate,
-            });
-            StudentTableList[10].items.push({
-              id: index,
-              value: item.courseorclass,
-            });
-            StudentTableList[11].items.push({
-              id: index,
-              value: item.StudentCategory,
-            });
-            StudentTableList[12].items.push({
-              id: index,
-              value: item.StudentStatus,
-            });
-            StudentTableList[13].items.push({
-              id: index,
-              value: (
-                <Ionicons
-                  name="create-outline"
-                  color={Colors.primary}
-                  size={18.3}
-                />
-              ),
-              allDetails: item,
-              redirect: 'UpdateAdmission',
-            });
-          }),
-      );
-      setTabledata(StudentTableList);
-    }
-  };
 
   return (
     <>
@@ -289,6 +139,8 @@ const SearchFee = ({navigation}) => {
         )}
 
         <DownloadStudentData
+          enquiry={student}
+          filename={'StudentFeeStatusList'}
           visible={showDocOptions}
           hideModal={setShowDocOptions}
         />

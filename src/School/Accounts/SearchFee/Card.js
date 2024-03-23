@@ -3,54 +3,111 @@ import {
   Text,
   View,
   ScrollView,
+  Dimensions,
   TouchableOpacity,
+  Alert,
+  Image,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {primary} from '../../../utils/Colors';
 import moment from 'moment';
 import {useNavigation} from '@react-navigation/native';
-import {useDispatch} from 'react-redux';
+import Delete from '../../../assets/Delete.png';
+import Edit from '../../../assets/Edit.png';
+import {getenquiries} from '../../../redux/action/coachingAction';
+import {useDispatch, useSelector} from 'react-redux';
+import Loader from '../../../Component/Loader/Loader';
+import {serverInstance} from '../../../API/ServerInstance';
+import Toast from 'react-native-toast-message';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {Height, Width} from '../../../utils/responsive';
 import {Colors} from '../../../utils/Colors';
 import {deviceHeight, deviceWidth} from '../../../utils/constant';
-
-const compareMonths = (a, b) => {
-  const monthsOrder = [
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December',
-    'January',
-    'February',
-    'March',
-  ];
-
-  return monthsOrder.indexOf(a.MonthName) - monthsOrder.indexOf(b.MonthName);
-};
-
+import RNButton from '../../../Component/RNButton';
 const Card = ({data}) => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
-
+  const [loading, setloading] = useState('');
   const [showinfo, setshowinfo] = useState('');
+  const [sms, setsms] = useState('');
+  const [loader, setloader] = useState(false);
+  const {enquiry, error} = useSelector(state => state.deleteenqury);
+  const submit = id => {
+    setsms('Deleting...');
+    setloader(true);
+    serverInstance('coaching/enquiry', 'delete', {
+      id: id,
+    }).then(res => {
+      if (res?.status) {
+        setloader(false);
+        setsms('');
+        Toast.show({
+          type: 'success',
+          text1: 'Success',
+          text2: res?.msg,
+        });
+        dispatch(getenquiries());
+      }
 
+      if (res?.status === false) {
+        setloader(false);
+        setsms('');
+        Toast.show({
+          type: 'error',
+          text1: 'Error',
+          text2: res?.msg,
+        });
+        dispatch(getenquiries());
+      }
+    });
+  };
+
+  useEffect(() => {
+    if (enquiry?.status) {
+      dispatch(getenquiries());
+      setsms('');
+      setloader(false);
+      setshowinfo(false);
+    }
+  }, [enquiry]);
+  useEffect(() => {
+    if (error) {
+      if (error?.status === false) {
+        setloader(false);
+        setsms('');
+      }
+    }
+  }, [error]);
+  const confirmation = id => {
+    Alert.alert(
+      'Delete',
+      'Do you really want to Delete ?',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'OK',
+          onPress: () => submit(id),
+        },
+      ],
+      {
+        cancelable: false,
+      },
+    );
+    return true;
+  };
   return (
     <View>
+      <Loader loader={loader} sms={sms} />
       <ScrollView>
         <View style={styles.connainer}>
           <View style={styles.card10}>
             <View style={styles.headerarray}>
               <Text style={{color: Colors.white}}>
-                Session :{data?.student?.Session}
-              </Text>
-              <Text style={{color: Colors.white}}>
-                Section :{data?.student?.Section}
+                Admission Date :
+                {moment(data?.admissionDate).format('DD/MM/YYYY')}
               </Text>
               <TouchableOpacity onPress={() => setshowinfo(!showinfo)}>
                 <Ionicons
@@ -63,126 +120,118 @@ const Card = ({data}) => {
 
             <View style={styles.dateview}>
               <View style={styles.cardContent}>
-                <Text style={styles.title}>SRNO</Text>
+                <Text style={styles.title}>Sr Number</Text>
                 <Text style={styles.datatext}>
-                  {data?.student?.SrNumber ? data?.student?.SrNumber : '-'}
+                  {data?.SrNumber ? data?.SrNumber : '-'}
                 </Text>
               </View>
               <View style={styles.cardContent}>
-                <Text style={styles.title}>Roll_No</Text>
+                <Text style={styles.title}>Name</Text>
                 <Text style={styles.datatext}>
-                  {data?.student?.rollnumber ? data?.student?.rollnumber : '-'}
+                  {data?.name ? data?.name : '-'}
                 </Text>
               </View>
               <View style={styles.cardContent}>
-                <Text style={styles.title}>Student_Name</Text>
+                <Text style={styles.title}>Roll Number</Text>
                 <Text style={styles.datatext}>
-                  {data?.student?.name ? data?.student?.name : '-'}
+                  {data?.rollnumber ? data?.rollnumber : '-'}
                 </Text>
               </View>
             </View>
 
             {showinfo && (
               <>
-                <View style={styles.headerdata}>
-                  <Text style={{color: Colors.white}}>Academin Fee</Text>
+                <View style={styles.dateview}>
+                  <View style={styles.cardContent}>
+                    <Text style={styles.title}>Section</Text>
+                    <Text style={styles.datatext}>
+                      {data?.Section ? data?.Section : '-'}
+                    </Text>
+                  </View>
+                  <View style={styles.cardContent}>
+                    <Text style={styles.title}>Class</Text>
+                    <Text style={styles.datatext}>
+                      {data?.name ? data?.name : '-'}
+                    </Text>
+                  </View>
+                  <View style={styles.cardContent}>
+                    <Text style={styles.title}>Addmission_Fee</Text>
+                    <Text style={styles.datatext}>
+                      {data?.admissionfeeStatus == true
+                        ? `Paid (${data?.admissionfee})`
+                        : data?.admissionfee === 0
+                        ? `NO (${data?.admissionfee})`
+                        : `Dues (${data?.admissionfee})`}
+                    </Text>
+                  </View>
                 </View>
 
-                {data?.schollfee?.sort(compareMonths)?.map((data, index) => {
-                  return (
-                    <View style={styles.dateview} key={index}>
-                      <View style={styles.statusview}>
-                        <Text style={styles.title}>
-                          MonthName :
-                          <Text style={styles.datatext}>{data?.MonthName}</Text>
-                        </Text>
-                      </View>
+                <View style={styles.dateview}>
+                  <View style={styles.cardContent}>
+                    <Text style={styles.title}>Registration_Fee</Text>
+                    <Text style={styles.datatext}>
+                      {data?.admissionfeeStatus == true
+                        ? `Paid (${data?.admissionfee})`
+                        : data?.admissionfee === 0
+                        ? `NO (${data?.admissionfee})`
+                        : `Dues (${data?.admissionfee})`}
+                    </Text>
+                  </View>
+                  <View style={styles.cardContent}>
+                    <Text style={styles.title}>Annual_Fee</Text>
+                    <Text style={styles.datatext}>
+                      {data?.AnnualFeeStatus == true
+                        ? `Paid (${data?.AnnualFee})`
+                        : data?.AnnualFee === 0
+                        ? `NO (${data?.AnnualFee})`
+                        : `Dues (${data?.AnnualFee})`}
+                    </Text>
+                  </View>
+                  <View style={styles.cardContent}>
+                    <Text style={styles.title}>Addmission_Fee</Text>
+                    <Text style={styles.datatext}>
+                      {data?.admissionfeeStatus == true
+                        ? `Paid (${data?.admissionfee})`
+                        : data?.admissionfee === 0
+                        ? `NO (${data?.admissionfee})`
+                        : `Dues (${data?.admissionfee})`}
+                    </Text>
+                  </View>
+                </View>
 
-                      <View style={styles.statusview}>
-                        <Text style={styles.title}>
-                          Status :
-                          <Text style={styles.datatext}>
-                            {data?.paidStatus
-                              ? `Paid (${data?.PerMonthFee})`
-                              : `Dues (${data?.PerMonthFee})`}
-                          </Text>
-                        </Text>
-                      </View>
-                    </View>
-                  );
-                })}
+                <View style={styles.dateview}>
+                  <View style={styles.cardContent}>
+                    <Text style={styles.title}>Academy_Fee</Text>
+                    <Text style={styles.datatext}>{data?.studentTotalFee}</Text>
+                  </View>
+                  <View style={styles.cardContent}>
+                    <Text style={styles.title}>Paid_Fee</Text>
+                    <Text style={styles.datatext}>{data?.paidfee}</Text>
+                  </View>
+                  <View style={styles.cardContent}>
+                    <Text style={styles.title}>Hostel_Fee</Text>
+                    <Text style={styles.datatext}>{data?.TotalHostelFee}</Text>
+                  </View>
+                </View>
 
-                {data?.student?.hostal && (
-                  <>
-                    <View style={styles.headerdata}>
-                      <Text style={{color: Colors.white}}>Hostel Fee</Text>
-                    </View>
-
-                    {data?.hostelfee
-                      ?.sort(compareMonths)
-                      ?.map((data, index) => {
-                        return (
-                          <View style={styles.dateview} key={index}>
-                            <View style={styles.statusview}>
-                              <Text style={styles.title}>
-                                MonthName :
-                                <Text style={styles.datatext}>
-                                  {data?.MonthName}
-                                </Text>
-                              </Text>
-                            </View>
-
-                            <View style={styles.statusview}>
-                              <Text style={styles.title}>
-                                Status :
-                                <Text style={styles.datatext}>
-                                  {data?.paidStatus
-                                    ? `Paid ${data?.PerMonthFee}`
-                                    : `Dues (${data?.PerMonthFee})`}
-                                </Text>
-                              </Text>
-                            </View>
-                          </View>
-                        );
-                      })}
-                  </>
-                )}
-
-                {data?.student?.Transport && (
-                  <>
-                    <View style={styles.headerdata}>
-                      <Text style={{color: Colors.white}}>Transport Fee</Text>
-                    </View>
-
-                    {data?.transportfee
-                      ?.sort(compareMonths)
-                      ?.map((data, index) => {
-                        return (
-                          <View style={styles.dateview} key={index}>
-                            <View style={styles.statusview}>
-                              <Text style={styles.title}>
-                                MonthName :
-                                <Text style={styles.datatext}>
-                                  {data?.MonthName}
-                                </Text>
-                              </Text>
-                            </View>
-
-                            <View style={styles.statusview}>
-                              <Text style={styles.title}>
-                                Status :
-                                <Text style={styles.datatext}>
-                                  {data?.paidStatus
-                                    ? `Paid (${data?.PerMonthFee})`
-                                    : `Dues (${data?.PerMonthFee})`}
-                                </Text>
-                              </Text>
-                            </View>
-                          </View>
-                        );
-                      })}
-                  </>
-                )}
+                <View style={styles.dateview}>
+                  <View style={styles.cardContent}>
+                    <Text style={styles.title}>Paid_Fee</Text>
+                    <Text style={styles.datatext}>{data?.HostelPaidFee}</Text>
+                  </View>
+                  <View style={styles.cardContent}>
+                    <Text style={styles.title}>Transport_Fee</Text>
+                    <Text style={styles.datatext}>
+                      {data?.TransportTotalHostelFee}
+                    </Text>
+                  </View>
+                  <View style={styles.cardContent}>
+                    <Text style={styles.title}>Paid_Fee</Text>
+                    <Text style={styles.datatext}>
+                      {data?.TransportPaidFee}
+                    </Text>
+                  </View>
+                </View>
               </>
             )}
           </View>
@@ -195,14 +244,8 @@ const Card = ({data}) => {
 export default Card;
 
 const styles = StyleSheet.create({
-  statusview: {
-    width: '50%',
-    marginBottom: deviceHeight * 0.01,
-    display:"flex",
-    alignItems:"center"
-  },
   cardContent: {
-    width: '30%',
+    width: '25%',
     marginBottom: deviceHeight * 0.01,
   },
   dateview: {
@@ -213,6 +256,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 14,
     color: Colors.black,
+    fontWeight: 'bold',
   },
   datatext: {
     fontSize: 17,
@@ -264,7 +308,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 17,
   },
-
   headerarray: {
     display: 'flex',
     flexDirection: 'row',
@@ -275,20 +318,6 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.primary,
     borderTopLeftRadius: deviceWidth * 0.02,
     borderTopRightRadius: deviceWidth * 0.02,
-    paddingVertical: deviceWidth * 0.02,
-    paddingHorizontal: deviceWidth * 0.02,
-  },
-
-  headerdata: {
-    display: 'flex',
-    flexDirection: 'row',
-    width: '100%',
-    marginBottom: 10,
-    display: 'flex',
-    justifyContent: 'space-between',
-    backgroundColor: Colors.primary,
-    // borderTopLeftRadius: deviceWidth * 0.02,
-    // borderTopRightRadius: deviceWidth * 0.02,
     paddingVertical: deviceWidth * 0.02,
     paddingHorizontal: deviceWidth * 0.02,
   },

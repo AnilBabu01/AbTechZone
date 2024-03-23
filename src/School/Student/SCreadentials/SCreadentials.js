@@ -30,6 +30,7 @@ import DownloadStudentData from '../../../Component/school/DownloadExcel';
 import BackHeader from '../../../Component/Header/BackHeader';
 import StudentFilter from '../../../Component/school/StudentFilter';
 import moment from 'moment';
+
 const SCreadentials = ({navigation}) => {
   const dispatch = useDispatch();
   const [isdata, setisdata] = useState([]);
@@ -104,6 +105,7 @@ const SCreadentials = ({navigation}) => {
     if (student) {
       convertdata(student);
       setisdata(student);
+      setShowModal(false)
     }
     if (user) {
       setuserdata(user);
@@ -178,8 +180,15 @@ const SCreadentials = ({navigation}) => {
         )}
 
         <DownloadStudentData
-          enquiry={student}
-          filename={'StudentList'}
+          enquiry={
+            student &&
+            student?.map(item => ({
+              Session: item?.Session,
+              SrNumber: item?.SrNumber,
+              Password: userdata?.data?.CredentailsData?.Studentpassword,
+            }))
+          }
+          filename={'StudentCreadentialsList'}
           visible={showDocOptions}
           hideModal={setShowDocOptions}
         />

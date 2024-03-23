@@ -209,7 +209,7 @@ const UpdateOtherFee = () => {
               </View>
             </View>
           </View>
-          <View style={{marginBottom: 20}}>
+          <View style={{marginBottom: 50}}>
             <RNButton
               loading={loading}
               onPress={submit}

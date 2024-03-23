@@ -235,7 +235,7 @@ const IdCardView = ({navigation}) => {
       <style>
         .mainland {
           border: 1px solid #093959;
-          width: auto;
+          width: '50%;
           margin-bottom: 2.5%;
           margin: 1%;
         }
@@ -294,6 +294,7 @@ const IdCardView = ({navigation}) => {
         }
         .maindivvvv {
           display: flex;
+          flex-wrap: wrap;
         }
       </style>
     </head>
@@ -374,7 +375,7 @@ const IdCardView = ({navigation}) => {
   const convertHtmlToPdf = async html => {
     const options = {
       html,
-      fileName: `IDCard`,
+      fileName: `IDCardList`,
       directory: 'Documents',
     };
 
@@ -384,7 +385,7 @@ const IdCardView = ({navigation}) => {
 
   const copyToDownloadFolder = async pdfPath => {
     const downloadFolderPath = RNFS.DownloadDirectoryPath;
-    const destinationPath = `${downloadFolderPath}/IDCard.pdf`;
+    const destinationPath = `${downloadFolderPath}/IDCardList.pdf`;
 
     await RNFS.copyFile(pdfPath, destinationPath);
     return destinationPath;
@@ -418,7 +419,7 @@ const IdCardView = ({navigation}) => {
 
     const results = await RNHTMLtoPDF.convert({
       html: htmlContent,
-      fileName: `IDCard`,
+      fileName: `IDCardList`,
       base64: true,
     });
     if (results) {

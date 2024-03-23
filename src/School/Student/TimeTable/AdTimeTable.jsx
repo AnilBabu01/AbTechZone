@@ -16,6 +16,7 @@ import {GetsSubject} from '../../../redux/action/commanAction';
 import {useSelector} from 'react-redux';
 import {getCurrentTime, handleTime} from '../../../utils/functions';
 import RNBDropDown from '../../../Component/RNBDropDown';
+
 const daylist = [
   {label: 'Monday', value: 'Monday'},
   {label: 'Tuesday', value: 'Tuesday'},
@@ -25,6 +26,7 @@ const daylist = [
   {label: 'Saturday', value: 'Saturday'},
   {label: 'Sunday', value: 'Sunday'},
 ];
+
 const AdTimeTable = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -39,8 +41,8 @@ const AdTimeTable = () => {
   const [sectionlist, setsectionlist] = useState([]);
   const [EmpList, setEmpList] = useState([]);
   const [SubjectList, setSubjectList] = useState([]);
-  const {sections} = useSelector(state => state.GetSection);
   const [loading, setloading] = useState(false);
+  const {sections} = useSelector(state => state.GetSection);
   const {course} = useSelector(state => state.getcourse);
   const {Classsubject} = useSelector(state => state.GetClassSubject);
   const {employees} = useSelector(state => state.getemp);
@@ -206,12 +208,14 @@ const AdTimeTable = () => {
               </View>
             </FlexRowWrapper>
           </View>
-          <RNButton
-            loading={loading}
-            onPress={submit}
-            style={{marginHorizontal: 15, marginTop: 20, marginBottom: 10}}>
-            Save & Next
-          </RNButton>
+          <View style={{marginBottom: 50}}>
+            <RNButton
+              loading={loading}
+              onPress={submit}
+              style={{marginHorizontal: 15, marginTop: 20, marginBottom: 10}}>
+              Save & Next
+            </RNButton>
+          </View>
         </View>
       </ScrollView>
     </View>

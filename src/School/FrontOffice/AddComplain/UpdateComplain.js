@@ -42,12 +42,9 @@ const UpdateComplain = () => {
       setsms('Updating...');
       const data = {
         id: isdata?.id,
-        EnquiryDate: moment(enquirydate, 'YYYY-MM-DD'),
-        StudentName: studentname,
-        StudentNumber: studentPhone,
-        StudentEmail: email,
-        Address: address,
-        Course: coursename,
+        ComplainDate: moment(enquirydate, 'YYYY-MM-DD'),
+        ComplainerName: studentname,
+        ComplainerMobile: studentPhone,
         Comment: comment,
       };
       serverInstance('coaching/enquiry', 'put', data).then(res => {
@@ -107,16 +104,13 @@ const UpdateComplain = () => {
   useEffect(() => {
     if (route.params?.data) {
       setisdata(route.params?.data);
-      const d = new Date(route.params?.data?.EnquiryDate);
+      const d = new Date(route.params?.data?.ComplainDate);
       let newdate = `${d.getDate()}/${(d.getMonth() + 1)
         .toString()
         .padStart(2, '0')}/${d.getFullYear()}`;
       setenquirydate(newdate);
-      setstudentname(route.params?.data?.StudentName);
-      setstudentPhone(route.params?.data?.StudentNumber);
-      setemail(route.params?.data?.StudentEmail);
-      setaddress(route.params?.data?.Address);
-      setcoursename(route.params?.data?.Course);
+      setstudentname(route.params?.data?.ComplainerName);
+      setstudentPhone(route.params?.data?.ComplainerMobile);
       setcomment(route.params?.data?.Comment);
     }
   }, []);
@@ -124,7 +118,7 @@ const UpdateComplain = () => {
     <View>
       <BackHeader title={'Update Complain'} />
       <ScrollView>
-      <View style={styles.enquirymainview}>
+        <View style={styles.enquirymainview}>
           <View style={styles.dateview}>
             <View
               style={{
@@ -189,7 +183,7 @@ const UpdateComplain = () => {
               loading={loading}
               onPress={submit}
               style={{marginHorizontal: 20, marginTop: 20}}>
-              Save & Next
+              Update & Next
             </RNButton>
           </View>
         </View>

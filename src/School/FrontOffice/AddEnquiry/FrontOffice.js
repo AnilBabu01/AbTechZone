@@ -15,10 +15,9 @@ import RNTable from '../../../Component/RNTable';
 import DownloadExcel from '../../../Component/school/DownloadExcel';
 import EnquiryFilter from '../../../Component/school/EnquiryFilter';
 import BackHeader from '../../../Component/Header/BackHeader';
-
+import moment from 'moment';
 const FrontOffice = ({navigation}) => {
   const dispatch = useDispatch();
-  const [openModel, setopenModel] = useState(false);
   const [enquirylist, setenquirylist] = useState('');
   const [Tabledata, setTabledata] = useState([]);
   const [viewdata, setviewdata] = useState(false);
@@ -90,7 +89,7 @@ const FrontOffice = ({navigation}) => {
         enquiryTableList[0].items.push({id: index, value: index + 1});
         enquiryTableList[1].items.push({
           id: index,
-          value: item.EnquiryDate,
+          value: moment(item?.EnquiryDate).format('DD/MM/YYYY'),
         });
 
         enquiryTableList[2].items.push({
@@ -144,6 +143,7 @@ const FrontOffice = ({navigation}) => {
     if (enquiry) {
       setenquirylist(enquiry);
       convertdata(enquiry);
+      setShowModal(false);
     }
   }, [enquiry]);
 
@@ -154,7 +154,7 @@ const FrontOffice = ({navigation}) => {
 
   return (
     <View style={{flex: 1}}>
-     <BackHeader title={'Add Enquiry'}/>
+      <BackHeader title={'Add Enquiry'} />
       <View style={styles.headerTitleContainer}>
         <View>
           <Text style={styles.secondaryTitle}>Enquiry Management</Text>

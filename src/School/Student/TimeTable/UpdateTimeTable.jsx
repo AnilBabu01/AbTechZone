@@ -221,12 +221,14 @@ const UpdateTimeTable = () => {
               </View>
             </FlexRowWrapper>
           </View>
-          <RNButton
-            loading={loading}
-            onPress={submit}
-            style={{marginHorizontal: 15, marginTop: 20, marginBottom: 10}}>
-            Update & Next
-          </RNButton>
+          <View style={{marginBottom: 50}}>
+            <RNButton
+              loading={loading}
+              onPress={submit}
+              style={{marginHorizontal: 15, marginTop: 20, marginBottom: 10}}>
+              Update & Next
+            </RNButton>
+          </View>
         </View>
       </ScrollView>
     </View>

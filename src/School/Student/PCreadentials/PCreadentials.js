@@ -120,6 +120,7 @@ const PCreadentials = ({navigation}) => {
     if (student) {
       convertdata(student);
       setisdata(student);
+      setShowModal(false);
     }
     if (user) {
       setuserdata(user);
@@ -194,8 +195,17 @@ const PCreadentials = ({navigation}) => {
         )}
 
         <DownloadStudentData
-          enquiry={student}
-          filename={'StudentList'}
+          enquiry={
+            student &&
+            student?.map(item => ({
+              Session: item?.Session,
+              StudentName: item?.name,
+              SrNumber: item?.SrNumber,
+              ParentLogin: item?.fathersPhoneNo,
+              Password: userdata?.data?.CredentailsData?.Parentpassword,
+            }))
+          }
+          filename={'ParentCreadentialList'}
           visible={showDocOptions}
           hideModal={setShowDocOptions}
         />

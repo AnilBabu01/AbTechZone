@@ -19,6 +19,7 @@ import DownloadStudentData from '../../../Component/school/DownloadStudentData';
 import BackHeader from '../../../Component/Header/BackHeader';
 import SearchReceipt from '../../../Component/school/SearchReceipt';
 import {ActivityIndicator, MD2Colors} from 'react-native-paper';
+
 const PrintReceipt = () => {
   const dispatch = useDispatch();
   const [isdata, setisdata] = useState([]);

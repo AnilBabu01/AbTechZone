@@ -1,10 +1,8 @@
-import {StyleSheet, View, ScrollView, TextInput, Text} from 'react-native';
-import React, {useState, useEffect} from 'react';
+import {StyleSheet, View, ScrollView, Text} from 'react-native';
+import React, {useState} from 'react';
 import {Height, Width} from '../../../utils/responsive';
-import {Dropdown} from 'react-native-element-dropdown';
-import {getenquiries} from '../../../redux/action/coachingAction';
-import {getcourse} from '../../../redux/action/commanAction';
-import {useDispatch, useSelector} from 'react-redux';
+import {getFILTComplain} from '../../../redux/action/commanAction';
+import {useDispatch} from 'react-redux';
 import {serverInstance} from '../../../API/ServerInstance';
 import Toast from 'react-native-toast-message';
 import RNButton from '../../../Component/RNButton';
@@ -17,89 +15,53 @@ import {FlexRowWrapper} from '../../../Component/FlexRowWrapper';
 import {useNavigation} from '@react-navigation/native';
 import moment from 'moment';
 import BackHeader from '../../../Component/Header/BackHeader';
-import RNBDropDown from '../../../Component/RNBDropDown';
+
 const AddComplain = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
-  const [sms, setsms] = useState('');
   const [loader, setloader] = useState(false);
   const [enquirydate, setenquirydate] = useState(getTodaysDate());
-  const [coursename, setcoursename] = useState('');
-  const [courselist, setcourselist] = useState([{label: null, value: ''}]);
   const [studentname, setstudentname] = useState('');
   const [studentPhone, setstudentPhone] = useState('');
-  const [email, setemail] = useState('');
-  const [address, setaddress] = useState('');
   const [comment, setcomment] = useState('');
-  const {enquiry, error, loading} = useSelector(state => state.addenqury);
-  const {course} = useSelector(state => state.getcourse);
 
   const submit = () => {
     if (enquirydate) {
       setloader(true);
-      setsms('Adding...');
+
       const data = {
-        EnquiryDate: moment(enquirydate, 'YYYY-MM-DD'),
-        StudentName: studentname,
-        StudentNumber: studentPhone,
-        StudentEmail: email,
-        Address: address,
-        Course: coursename,
+        ComplainDate: moment(enquirydate, 'YYYY-MM-DD'),
+        ComplainerName: studentname,
+        ComplainerMobile: studentPhone,
         Comment: comment,
       };
-      serverInstance('coaching/enquiry', 'post', data).then(res => {
+      serverInstance('comman/complain', 'post', data).then(res => {
         if (res?.status) {
           setloader(false);
-          setsms('');
+
           Toast.show({
             type: 'success',
             text1: 'Success',
             text2: res?.msg,
           });
-          dispatch(getenquiries());
+          dispatch(getFILTComplain('', '', ''));
           navigation.goBack();
         }
 
         if (res?.status === false) {
           setloader(false);
-          setsms('');
+
           Toast.show({
             type: 'error',
             text1: 'Error',
             text2: res?.msg,
           });
-          dispatch(getenquiries());
         }
       });
     } else {
-      setsms('');
       setloader(false);
     }
   };
-
-  useEffect(() => {
-    if (enquiry) {
-      dispatch(getenquiries());
-      setsms('');
-      setloader(false);
-    }
-  }, [enquiry]);
-  useEffect(() => {
-    dispatch(getcourse());
-  }, []);
-
-  useEffect(() => {
-    if (course) {
-      setcourselist(course);
-    }
-  }, [course]);
-
-  useEffect(() => {
-    if (error) {
-      setloader(false);
-      setsms('');
-    }
-  }, [error]);
 
   return (
     <View>
@@ -167,7 +129,7 @@ const AddComplain = () => {
 
           <View style={{marginBottom: deviceHeight * 0.08}}>
             <RNButton
-              loading={loading}
+              loading={loader}
               onPress={submit}
               style={{marginHorizontal: 20, marginTop: 20}}>
               Save & Next

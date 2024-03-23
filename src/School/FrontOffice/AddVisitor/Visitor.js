@@ -4,7 +4,7 @@ import {Height, Width} from '../../../utils/responsive';
 import CardEnquiry from './CardEnquiry';
 import Header from '../../../Component/Header/Header';
 import {primary} from '../../../utils/Colors';
-import {getenquiries} from '../../../redux/action/coachingAction';
+import {getVisitor} from '../../../redux/action/commanAction';
 import {AnimatedFAB} from 'react-native-paper';
 import {Colors} from '../../../utils/Colors';
 import {useDispatch, useSelector} from 'react-redux';
@@ -13,11 +13,10 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import RNTable from '../../../Component/RNTable';
 import DownloadExcel from '../../../Component/school/DownloadExcel';
-import EnquiryFilter from '../../../Component/school/EnquiryFilter';
+import EnquiryFilter from '../../../Component/school/VistorFilter';
 import BackHeader from '../../../Component/Header/BackHeader';
-
+import moment from 'moment';
 const Visitor = ({navigation}) => {
-
   const dispatch = useDispatch();
   const [openModel, setopenModel] = useState(false);
   const [enquirylist, setenquirylist] = useState('');
@@ -25,7 +24,7 @@ const Visitor = ({navigation}) => {
   const [viewdata, setviewdata] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [showDocOptions, setShowDocOptions] = useState(false);
-  const {enquiry, loading} = useSelector(state => state.enquiry);
+  const {loading, Visitors} = useSelector(state => state.getVisitor);
 
   const enquiryTableList = [
     {
@@ -35,26 +34,38 @@ const Visitor = ({navigation}) => {
       align: 'center',
     },
     {
-      title: 'Enquiry_Date',
+      title: 'Visitor_In_Date',
       items: [],
       width: 0.33,
       align: 'center',
     },
     {
-      title: 'Student_Name',
+      title: 'Visitor_In_Time',
       items: [],
       width: 0.33,
       align: 'center',
     },
     {
-      title: 'Student_Number',
+      title: 'Visitor_Out_Date',
       items: [],
       width: 0.33,
       align: 'center',
     },
 
     {
-      title: 'Student_Email',
+      title: 'Visitor_Out_Time',
+      items: [],
+      width: 0.33,
+      align: 'center',
+    },
+    {
+      title: 'Visitor_Name',
+      items: [],
+      width: 0.33,
+      align: 'center',
+    },
+    {
+      title: 'Visitor_Mobile',
       items: [],
       width: 0.33,
       align: 'center',
@@ -66,17 +77,12 @@ const Visitor = ({navigation}) => {
       align: 'center',
     },
     {
-      title: 'Class',
+      title: 'Vehicle_No',
       items: [],
       width: 0.33,
       align: 'center',
     },
-    {
-      title: 'Comment',
-      items: [],
-      width: 0.33,
-      align: 'center',
-    },
+
     {
       title: 'Action',
       items: [],
@@ -87,39 +93,44 @@ const Visitor = ({navigation}) => {
 
   const convertdata = async () => {
     await Promise.all(
-      enquiry?.map((item, index) => {
+      Visitors?.map((item, index) => {
         enquiryTableList[0].items.push({id: index, value: index + 1});
         enquiryTableList[1].items.push({
           id: index,
-          value: item.EnquiryDate,
+          value: moment(item?.VisitDateTime).format('DD/MM/YYYY'),
         });
-
         enquiryTableList[2].items.push({
           id: index,
-          value: item.StudentName,
+          value: item.VisitTime,
         });
         enquiryTableList[3].items.push({
           id: index,
-          value: item.StudentNumber,
+          value: item?.VisitDateOutTime
+            ? moment(item?.VisitDateOutTime).format('DD/MM/YYYY')
+            : '-',
         });
         enquiryTableList[4].items.push({
           id: index,
-          value: item.StudentEmail,
+          value: item.VisitOutTime,
         });
         enquiryTableList[5].items.push({
           id: index,
-          value: item.Address,
+          value: item.VisitorName,
         });
         enquiryTableList[6].items.push({
           id: index,
-          value: item.Course,
+          value: item.VisitorMobile,
         });
         enquiryTableList[7].items.push({
           id: index,
-          value: item.Comment,
+          value: item.Address,
+        });
+        enquiryTableList[8].items.push({
+          id: index,
+          value: item.VehicleNo,
         });
 
-        enquiryTableList[8].items.push({
+        enquiryTableList[9].items.push({
           id: index,
           value: (
             <Ionicons
@@ -131,31 +142,31 @@ const Visitor = ({navigation}) => {
           Deleteicon: (
             <Ionicons name="trash-outline" color={Colors.red} size={18.3} />
           ),
-          deleteUrl: 'coaching/enquiry',
+          deleteUrl: 'comman/visitor',
           allDetails: item,
           redirect: 'UpdateVisitor',
         });
       }),
     );
     setTabledata(enquiryTableList);
-    console.log('convets data is', enquiry);
   };
 
   useEffect(() => {
-    if (enquiry) {
-      setenquirylist(enquiry);
-      convertdata(enquiry);
+    if (Visitors) {
+      setenquirylist(Visitors);
+      convertdata(Visitors);
+      setShowModal(false);
     }
-  }, [enquiry]);
+  }, [Visitors]);
 
   useEffect(() => {
-    dispatch(getenquiries());
+    dispatch(getVisitor('', '', ''));
   }, []);
   const {fabStyle} = styles;
 
   return (
     <View style={{flex: 1}}>
-     <BackHeader title={'Add Visitor'}/>
+      <BackHeader title={'Visitor'} />
       <View style={styles.headerTitleContainer}>
         <View>
           <Text style={styles.secondaryTitle}>Visitor Management</Text>
@@ -219,8 +230,8 @@ const Visitor = ({navigation}) => {
         </>
       )}
       <DownloadExcel
-        enquiry={enquiry}
-        filename={'EnquiryList'}
+        enquiry={Visitors}
+        filename={'VisitorList'}
         visible={showDocOptions}
         hideModal={setShowDocOptions}
       />

@@ -38,7 +38,7 @@ import RNTable from '../../../Component/RNTable';
 import DownloadStudentData from '../../../Component/school/DownloadExcel';
 import BackHeader from '../../../Component/Header/BackHeader';
 import {ActivityIndicator, MD2Colors} from 'react-native-paper';
-
+import StudentFilter from '../../../Component/school/StudentFilter';
 const CharacterC = ({navigation}) => {
   const dispatch = useDispatch();
   const [isdata, setisdata] = useState([]);
@@ -223,6 +223,7 @@ const CharacterC = ({navigation}) => {
     if (student) {
       convertdata(student);
       setisdata(student);
+      setShowModal(false);
     }
   }, [student]);
 

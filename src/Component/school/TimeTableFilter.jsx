@@ -13,7 +13,8 @@ import {Colors} from '../../utils/Colors';
 import {Height, Width} from '../../utils/responsive';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useSelector, useDispatch} from 'react-redux';
-import {Dropdown} from 'react-native-element-dropdown';
+import RNBDropDown from '../RNBDropDown';
+import {GetsSubject} from '../../redux/action/commanAction';
 
 const daylist = [
   {label: 'Monday', value: 'Monday'},
@@ -28,26 +29,26 @@ const TimeTableFilter = ({showModal, setShowModal}) => {
   const dispatch = useDispatch();
   const [classId, setclassId] = useState('');
   const [empID, setempID] = useState('');
-  const [courseorclass, setcourseorclass] = useState('');
+  const [courseorclass, setcourseorclass] = useState('Monday');
   const [courselist, setcourselist] = useState([]);
   const [EmpList, setEmpList] = useState([]);
   const {course} = useSelector(state => state.getcourse);
   const {sections} = useSelector(state => state.GetSection);
   const {employees} = useSelector(state => state.getemp);
   const {container, innerContainer, childContainer, mainContainer} = styles;
-  const {loading} = useSelector(state => state.getstudent);
+  const {loading} = useSelector(state => state.GetSubject);
+
   useEffect(() => {
-  
     if (course) {
       setcourselist(course);
     }
     if (employees) {
       setEmpList(employees);
     }
-  }, [sections,course, employees]);
+  }, [sections, course, employees]);
 
   const onSubmit = () => {
-    dispatch(GetsSubject(classId, empID));
+    dispatch(GetsSubject(classId, empID, courseorclass));
   };
 
   return (
@@ -84,117 +85,47 @@ const TimeTableFilter = ({showModal, setShowModal}) => {
               showsVerticalScrollIndicator={false}>
               <View
                 style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  flexWrap: 'wrap',
-                  gap: deviceWidth * 0.04,
                   marginTop: deviceHeight * 0.02,
                 }}>
                 <View style={styles.rowwrapper}>
                   <View style={{width: '45%'}}>
-                    <View style={{marginHorizontal: deviceWidth * 0.01}}>
-                      <Text
-                        style={{
-                          fontSize: 14,
-                          fontWeight: '600',
-                          lineHeight: 19,
-                        }}>
-                        Class
-                      </Text>
-                      <Dropdown
-                        style={styles.dropstyle}
-                        placeholderStyle={styles.placeholderStyle}
-                        selectedTextStyle={styles.selectedTextStyle}
-                        inputSearchStyle={styles.inputSearchStyle}
-                        iconStyle={styles.iconStyle}
-                        data={
-                          courselist &&
-                          courselist?.map(item => ({
-                            label: `${item?.coursename}`,
-                            value: `${item?.coursename}`,
-                          }))
-                        }
-                        search
-                        maxHeight={300}
-                        labelField="label"
-                        valueField="value"
-                        placeholder="Select Class"
-                        searchPlaceholder="Search..."
-                        value={classId}
-                        onChange={item => {
-                          setclassId(item.value);
-                        }}
-                      />
-                    </View>
+                    <RNBDropDown
+                      label="Class"
+                      value={classId}
+                      OptionsList={
+                        courselist &&
+                        courselist?.map(item => ({
+                          label: `${item?.coursename}`,
+                          value: `${item?.coursename}`,
+                        }))
+                      }
+                      onChange={data => setclassId(data.value)}
+                    />
                   </View>
 
-                  <View style={{width: '49%', marginLeft: 20}}>
-                    <View style={{marginHorizontal: deviceWidth * 0.01}}>
-                      <Text
-                        style={{
-                          fontSize: 14,
-                          fontWeight: '600',
-                          lineHeight: 19,
-                        }}>
-                        Teacher
-                      </Text>
-                      <Dropdown
-                        style={styles.dropstyle}
-                        placeholderStyle={styles.placeholderStyle}
-                        selectedTextStyle={styles.selectedTextStyle}
-                        inputSearchStyle={styles.inputSearchStyle}
-                        iconStyle={styles.iconStyle}
-                        data={
-                          EmpList &&
-                          EmpList?.map(item => ({
-                            label: `${item?.name} ${item?.empId}`,
-                            value: `${item?.id}`,
-                          }))
-                        }
-                        search
-                        maxHeight={300}
-                        labelField="label"
-                        valueField="value"
-                        placeholder="Select Teacher"
-                        searchPlaceholder="Search..."
-                        value={empID}
-                        onChange={item => {
-                          setempID(item.value);
-                        }}
-                      />
-                    </View>
+                  <View style={{width: '49%'}}>
+                    <RNBDropDown
+                      label="Teacher"
+                      value={empID}
+                      OptionsList={
+                        EmpList &&
+                        EmpList?.map(item => ({
+                          label: `${item?.name} ${item?.empId}`,
+                          value: `${item?.id}`,
+                        }))
+                      }
+                      onChange={data => setempID(data.value)}
+                    />
                   </View>
                 </View>
 
-                <View style={{width: '95%'}}>
-                  <View style={{marginHorizontal: deviceWidth * 0.01}}>
-                    <Text
-                      style={{
-                        fontSize: 14,
-                        fontWeight: '600',
-                        lineHeight: 19,
-                      }}>
-                      All Day
-                    </Text>
-                    <Dropdown
-                      style={styles.dropstyleFullScreen}
-                      placeholderStyle={styles.placeholderStyle}
-                      selectedTextStyle={styles.selectedTextStyle}
-                      inputSearchStyle={styles.inputSearchStyle}
-                      iconStyle={styles.iconStyle}
-                      data={daylist}
-                      search
-                      maxHeight={300}
-                      labelField="label"
-                      valueField="value"
-                      placeholder="Select Day"
-                      searchPlaceholder="Search..."
-                      value={courseorclass}
-                      onChange={item => {
-                        setcourseorclass(item.value);
-                      }}
-                    />
-                  </View>
+                <View style={{width: '100%'}}>
+                  <RNBDropDown
+                    label=" All Day"
+                    value={courseorclass}
+                    OptionsList={daylist}
+                    onChange={data => setcourseorclass(data.value)}
+                  />
                 </View>
               </View>
             </ScrollView>

@@ -19,16 +19,18 @@ import {Dropdown} from 'react-native-element-dropdown';
 import {handleDate, getTodaysDate} from '../../utils/functions';
 import {getPrintReceipt} from '../../redux/action/commanAction';
 import moment from 'moment';
+import RNBDropDown from '../RNBDropDown';
 
 const SearchReceipt = ({showModal, setShowModal}) => {
   const dispatch = useDispatch();
-  const [fromdate, setfromdate] = useState(getTodaysDate());
-  const [todate, settodate] = useState(getTodaysDate());
+  const [fromdate, setfromdate] = useState('');
+  const [todate, settodate] = useState();
   const [sno, setsno] = useState('');
-  //   const [rollnumber, setrollnumber] = useState('');
   const [sessionname, setsessionname] = useState('');
+  const [rollnumber, setrollnumber] = useState('');
   const [sectionname, setsectionname] = useState('NONE');
   const [scoursename, setscoursename] = useState('');
+  const [sstudent, setsstudent] = useState('');
   const [courselist, setcourselist] = useState([]);
   const [sectionlist, setsectionlist] = useState([]);
   const [sessionList, setsessionList] = useState([]);
@@ -40,21 +42,27 @@ const SearchReceipt = ({showModal, setShowModal}) => {
   const {loading} = useSelector(state => state.getReceiptPrint);
 
   const onSubmit = () => {
-    var momentfromdate = moment(fromdate, 'DD/MM/YYYY');
-    var newadminssiondate = momentfromdate.format('YYYY-MM-DD');
-    var momenttodate = moment(todate, 'DD/MM/YYYY');
-    var newDateOfBirth = momenttodate.format('YYYY-MM-DD');
+    let formattedDateStr = '';
+    let todateDateStr = '';
+    if (fromdate) {
+      const [day, month, year] = fromdate?.split('/');
+      formattedDateStr = fromdate ? `${year}-${month}-${day}` : '';
+    }
+    if (todate) {
+      const [day1, month1, year1] = todate?.split('/');
+      todateDateStr = todate ? `${year1}-${month1}-${day1}` : '';
+    }
 
     dispatch(
       getPrintReceipt(
-        newadminssiondate,
+        formattedDateStr,
         scoursename,
-        '',
-        '',
+        sstudent,
+        rollnumber,
         sessionname,
         sectionname,
         sno,
-        newDateOfBirth,
+        todateDateStr,
       ),
     );
   };
@@ -106,7 +114,7 @@ const SearchReceipt = ({showModal, setShowModal}) => {
               paddingBottom: deviceHeight * 0.03,
             }}>
             <ScrollView
-              style={{height: deviceHeight * 0.4}}
+              style={{height: deviceHeight * 0.7}}
               showsVerticalScrollIndicator={false}>
               <View
                 style={{
@@ -133,136 +141,67 @@ const SearchReceipt = ({showModal, setShowModal}) => {
                   </View>
                 </View>
                 <View style={styles.rowwrapper}>
-                  <View style={{width: '45%'}}>
-                    <View style={{marginHorizontal: deviceWidth * 0.01}}>
-                      <Text
-                        style={{
-                          fontSize: 14,
-                          fontWeight: '600',
-                          lineHeight: 19,
-                        }}>
-                        Session
-                      </Text>
-                      <Dropdown
-                        style={styles.dropstyle}
-                        placeholderStyle={styles.placeholderStyle}
-                        selectedTextStyle={styles.selectedTextStyle}
-                        inputSearchStyle={styles.inputSearchStyle}
-                        iconStyle={styles.iconStyle}
-                        data={
-                          sessionList &&
-                          sessionList?.map(item => ({
-                            label: `${item?.Session}`,
-                            value: `${item?.Session}`,
-                          }))
-                        }
-                        search
-                        maxHeight={300}
-                        labelField="label"
-                        valueField="value"
-                        placeholder="Select Session"
-                        searchPlaceholder="Search..."
-                        value={sessionname}
-                        onChange={item => {
-                          setsessionname(item.value);
-                        }}
-                      />
-                    </View>
+                  <View style={{width: '49.3%'}}>
+                    <RNBDropDown
+                      label="Session"
+                      value={sessionname}
+                      OptionsList={
+                        sessionList &&
+                        sessionList?.map(item => ({
+                          label: `${item?.Session}`,
+                          value: `${item?.Session}`,
+                        }))
+                      }
+                      onChange={data => setsessionname(data.value)}
+                    />
                   </View>
-                  <View
-                    style={{width: '45%', marginBottom: deviceHeight * 0.02}}>
-                    <View style={{marginHorizontal: deviceWidth * 0.01}}>
-                      <Text
-                        style={{
-                          fontSize: 14,
-                          fontWeight: '600',
-                          lineHeight: 19,
-                        }}>
-                        Section
-                      </Text>
-                      <Dropdown
-                        style={styles.dropstyle}
-                        placeholderStyle={styles.placeholderStyle}
-                        selectedTextStyle={styles.selectedTextStyle}
-                        inputSearchStyle={styles.inputSearchStyle}
-                        iconStyle={styles.iconStyle}
-                        data={
-                          sectionlist &&
-                          sectionlist?.map(item => ({
-                            label: `${item?.section}`,
-                            value: `${item?.section}`,
-                          }))
-                        }
-                        search
-                        maxHeight={300}
-                        labelField="label"
-                        valueField="value"
-                        placeholder="Select Section"
-                        searchPlaceholder="Search..."
-                        value={sectionname}
-                        onChange={item => {
-                          setsectionname(item.value);
-                        }}
-                      />
-                    </View>
+                  <View style={{width: '49.3%'}}>
+                    <RNBDropDown
+                      label="Section"
+                      value={sectionname}
+                      OptionsList={
+                        sectionlist &&
+                        sectionlist?.map(item => ({
+                          label: `${item?.section}`,
+                          value: `${item?.section}`,
+                        }))
+                      }
+                      onChange={data => setsectionname(data.value)}
+                    />
                   </View>
                 </View>
                 <View style={styles.rowwrapper}>
-                  <View style={{width: '45%'}}>
-                    <View style={{marginHorizontal: deviceWidth * 0.01}}>
-                      <Text
-                        style={{
-                          fontSize: 14,
-                          fontWeight: '600',
-                          lineHeight: 19,
-                        }}>
-                        Class
-                      </Text>
-                      <Dropdown
-                        style={styles.dropstyle}
-                        placeholderStyle={styles.placeholderStyle}
-                        selectedTextStyle={styles.selectedTextStyle}
-                        inputSearchStyle={styles.inputSearchStyle}
-                        iconStyle={styles.iconStyle}
-                        data={
-                          courselist &&
-                          courselist?.map(item => ({
-                            label: `${item?.coursename}`,
-                            value: `${item?.coursename}`,
-                          }))
-                        }
-                        search
-                        maxHeight={300}
-                        labelField="label"
-                        valueField="value"
-                        placeholder="Select Class"
-                        searchPlaceholder="Search..."
-                        value={scoursename}
-                        onChange={item => {
-                          setscoursename(item.value);
-                        }}
-                      />
-                    </View>
+                  <View style={{width: '49.3%'}}>
+                    <RNBDropDown
+                      label="Class"
+                      value={scoursename}
+                      OptionsList={
+                        courselist &&
+                        courselist?.map(item => ({
+                          label: `${item?.coursename}`,
+                          value: `${item?.coursename}`,
+                        }))
+                      }
+                      onChange={data => setscoursename(data.value)}
+                    />
                   </View>
-                  <View style={{width: '49.3%', marginLeft: 20}}>
+                  <View style={{width: '49.3%'}}>
                     <RNInputField
                       label="Sr No"
                       placeholder="Enter Sr No"
                       value={sno}
                       onChangeText={data => setsno(data)}
-                      keyboardType="number-pad"
                     />
                   </View>
                 </View>
 
-                {/* <View style={styles.rowwrapper}>
+                <View style={styles.rowwrapper}>
                   <View style={{width: '49.3%'}}>
                     <RNInputField
-                      label="Sr No"
-                      placeholder="Enter Sr No"
-                      value={srno}
-                      onChangeText={data => setsrno(data)}
-                      keyboardType="number-pad"
+                      label="Student Name"
+                      placeholder="Enter Name"
+                      value={sstudent}
+                      onChangeText={data => setsstudent(data)}
                     />
                   </View>
                   <View style={{width: '49.3%'}}>
@@ -273,7 +212,7 @@ const SearchReceipt = ({showModal, setShowModal}) => {
                       onChangeText={data => setrollnumber(data)}
                     />
                   </View>
-                </View> */}
+                </View>
               </View>
             </ScrollView>
 

@@ -19,6 +19,8 @@ import {
   GeOtherFees,
   GetsSubject,
   getstudent,
+  getFILTComplain,
+  getVisitor,
 } from '../redux/action/commanAction';
 import {getenquiries} from '../redux/action/coachingAction';
 import {
@@ -138,6 +140,12 @@ const RNTable = ({data, theme, isBorderCurve}) => {
         }
         if (data?.deleteUrl === 'expenses/amounttransfer') {
           dispatch(GetTransferAmmount());
+        }
+        if (data?.deleteUrl === 'comman/complain') {
+          dispatch(getFILTComplain('', '', ''));
+        }
+        if (data?.deleteUrl === 'comman/visitor') {
+          dispatch(getVisitor('', '', ''));
         }
       }
 
@@ -264,7 +272,7 @@ const RNTable = ({data, theme, isBorderCurve}) => {
                     alignItems: item.align,
                     paddingVertical: 8,
                     paddingHorizontal: deviceWidth * (item.width * 0.06),
-                    backgroundColor: Colors.lightGrey
+                    backgroundColor: Colors.lightGrey,
                   },
                   // index % 2 !== 0 && {backgroundColor: Colors.lightGrey},
                 ]}>
@@ -302,7 +310,7 @@ const RNTable = ({data, theme, isBorderCurve}) => {
                     </>
                   ) : (
                     <>
-                      <Text numberOfLines={1} style={{color:Colors.black}}>
+                      <Text numberOfLines={1} style={{color: Colors.black}}>
                         {data?.value}
                       </Text>
                     </>

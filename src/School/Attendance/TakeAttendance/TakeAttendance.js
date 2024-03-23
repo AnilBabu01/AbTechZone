@@ -28,14 +28,13 @@ import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import DownloadStudentAttendance from '../../../Component/school/DownloadExcel';
 import FilterStudentAttendance from '../../../Component/school/FilterStudentAttendance';
 import RNButton from '../../../Component/RNButton';
+import moment from 'moment';
 const TakeAttendance = () => {
   const dispatch = useDispatch();
   const [showModal, setShowModal] = useState(false);
   const [showDocOptions, setShowDocOptions] = useState(false);
   const [attendancedetails, setattendancedetails] = useState([]);
   const {markattendance} = useSelector(state => state.markatten);
-
-  console.log('hfd', markattendance);
 
   function handleItemUpdate(originalItem, key, value) {
     setattendancedetails(
@@ -75,11 +74,11 @@ const TakeAttendance = () => {
           <Text style={styles.secondaryTitle}>Take Attendance</Text>
         </View>
         <View style={{flexDirection: 'row', gap: 10}}>
-          <Pressable
+          {/* <Pressable
             onPress={() => setShowDocOptions(true)}
             style={styles.filterBtnContainer}>
             <FontAwesome6 name="download" color={Colors.primary} size={25} />
-          </Pressable>
+          </Pressable> */}
           <Pressable
             onPress={() => setShowModal(true)}
             style={styles.filterBtnContainer}>
@@ -100,17 +99,37 @@ const TakeAttendance = () => {
                 <View style={styles.connainer}>
                   <View style={styles.card10}>
                     <View style={styles.viewdel}>
-                      <Text>Roll No</Text>
-                      <Text>name</Text>
-                      <Text>Course</Text>
+                      <Text style={{fontWeight: 'bold', color: Colors.black}}>
+                        Date :{' '}
+                        {moment(item?.attendancedate).format('DD/MM/YYYY')}
+                      </Text>
                     </View>
                     <View style={styles.viewdel}>
-                      <Text>{item?.rollnumber}</Text>
-                      <Text>{item?.name}</Text>
-                      <Text>{item?.courseorclass}</Text>
+                      <Text style={{fontWeight: 'bold', color: Colors.black}}>
+                        Roll No
+                      </Text>
+                      <Text style={{fontWeight: 'bold', color: Colors.black}}>
+                        name
+                      </Text>
+                      <Text style={{fontWeight: 'bold', color: Colors.black}}>
+                        Course
+                      </Text>
                     </View>
                     <View style={styles.viewdel}>
-                      <Text>Attendance Status</Text>
+                      <Text style={{fontWeight: 'bold', color: Colors.black}}>
+                        {item?.rollnumber}
+                      </Text>
+                      <Text style={{fontWeight: 'bold', color: Colors.black}}>
+                        {item?.name}
+                      </Text>
+                      <Text style={{fontWeight: 'bold', color: Colors.black}}>
+                        {item?.courseorclass}
+                      </Text>
+                    </View>
+                    <View style={styles.viewdel}>
+                      <Text style={{fontWeight: 'bold', color: Colors.black}}>
+                        Attendance Status
+                      </Text>
                       <TouchableOpacity
                         onPress={() =>
                           handleItemUpdate(item, 'attendaceStatus', false)
@@ -170,7 +189,7 @@ const TakeAttendance = () => {
 
       <DownloadStudentAttendance
         enquiry={attendancedetails}
-        filename={'StudentattendancedetailsList'}
+        filename={'StudentattendaneList'}
         visible={showDocOptions}
         hideModal={setShowDocOptions}
       />

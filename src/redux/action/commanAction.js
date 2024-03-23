@@ -204,6 +204,12 @@ import {
   ALL_TC_REQUEST,
   ALL_TC_SUCCESS,
   ALL_TC_FAIL,
+  ALL_COMPLAIN_REQUEST,
+  ALL_COMPLAIN_SUCCESS,
+  ALL_COMPLAIN_FAIL,
+  ALL_VISITOR_REQUEST,
+  ALL_VISITOR_SUCCESS,
+  ALL_VISITOR_FAIL,
   CLEAR_ERRORS,
 } from '../constants/commanConstants';
 
@@ -2670,6 +2676,64 @@ export const getTC = (scoursename, sessionname, studentname, seno) => async (dis
   } catch (error) {
     dispatch({
       type: ALL_TC_FAIL,
+      payload: error?.response?.data?.msg,
+    });
+  }
+};
+
+
+
+// Get all Enquiry
+export const getFILTComplain =
+  (fromdate, todate, name) => async (dispatch) => {
+    try {
+      let token = await AsyncStorage.getItem('erptoken');
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `${token}`,
+        },
+      };
+      dispatch({ type: ALL_COMPLAIN_REQUEST });
+      let url = `${backendApiUrl}comman/complain?fromdate=${fromdate}&todate=${todate}&name=${name}`;
+      const { data } = await axios.get(url, config);
+
+      dispatch({
+        type: ALL_COMPLAIN_SUCCESS,
+        payload: data?.data,
+      });
+    } catch (error) {
+      dispatch({
+        type: ALL_COMPLAIN_FAIL,
+        payload: error?.response?.data?.msg,
+      });
+    }
+  };
+
+
+  
+// Get all Enquiry
+export const getVisitor =
+(fromdate, todate, name) => async (dispatch) => {
+  try {
+    let token = await AsyncStorage.getItem('erptoken');
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `${token}`,
+      },
+    };
+    dispatch({ type: ALL_VISITOR_REQUEST });
+    let url = `${backendApiUrl}comman/visitor?fromdate=${fromdate}&todate=${todate}&name=${name}`;
+    const { data } = await axios.get(url, config);
+
+    dispatch({
+      type: ALL_VISITOR_SUCCESS,
+      payload: data?.data,
+    });
+  } catch (error) {
+    dispatch({
+      type: ALL_VISITOR_FAIL,
       payload: error?.response?.data?.msg,
     });
   }

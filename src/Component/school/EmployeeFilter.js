@@ -17,7 +17,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useSelector, useDispatch} from 'react-redux';
 import {Dropdown} from 'react-native-element-dropdown';
 import {getEmployee} from '../../redux/action/commanAction';
-
+import RNBDropDown from '../RNBDropDown';
 const EmpStatus = [
   {label: 'Active', value: 'Active'},
   {label: 'On Leave', value: 'On Leave'},
@@ -29,7 +29,7 @@ const EmployeeFilter = ({showModal, setShowModal}) => {
   const [empId, setempId] = useState('');
   const [empdeparment, setempdeparment] = useState('');
   const [empdesination, setempdesination] = useState('');
-  const [status, setstatus] = useState('');
+  const [status, setstatus] = useState('Active');
   const [isdata, setisData] = useState([]);
   const [isdata1, setisdata1] = useState([]);
   const {loading} = useSelector(state => state.getemp);
@@ -82,120 +82,49 @@ const EmployeeFilter = ({showModal, setShowModal}) => {
               showsVerticalScrollIndicator={false}>
               <View
                 style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  flexWrap: 'wrap',
-                  gap: deviceWidth * 0.04,
                   marginTop: deviceHeight * 0.02,
                 }}>
                 <View style={styles.rowwrapper}>
-                  <View style={{width: '45%'}}>
-                    <View style={{marginHorizontal: deviceWidth * 0.01}}>
-                      <Text
-                        style={{
-                          fontSize: 14,
-                          fontWeight: '600',
-                          lineHeight: 19,
-                        }}>
-                        Designation
-                      </Text>
-                      <Dropdown
-                        style={styles.dropstyle}
-                        placeholderStyle={styles.placeholderStyle}
-                        selectedTextStyle={styles.selectedTextStyle}
-                        inputSearchStyle={styles.inputSearchStyle}
-                        iconStyle={styles.iconStyle}
-                        data={
-                          isdata &&
-                          isdata?.map(item => ({
-                            label: `${item?.employeetype}`,
-                            value: `${item?.employeetype}`,
-                          }))
-                        }
-                        search
-                        maxHeight={300}
-                        labelField="label"
-                        valueField="value"
-                        placeholder="Select "
-                        searchPlaceholder="Search..."
-                        value={empdesination}
-                        onChange={item => {
-                          setempdesination(item.value);
-                        }}
-                      />
-                    </View>
+                  <View style={{width: '49%'}}>
+                    <RNBDropDown
+                      label="Designation"
+                      value={empdesination}
+                      OptionsList={
+                        isdata &&
+                        isdata?.map(item => ({
+                          label: `${item?.employeetype}`,
+                          value: `${item?.employeetype}`,
+                        }))
+                      }
+                      onChange={data => setempdesination(data.value)}
+                    />
                   </View>
                   <View
-                    style={{width: '45%', marginBottom: deviceHeight * 0.02}}>
-                    <View style={{marginHorizontal: deviceWidth * 0.01}}>
-                      <Text
-                        style={{
-                          fontSize: 14,
-                          fontWeight: '600',
-                          lineHeight: 19,
-                        }}>
-                        Deparment
-                      </Text>
-                      <Dropdown
-                        style={styles.dropstyle}
-                        placeholderStyle={styles.placeholderStyle}
-                        selectedTextStyle={styles.selectedTextStyle}
-                        inputSearchStyle={styles.inputSearchStyle}
-                        iconStyle={styles.iconStyle}
-                        data={
-                          isdata1 &&
-                          isdata1?.map(item => ({
-                            label: `${item?.DepartmentName}`,
-                            value: `${item?.DepartmentName}`,
-                          }))
-                        }
-                        search
-                        maxHeight={300}
-                        defaultValue={'NONE'}
-                        labelField="label"
-                        valueField="value"
-                        placeholder="Select "
-                        searchPlaceholder="Search..."
-                        value={empdeparment}
-                        onChange={item => {
-                          setempdeparment(item.value);
-                        }}
-                      />
-                    </View>
+                    style={{width: '49%', marginBottom: deviceHeight * 0.02}}>
+                    <RNBDropDown
+                      label="Deparment"
+                      value={empdeparment}
+                      OptionsList={
+                        isdata1 &&
+                        isdata1?.map(item => ({
+                          label: `${item?.DepartmentName}`,
+                          value: `${item?.DepartmentName}`,
+                        }))
+                      }
+                      onChange={data => setempdeparment(data.value)}
+                    />
                   </View>
                 </View>
                 <View style={styles.rowwrapper}>
-                  <View style={{width: '49.3%'}}>
-                    <View style={{marginHorizontal: deviceWidth * 0.01}}>
-                      <Text
-                        style={{
-                          fontSize: 14,
-                          fontWeight: '600',
-                          lineHeight: 19,
-                        }}>
-                        Status
-                      </Text>
-                      <Dropdown
-                        style={styles.dropstyle}
-                        placeholderStyle={styles.placeholderStyle}
-                        selectedTextStyle={styles.selectedTextStyle}
-                        inputSearchStyle={styles.inputSearchStyle}
-                        iconStyle={styles.iconStyle}
-                        data={EmpStatus}
-                        search
-                        maxHeight={300}
-                        labelField="label"
-                        valueField="value"
-                        placeholder="Select Status"
-                        searchPlaceholder="Search..."
-                        value={status}
-                        onChange={item => {
-                          setstatus(item.value);
-                        }}
-                      />
-                    </View>
+                  <View style={{width: '49%'}}>
+                    <RNBDropDown
+                      label="Status"
+                      value={status}
+                      OptionsList={EmpStatus}
+                      onChange={data => setstatus(data.value)}
+                    />
                   </View>
-                  <View style={{width: '49.3%'}}>
+                  <View style={{width: '49%'}}>
                     <RNInputField
                       label="Employee Id"
                       placeholder="Enter Emp Id"

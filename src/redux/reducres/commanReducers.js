@@ -212,6 +212,12 @@ import {
   ALL_TC_REQUEST,
   ALL_TC_SUCCESS,
   ALL_TC_FAIL,
+  ALL_COMPLAIN_REQUEST,
+  ALL_COMPLAIN_SUCCESS,
+  ALL_COMPLAIN_FAIL,
+  ALL_VISITOR_REQUEST,
+  ALL_VISITOR_SUCCESS,
+  ALL_VISITOR_FAIL,
   CLEAR_ERRORS,
 } from '../constants/commanConstants';
 
@@ -2381,6 +2387,72 @@ export const getTCReducer = (state = { TcList: [] }, action) => {
       return {
         loading: false,
         TcList: null,
+        error: action.payload,
+      };
+
+    case CLEAR_ERRORS:
+      return {
+        ...state,
+        error: null,
+      };
+
+    default:
+      return state;
+  }
+};
+
+
+
+export const getComplainReducer = (state = { Complains: [] }, action) => {
+  switch (action.type) {
+    case ALL_COMPLAIN_REQUEST:
+      return {
+        loading: true,
+      };
+
+    case ALL_COMPLAIN_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        Complains: action.payload,
+      };
+
+    case ALL_COMPLAIN_FAIL:
+      return {
+        loading: false,
+        Complains: null,
+        error: action.payload,
+      };
+
+    case CLEAR_ERRORS:
+      return {
+        ...state,
+        error: null,
+      };
+
+    default:
+      return state;
+  }
+};
+
+export const getVisitorReducer = (state = { Visitors: [] }, action) => {
+  switch (action.type) {
+    case ALL_VISITOR_REQUEST:
+      return {
+        loading: true,
+      };
+
+    case ALL_VISITOR_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        Visitors: action.payload,
+      };
+
+    case ALL_VISITOR_FAIL:
+      return {
+        loading: false,
+        Visitors: null,
         error: action.payload,
       };
 

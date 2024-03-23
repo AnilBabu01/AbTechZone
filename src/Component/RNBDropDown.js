@@ -46,7 +46,7 @@ const RNBDropDown = props => {
         maxHeight={300}
         labelField="label"
         valueField="value"
-        placeholder="Please Select"
+        placeholder={placeholder?placeholder:"Please Select"}
         searchPlaceholder="Search..."
         value={value}
         onChange={onChange}

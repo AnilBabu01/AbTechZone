@@ -246,7 +246,7 @@ const Add = ({navigation}) => {
               style={styles.filterBtnContainer}>
               <Ionicons name="filter" color={Colors.primary} size={25} />
             </Pressable>
-            <Pressable
+            {/* <Pressable
               onPress={() => setviewdata(!viewdata)}
               style={styles.filterBtnContainer}>
               {viewdata ? (
@@ -258,7 +258,7 @@ const Add = ({navigation}) => {
                   <FontAwesome6 name="table" color={Colors.primary} size={25} />
                 </>
               )}
-            </Pressable>
+            </Pressable> */}
           </View>
         </View>
 

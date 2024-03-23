@@ -2,9 +2,8 @@ import {StyleSheet, Text, View, ScrollView, Pressable} from 'react-native';
 import React, {useState, useEffect} from 'react';
 import {Height, Width} from '../../../utils/responsive';
 import CardEnquiry from './CardEnquiry';
-import Header from '../../../Component/Header/Header';
 import {primary} from '../../../utils/Colors';
-import {getenquiries} from '../../../redux/action/coachingAction';
+import {getFILTComplain} from '../../../redux/action/commanAction';
 import {AnimatedFAB} from 'react-native-paper';
 import {Colors} from '../../../utils/Colors';
 import {useDispatch, useSelector} from 'react-redux';
@@ -13,18 +12,18 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import RNTable from '../../../Component/RNTable';
 import DownloadExcel from '../../../Component/school/DownloadExcel';
-import EnquiryFilter from '../../../Component/school/EnquiryFilter';
+import EnquiryFilter from '../../../Component/school/ComplainFilter';
 import BackHeader from '../../../Component/Header/BackHeader';
+import moment from 'moment';
 
 const Complain = ({navigation}) => {
   const dispatch = useDispatch();
-  const [openModel, setopenModel] = useState(false);
   const [enquirylist, setenquirylist] = useState('');
   const [Tabledata, setTabledata] = useState([]);
   const [viewdata, setviewdata] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [showDocOptions, setShowDocOptions] = useState(false);
-  const {enquiry, loading} = useSelector(state => state.enquiry);
+  const {loading, Complains} = useSelector(state => state.getComplain);
 
   const enquiryTableList = [
     {
@@ -34,44 +33,32 @@ const Complain = ({navigation}) => {
       align: 'center',
     },
     {
-      title: 'Enquiry_Date',
+      title: 'Complain_Date',
       items: [],
       width: 0.33,
       align: 'center',
     },
     {
-      title: 'Student_Name',
+      title: 'Complainer_Name',
       items: [],
       width: 0.33,
       align: 'center',
     },
     {
-      title: 'Student_Number',
+      title: 'Complainer_Mobile',
       items: [],
       width: 0.33,
       align: 'center',
     },
 
     {
-      title: 'Student_Email',
-      items: [],
-      width: 0.33,
-      align: 'center',
-    },
-    {
-      title: 'Address',
-      items: [],
-      width: 0.33,
-      align: 'center',
-    },
-    {
-      title: 'Class',
-      items: [],
-      width: 0.33,
-      align: 'center',
-    },
-    {
       title: 'Comment',
+      items: [],
+      width: 0.33,
+      align: 'center',
+    },
+    {
+      title: 'Status',
       items: [],
       width: 0.33,
       align: 'center',
@@ -86,39 +73,31 @@ const Complain = ({navigation}) => {
 
   const convertdata = async () => {
     await Promise.all(
-      enquiry?.map((item, index) => {
+      Complains?.map((item, index) => {
         enquiryTableList[0].items.push({id: index, value: index + 1});
         enquiryTableList[1].items.push({
           id: index,
-          value: item.EnquiryDate,
+          value: moment(item?.ComplainDate).format('DD/MM/YYYY'),
         });
 
         enquiryTableList[2].items.push({
           id: index,
-          value: item.StudentName,
+          value: item.ComplainerName,
         });
         enquiryTableList[3].items.push({
           id: index,
-          value: item.StudentNumber,
+          value: item.ComplainerMobile,
         });
         enquiryTableList[4].items.push({
           id: index,
-          value: item.StudentEmail,
+          value: item.Comment,
         });
         enquiryTableList[5].items.push({
           id: index,
-          value: item.Address,
-        });
-        enquiryTableList[6].items.push({
-          id: index,
-          value: item.Course,
-        });
-        enquiryTableList[7].items.push({
-          id: index,
-          value: item.Comment,
+          value: item.Status,
         });
 
-        enquiryTableList[8].items.push({
+        enquiryTableList[6].items.push({
           id: index,
           value: (
             <Ionicons
@@ -130,31 +109,31 @@ const Complain = ({navigation}) => {
           Deleteicon: (
             <Ionicons name="trash-outline" color={Colors.red} size={18.3} />
           ),
-          deleteUrl: 'coaching/enquiry',
+          deleteUrl: 'comman/complain',
           allDetails: item,
           redirect: 'UpdateComplain',
         });
       }),
     );
     setTabledata(enquiryTableList);
-    console.log('convets data is', enquiry);
   };
 
   useEffect(() => {
-    if (enquiry) {
-      setenquirylist(enquiry);
-      convertdata(enquiry);
+    if (Complains) {
+      setenquirylist(Complains);
+      convertdata(Complains);
+      setShowModal(false);
     }
-  }, [enquiry]);
+  }, [Complains]);
 
   useEffect(() => {
-    dispatch(getenquiries());
+    dispatch(getFILTComplain('', '', ''));
   }, []);
   const {fabStyle} = styles;
 
   return (
     <View style={{flex: 1}}>
-      <BackHeader title={"Add Complain"}/>
+      <BackHeader title={'Add Complain'} />
       <View style={styles.headerTitleContainer}>
         <View>
           <Text style={styles.secondaryTitle}>Complain Management</Text>
@@ -218,8 +197,8 @@ const Complain = ({navigation}) => {
         </>
       )}
       <DownloadExcel
-        enquiry={enquiry}
-        filename={'EnquiryList'}
+        enquiry={Complains}
+        filename={'ComplainList'}
         visible={showDocOptions}
         hideModal={setShowDocOptions}
       />

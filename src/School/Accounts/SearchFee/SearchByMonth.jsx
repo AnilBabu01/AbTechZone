@@ -14,7 +14,7 @@ import {useDispatch} from 'react-redux';
 import DashboardPlaceholderLoader from '../../../Component/DashboardPlaceholderLoader';
 import {deviceWidth} from '../../../utils/constant';
 import RNTable from '../../../Component/RNTable';
-import DownloadStudentData from '../../../Component/school/DownloadStudentData';
+import DownloadStudentData from '../../../Component/school/DownloadExcel';
 import SearchMonthltFee from '../../../Component/school/SearchMonthltFee';
 
 const monthnamelist = {
@@ -97,19 +97,19 @@ const SearchByMonth = ({navigation}) => {
     {
       title: `Academin_Fee (${monthnamelist[month]})`,
       items: [],
-      width: 0.50,
+      width: 0.5,
       align: 'center',
     },
     {
       title: `Hostel_Fee (${monthnamelist[month]})`,
       items: [],
-      width: 0.50,
+      width: 0.5,
       align: 'center',
     },
     {
       title: `Transport_fee (${monthnamelist[month]})`,
       items: [],
-      width: 0.50,
+      width: 0.5,
       align: 'center',
     },
   ];
@@ -246,6 +246,39 @@ const SearchByMonth = ({navigation}) => {
         )}
 
         <DownloadStudentData
+          enquiry={
+            data &&
+            data?.map(item => ({
+              Session: item?.student?.Session,
+              SrNumber: item?.student?.SrNumber,
+              rollnumber: item?.student?.rollnumber,
+              name: item?.student?.name,
+              Gender: item?.student?.Gender,
+              AcademicFee:
+                item?.schollfee[0]?.Discount === true
+                  ? 'Discounted'
+                  : item?.schollfee[0]?.paidStatus
+                  ? `Paid ${item?.schollfee[0]?.PerMonthFee}`
+                  : `Dues ${item?.schollfee[0]?.PerMonthFee}`,
+              HostelFee:
+                item?.hostelfee[0]?.Discount === true
+                  ? 'Discounted'
+                  : item?.student?.hostal
+                  ? item?.hostelfee[0]?.paidStatus
+                    ? `Paid (${item?.hostelfee[0]?.PerMonthFee})`
+                    : `Dues ${item?.hostelfee[0]?.PerMonthFee}`
+                  : 'Not Have',
+              TransportFee:
+                item?.transportfee[0]?.Discount === true
+                  ? 'Discounted'
+                  : item?.student?.Transport
+                  ? item?.transportfee[0]?.paidStatus
+                    ? `Paid (${item?.transportfee[0]?.PerMonthFee})`
+                    : `Dues (${item?.transportfee[0]?.PerMonthFee})`
+                  : 'Not Have',
+            }))
+          }
+          filename={'FeeByMonthList'}
           visible={showDocOptions}
           hideModal={setShowDocOptions}
         />

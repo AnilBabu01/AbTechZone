@@ -18,6 +18,7 @@ import {Dropdown} from 'react-native-element-dropdown';
 import {Width, Height} from '../../utils/responsive';
 import {MarkStudentAttendance} from '../../redux/action/attendanceActions';
 import moment from 'moment';
+import RNBDropDown from '../RNBDropDown';
 const FilterStudentAttendance = ({showModal, setShowModal}) => {
   const dispatch = useDispatch();
   const [atttendanceDate, setatttendanceDate] = useState(getTodaysDate());
@@ -28,17 +29,23 @@ const FilterStudentAttendance = ({showModal, setShowModal}) => {
   const {course} = useSelector(state => state.getcourse);
   const {sections} = useSelector(state => state.GetSection);
   const {CURRENTSESSION} = useSelector(state => state.GetCurrentSession);
-  const {markattendance, loading} = useSelector(
-    state => state.markatten,
-  );
+  const {markattendance, loading} = useSelector(state => state.markatten);
   const {innerContainer, childContainer, mainContainer} = styles;
 
   const onSubmit = () => {
     var momentDate = moment(atttendanceDate, 'DD/MM/YYYY');
     var yyyyddmm = moment(momentDate).format('YYYY-MM-DD');
-    dispatch(MarkStudentAttendance(yyyyddmm,"",courseorclass, sectionname,CURRENTSESSION));
+    dispatch(
+      MarkStudentAttendance(
+        yyyyddmm,
+        '',
+        courseorclass,
+        sectionname,
+        CURRENTSESSION,
+      ),
+    );
 
-    console.log("dnfdx",yyyyddmm, courseorclass, sectionname,CURRENTSESSION)
+    console.log('dnfdx', yyyyddmm, courseorclass, sectionname, CURRENTSESSION);
   };
 
   useEffect(() => {
@@ -74,7 +81,7 @@ const FilterStudentAttendance = ({showModal, setShowModal}) => {
               backgroundColor: Colors.white,
             }}>
             <ScrollView
-              style={{height: deviceHeight * 0.3}}
+              style={{height: deviceHeight * 0.4}}
               showsVerticalScrollIndicator={false}>
               <View style={styles.rowwrapper}>
                 <View style={{width: '49.3%'}}>
@@ -85,78 +92,35 @@ const FilterStudentAttendance = ({showModal, setShowModal}) => {
                   />
                 </View>
                 <View style={{width: '49.3%'}}>
-                  <View style={{marginHorizontal: deviceWidth * 0.01}}>
-                    <Text
-                      style={{
-                        fontSize: 14,
-                        fontWeight: '600',
-                        lineHeight: 19,
-                      }}>
-                      Class
-                    </Text>
-                    <Dropdown
-                      style={styles.dropstyle}
-                      placeholderStyle={styles.placeholderStyle}
-                      selectedTextStyle={styles.selectedTextStyle}
-                      inputSearchStyle={styles.inputSearchStyle}
-                      iconStyle={styles.iconStyle}
-                      data={
-                        courselist &&
-                        courselist?.map(item => ({
-                          label: `${item?.coursename}`,
-                          value: `${item?.coursename}`,
-                        }))
-                      }
-                      search
-                      maxHeight={300}
-                      labelField="label"
-                      valueField="value"
-                      placeholder="Select Class"
-                      searchPlaceholder="Search..."
-                      value={courseorclass}
-                      onChange={item => {
-                        setcourseorclass(item.value);
-                      }}
-                    />
-                  </View>
+                  <RNBDropDown
+                    label="Class"
+                    value={courseorclass}
+                    OptionsList={
+                      courselist &&
+                      courselist?.map(item => ({
+                        label: `${item?.coursename}`,
+                        value: `${item?.coursename}`,
+                      }))
+                    }
+                    onChange={data => setcourseorclass(data.value)}
+                  />
                 </View>
               </View>
               <View style={styles.rowwrapper}>
-                <View style={{width: '95%', marginBottom: deviceHeight * 0.02}}>
-                  <View style={{marginHorizontal: deviceWidth * 0.01}}>
-                    <Text
-                      style={{
-                        fontSize: 14,
-                        fontWeight: '600',
-                        lineHeight: 19,
-                      }}>
-                      Section
-                    </Text>
-                    <Dropdown
-                      style={styles.dropstyle}
-                      placeholderStyle={styles.placeholderStyle}
-                      selectedTextStyle={styles.selectedTextStyle}
-                      inputSearchStyle={styles.inputSearchStyle}
-                      iconStyle={styles.iconStyle}
-                      data={
-                        sectionlist &&
-                        sectionlist?.map(item => ({
-                          label: `${item?.section}`,
-                          value: `${item?.section}`,
-                        }))
-                      }
-                      search
-                      maxHeight={300}
-                      labelField="label"
-                      valueField="value"
-                      placeholder="NONE"
-                      searchPlaceholder="Search..."
-                      value={sectionname}
-                      onChange={item => {
-                        setsectionname(item.value);
-                      }}
-                    />
-                  </View>
+                <View style={{width: '100%'}}>
+                  <RNBDropDown
+                    label="Section"
+                    value={sectionname}
+                    OptionsList={
+                      sectionlist &&
+                      sectionlist?.map(item => ({
+                        label: `${item?.section}`,
+                        value: `${item?.section}`,
+                      }))
+                    }
+                    onChange={data => setsectionname(data.value)}
+                    placeholder="NONE"
+                  />
                 </View>
               </View>
             </ScrollView>
@@ -207,6 +171,7 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     justifyContent: 'space-between',
     marginHorizontal: deviceWidth * 0.02,
+    marginTop: 10,
   },
   dropstyle: {
     width: Width(160),

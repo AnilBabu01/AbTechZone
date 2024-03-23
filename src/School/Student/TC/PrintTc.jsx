@@ -25,8 +25,8 @@ import {
 import {GetRoute} from '../../../redux/action/transportActions';
 import {useDispatch, useSelector} from 'react-redux';
 import {deviceWidth} from '../../../utils/constant';
-import DownloadStudentData from '../../../Component/school/DownloadStudentData';
-import StudentFilter from '../../../Component/school/StudentFilter';
+import DownloadStudentData from '../../../Component/school/DownloadExcel';
+import StudentFilter from '../../../Component/school/FilterTC';
 import {ActivityIndicator, MD2Colors} from 'react-native-paper';
 import RNFS from 'react-native-fs';
 import RNHTMLtoPDF from 'react-native-html-to-pdf';
@@ -407,7 +407,7 @@ const PrintTc = ({navigation}) => {
 
     const results = await RNHTMLtoPDF.convert({
       html: htmlContent,
-      fileName: `IDCard`,
+      fileName: `TC`,
       base64: true,
     });
     if (results) {
@@ -483,6 +483,8 @@ const PrintTc = ({navigation}) => {
         <DownloadStudentData
           visible={showDocOptions}
           hideModal={setShowDocOptions}
+          enquiry={isdata}
+          filename={'TCList'}
         />
 
         {/* <AnimatedFAB

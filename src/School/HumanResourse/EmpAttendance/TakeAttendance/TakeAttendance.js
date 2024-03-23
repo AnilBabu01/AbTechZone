@@ -14,12 +14,12 @@ import {
   getbatch,
   GetSession,
   GetSection,
-  getcurrentsession
+  getcurrentsession,
 } from '../../../../redux/action/commanAction';
 import {useDispatch} from 'react-redux';
 import {Colors} from '../../../../utils/Colors';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import DownloadStudentAttendance from '../../../../Component/school/DownloadStudentAttendance';
+import DownloadStudentAttendance from '../../../../Component/school/DownloadExcel';
 import RNButton from '../../../../Component/RNButton';
 import EmpTakeAttendanceFilter from '../../../../Component/school/EmpTakeAttendanceFilter';
 import {serverInstance} from '../../../../API/ServerInstance';
@@ -104,9 +104,9 @@ const TakeAttendance = () => {
                 <View style={styles.connainer}>
                   <View style={styles.card10}>
                     <View style={styles.viewdel}>
-                      <Text>Date</Text>
-                      <Text>Emp Id</Text>
-                      <Text>Name</Text>
+                      <Text style={styles.dbdata}>Date</Text>
+                      <Text style={styles.dbdata}>Emp Id</Text>
+                      <Text style={styles.dbdata}>Name</Text>
                     </View>
                     <View style={styles.viewdel}>
                       <Text style={styles.dbdata}>
@@ -116,7 +116,7 @@ const TakeAttendance = () => {
                       <Text style={styles.dbdata}>{item?.name}</Text>
                     </View>
                     <View style={styles.viewdel}>
-                      <Text>Attendance Status</Text>
+                      <Text style={styles.dbdata}>Attendance Status</Text>
                       <TouchableOpacity
                         onPress={() =>
                           handleItemUpdate(item, 'attendaceStatus', false)
@@ -176,6 +176,8 @@ const TakeAttendance = () => {
       )}
 
       <DownloadStudentAttendance
+        enquiry={attendancedetails}
+        filename={'EmployeeAttendanceList'}
         visible={showDocOptions}
         hideModal={setShowDocOptions}
       />

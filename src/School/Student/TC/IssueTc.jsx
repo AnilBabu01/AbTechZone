@@ -10,10 +10,10 @@ import BackHeader from '../../../Component/Header/BackHeader';
 import RNButton from '../../../Component/RNButton';
 import RNInputField from '../../../Component/RNInputField';
 import RNDatePicker from '../../../Component/RNDatePicker';
-import RNBDropDown from '../../../Component/RNBDropDown';
 import {useSelector} from 'react-redux';
 import Toast from 'react-native-toast-message';
 import {getstudent,getTC}  from '../../../redux/action/commanAction';
+
 const IssueTc = () => {
   const dispatch = useDispatch();
   const route = useRoute();
@@ -130,6 +130,7 @@ const IssueTc = () => {
       setClassinWhich(route?.params?.data?.courseorclass);
       setReligion(route?.params?.data?.Religion);
     }
+
   }, [data]);
 
   return (

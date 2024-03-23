@@ -248,7 +248,12 @@ const Employee = ({navigation}) => {
           <EmployeeFilter setShowModal={setShowModal} showModal={showModal} />
         </>
       )}
-      <DownEnquiry visible={showDocOptions} hideModal={setShowDocOptions} />
+      <DownEnquiry
+        enquiry={employees}
+        filename={'EmployeesList'}
+        visible={showDocOptions}
+        hideModal={setShowDocOptions}
+      />
 
       <AnimatedFAB
         icon={'plus'}

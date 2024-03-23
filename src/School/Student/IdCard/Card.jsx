@@ -17,10 +17,9 @@ import {useDispatch, useSelector} from 'react-redux';
 import Loader from '../../../Component/Loader/Loader';
 import {serverInstance} from '../../../API/ServerInstance';
 import Toast from 'react-native-toast-message';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import {Height, Width} from '../../../utils/responsive';
 import {deviceHeight, deviceWidth} from '../../../utils/constant';
 import profileimg from '../../../assets/profileimg.jpg';
+
 const Card = ({data}) => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -104,30 +103,48 @@ const Card = ({data}) => {
       <ScrollView>
         <View style={styles.connainer}>
           <View style={styles.card10}>
-            <Text
-              style={{fontSize: 16, fontWeight: 'bold', color: Colors.black}}>
-              Session : {data?.Session}
-            </Text>
-            <Text
-              style={{fontSize: 16, fontWeight: 'bold', color: Colors.black}}>
-              Roll No : {data?.rollnumber}
-            </Text>
-            <Text
-              style={{fontSize: 16, fontWeight: 'bold', color: Colors.black}}>
-              Class : {data?.courseorclass}
-            </Text>
-            <Text
-              style={{fontSize: 16, fontWeight: 'bold', color: Colors.black}}>
-              Section : {data?.Section}
-            </Text>
-            <Text
-              style={{fontSize: 16, fontWeight: 'bold', color: Colors.black}}>
-              Sr Number : {data?.SrNumber}
-            </Text>
-            <Text
-              style={{fontSize: 16, fontWeight: 'bold', color: Colors.black}}>
-              Student Name : {data?.name}
-            </Text>
+            <View>
+              <Text
+                style={{fontSize: 16, fontWeight: 'bold', color: Colors.black}}>
+                Session : {data?.Session}
+              </Text>
+              <Text
+                style={{fontSize: 16, fontWeight: 'bold', color: Colors.black}}>
+                Roll No : {data?.rollnumber}
+              </Text>
+              <Text
+                style={{fontSize: 16, fontWeight: 'bold', color: Colors.black}}>
+                Class : {data?.courseorclass}
+              </Text>
+              <Text
+                style={{fontSize: 16, fontWeight: 'bold', color: Colors.black}}>
+                Section : {data?.Section}
+              </Text>
+              <Text
+                style={{fontSize: 16, fontWeight: 'bold', color: Colors.black}}>
+                Sr Number : {data?.SrNumber}
+              </Text>
+              <Text
+                style={{fontSize: 16, fontWeight: 'bold', color: Colors.black}}>
+                Student Name : {data?.name}
+              </Text>
+            </View>
+            <View>
+              {data?.profileurl ? (
+                <>
+                  <Image
+                    source={{
+                      uri: `${data?.profileurl}`,
+                    }}
+                    style={styles.avator}
+                  />
+                </>
+              ) : (
+                <>
+                  <Image source={profileimg} style={styles.avator} />
+                </>
+              )}
+            </View>
           </View>
         </View>
       </ScrollView>
@@ -138,6 +155,12 @@ const Card = ({data}) => {
 export default Card;
 
 const styles = StyleSheet.create({
+  avator: {
+    width: deviceWidth * 0.3,
+    height: deviceHeight * 0.2,
+    borderRadius: 5,
+    resizeMode: 'contain',
+  },
   mainActionView: {
     display: 'flex',
     flexDirection: 'row',
@@ -147,14 +170,15 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   card10: {
-    //   backgroundColor: 'white',
-    //   borderRadius: 8,
     width: '100%',
     marginVertical: 10,
     paddingVertical: 10,
     paddingHorizontal: 10,
     borderWidth: 1,
     borderColor: Colors.primary,
+    display: 'flex',
+    justifyContent: 'space-between',
+    flexDirection: 'row',
   },
   viewdel: {
     display: 'flex',

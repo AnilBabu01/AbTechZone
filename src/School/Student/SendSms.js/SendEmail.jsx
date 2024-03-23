@@ -9,7 +9,7 @@ import {AnimatedFAB} from 'react-native-paper';
 import DashboardPlaceholderLoader from '../../../Component/DashboardPlaceholderLoader';
 import {deviceWidth} from '../../../utils/constant';
 import RNTable from '../../../Component/RNTable';
-import DownloadStudentData from '../../../Component/school/DownloadStudentData';
+import DownloadStudentData from '../../../Component/school/DownloadExcel';
 import EmailFilter from '../../../Component/school/EmailFilter';
 import {serverInstance} from '../../../API/ServerInstance';
 const SendEmail = ({navigation}) => {
@@ -101,7 +101,7 @@ const SendEmail = ({navigation}) => {
               style={styles.filterBtnContainer}>
               <Ionicons name="filter" color={Colors.primary} size={25} />
             </Pressable>
-            <Pressable
+            {/* <Pressable
               onPress={() => setviewdata(!viewdata)}
               style={styles.filterBtnContainer}>
               {viewdata ? (
@@ -113,7 +113,7 @@ const SendEmail = ({navigation}) => {
                   <Ionicons name="card" color={Colors.primary} size={25} />
                 </>
               )}
-            </Pressable>
+            </Pressable> */}
           </View>
         </View>
 
@@ -157,6 +157,8 @@ const SendEmail = ({navigation}) => {
         <DownloadStudentData
           visible={showDocOptions}
           hideModal={setShowDocOptions}
+          enquiry={isdata}
+          filename={'SentEmailList'}
         />
 
         <AnimatedFAB

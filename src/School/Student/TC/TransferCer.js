@@ -1,19 +1,10 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  ScrollView,
-  Pressable,
-  Image,
-} from 'react-native';
+import {StyleSheet, Text, View, ScrollView, Pressable} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {Height, Width} from '../../../utils/responsive';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import CardEnquiry from './Card';
 import {primary, Colors} from '../../../utils/Colors';
-import {AnimatedFAB} from 'react-native-paper';
-import { loadUser } from "../../../redux/action/authActions";
 import {
   getcourse,
   getbatch,
@@ -24,21 +15,18 @@ import {
   GetSection,
   getcurrentsession,
   getTC,
-} from "../../../redux/action/commanAction";
+} from '../../../redux/action/commanAction';
 import {
   GetHostel,
   GetFacility,
   GetCategory,
-} from "../../../redux/action/hostelActions";
-import { GetRoute } from "../../../redux/action/transportActions";
+} from '../../../redux/action/hostelActions';
+import {GetRoute} from '../../../redux/action/transportActions';
 import {useDispatch, useSelector} from 'react-redux';
-import DashboardPlaceholderLoader from '../../../Component/DashboardPlaceholderLoader';
-import {deviceHeight, deviceWidth} from '../../../utils/constant';
-import RNTable from '../../../Component/RNTable';
+import {deviceWidth} from '../../../utils/constant';
 import DownloadStudentData from '../../../Component/school/DownloadExcel';
-import BackHeader from '../../../Component/Header/BackHeader';
 import {ActivityIndicator, MD2Colors} from 'react-native-paper';
-
+import StudentFilter from '../../../Component/school/StudentFilter';
 const TransferCer = ({navigation}) => {
   const dispatch = useDispatch();
   const [isdata, setisdata] = useState([]);
@@ -223,6 +211,7 @@ const TransferCer = ({navigation}) => {
     if (student) {
       convertdata(student);
       setisdata(student);
+      setShowModal(false);
     }
   }, [student]);
 

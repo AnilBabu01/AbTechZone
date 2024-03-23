@@ -5,27 +5,44 @@ import {
   Text,
   TouchableOpacity,
   Modal,
-  Pressable,
 } from 'react-native';
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {deviceHeight, deviceWidth} from '../../utils/constant';
-import RNSelectInput from '../RNSelectInput';
+import RNInputField from '../RNInputField';
 import RNDatePicker from '../RNDatePicker';
-import {Divider} from 'react-native-paper';
 import RNButton from '../RNButton';
 import {Colors} from '../../utils/Colors';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {
-  getenquiries,
-  getFILTERenquiries,
-} from '../../redux/action/coachingAction';
-import {handleDate,getTodaysDate} from '../../utils/functions';
+import {getFILTERenquiries} from '../../redux/action/coachingAction';
+import {useSelector, useDispatch} from 'react-redux';
+import {handleDate, getTodaysDate} from '../../utils/functions';
+import moment from 'moment';
+
 const EnquiryFilter = ({showModal, setShowModal}) => {
+  const dispatch = useDispatch();
   const [name, setname] = useState('');
-  const [fromdate, setfromdate] = useState(getTodaysDate());
-  const [todate, settodate] = useState(getTodaysDate());
+  const [fromdate, setfromdate] = useState();
+  const [todate, settodate] = useState();
+  const {loading} = useSelector(state => state.enquiry);
   const {container, innerContainer, childContainer, mainContainer} = styles;
-  const onSubmit = () => {};
+
+  const onSubmit = () => {
+    let formattedDateStr = '';
+    let todateDateStr = '';
+    if (fromdate) {
+      const [day, month, year] = fromdate?.split('/');
+      formattedDateStr = fromdate ? `${year}-${month}-${day}` : '';
+    }
+    if (todate) {
+      const [day1, month1, year1] = todate?.split('/');
+      todateDateStr = todate ? `${year1}-${month1}-${day1}` : '';
+    }
+
+    dispatch(getFILTERenquiries(formattedDateStr, todateDateStr, name));
+  };
+
+  console.log('fromdate is fromdate', fromdate);
+
   return (
     <>
       <Modal
@@ -54,7 +71,7 @@ const EnquiryFilter = ({showModal, setShowModal}) => {
               backgroundColor: Colors.white,
             }}>
             <ScrollView
-              style={{height: deviceHeight * 0.7}}
+              style={{height: deviceHeight * 0.4}}
               showsVerticalScrollIndicator={false}>
               <View style={styles.rowwrapper}>
                 <View style={{width: '49.3%'}}>
@@ -72,9 +89,21 @@ const EnquiryFilter = ({showModal, setShowModal}) => {
                   />
                 </View>
               </View>
+              <View style={styles.rowwrapper}>
+                <View style={{width: '100%'}}>
+                  <RNInputField
+                    label="Name"
+                    placeholder="Enter Name"
+                    value={name}
+                    onChangeText={data => setname(data)}
+                  />
+                </View>
+              </View>
             </ScrollView>
             <View style={styles.bottomBtn}>
-              <RNButton onPress={onSubmit}>Submit</RNButton>
+              <RNButton loading={loading} onPress={onSubmit}>
+                Submit
+              </RNButton>
             </View>
           </View>
         </View>
@@ -127,5 +156,6 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     justifyContent: 'space-between',
     marginHorizontal: deviceWidth * 0.02,
+    marginTop: 10,
   },
 });

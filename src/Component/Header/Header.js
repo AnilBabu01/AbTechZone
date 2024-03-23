@@ -132,6 +132,7 @@ const styles = StyleSheet.create({
     width: 35,
     height: 35,
     borderRadius: 50,
+    resizeMode:'contain'
   },
   logoimg: {
     height: Height(50),

@@ -34,11 +34,12 @@ import {useDispatch, useSelector} from 'react-redux';
 import DashboardPlaceholderLoader from '../../../Component/DashboardPlaceholderLoader';
 import {deviceWidth} from '../../../utils/constant';
 import RNTable from '../../../Component/RNTable';
-import DownloadStudentData from '../../../Component/school/DownloadStudentData';
+import DownloadStudentData from '../../../Component/school/DownloadExcel';
 import BackHeader from '../../../Component/Header/BackHeader';
 import FilterOtherFee from '../../../Component/school/FilterOtherFee';
 import moment from 'moment';
 import RNBDropDown from '../../../Component/RNBDropDown';
+
 const AddOtherFee = ({navigation}) => {
   const dispatch = useDispatch();
   const [isdata, setisdata] = useState([]);
@@ -230,6 +231,8 @@ const AddOtherFee = ({navigation}) => {
         <DownloadStudentData
           visible={showDocOptions}
           hideModal={setShowDocOptions}
+          enquiry={otherfee}
+          filename={'otherfeeList'}
         />
 
         <AnimatedFAB

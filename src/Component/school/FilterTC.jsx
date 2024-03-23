@@ -9,39 +9,30 @@ import {
 import React, {useState, useEffect} from 'react';
 import {deviceHeight, deviceWidth} from '../../utils/constant';
 import RNInputField from '../RNInputField';
-import RNDatePicker from '../RNDatePicker';
 import RNButton from '../RNButton';
 import {Colors} from '../../utils/Colors';
 import {Height, Width} from '../../utils/responsive';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useSelector, useDispatch} from 'react-redux';
-import {Dropdown} from 'react-native-element-dropdown';
-import {handleDate, getTodaysDate} from '../../utils/functions';
-import {GeOtherFees} from '../../redux/action/commanAction';
-import moment from 'moment';
+import {getTC} from '../../redux/action/commanAction';
 import RNBDropDown from '../RNBDropDown';
 
-const FilterOtherFee = ({showModal, setShowModal}) => {
+const FilterTC = ({showModal, setShowModal}) => {
   const dispatch = useDispatch();
-  const [duesDate, setduesDate] = useState('');
+  const [srno, setsrno] = useState('');
+  const [rollnumber, setrollnumber] = useState('');
   const [sessionname, setsessionname] = useState('');
-  const [sectionname, setsectionname] = useState('NONE');
   const [courseorclass, setcourseorclass] = useState('');
   const [courselist, setcourselist] = useState([]);
-  const [sectionlist, setsectionlist] = useState([]);
   const [sessionList, setsessionList] = useState([]);
   const {course} = useSelector(state => state.getcourse);
   const {sections} = useSelector(state => state.GetSection);
   const {CURRENTSESSION} = useSelector(state => state.GetCurrentSession);
   const {Sessions} = useSelector(state => state.GetSession);
   const {container, innerContainer, childContainer, mainContainer} = styles;
-  const {loading} = useSelector(state => state.GetOtherFee);
+  const {loading} = useSelector(state => state.getTCList);
+  
   useEffect(() => {
-    if (sections) {
-      const newArray = [...sections, {section: 'NONE', section: 'NONE'}];
-      setsectionlist(newArray);
-    }
-
     if (CURRENTSESSION) {
       setsessionname(CURRENTSESSION);
     }
@@ -51,12 +42,10 @@ const FilterOtherFee = ({showModal, setShowModal}) => {
     if (course) {
       setcourselist(course);
     }
-  }, [sections, CURRENTSESSION, Sessions, course]);
+  }, [sections, CURRENTSESSION, course]);
 
   const onSubmit = () => {
-    var momentDate = moment(duesDate, 'DD/MM/YYYY');
-
-    dispatch(GeOtherFees(courseorclass, momentDate, sessionname, sectionname));
+    dispatch(getTC(courseorclass, sessionname, rollnumber, srno));
   };
 
   return (
@@ -87,68 +76,58 @@ const FilterOtherFee = ({showModal, setShowModal}) => {
               // borderRadius: deviceWidth * 0.05,
               paddingHorizontal: deviceWidth * 0.02,
               paddingBottom: deviceHeight * 0.03,
+              paddingTop: 10,
             }}>
             <ScrollView
               style={{height: deviceHeight * 0.3}}
               showsVerticalScrollIndicator={false}>
-              <View
-                style={{
-                  marginTop: deviceHeight * 0.02,
-                }}>
-                <View style={styles.rowwrapper}>
-                  <View style={{width: '46%'}}>
-                    <RNBDropDown
-                      label="Session"
-                      value={sessionname}
-                      OptionsList={
-                        sessionList &&
-                        sessionList?.map(item => ({
-                          label: `${item?.Session}`,
-                          value: `${item?.Session}`,
-                        }))
-                      }
-                      onChange={data => setsessionname(data.value)}
-                    />
-                  </View>
-                  <View style={{width: '46%'}}>
-                    <RNBDropDown
-                      label="Section"
-                      value={sectionname}
-                      OptionsList={
-                        sectionlist &&
-                        sectionlist?.map(item => ({
-                          label: `${item?.section}`,
-                          value: `${item?.section}`,
-                        }))
-                      }
-                      onChange={data => setsectionname(data.value)}
-                    />
-                  </View>
+              <View style={styles.rowwrapper}>
+                <View style={{width: '48.3%'}}>
+                  <RNBDropDown
+                    label="Session"
+                    value={sessionname}
+                    OptionsList={
+                      sessionList &&
+                      sessionList?.map(item => ({
+                        label: `${item?.Session}`,
+                        value: `${item?.Session}`,
+                      }))
+                    }
+                    onChange={data => setsessionname(data.value)}
+                  />
                 </View>
+                <View style={{width: '48.3%'}}>
+                  <RNBDropDown
+                    label="Class"
+                    value={courseorclass}
+                    OptionsList={
+                      courselist &&
+                      courselist?.map(item => ({
+                        label: `${item?.coursename}`,
+                        value: `${item?.coursename}`,
+                      }))
+                    }
+                    onChange={data => setcourseorclass(data.value)}
+                  />
+                </View>
+              </View>
 
-                <View style={styles.rowwrapper}>
-                  <View style={{width: '46%'}}>
-                    <RNBDropDown
-                      label="Class"
-                      value={courseorclass}
-                      OptionsList={
-                        courselist &&
-                        courselist?.map(item => ({
-                          label: `${item?.coursename}`,
-                          value: `${item?.coursename}`,
-                        }))
-                      }
-                      onChange={data => setcourseorclass(data.value)}
-                    />
-                  </View>
-
-                  <View style={{width: '46%', marginLeft: 20}}>
-                    <RNDatePicker
-                      title="Select Date"
-                      value={duesDate}
-                      onDateChange={date => setduesDate(handleDate(date))}
-                    />
-                  </View>
+              <View style={styles.rowwrapper}>
+                <View style={{width: '48.3%'}}>
+                  <RNInputField
+                    label="Sr No"
+                    placeholder="Enter Sr No"
+                    value={srno}
+                    onChangeText={data => setsrno(data)}
+                  />
+                </View>
+                <View style={{width: '48.3%'}}>
+                  <RNInputField
+                    label="Student Name"
+                    placeholder="Enter Name"
+                    value={rollnumber}
+                    onChangeText={data => setrollnumber(data)}
+                  />
                 </View>
               </View>
             </ScrollView>
@@ -163,7 +142,7 @@ const FilterOtherFee = ({showModal, setShowModal}) => {
   );
 };
 
-export default FilterOtherFee;
+export default FilterTC;
 
 const styles = StyleSheet.create({
   bottomBtn: {

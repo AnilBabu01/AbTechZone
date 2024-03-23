@@ -35,7 +35,7 @@ const SchoolHrOptions = () => {
         <TouchableOpacity
           onPress={() => navigation.navigate('AttendanceTabEmployee')}>
           <View style={styles.mainoption}>
-            <FontAwesome6 name="database" color={Colors.primary} size={30} />
+            <FontAwesome6 name="receipt" color={Colors.primary} size={30} />
             <Text style={styles.titlestyle}>Attendance</Text>
           </View>
         </TouchableOpacity>

@@ -17,6 +17,7 @@ import {Dropdown} from 'react-native-element-dropdown';
 import {Width, Height} from '../../utils/responsive';
 import Toast from 'react-native-toast-message';
 import {serverInstance} from '../../API/ServerInstance';
+import RNBDropDown from '../RNBDropDown';
 const monthlist = [
   {
     id: 1,
@@ -144,7 +145,7 @@ const SearchMonthltFee = ({
         });
 
         setloading(false);
-          setShowModal(false);
+        setShowModal(false);
       }
     });
   };
@@ -186,121 +187,55 @@ const SearchMonthltFee = ({
               backgroundColor: Colors.white,
             }}>
             <ScrollView
-              style={{height: deviceHeight * 0.4}}
+              style={{height: deviceHeight * 0.5}}
               showsVerticalScrollIndicator={false}>
               <View style={styles.rowwrapper}>
-                <View style={{width: '45%'}}>
-                  <View style={{marginHorizontal: deviceWidth * 0.01}}>
-                    <Text
-                      style={{
-                        fontSize: 14,
-                        fontWeight: '600',
-                        lineHeight: 19,
-                      }}>
-                      Session
-                    </Text>
-                    <Dropdown
-                      style={styles.dropstyle}
-                      placeholderStyle={styles.placeholderStyle}
-                      selectedTextStyle={styles.selectedTextStyle}
-                      inputSearchStyle={styles.inputSearchStyle}
-                      iconStyle={styles.iconStyle}
-                      data={
-                        sessionList &&
-                        sessionList?.map(item => ({
-                          label: `${item?.Session}`,
-                          value: `${item?.Session}`,
-                        }))
-                      }
-                      search
-                      maxHeight={300}
-                      labelField="label"
-                      valueField="value"
-                      placeholder="Select Session"
-                      searchPlaceholder="Search..."
-                      value={sessionname}
-                      onChange={item => {
-                        setsessionname(item.value);
-                      }}
-                    />
-                  </View>
+                <View style={{width: '49%'}}>
+                  <RNBDropDown
+                    label="Session"
+                    value={sessionname}
+                    OptionsList={
+                      sessionList &&
+                      sessionList?.map(item => ({
+                        label: `${item?.Session}`,
+                        value: `${item?.Session}`,
+                      }))
+                    }
+                    onChange={data => setsessionname(data.value)}
+                  />
                 </View>
-                <View style={{width: '49.3%'}}>
-                  <View style={{marginHorizontal: deviceWidth * 0.01}}>
-                    <Text
-                      style={{
-                        fontSize: 14,
-                        fontWeight: '600',
-                        lineHeight: 19,
-                      }}>
-                      Class
-                    </Text>
-                    <Dropdown
-                      style={styles.dropstyle}
-                      placeholderStyle={styles.placeholderStyle}
-                      selectedTextStyle={styles.selectedTextStyle}
-                      inputSearchStyle={styles.inputSearchStyle}
-                      iconStyle={styles.iconStyle}
-                      data={
-                        courselist &&
-                        courselist?.map(item => ({
-                          label: `${item?.coursename}`,
-                          value: `${item?.coursename}`,
-                        }))
-                      }
-                      search
-                      maxHeight={300}
-                      labelField="label"
-                      valueField="value"
-                      placeholder="All Class"
-                      searchPlaceholder="Search..."
-                      value={courseorclass}
-                      onChange={item => {
-                        setcourseorclass(item.value);
-                      }}
-                    />
-                  </View>
+                <View style={{width: '49%'}}>
+                  <RNBDropDown
+                    label="Class"
+                    value={courseorclass}
+                    OptionsList={
+                      courselist &&
+                      courselist?.map(item => ({
+                        label: `${item?.coursename}`,
+                        value: `${item?.coursename}`,
+                      }))
+                    }
+                    onChange={data => setcourseorclass(data.value)}
+                  />
                 </View>
               </View>
 
               <View style={styles.rowwrapper}>
-                <View style={{width: '45%'}}>
-                  <View style={{marginHorizontal: deviceWidth * 0.01}}>
-                    <Text
-                      style={{
-                        fontSize: 14,
-                        fontWeight: '600',
-                        lineHeight: 19,
-                      }}>
-                      Month
-                    </Text>
-                    <Dropdown
-                      style={styles.dropstyle}
-                      placeholderStyle={styles.placeholderStyle}
-                      selectedTextStyle={styles.selectedTextStyle}
-                      inputSearchStyle={styles.inputSearchStyle}
-                      iconStyle={styles.iconStyle}
-                      data={
-                        monthlist &&
-                        monthlist?.map(item => ({
-                          label: `${item?.name}`,
-                          value: `${item?.id}`,
-                        }))
-                      }
-                      search
-                      maxHeight={300}
-                      labelField="label"
-                      valueField="value"
-                      placeholder="Select Month"
-                      searchPlaceholder="Search..."
-                      value={month}
-                      onChange={item => {
-                        setmonth(item.value);
-                      }}
-                    />
-                  </View>
+                <View style={{width: '49%'}}>
+                  <RNBDropDown
+                    label="Month"
+                    value={month}
+                    OptionsList={
+                      monthlist &&
+                      monthlist?.map(item => ({
+                        label: `${item?.name}`,
+                        value: `${item?.id}`,
+                      }))
+                    }
+                    onChange={data => setmonth(data.value)}
+                  />
                 </View>
-                <View style={{width: '49.3%'}}>
+                <View style={{width: '49%'}}>
                   <RNInputField
                     label="Sr Number"
                     placeholder="Enter Sr Number"
