@@ -225,7 +225,12 @@ const AddExpenses = ({navigation}) => {
           <FilterExpenses setShowModal={setShowModal} showModal={showModal} />
         </>
       )}
-      <DownEnquiry visible={showDocOptions} hideModal={setShowDocOptions} />
+      <DownEnquiry
+        enquiry={expenses}
+        filename={'ExpensesList'}
+        visible={showDocOptions}
+        hideModal={setShowDocOptions}
+      />
 
       <AnimatedFAB
         icon={'plus'}

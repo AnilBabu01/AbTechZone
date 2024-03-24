@@ -295,7 +295,7 @@ const StudentListReport = ({navigation}) => {
         )}
 
         <DownloadStudentData
-          enquiry={student}
+          enquiry={isdata}
           filename={'StudentList'}
           visible={showDocOptions}
           hideModal={setShowDocOptions}

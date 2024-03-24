@@ -61,7 +61,7 @@ const AddDepartment = ({navigation}) => {
           id: index,
           value: item?.DepartmentName,
         });
-       enquiryTableList[2].items.push({
+        enquiryTableList[2].items.push({
           id: index,
           value: (
             <Ionicons
@@ -102,12 +102,12 @@ const AddDepartment = ({navigation}) => {
           <Text style={styles.secondaryTitle}>Department Master</Text>
         </View>
         <View style={{flexDirection: 'row', gap: 10}}>
-          {/* <Pressable
+          <Pressable
             onPress={() => setShowDocOptions(true)}
             style={styles.filterBtnContainer}>
             <FontAwesome6 name="download" color={Colors.primary} size={25} />
           </Pressable>
-          <Pressable
+          {/* <Pressable
             onPress={() => setShowModal(true)}
             style={styles.filterBtnContainer}>
             <Ionicons name="filter" color={Colors.primary} size={25} />
@@ -159,7 +159,12 @@ const AddDepartment = ({navigation}) => {
           <EnquiryFilter setShowModal={setShowModal} showModal={showModal} />
         </>
       )}
-      <DownEnquiry visible={showDocOptions} hideModal={setShowDocOptions} />
+      <DownEnquiry
+        enquiry={department}
+        filename={'DepartmentList'}
+        visible={showDocOptions}
+        hideModal={setShowDocOptions}
+      />
 
       <AnimatedFAB
         icon={'plus'}

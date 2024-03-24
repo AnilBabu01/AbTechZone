@@ -18,34 +18,34 @@ const SchoolHostelOptiins = () => {
       <View style={styles.mainview}>
         <TouchableOpacity onPress={() => navigation.navigate('HostelCategory')}>
           <View style={styles.mainoption}>
-            <FontAwesome6 name="layer-group" color={Colors.primary} size={30} />
+            <FontAwesome6 name="layer-group" color={Colors.optionColor} size={30} />
             <Text style={styles.titlestyle}>Add Category</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate('HostelFacility')}>
           <View style={styles.mainoption}>
-            <FontAwesome6 name="history" color={Colors.primary} size={30} />
+            <FontAwesome6 name="history" color={Colors.optionColor} size={30} />
             <Text style={styles.titlestyle}>Add Facility</Text>
           </View>
         </TouchableOpacity>
 
         <TouchableOpacity onPress={() => navigation.navigate('Addhostel')}>
           <View style={styles.mainoption}>
-            <FontAwesome6 name="hotel" color={Colors.primary} size={30} />
+            <FontAwesome6 name="hotel" color={Colors.optionColor} size={30} />
             <Text style={styles.titlestyle}>Add Hostel</Text>
           </View>
         </TouchableOpacity>
 
         <TouchableOpacity onPress={() => navigation.navigate('AddRoom')}>
           <View style={styles.mainoption}>
-            <FontAwesome6 name="restroom" color={Colors.primary} size={30} />
+            <FontAwesome6 name="restroom" color={Colors.optionColor} size={30} />
             <Text style={styles.titlestyle}>Add Room</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => navigation.navigate('AddStudentToHostel')}>
           <View style={styles.mainoption}>
-            <FontAwesome6 name="user-plus" color={Colors.primary} size={30} />
+            <FontAwesome6 name="user-plus" color={Colors.optionColor} size={30} />
             <Text style={styles.titlestyle}>Add Student</Text>
           </View>
         </TouchableOpacity>
@@ -54,7 +54,7 @@ const SchoolHostelOptiins = () => {
           <View style={styles.mainoption}>
             <FontAwesome6
               name="check-to-slot"
-              color={Colors.primary}
+              color={Colors.optionColor}
               size={30}
             />
 
@@ -64,7 +64,7 @@ const SchoolHostelOptiins = () => {
 
         <TouchableOpacity onPress={() => navigation.navigate('Checkout')}>
           <View style={styles.mainoption}>
-            <FontAwesome6 name="arrows" color={Colors.primary} size={30} />
+            <FontAwesome6 name="arrows" color={Colors.optionColor} size={30} />
 
             <Text style={styles.titlestyle}>Check-Out</Text>
           </View>
@@ -72,7 +72,7 @@ const SchoolHostelOptiins = () => {
 
         <TouchableOpacity onPress={() => navigation.navigate('RoomChange')}>
           <View style={styles.mainoption}>
-            <FontAwesome6 name="anchor" color={Colors.primary} size={30} />
+            <FontAwesome6 name="anchor" color={Colors.optionColor} size={30} />
 
             <Text style={styles.titlestyle}>Room Shift</Text>
           </View>
@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
     marginVertical: deviceHeight * 0.01,
     fontSize: 14,
     textAlign: 'center',
-    color: Colors.primary,
+    color: Colors.optionColor,
   },
   optionimg: {
     width: Width(30),

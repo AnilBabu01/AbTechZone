@@ -1,62 +1,35 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  ScrollView,
-  StatusBar,
-  ActivityIndicator,
-} from 'react-native';
-import React, {useState, useEffect} from 'react';
-import TotalCard from './Card/TotalCard';
-import dash1 from '../../assets/dash1.jpg';
-import dash2 from '../../assets/dash2.jpg';
-import dash3 from '../../assets/dash3.jpg';
-import dash4 from '../../assets/dash4.jpg';
-import Linechart from '../Dashboard/Chart/Linechart';
+import {StyleSheet, ScrollView, StatusBar} from 'react-native';
+import React from 'react';
 import Header from '../../Component/Header/Header';
 import {primary} from '../../utils/Colors';
-import Loader from '../../Component/Loader/Loader';
+import {useSelector} from 'react-redux';
+import SchoolEmpDashbord from './School/SchoolEmpDashbord';
+import CoachingEmoDashbord from './Coaching/CoachingEmoDashbord';
+import CollegeEmpDashbord from './College/CollegeEmpDashbord';
 const Dashboard = () => {
-  const [loader, setloader] = useState(false);
-  useEffect(() => {
-    setTimeout(() => {
-      setloader(false);
-    }, 10);
-  }, []);
-
+  const {user} = useSelector(state => state.auth);
   return (
     <>
       <Header />
       <StatusBar backgroundColor={primary} />
       <ScrollView>
-        <Loader loader={loader} sms={'Loading...'} />
-        <View>
-          <View style={styles.minacardinfo}>
-            <TotalCard img={dash2} value={'20'} name={'Student'} />
-            <TotalCard img={dash3} value={'10'} name={'Absent'} />
-            <TotalCard img={dash4} value={'40'} name={'Present'} />
-            <TotalCard img={dash1} value={'60'} name={'Staff'} />
-          </View>
-        </View>
+        {user?.data?.CredentailsData?.userType === 'school' && (
+          <>
+            <SchoolEmpDashbord />
+          </>
+        )}
 
-        <View style={styles.maintotalview}>
-          <View style={styles.card}>
-            <Text>Monthly Enquiry Data</Text>
-            <Linechart color={''} />
-          </View>
-          <View style={styles.card}>
-            <Text>Monthly Active Students Data</Text>
-            <Linechart color={'#00FFFF'} />
-          </View>
-          <View style={styles.card}>
-            <Text>Monthly Deactive Students Data</Text>
-            <Linechart color={'#008080'} />
-          </View>
-          <View style={styles.card}>
-            <Text>Monthly Fee Collection Data</Text>
-            <Linechart color={'#0000FF'} />
-          </View>
-        </View>
+        {user?.data?.CredentailsData?.userType === 'college' && (
+          <>
+            <CollegeEmpDashbord />
+          </>
+        )}
+
+        {user?.data?.CredentailsData?.userType === 'institute' && (
+          <>
+            <CoachingEmoDashbord />
+          </>
+        )}
       </ScrollView>
     </>
   );

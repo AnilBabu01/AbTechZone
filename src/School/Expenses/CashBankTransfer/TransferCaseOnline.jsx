@@ -213,7 +213,13 @@ const TransferCaseOnline = ({navigation}) => {
           <FilterTrnsfer setShowModal={setShowModal} showModal={showModal} />
         </>
       )}
-      <DownEnquiry visible={showDocOptions} hideModal={setShowDocOptions} />
+
+      <DownEnquiry
+        enquiry={transferamount}
+        filename={'TransferAmountList'}
+        visible={showDocOptions}
+        hideModal={setShowDocOptions}
+      />
 
       <AnimatedFAB
         icon={'plus'}

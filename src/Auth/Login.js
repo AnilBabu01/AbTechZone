@@ -386,17 +386,6 @@ const Login = () => {
               )}
               {loginas === 'Employee' && (
                 <>
-                  <Text
-                    style={{
-                      fontFamily: 'Gilroy-SemiBold',
-                      fontSize: Height(12),
-                      marginTop: Height(10),
-                      color: Colors.black,
-                      fontWeight: 'bold',
-                    }}>
-                    Please Select
-                    <Text style={{color: primary}}> *</Text>
-                  </Text>
                   {client ? (
                     <>
                       <RNBDropDown

@@ -80,7 +80,6 @@ const VehicleType = ({navigation}) => {
       }),
     );
     setTabledata(enquiryTableList);
-   
   };
 
   useEffect(() => {
@@ -103,12 +102,12 @@ const VehicleType = ({navigation}) => {
           <Text style={styles.secondaryTitle}>Vehicle Type</Text>
         </View>
         <View style={{flexDirection: 'row', gap: 10}}>
-          {/* <Pressable
+          <Pressable
             onPress={() => setShowDocOptions(true)}
             style={styles.filterBtnContainer}>
             <FontAwesome6 name="download" color={Colors.primary} size={25} />
           </Pressable>
-          <Pressable
+          {/* <Pressable
             onPress={() => setShowModal(true)}
             style={styles.filterBtnContainer}>
             <Ionicons name="filter" color={Colors.primary} size={25} />
@@ -160,7 +159,12 @@ const VehicleType = ({navigation}) => {
           <EnquiryFilter setShowModal={setShowModal} showModal={showModal} />
         </>
       )}
-      <DownEnquiry visible={showDocOptions} hideModal={setShowDocOptions} />
+      <DownEnquiry
+        enquiry={vehicletype}
+        filename={'VehicletypeList'}
+        visible={showDocOptions}
+        hideModal={setShowDocOptions}
+      />
 
       <AnimatedFAB
         icon={'plus'}

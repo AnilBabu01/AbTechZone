@@ -89,10 +89,6 @@ const EmpAddholiday = ({navigation}) => {
     setTabledata(enquiryTableList);
   };
 
-  useEffect(() => {
-    convertdata(enquirylist);
-  }, [enquirylist]);
-
   const getholiday = () => {
     setloading(true);
     const data = {
@@ -113,6 +109,11 @@ const EmpAddholiday = ({navigation}) => {
   useEffect(() => {
     getholiday(month);
   }, []);
+
+  useEffect(() => {
+    convertdata(enquirylist);
+  }, [enquirylist]);
+
   const {fabStyle} = styles;
 
   return (
@@ -184,7 +185,12 @@ const EmpAddholiday = ({navigation}) => {
           />
         </>
       )}
-      <DownEnquiry visible={showDocOptions} hideModal={setShowDocOptions} />
+      <DownEnquiry
+        enquiry={enquirylist}
+        filename={'EmployeeHolidayList'}
+        visible={showDocOptions}
+        hideModal={setShowDocOptions}
+      />
 
       <AnimatedFAB
         icon={'plus'}

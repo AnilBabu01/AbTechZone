@@ -18,6 +18,7 @@ import {Dropdown} from 'react-native-element-dropdown';
 import {useSelector, useDispatch} from 'react-redux';
 import {GetExpenses} from '../../redux/action/expensesActions';
 import moment from 'moment';
+import RNBDropDown from '../RNBDropDown';
 const expensesTypeList = [
   {label: 'Cleaning Expenses', value: 'Cleaning Expenses'},
   {label: 'Office Expenses', value: 'Office Expenses'},
@@ -123,94 +124,40 @@ const FilterExpenses = ({showModal, setShowModal}) => {
               backgroundColor: Colors.white,
             }}>
             <ScrollView
-              style={{height: deviceHeight * 0.5}}
+              style={{height: deviceHeight * 0.6}}
               showsVerticalScrollIndicator={false}>
               <View style={styles.rowwrapper}>
                 <View style={{width: '49.3%'}}>
-                  <View style={{marginHorizontal: deviceWidth * 0.01}}>
-                    <Text
-                      style={{fontSize: 14, fontWeight: '600', lineHeight: 19}}>
-                      Session
-                    </Text>
-                    <Dropdown
-                      style={styles.dropstyle10}
-                      placeholderStyle={styles.placeholderStyle}
-                      selectedTextStyle={styles.selectedTextStyle}
-                      inputSearchStyle={styles.inputSearchStyle}
-                      iconStyle={styles.iconStyle}
-                      data={
-                        sessionList &&
-                        sessionList?.map(item => ({
-                          label: `${item?.Session}`,
-                          value: `${item?.Session}`,
-                        }))
-                      }
-                      search
-                      maxHeight={300}
-                      labelField="label"
-                      valueField="value"
-                      placeholder="Please Select"
-                      searchPlaceholder="Search..."
-                      value={sessionname}
-                      onChange={item => {
-                        setsessionname(item.value);
-                      }}
-                    />
-                  </View>
+                  <RNBDropDown
+                    label="Session"
+                    value={sessionname}
+                    OptionsList={
+                      sessionList &&
+                      sessionList?.map(item => ({
+                        label: `${item?.Session}`,
+                        value: `${item?.Session}`,
+                      }))
+                    }
+                    onChange={data => setsessionname(data.value)}
+                  />
                 </View>
                 <View style={{width: '49.3%'}}>
-                  <View style={{marginHorizontal: deviceWidth * 0.01}}>
-                    <Text
-                      style={{fontSize: 14, fontWeight: '600', lineHeight: 19}}>
-                      PayMent Mode
-                    </Text>
-                    <Dropdown
-                      style={styles.dropstyle10}
-                      placeholderStyle={styles.placeholderStyle}
-                      selectedTextStyle={styles.selectedTextStyle}
-                      inputSearchStyle={styles.inputSearchStyle}
-                      iconStyle={styles.iconStyle}
-                      data={PayModes}
-                      search
-                      maxHeight={300}
-                      labelField="label"
-                      valueField="value"
-                      placeholder="All"
-                      searchPlaceholder="Search..."
-                      value={PayOption}
-                      onChange={item => {
-                        setPayOption(item.value);
-                      }}
-                    />
-                  </View>
+                  <RNBDropDown
+                    label="PayMent Mode"
+                    value={PayOption}
+                    OptionsList={PayModes}
+                    onChange={data => setPayOption(data.value)}
+                  />
                 </View>
               </View>
               <View style={styles.rowwrapper}>
-                <View style={{width: '99.3%'}}>
-                  <View style={{marginHorizontal: deviceWidth * 0.01}}>
-                    <Text
-                      style={{fontSize: 14, fontWeight: '600', lineHeight: 19}}>
-                      Expenses Type
-                    </Text>
-                    <Dropdown
-                      style={styles.dropstyle}
-                      placeholderStyle={styles.placeholderStyle}
-                      selectedTextStyle={styles.selectedTextStyle}
-                      inputSearchStyle={styles.inputSearchStyle}
-                      iconStyle={styles.iconStyle}
-                      data={expensesTypeList}
-                      search
-                      maxHeight={300}
-                      labelField="label"
-                      valueField="value"
-                      placeholder="All"
-                      searchPlaceholder="Search..."
-                      value={Expensestype}
-                      onChange={item => {
-                        setExpensestype(item.value);
-                      }}
-                    />
-                  </View>
+                <View style={{width: '100%'}}>
+                  <RNBDropDown
+                    label="Expenses Type"
+                    value={Expensestype}
+                    OptionsList={expensesTypeList}
+                    onChange={data => setExpensestype(data.value)}
+                  />
                 </View>
               </View>
               <View style={styles.rowwrapper}>

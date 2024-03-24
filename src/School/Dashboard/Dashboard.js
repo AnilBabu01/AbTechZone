@@ -197,11 +197,11 @@ const Dashboard = () => {
           // setBarFeepaidList(res?.data?.ReceiptChartdata);
           setBarExpensesList(res?.data?.ExpensesChartdata);
           setLinstExpensesList(res?.data?.ExpensesChartdata);
-          Toast.show({
-            type: 'success',
-            text1: 'Success',
-            text2: res?.msg,
-          });
+          // Toast.show({
+          //   type: 'success',
+          //   text1: 'Success',
+          //   text2: res?.msg,
+          // });
           setloading(false);
         }
 
@@ -350,7 +350,7 @@ const Dashboard = () => {
       <Header />
       <StatusBar backgroundColor={primary} />
       <ScrollView>
-        <List.Accordion
+        {/* <List.Accordion
           title="Overall Statistics"
           expanded={expanded}
           titleStyle={accordionTitle}
@@ -548,7 +548,194 @@ const Dashboard = () => {
               </View>
             </View>
           )}
-        </List.Accordion>
+        </List.Accordion> */}
+
+        {loading ? (
+          <DashboardPlaceholderLoader type="header" />
+        ) : (
+          <View>
+            <View style={styles.minacardinfo}>
+              <TotalCard
+                bgcolor="#488A99"
+                img={Staff}
+                value={
+                  alltotaldata?.TotalEmployee ? alltotaldata?.TotalEmployee : 0
+                }
+                name={'Employees'}
+              />
+              <TotalCard
+                bgcolor="#484848"
+                img={Student}
+                value={
+                  alltotaldata?.TotalStudent ? alltotaldata?.TotalStudent : 0
+                }
+                name={'Students'}
+              />
+              <TotalCard
+                bgcolor="#DBAE58"
+                img={Parent}
+                value={
+                  alltotaldata?.TotalParents ? alltotaldata?.TotalParents : 0
+                }
+                name={'Parents'}
+              />
+              <TotalCard
+                bgcolor="#AC3E31"
+                img={Staff}
+                value={
+                  alltotaldata?.AllEmployeeAttendance
+                    ? totalpresent(alltotaldata?.AllEmployeeAttendance)
+                    : 0
+                }
+                name={'Present Teacher'}
+              />
+              <TotalCard
+                bgcolor="#B3C100"
+                img={Student}
+                value={
+                  alltotaldata?.AllStudentAttendance
+                    ? totalpresent(alltotaldata?.AllStudentAttendance)
+                    : 0
+                }
+                name={'Present Student'}
+              />
+              <TotalCard
+                bgcolor="#4CB5F5"
+                img={Rupee1}
+                value={
+                  alltotaldata?.allreceiptdata
+                    ? `₹${totalrecovery10(alltotaldata?.allTodayreceiptdata)}`
+                    : '₹0'
+                }
+                name={'Today Collected Fee'}
+              />
+
+              <View style={{width: '97%', paddingBottom: 20}}>
+                <View>
+                  <View style={{width: '100%'}}>
+                    <RNBDropDown
+                      label="Search By"
+                      borderRad={20}
+                      value={searchoptiond}
+                      OptionsList={searchbydata}
+                      onChange={data => setsearchoptiond(data.value)}
+                    />
+                  </View>
+
+                  <View style={{width: '100%'}}>
+                    {searchoptiond === 'Month' && (
+                      <>
+                        <RNBDropDown
+                          label="Select Month"
+                          value={searchMon}
+                          borderRad={20}
+                          OptionsList={
+                            monthlist &&
+                            monthlist?.map(item => ({
+                              label: `${item?.name}`,
+                              value: `${item?.name}`,
+                            }))
+                          }
+                          onChange={data => setsearchMon(data.value)}
+                        />
+                      </>
+                    )}
+
+                    {searchoptiond === 'session' && (
+                      <>
+                        <RNBDropDown
+                          label="Select Session"
+                          value={searchsession}
+                          borderRad={20}
+                          OptionsList={
+                            sessionList &&
+                            sessionList?.map(item => ({
+                              label: `${item?.Session}`,
+                              value: `${item?.Session}`,
+                            }))
+                          }
+                          onChange={data => setsearchsession(data.value)}
+                        />
+                      </>
+                    )}
+                  </View>
+                </View>
+                <View style={{width: '100%'}}>
+                  <RNButton
+                    loading={loading}
+                    style={{paddingHorizontal: 25}}
+                    onPress={() => {
+                      getTotalDashborData();
+                    }}>
+                    {searchoptiond === 'Month'
+                      ? 'Search By Month'
+                      : 'Search By Session'}
+                  </RNButton>
+                </View>
+              </View>
+
+              <TotalCard
+                bgcolor="#6AB187"
+                img={Rupee1}
+                value={
+                  alltotaldata?.allreceiptdata
+                    ? `₹${totalrecovery(alltotaldata)}`
+                    : '₹0'
+                }
+                name={'Overall Collected Fee'}
+              />
+              <TotalCard
+                bgcolor="#1F3F49"
+                img={redrupee}
+                value={`₹${
+                  Number(
+                    alltotaldata &&
+                      alltotaldata?.TotalAcademinPending[0]?.total_Pendingamount
+                      ? alltotaldata?.TotalAcademinPending[0]
+                          ?.total_Pendingamount
+                      : 0,
+                  ) +
+                  Number(
+                    alltotaldata &&
+                      alltotaldata?.TotalHostelPending[0]?.total_Pendingamount
+                      ? alltotaldata?.TotalHostelPending[0]?.total_Pendingamount
+                      : 0,
+                  ) +
+                  Number(
+                    alltotaldata &&
+                      alltotaldata?.TotalTransportPending[0]
+                        ?.total_Pendingamount
+                      ? alltotaldata?.TotalTransportPending[0]
+                          ?.total_Pendingamount
+                      : 0,
+                  )
+                }`}
+                name={'Overall Pending Fee'}
+              />
+              <TotalCard
+                bgcolor="#D32D41"
+                img={rupppe}
+                value={
+                  alltotaldata?.allexpenses
+                    ? `₹${totalexpenses(alltotaldata?.allexpenses)}`
+                    : '₹0'
+                }
+                name={'Overall Expenses'}
+              />
+              <TotalCard
+                bgcolor="#0091D5"
+                img={Rupee2}
+                value={
+                  Number(totalrecovery(alltotaldata)) -
+                  (totalexpenses(alltotaldata?.allexpenses)
+                    ? totalexpenses(alltotaldata?.allexpenses)
+                    : 0)
+                }
+                name={'Overall Profit'}
+              />
+            </View>
+          </View>
+        )}
 
         <View style={styles.maintotalview}>
           {loadingpaidfee ? (
@@ -557,18 +744,24 @@ const Dashboard = () => {
             </>
           ) : (
             <>
-              <View style={styles.card}>
-                <Text style={{color: Colors.black, fontWeight: 'bold'}}>
-                  Monthly Fee Collection
-                </Text>
-                <Linechart
-                  color={''}
-                  pdata={LinstFeepaidList?.pendingAmount?.sort(
-                    comparePaidFeeMonths,
-                  )}
-                  pdata1={LinstFeepaidList?.PaidFee?.sort(comparePaidFeeMonths)}
-                />
-              </View>
+              {/* <View style={styles.card}> */}
+              <Text
+                style={{
+                  color: Colors.black,
+                  fontWeight: 'bold',
+                  marginVertical: deviceHeight * 0.02,
+                  fontSize: 16,
+                }}>
+                Monthly Fee Collection
+              </Text>
+              <Linechart
+                color={'#0091D5'}
+                pdata={LinstFeepaidList?.pendingAmount?.sort(
+                  comparePaidFeeMonths,
+                )}
+                pdata1={LinstFeepaidList?.PaidFee?.sort(comparePaidFeeMonths)}
+              />
+              {/* </View> */}
             </>
           )}
 
@@ -578,19 +771,25 @@ const Dashboard = () => {
             </>
           ) : (
             <>
-              <View style={styles.card}>
-                <Text style={{color: Colors.black, fontWeight: 'bold'}}>
-                  Monthly Expenses
-                </Text>
-                {LinstExpensesList?.length > 0 && (
-                  <>
-                    <ExpensexLineChart
-                      color={''}
-                      pdata={LinstExpensesList?.sort(compareExpensesFeeMonths)}
-                    />
-                  </>
-                )}
-              </View>
+              {/* <View style={styles.card}> */}
+              <Text
+                style={{
+                  color: Colors.black,
+                  fontWeight: 'bold',
+                  marginVertical: deviceHeight * 0.02,
+                  fontSize: 16,
+                }}>
+                Monthly Expenses
+              </Text>
+              {LinstExpensesList?.length > 0 && (
+                <>
+                  <ExpensexLineChart
+                    color={'#488A99'}
+                    pdata={LinstExpensesList?.sort(compareExpensesFeeMonths)}
+                  />
+                </>
+              )}
+              {/* </View> */}
             </>
           )}
         </View>

@@ -20,6 +20,7 @@ import {GetTransferAmmount} from '../../redux/action/expensesActions';
 import moment from 'moment';
 import {serverInstance} from '../../API/ServerInstance';
 import Toast from 'react-native-toast-message';
+import RNBDropDown from '../RNBDropDown';
 const monthlist = [
   {
     value: 1,
@@ -167,62 +168,26 @@ const FilterAnalysie = ({
               showsVerticalScrollIndicator={false}>
               <View style={styles.rowwrapper}>
                 <View style={{width: '49.3%'}}>
-                  <View style={{marginHorizontal: deviceWidth * 0.01}}>
-                    <Text
-                      style={{fontSize: 14, fontWeight: '600', lineHeight: 19}}>
-                      Session
-                    </Text>
-                    <Dropdown
-                      style={styles.dropstyle10}
-                      placeholderStyle={styles.placeholderStyle}
-                      selectedTextStyle={styles.selectedTextStyle}
-                      inputSearchStyle={styles.inputSearchStyle}
-                      iconStyle={styles.iconStyle}
-                      data={
-                        sessionList &&
-                        sessionList?.map(item => ({
-                          label: `${item?.Session}`,
-                          value: `${item?.Session}`,
-                        }))
-                      }
-                      search
-                      maxHeight={300}
-                      labelField="label"
-                      valueField="value"
-                      placeholder="Please Select"
-                      searchPlaceholder="Search..."
-                      value={sessionname}
-                      onChange={item => {
-                        setsessionname(item.value);
-                      }}
-                    />
-                  </View>
+                  <RNBDropDown
+                    label="Session"
+                    value={sessionname}
+                    OptionsList={
+                      sessionList &&
+                      sessionList?.map(item => ({
+                        label: `${item?.Session}`,
+                        value: `${item?.Session}`,
+                      }))
+                    }
+                    onChange={data => setsessionname(data.value)}
+                  />
                 </View>
                 <View style={{width: '49.3%'}}>
-                  <View style={{marginHorizontal: deviceWidth * 0.01}}>
-                    <Text
-                      style={{fontSize: 14, fontWeight: '600', lineHeight: 19}}>
-                      Month
-                    </Text>
-                    <Dropdown
-                      style={styles.dropstyle10}
-                      placeholderStyle={styles.placeholderStyle}
-                      selectedTextStyle={styles.selectedTextStyle}
-                      inputSearchStyle={styles.inputSearchStyle}
-                      iconStyle={styles.iconStyle}
-                      data={monthlist}
-                      search
-                      maxHeight={300}
-                      labelField="label"
-                      valueField="value"
-                      placeholder="All"
-                      searchPlaceholder="Search..."
-                      value={month}
-                      onChange={item => {
-                        setmonth(item.value);
-                      }}
-                    />
-                  </View>
+                  <RNBDropDown
+                    label="Month"
+                    value={month}
+                    OptionsList={monthlist}
+                    onChange={data => setmonth(data.value)}
+                  />
                 </View>
               </View>
             </ScrollView>

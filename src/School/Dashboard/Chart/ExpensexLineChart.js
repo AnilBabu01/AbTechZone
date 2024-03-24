@@ -47,7 +47,7 @@ const ExpensexLineChart = ({color, pdata}) => {
     <>
       <LineChart
         data={line}
-        width={Width(340)} // from react-native
+        width={Width(357)} // from react-native
         height={220}
         yAxisLabel={''}
         chartConfig={{

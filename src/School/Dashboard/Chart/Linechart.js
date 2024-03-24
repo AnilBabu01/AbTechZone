@@ -10,8 +10,6 @@ const compareExpensesFeeMonths = (a, b) => {
 };
 
 const Linechart = ({color, pdata, pdata1}) => {
-
-  
   const line = {
     labels: [
       'April',
@@ -60,7 +58,7 @@ const Linechart = ({color, pdata, pdata1}) => {
     <>
       <LineChart
         data={line}
-        width={Width(340)} // from react-native
+        width={Width(357)} // from react-native
         height={220}
         yAxisLabel={''}
         chartConfig={{

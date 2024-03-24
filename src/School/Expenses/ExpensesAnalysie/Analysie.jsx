@@ -6,12 +6,11 @@ import {
   ScrollView,
   Pressable,
 } from 'react-native';
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import {Height, Width} from '../../../utils/responsive';
 import CardEnquiry from './Card';
 import {primary} from '../../../utils/Colors';
 import {getcourse} from '../../../redux/action/commanAction';
-import {AnimatedFAB} from 'react-native-paper';
 import {Colors} from '../../../utils/Colors';
 import {useDispatch, useSelector} from 'react-redux';
 import DashboardPlaceholderLoader from '../../../Component/DashboardPlaceholderLoader';
@@ -22,12 +21,20 @@ import DownEnquiry from '../../../Component/school/DownloadExcel';
 import EnquiryFilter from '../../../Component/school/EnquiryFilter';
 import FilterAnalysie from '../../../Component/school/FilterAnalysie';
 import BackHeader from '../../../Component/Header/BackHeader';
-import moment from 'moment';
-import Toast from 'react-native-toast-message';
 import {serverInstance} from '../../../API/ServerInstance';
+import Toast from 'react-native-toast-message';
+import moment from 'moment';
+import RNFS from 'react-native-fs';
+import RNHTMLtoPDF from 'react-native-html-to-pdf';
+import FileViewer from 'react-native-file-viewer';
+import RNPrint from 'react-native-print';
+import Share from 'react-native-share';
+
 const Analysie = ({navigation}) => {
   const dispatch = useDispatch();
   const [openModel, setopenModel] = useState(false);
+  const [Downloading, setDownloading] = useState(false);
+  const [printing, setprinting] = useState(false);
   let currmonth = new Date().getMonth();
   const [month, setmonth] = useState(currmonth + 1);
   const [enquirylist, setenquirylist] = useState('');
@@ -166,7 +173,6 @@ const Analysie = ({navigation}) => {
 
           convertdata(res?.data[0]?.allexpenses);
           convertdataRecovery(res?.data[0]?.allreceiptdata);
-         
         }
 
         if (res?.status === false) {
@@ -254,6 +260,301 @@ const Analysie = ({navigation}) => {
     GetTransferAmmountConslated();
   }, []);
 
+  const removeasset = data => {
+    // let filterData = data.filter(
+    //   (item) => item.Expensestype === "Expenses" || item.Expensestype === "Liability"
+    // );
+
+    return data;
+  };
+
+  const htmlTemplate = `<!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>Document</title>
+      <style>
+        .add_divmarginn {
+          padding: 0.5rem;
+        }
+  
+        .tablecontainer {
+          overflow-x: auto;
+          /* padding: 10px;
+          margin: 10px; */
+        }
+        .expensesDiv {
+          display: flex;
+          justify-content: space-around;
+          align-items: center;
+        }
+  
+        .innearexpensesdiv {
+          width: 50%;
+          border: 1px solid #093959;
+          padding: 0.5rem;
+          height: 34rem;
+        }
+        .innearexpensesdiv10 {
+          width: 50%;
+          border: 1px solid #093959;
+          padding: 0.5rem;
+          height: 34rem;
+        }
+  
+        .mainrecoveryp {
+          background-color: #093959;
+          color: white;
+          padding: 1%;
+        }
+  
+        .onlytablescroll {
+          width: 100%;
+          border: 1px solid #093959;
+          padding: 0.5rem;
+          height: 22rem;
+          overflow-x: auto;
+        }
+  
+        .tabletable {
+          font-family: arial, sans-serif;
+          border-collapse: collapse;
+          width: 100%;
+        }
+  
+        .tabletr:nth-child(even) {
+          background-color: #dddddd;
+        }
+        .tabletd,
+        .tableth {
+          border: 1px solid #dddddd;
+          text-align: center;
+          padding: 8px;
+        }
+        .mainfivrupee {
+          display: flex;
+          justify-content: space-between;
+        }
+        .mainfivrupeep {
+          font-weight: 700;
+        }
+        .mainfivrupee10p {
+          font-weight: 700;
+        }
+      </style>
+    </head>
+    <body>
+      <div class="add_divmarginn">
+        <div class="tablecontainer">
+          <div class="expensesDiv">
+            <div class="innearexpensesdiv">
+              <div class="mainrecoveryp">
+                <p>Expenses</p>
+              </div>
+  
+              <div class="onlytablescroll">
+                <table class="tabletable">
+                  <tbody>
+                    <tr class="tabletr">
+                      <th class="tableth">Sr.No</th>
+  
+                      <th class="tableth">Type</th>
+                      <th class="tableth">Amount</th>
+  
+                      <th class="tableth">Mode</th>
+                    </tr>
+  
+                    ${
+                      allExpensesList?.length > 0 &&
+                      removeasset(allExpensesList)
+                        ?.map(
+                          (item, index) => `  <tr key=${index} class="tabletr">
+                      <td class="tabletd">${index + 1}</td>
+
+                      <td class="tabletd">${item?.Expensestype}</td>
+                      <td class="tabletd">${item?.total_paidamount}</td>
+
+                      <td class="tabletd">${item?.PayOption}</td>
+                    </tr> `,
+                        )
+                        .join('')
+                    }
+                  </tbody>
+                </table>
+              </div>
+              <div class="mainfivrupee">
+                <p>
+                  Total Cash Out = &nbsp;
+                  <span class="mainfivrupee10p">
+                    ${totalcashexpenses(allExpensesList)}
+                  </span>
+                </p>
+                <p>
+                  Total Online Out = &nbsp;
+                  <span class="mainfivrupee10p">
+                    ${totalonlineexpenses(allExpensesList)}
+                  </span>
+                </p>
+              </div>
+            </div>
+            <div class="innearexpensesdiv10">
+              <div class="mainrecoveryp">
+                <p>Recovery</p>
+              </div>
+  
+              <div class="onlytablescroll">
+                <table class="tabletable">
+                  <tbody>
+                    <tr class="tabletr">
+                      <th class="tableth">Sr.No</th>
+                      <th class="tableth">Class</th>
+                      <th class="tableth">Amount</th>
+  
+                      <th class="tableth">Mode</th>
+                    </tr>
+                    ${
+                      allRecoveryList?.length > 0 &&
+                      allRecoveryList
+                        ?.map(
+                          (item, index) => `  <tr key=${index} class="tabletr">
+                    <td class="tabletd">${index + 1}</td>
+                    <td class="tabletd">${item?.Course}</td>
+                    <td class="tabletd">${item?.total_paidamount}</td>
+
+                    <td class="tabletd">${item?.PayOption}</td>
+                  </tr>`,
+                        )
+                        .join('')
+                    }
+                  </tbody>
+                </table>
+              </div>
+  
+              <div>
+                <p>
+                  Total Cash = &nbsp;
+                  <span class="mainfivrupee10p">
+                    ${
+                      totalcashrecovery(allRecoveryList) -
+                      totalcashexpenses(assetlist) +
+                      totalcashTransferAmount()
+                    }
+                  </span>
+                </p>
+                <p>
+                  Total Bank = &nbsp;
+                  <span class="mainfivrupee10p">
+                    ${
+                      totalonlineexrecovery(allRecoveryList) -
+                      totalonlineexpenses(assetlist) +
+                      totalonlineTransferAmount()
+                    }
+                  </span>
+                </p>
+                <p>
+                  Total Profit = &nbsp;
+                  <span class="mainfivrupee10p">
+                    ${
+                      totalcashrecovery(allRecoveryList) +
+                      totalonlineexrecovery(allRecoveryList) -
+                      (totalcashexpenses(allExpensesList) +
+                        totalonlineexpenses(allExpensesList))
+                    }
+                  </span>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </body>
+  </html>
+  `;
+
+  const convertHtmlToPdf = async html => {
+    const options = {
+      html,
+      fileName: 'Analysie',
+      directory: 'Documents',
+    };
+
+    const pdf = await RNHTMLtoPDF.convert(options);
+    return pdf.filePath;
+  };
+
+  const copyToDownloadFolder = async pdfPath => {
+    const downloadFolderPath = RNFS.DownloadDirectoryPath;
+    const destinationPath = `${downloadFolderPath}/Analysie.pdf`;
+
+    await RNFS.copyFile(pdfPath, destinationPath);
+    return destinationPath;
+  };
+
+  const showPdfPopup = filePath => {
+    FileViewer.open(filePath)
+      .then(res => {
+        console.log(res);
+        setDownloading(false);
+      })
+      .catch(e => console.log('Error', e))
+      .finally(() => {
+        return true;
+      });
+  };
+
+  const handlePrint = async () => {
+    setprinting(true);
+    const results = await RNHTMLtoPDF.convert({
+      html: htmlTemplate,
+      fileName: 'Analysie',
+      base64: true,
+    });
+    if (results) {
+      setprinting(false);
+      await RNPrint.print({filePath: results.filePath});
+    }
+  };
+
+  const handleGeneratePdf = useCallback(async () => {
+    setDownloading(true);
+    try {
+      const pdfPath = await convertHtmlToPdf(htmlTemplate);
+      const destinationPath = await copyToDownloadFolder(pdfPath);
+      await showPdfPopup(destinationPath);
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+    }
+  }, []);
+
+  const sharePDF = async () => {
+    try {
+      const results = await RNHTMLtoPDF.convert({
+        html: htmlTemplate,
+        fileName: 'Analysie',
+        base64: true,
+      });
+
+      console.log('share filepath is', results);
+
+      if (results) {
+        const shareOptions = {
+          title: 'Share PDF via',
+          url: `${results.filePath}`,
+          social: Share.Social.WHATSAPP,
+        };
+
+        try {
+          await Share.shareSingle(shareOptions);
+        } catch (error) {
+          console.error(error.message);
+        }
+      }
+    } catch (error) {
+      console.error('Error sharing PDF:', error.message);
+    }
+  };
+
   return (
     <View style={{flex: 1}}>
       <BackHeader title={'Analysie'} />
@@ -263,9 +564,15 @@ const Analysie = ({navigation}) => {
         </View>
         <View style={{flexDirection: 'row', gap: 10}}>
           <Pressable
-            onPress={() => setShowDocOptions(true)}
+            onPress={() => handleGeneratePdf()}
             style={styles.filterBtnContainer}>
             <FontAwesome6 name="download" color={Colors.primary} size={25} />
+          </Pressable>
+
+          <Pressable
+            onPress={() => handlePrint()}
+            style={styles.filterBtnContainer}>
+            <FontAwesome6 name="print" color={Colors.primary} size={25} />
           </Pressable>
           <Pressable
             onPress={() => setShowModal(true)}
@@ -307,16 +614,33 @@ const Analysie = ({navigation}) => {
             ) : (
               <>
                 <View style={{padding: 15}}>
-                  <Text>Expenses</Text>
+                  <Text
+                    style={{
+                      color: Colors.black,
+                      fontWeight: 'bold',
+                      fontSize: 16,
+                    }}>
+                    Expenses
+                  </Text>
                 </View>
                 <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                   <RNTable theme="primary" data={expensesTable} />
                 </ScrollView>
                 <View style={{padding: 15}}>
-                  <Text>
+                  <Text
+                    style={{
+                      color: Colors.black,
+                      fontWeight: 'bold',
+                      fontSize: 16,
+                    }}>
                     Total Cash Out : {totalcashexpenses(allExpensesList)}
                   </Text>
-                  <Text>
+                  <Text
+                    style={{
+                      color: Colors.black,
+                      fontWeight: 'bold',
+                      fontSize: 16,
+                    }}>
                     Total Online Out : {totalonlineexpenses(allExpensesList)}{' '}
                   </Text>
                 </View>
@@ -327,27 +651,49 @@ const Analysie = ({navigation}) => {
                     borderTopWidth: 2,
                     borderTopColor: Colors.primary,
                   }}>
-                  <Text>Recovery</Text>
+                  <Text
+                    style={{
+                      color: Colors.black,
+                      fontWeight: 'bold',
+                      fontSize: 16,
+                    }}>
+                    Recovery
+                  </Text>
                 </View>
                 <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                   <RNTable theme="primary" data={receveryTable} />
                 </ScrollView>
 
                 <View style={{padding: 15}}>
-                  <Text>
+                  <Text
+                    style={{
+                      color: Colors.black,
+                      fontWeight: 'bold',
+                      fontSize: 16,
+                    }}>
                     Total Cash :
                     {totalcashrecovery(allRecoveryList) -
                       totalcashexpenses(assetlist) +
                       totalcashTransferAmount()}
                   </Text>
-                  <Text>
+                  <Text
+                    style={{
+                      color: Colors.black,
+                      fontWeight: 'bold',
+                      fontSize: 16,
+                    }}>
                     Total Bank :
                     {totalonlineexrecovery(allRecoveryList) -
                       totalonlineexpenses(assetlist) +
                       totalonlineTransferAmount()}
                   </Text>
 
-                  <Text>
+                  <Text
+                    style={{
+                      color: Colors.black,
+                      fontWeight: 'bold',
+                      fontSize: 16,
+                    }}>
                     Total Profit :
                     {totalcashrecovery(allRecoveryList) +
                       totalonlineexrecovery(allRecoveryList) -

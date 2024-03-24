@@ -9,7 +9,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Loader from '../Component/Loader/Loader';
 import {Colors} from '../utils/Colors';
 import {deviceWidth} from '../utils/constant';
-const SchoolDrawerItem = ({navigation, setuserData}) => {
+const SchoolEmployee = ({navigation, setuserData}) => {
   const [loader, setloader] = useState(false);
   const [sms, setsms] = useState('');
   const dispatch = useDispatch();
@@ -46,6 +46,9 @@ const SchoolDrawerItem = ({navigation, setuserData}) => {
       </TouchableOpacity>
     );
   };
+
+  console.log(user?.data?.User?.fronrofice);
+
   return (
     <View>
       <Loader loader={loader} sms={sms} />
@@ -82,77 +85,130 @@ const SchoolDrawerItem = ({navigation, setuserData}) => {
       </View>
       <View style={styles.divider}></View>
 
-      <CommonBTN routename="DashboardSchool" title="DashBoard" icon="grid" />
+      <CommonBTN routename="DashboardEmplyee" title="DashBoard" icon="grid" />
 
-      <CommonBTN
-        routename="FrontOfficeOptions"
-        title="Front Office"
-        icon="storefront"
-      />
-
-      <CommonBTN
-        routename="SchoolStudentOptions"
-        title="Student"
-        icon="people"
-      />
-
-      <CommonBTN
-        routename="FeeCollectOptions"
-        title="Account"
-        icon="storefront"
-      />
-      <CommonBTN
-        routename="SchoolHrOptions"
-        title="Human Resourse"
-        icon="people"
-      />
-      {user?.data?.CredentailsData?.hostel === true && (
+      {user?.data?.User?.fronrofice && (
         <>
           <CommonBTN
-            routename="SchoolHostelOptiins"
-            title="Hostel"
-            icon="home"
+            routename="FrontOfficeOptions"
+            title="Front Office"
+            icon="storefront"
           />
         </>
       )}
 
-      {user?.data?.CredentailsData?.hostel === true && (
+      {user?.data?.User?.student && (
         <>
           <CommonBTN
-            routename="SchoolLibraryOptions"
-            title="Library"
-            icon="book"
+            routename="SchoolStudentOptions"
+            title="Student"
+            icon="people"
           />
         </>
       )}
 
-      {user?.data?.CredentailsData?.Transport === true && (
+      {user?.data?.User?.accounts && (
         <>
           <CommonBTN
-            routename="SchoolTranportOptions"
-            title="Transport"
-            icon="bus"
+            routename="FeeCollectOptions"
+            title="Account"
+            icon="storefront"
           />
         </>
       )}
 
-      <CommonBTN
-        routename="MasterOptionsSchool"
-        title="Masters"
-        icon="logo-mastodon"
-      />
-      <CommonBTN
-        routename="ReportsOptionsSchool"
-        title="Reports"
-        icon="receipt"
-      />
-      <CommonBTN routename="ExpensesOptions" title="Finance" icon="receipt" />
-      <CommonBTN routename="SchoolTestOptions" title="Test" icon="receipt" />
-      {/* <CommonBTN
-        routename="HelpCenter"
-        title="Help Center"
-        icon="help-circle"
-      /> */}
+      {user?.data?.User?.HumanResource && (
+        <>
+          <CommonBTN
+            routename="SchoolHrOptions"
+            title="Human Resourse"
+            icon="people"
+          />
+        </>
+      )}
+
+      {user?.data?.User?.hostel && (
+        <>
+          {user?.data?.CredentailsData?.hostel === true && (
+            <>
+              <CommonBTN
+                routename="SchoolHostelOptiins"
+                title="Hostel"
+                icon="home"
+              />
+            </>
+          )}
+        </>
+      )}
+
+      {user?.data?.User?.library && (
+        <>
+          {user?.data?.CredentailsData?.library === true && (
+            <>
+              <CommonBTN
+                routename="SchoolLibraryOptions"
+                title="Library"
+                icon="book"
+              />
+            </>
+          )}
+        </>
+      )}
+
+      {user?.data?.User?.transport && (
+        <>
+          {user?.data?.CredentailsData?.Transport === true && (
+            <>
+              <CommonBTN
+                routename="SchoolTranportOptions"
+                title="Transport"
+                icon="bus"
+              />
+            </>
+          )}
+        </>
+      )}
+
+      {user?.data?.User?.master && (
+        <>
+          <CommonBTN
+            routename="MasterOptionsSchool"
+            title="Masters"
+            icon="logo-mastodon"
+          />
+        </>
+      )}
+
+      {user?.data?.User?.report && (
+        <>
+          <CommonBTN
+            routename="ReportsOptionsSchool"
+            title="Reports"
+            icon="receipt"
+          />
+        </>
+      )}
+
+      {/* {user?.data?.User?.fronrofice && (
+        <>
+          <CommonBTN
+            routename="ExpensesOptions"
+            title="Finance"
+            icon="receipt"
+          />
+        </>
+      )} */}
+
+      {user?.data?.User?.student && (
+        <>
+          <CommonBTN
+            routename="SchoolTestOptions"
+            title="Test"
+            icon="receipt"
+          />
+        </>
+      )}
+
       <TouchableOpacity style={styles.menu} onPress={() => logout()}>
         <View style={styles.innearview}>
           <View style={styles.inneartitle}>
@@ -171,7 +227,7 @@ const SchoolDrawerItem = ({navigation, setuserData}) => {
   );
 };
 
-export default SchoolDrawerItem;
+export default SchoolEmployee;
 
 const styles = StyleSheet.create({
   mainprofile: {

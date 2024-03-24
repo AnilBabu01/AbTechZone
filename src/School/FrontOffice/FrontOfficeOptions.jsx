@@ -14,21 +14,21 @@ const FrontOfficeOptions = () => {
         <TouchableOpacity
           onPress={() => navigation.navigate('FrontOfficeSchool')}>
           <View style={styles.mainoption}>
-            <FontAwesome6 name="plus" color={Colors.primary} size={30} />
+            <FontAwesome6 name="plus" color={Colors.optionColor} size={30} />
             <Text style={styles.titlestyle}>Add Enquiry</Text>
           </View>
         </TouchableOpacity>
 
         <TouchableOpacity onPress={() => navigation.navigate('Complain')}>
           <View style={styles.mainoption}>
-            <FontAwesome6 name="plus" color={Colors.primary} size={30} />
+            <FontAwesome6 name="plus" color={Colors.optionColor} size={30} />
             <Text style={styles.titlestyle}>Add Complain</Text>
           </View>
         </TouchableOpacity>
 
         <TouchableOpacity onPress={() => navigation.navigate('Visitor')}>
           <View style={styles.mainoption}>
-            <FontAwesome6 name="plus" color={Colors.primary} size={30} />
+            <FontAwesome6 name="plus" color={Colors.optionColor} size={30} />
             <Text style={styles.titlestyle}>Add Visitor</Text>
           </View>
         </TouchableOpacity>
@@ -74,5 +74,6 @@ const styles = StyleSheet.create({
     marginVertical: deviceHeight * 0.01,
     fontSize: 14,
     textAlign: 'center',
+    color: Colors.optionColor,
   },
 });

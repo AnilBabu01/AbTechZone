@@ -16,7 +16,7 @@ const SchoolTestOptions = () => {
       <View style={styles.mainview}>
         <TouchableOpacity onPress={() => navigation.navigate('BatchCoaching')}>
           <View style={styles.mainoption}>
-            <FontAwesome6 name="receipt" color={Colors.primary} size={30} />
+            <FontAwesome6 name="receipt" color={Colors.optionColor} size={30} />
             <Text style={styles.titlestyle}>Add Test</Text>
           </View>
         </TouchableOpacity>
@@ -24,7 +24,7 @@ const SchoolTestOptions = () => {
           <View style={styles.mainoption}>
             <FontAwesome6
               name="magnifying-glass"
-              color={Colors.primary}
+              color={Colors.optionColor}
               size={30}
             />
             <Text style={styles.titlestyle}>Result</Text>
@@ -36,7 +36,7 @@ const SchoolTestOptions = () => {
           <View style={styles.mainoption}>
             <FontAwesome6
               name="magnifying-glass"
-              color={Colors.primary}
+              color={Colors.optionColor}
               size={30}
             />
             <Text style={styles.titlestyle}>Class-By-Result</Text>
@@ -75,5 +75,6 @@ const styles = StyleSheet.create({
     marginVertical: deviceHeight * 0.01,
     fontSize: 14,
     textAlign: 'center',
+    color:Colors.optionColor
   },
 });

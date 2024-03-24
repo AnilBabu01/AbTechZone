@@ -17,15 +17,15 @@ const ReportsOptions = () => {
         <TouchableOpacity
           onPress={() => navigation.navigate('StudentListReport')}>
           <View style={styles.mainoption}>
-            <FontAwesome6 name="users" color={Colors.primary} size={30} />
+            <FontAwesome6 name="users" color={Colors.optionColor} size={30} />
             <Text style={styles.titlestyle}>Student</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => navigation.navigate('StudentAttendanceReport')}>
           <View style={styles.mainoption}>
-            <FontAwesome6 name="users" color={Colors.primary} size={30} />
-            <Text style={styles.titlestyle}>Student Attendance</Text>
+            <FontAwesome6 name="users" color={Colors.optionColor} size={30} />
+            <Text style={styles.titlestyle}>Attendance</Text>
           </View>
         </TouchableOpacity>
 
@@ -33,7 +33,7 @@ const ReportsOptions = () => {
           <View style={styles.mainoption}>
             <FontAwesome6
               name="indian-rupee-sign"
-              color={Colors.primary}
+              color={Colors.optionColor}
               size={30}
             />
             <Text style={styles.titlestyle}>Fee Report</Text>
@@ -45,7 +45,7 @@ const ReportsOptions = () => {
           <View style={styles.mainoption}>
             <FontAwesome6
               name="indian-rupee-sign"
-              color={Colors.primary}
+              color={Colors.optionColor}
               size={30}
             />
             <Text style={styles.titlestyle}>Pending Fee</Text>
@@ -57,7 +57,7 @@ const ReportsOptions = () => {
           <View style={styles.mainoption}>
             <FontAwesome6
               name="indian-rupee-sign"
-              color={Colors.primary}
+              color={Colors.optionColor}
               size={30}
             />
             <Text style={styles.titlestyle}>Fee By Month</Text>
@@ -66,72 +66,76 @@ const ReportsOptions = () => {
         {/* <TouchableOpacity
           onPress={() => navigation.navigate('StudentTestReport')}>
           <View style={styles.mainoption}>
-            <FontAwesome6 name="receipt" color={Colors.primary} size={30} />
+            <FontAwesome6 name="receipt" color={Colors.optionColor} size={30} />
             <Text style={styles.titlestyle}>Student Test</Text>
           </View>
         </TouchableOpacity> */}
 
         <TouchableOpacity onPress={() => navigation.navigate('StaffReport')}>
           <View style={styles.mainoption}>
-            <FontAwesome6
-              name="person"
-              color={Colors.primary}
-              size={30}
-            />
+            <FontAwesome6 name="person" color={Colors.optionColor} size={30} />
             <Text style={styles.titlestyle}>Staff</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => navigation.navigate('StaffAttendanceReport')}>
           <View style={styles.mainoption}>
-            <FontAwesome6 name="calendar" color={Colors.primary} size={30} />
+            <FontAwesome6
+              name="calendar"
+              color={Colors.optionColor}
+              size={30}
+            />
             <Text style={styles.titlestyle}>Staff Attendance</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => navigation.navigate('StaffSalaryReport')}>
           <View style={styles.mainoption}>
-            <FontAwesome6 name="database" color={Colors.primary} size={30} />
+            <FontAwesome6
+              name="database"
+              color={Colors.optionColor}
+              size={30}
+            />
             <Text style={styles.titlestyle}>Staff Salary Paid</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate('BookReport')}>
           <View style={styles.mainoption}>
-            <FontAwesome6 name="book" color={Colors.primary} size={30} />
+            <FontAwesome6 name="book" color={Colors.optionColor} size={30} />
             <Text style={styles.titlestyle}>Book</Text>
           </View>
         </TouchableOpacity>
         {/* <TouchableOpacity
           onPress={() => navigation.navigate('IssueBookReport')}>
           <View style={styles.mainoption}>
-            <FontAwesome6 name="book" color={Colors.primary} size={30} />
+            <FontAwesome6 name="book" color={Colors.optionColor} size={30} />
             <Text style={styles.titlestyle}>Issue Book</Text>
           </View>
         </TouchableOpacity> */}
         {/* <TouchableOpacity
           onPress={() => navigation.navigate('BookReturnreport')}>
           <View style={styles.mainoption}>
-            <FontAwesome6 name="book" color={Colors.primary} size={30} />
+            <FontAwesome6 name="book" color={Colors.optionColor} size={30} />
             <Text style={styles.titlestyle}>Return Book</Text>
           </View>
         </TouchableOpacity> */}
         {/* <TouchableOpacity
           onPress={() => navigation.navigate('AvailableRoomReport')}>
           <View style={styles.mainoption}>
-            <FontAwesome6 name="hotel" color={Colors.primary} size={30} />
+            <FontAwesome6 name="hotel" color={Colors.optionColor} size={30} />
             <Text style={styles.titlestyle}>Available Rooms</Text>
           </View>
         </TouchableOpacity> */}
         {/* <TouchableOpacity
           onPress={() => navigation.navigate('OccuipiedRoomReport')}>
           <View style={styles.mainoption}>
-            <FontAwesome6 name="hotel" color={Colors.primary} size={30} />
+            <FontAwesome6 name="hotel" color={Colors.optionColor} size={30} />
             <Text style={styles.titlestyle}>Occupied Rooms</Text>
           </View>
         </TouchableOpacity> */}
         {/* <TouchableOpacity onPress={() => navigation.navigate('StudentInRoom')}>
           <View style={styles.mainoption}>
-            <FontAwesome6 name="hotel" color={Colors.primary} size={30} />
+            <FontAwesome6 name="hotel" color={Colors.optionColor} size={30} />
             <Text style={styles.titlestyle}>Students-in-Room</Text>
           </View>
         </TouchableOpacity> */}
@@ -140,7 +144,7 @@ const ReportsOptions = () => {
           <View style={styles.mainoption}>
             <FontAwesome6
               name="indian-rupee-sign"
-              color={Colors.primary}
+              color={Colors.optionColor}
               size={30}
             />
             <Text style={styles.titlestyle}>Hostel-Paid-Fee</Text>
@@ -149,34 +153,34 @@ const ReportsOptions = () => {
         {/* <TouchableOpacity
           onPress={() => navigation.navigate('HostelDuesFeeReport')}>
           <View style={styles.mainoption}>
-            <FontAwesome6 name="calendar" color={Colors.primary} size={30} />
+            <FontAwesome6 name="calendar" color={Colors.optionColor} size={30} />
             <Text style={styles.titlestyle}>Hostel-Dues-Fee</Text>
           </View>
         </TouchableOpacity> */}
         <TouchableOpacity onPress={() => navigation.navigate('BusReport')}>
           <View style={styles.mainoption}>
-            <FontAwesome6 name="bus" color={Colors.primary} size={30} />
+            <FontAwesome6 name="bus" color={Colors.optionColor} size={30} />
             <Text style={styles.titlestyle}>Bus</Text>
           </View>
         </TouchableOpacity>
         {/* <TouchableOpacity
           onPress={() => navigation.navigate('BusAvaialbleSheets')}>
           <View style={styles.mainoption}>
-            <FontAwesome6 name="bus" color={Colors.primary} size={30} />
+            <FontAwesome6 name="bus" color={Colors.optionColor} size={30} />
             <Text style={styles.titlestyle}>Available Sheets</Text>
           </View>
         </TouchableOpacity> */}
-        
+
         {/* <TouchableOpacity onPress={() => navigation.navigate('TransPaidFee')}>
           <View style={styles.mainoption}>
-            <FontAwesome6 name="bus" color={Colors.primary} size={30} />
+            <FontAwesome6 name="bus" color={Colors.optionColor} size={30} />
             <Text style={styles.titlestyle}>Tport-paid-fee</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => navigation.navigate('TransDuesReport')}>
           <View style={styles.mainoption}>
-            <FontAwesome6 name="bus" color={Colors.primary} size={30} />
+            <FontAwesome6 name="bus" color={Colors.optionColor} size={30} />
             <Text style={styles.titlestyle}>Tport-Dues-Fee</Text>
           </View>
         </TouchableOpacity> */}
@@ -213,5 +217,6 @@ const styles = StyleSheet.create({
     marginVertical: deviceHeight * 0.01,
     fontSize: 14,
     textAlign: 'center',
+    color: Colors.optionColor,
   },
 });

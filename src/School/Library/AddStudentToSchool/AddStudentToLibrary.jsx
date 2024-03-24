@@ -33,7 +33,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import DashboardPlaceholderLoader from '../../../Component/DashboardPlaceholderLoader';
 import {deviceHeight, deviceWidth} from '../../../utils/constant';
 import RNTable from '../../../Component/RNTable';
-import DownloadStudentData from '../../../Component/school/DownloadStudentData';
+import DownloadStudentData from '../../../Component/school/DownloadExcel';
 import BackHeader from '../../../Component/Header/BackHeader';
 import StudentFilter from '../../../Component/school/StudentFilter';
 const AddStudentToLibrary = () => {
@@ -135,7 +135,7 @@ const AddStudentToLibrary = () => {
       width: 0.33,
       align: 'center',
     },
-   
+
     {
       title: 'Library_Status',
       items: [],
@@ -194,7 +194,7 @@ const AddStudentToLibrary = () => {
               id: index,
               value: item.StudentCategory,
             });
-           
+
             StudentTableList[12].items.push({
               id: index,
               value: item?.Library ? 'Active' : 'Disable',
@@ -293,6 +293,8 @@ const AddStudentToLibrary = () => {
         )}
 
         <DownloadStudentData
+          enquiry={student}
+          filename={'studentList'}
           visible={showDocOptions}
           hideModal={setShowDocOptions}
         />

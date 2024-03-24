@@ -17,7 +17,7 @@ const FeeCollectOptions = () => {
           <View style={styles.mainoption}>
             <FontAwesome6
               name="indian-rupee-sign"
-              color={Colors.primary}
+              color={Colors.optionColor}
               size={30}
             />
             <Text style={styles.titlestyle}>Collect Fee</Text>
@@ -26,7 +26,7 @@ const FeeCollectOptions = () => {
 
         <TouchableOpacity onPress={() => navigation.navigate('PrintReceipt')}>
           <View style={styles.mainoption}>
-            <FontAwesome6 name="receipt" color={Colors.primary} size={30} />
+            <FontAwesome6 name="receipt" color={Colors.optionColor} size={30} />
             <Text style={styles.titlestyle}>Receipt Print</Text>
           </View>
         </TouchableOpacity>
@@ -36,7 +36,7 @@ const FeeCollectOptions = () => {
           <View style={styles.mainoption}>
             <FontAwesome6
               name="magnifying-glass"
-              color={Colors.primary}
+              color={Colors.optionColor}
               size={30}
             />
             <Text style={styles.titlestyle}>Search Fee</Text>
@@ -75,5 +75,6 @@ const styles = StyleSheet.create({
     marginVertical: deviceHeight * 0.01,
     fontSize: 14,
     textAlign: 'center',
+    color:Colors.optionColor
   },
 });

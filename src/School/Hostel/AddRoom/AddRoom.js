@@ -21,7 +21,12 @@ import RNTable from '../../../Component/RNTable';
 import DownEnquiry from '../../../Component/school/DownloadExcel';
 import EnquiryFilter from '../../../Component/school/EnquiryFilter';
 import BackHeader from '../../../Component/Header/BackHeader';
-import {GetCategory,GetFacility,GetHostel,GetRoom}  from '../../../redux/action/hostelActions';
+import {
+  GetCategory,
+  GetFacility,
+  GetHostel,
+  GetRoom,
+} from '../../../redux/action/hostelActions';
 const AddRoom = ({navigation}) => {
   const dispatch = useDispatch();
   const [openModel, setopenModel] = useState(false);
@@ -30,7 +35,7 @@ const AddRoom = ({navigation}) => {
   const [viewdata, setviewdata] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [showDocOptions, setShowDocOptions] = useState(false);
-  const { room, loading } = useSelector((state) => state.GetRoom);
+  const {room, loading} = useSelector(state => state.GetRoom);
   const enquiryTableList = [
     {
       title: 'Sr.No',
@@ -75,7 +80,7 @@ const AddRoom = ({navigation}) => {
       width: 0.33,
       align: 'center',
     },
-   
+
     {
       title: 'Action',
       items: [],
@@ -92,7 +97,7 @@ const AddRoom = ({navigation}) => {
           id: index,
           value: item.hostelname,
         });
-       enquiryTableList[2].items.push({
+        enquiryTableList[2].items.push({
           id: index,
           value: item.Category,
         });
@@ -131,7 +136,6 @@ const AddRoom = ({navigation}) => {
       }),
     );
     setTabledata(enquiryTableList);
-  
   };
 
   useEffect(() => {
@@ -157,12 +161,12 @@ const AddRoom = ({navigation}) => {
           <Text style={styles.secondaryTitle}>Room List</Text>
         </View>
         <View style={{flexDirection: 'row', gap: 10}}>
-          {/* <Pressable
+          <Pressable
               onPress={() => setShowDocOptions(true)}
               style={styles.filterBtnContainer}>
               <FontAwesome6 name="download" color={Colors.primary} size={25} />
             </Pressable>
-            <Pressable
+            {/* <Pressable
               onPress={() => setShowModal(true)}
               style={styles.filterBtnContainer}>
               <Ionicons name="filter" color={Colors.primary} size={25} />
@@ -214,7 +218,12 @@ const AddRoom = ({navigation}) => {
           <EnquiryFilter setShowModal={setShowModal} showModal={showModal} />
         </>
       )}
-      <DownEnquiry visible={showDocOptions} hideModal={setShowDocOptions} />
+      <DownEnquiry
+        enquiry={room}
+        filename={'RoomsList'}
+        visible={showDocOptions}
+        hideModal={setShowDocOptions}
+      />
 
       <AnimatedFAB
         icon={'plus'}

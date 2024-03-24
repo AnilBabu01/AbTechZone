@@ -17,7 +17,11 @@ const MasterOptions = () => {
       <View style={styles.mainview}>
         <TouchableOpacity onPress={() => navigation.navigate('AddClass')}>
           <View style={styles.mainoption}>
-            <FontAwesome6 name="computer" color={Colors.primary} size={30} />
+            <FontAwesome6
+              name="computer"
+              color={Colors.optionColor}
+              size={30}
+            />
             <Text style={styles.titlestyle}>Add Class</Text>
           </View>
         </TouchableOpacity>
@@ -30,7 +34,7 @@ const MasterOptions = () => {
 
         <TouchableOpacity onPress={() => navigation.navigate('AddSection')}>
           <View style={styles.mainoption}>
-            <FontAwesome6 name="section" color={Colors.primary} size={30} />
+            <FontAwesome6 name="section" color={Colors.optionColor} size={30} />
             <Text style={styles.titlestyle}>Add Section</Text>
           </View>
         </TouchableOpacity>
@@ -39,7 +43,7 @@ const MasterOptions = () => {
           <View style={styles.mainoption}>
             <FontAwesome6
               name="creative-commons-sampling-plus"
-              color={Colors.primary}
+              color={Colors.optionColor}
               size={30}
             />
             <Text style={styles.titlestyle}>Add Stream</Text>
@@ -47,7 +51,7 @@ const MasterOptions = () => {
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate('AddSubject')}>
           <View style={styles.mainoption}>
-            <FontAwesome6 name="book" color={Colors.primary} size={30} />
+            <FontAwesome6 name="book" color={Colors.optionColor} size={30} />
             <Text style={styles.titlestyle}>Add Subjects</Text>
           </View>
         </TouchableOpacity>
@@ -61,7 +65,7 @@ const MasterOptions = () => {
           <View style={styles.mainoption}>
             <FontAwesome6
               name="indian-rupee-sign"
-              color={Colors.primary}
+              color={Colors.optionColor}
               size={30}
             />
             <Text style={styles.titlestyle}>Fee Structure</Text>
@@ -72,7 +76,7 @@ const MasterOptions = () => {
           <View style={styles.mainoption}>
             <FontAwesome6
               name="building-user"
-              color={Colors.primary}
+              color={Colors.optionColor}
               size={30}
             />
             <Text style={styles.titlestyle}>Deparment</Text>
@@ -80,35 +84,45 @@ const MasterOptions = () => {
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate('AddDesignation')}>
           <View style={styles.mainoption}>
-            <FontAwesome6 name="compass" color={Colors.primary} size={30} />
+            <FontAwesome6 name="compass" color={Colors.optionColor} size={30} />
             <Text style={styles.titlestyle}>Designation</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate('FooterDetails')}>
           <View style={styles.mainoption}>
-            <FontAwesome6 name="shoe-prints" color={Colors.primary} size={30} />
+            <FontAwesome6
+              name="shoe-prints"
+              color={Colors.optionColor}
+              size={30}
+            />
             <Text style={styles.titlestyle}>Footer Details</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate('AddNotice')}>
           <View style={styles.mainoption}>
-            <FontAwesome6 name="circle-info" color={Colors.primary} size={30} />
+            <FontAwesome6
+              name="circle-info"
+              color={Colors.optionColor}
+              size={30}
+            />
             <Text style={styles.titlestyle}>Add Notic</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate('AddSlider')}>
           <View style={styles.mainoption}>
-            <FontAwesome6 name="images" color={Colors.primary} size={30} />
+            <FontAwesome6 name="images" color={Colors.optionColor} size={30} />
             <Text style={styles.titlestyle}>Add Slider</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => navigation.navigate('AddReceiptFormat')}>
           <View style={styles.mainoption}>
-            <FontAwesome6 name="receipt" color={Colors.primary} size={30} />
+            <FontAwesome6 name="receipt" color={Colors.optionColor} size={30} />
             <Text style={styles.titlestyle}>Receipt Format</Text>
           </View>
         </TouchableOpacity>
+
+        <View style={styles.mainoptionNoColor}></View>
       </View>
     </>
   );
@@ -131,7 +145,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    width: deviceWidth*0.3,
+    width: deviceWidth * 0.3,
     paddingVertical: 5,
     backgroundColor: Colors.optionBGColor,
     margin: deviceWidth * 0.01,
@@ -142,5 +156,17 @@ const styles = StyleSheet.create({
     marginVertical: deviceHeight * 0.01,
     fontSize: 14,
     textAlign: 'center',
+    color: Colors.optionColor,
+  },
+
+  mainoptionNoColor: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: deviceWidth * 0.3,
+    paddingVertical: 5,
+
+    margin: deviceWidth * 0.01,
+    borderRadius: 10,
   },
 });

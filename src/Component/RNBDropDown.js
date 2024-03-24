@@ -17,6 +17,7 @@ const RNBDropDown = props => {
     passwordShow,
     setShowPassword,
     OptionsList,
+    borderRad,
     ...rest
   } = props;
 
@@ -32,7 +33,19 @@ const RNBDropDown = props => {
         {label}
       </Text>
       <Dropdown
-        style={styles.dropstyle}
+        style={{
+          alignSelf: 'center',
+          width: '100%',
+          padding: deviceWidth * 0.023,
+          fontFamily: 'Gilroy-SemiBold',
+          borderRadius: borderRad ? borderRad : 5,
+          borderWidth: 1,
+          borderColor: Colors.primary,
+          marginTop: 6,
+          paddingHorizontal: deviceWidth * 0.028,
+          backgroundColor: Colors.white,
+          color: Colors.black,
+        }}
         placeholderStyle={styles.placeholderStyle}
         selectedTextStyle={styles.selectedTextStyle}
         inputSearchStyle={styles.inputSearchStyle}
@@ -46,7 +59,7 @@ const RNBDropDown = props => {
         maxHeight={300}
         labelField="label"
         valueField="value"
-        placeholder={placeholder?placeholder:"Please Select"}
+        placeholder={placeholder ? placeholder : 'Please Select'}
         searchPlaceholder="Search..."
         value={value}
         onChange={onChange}
@@ -59,20 +72,6 @@ const RNBDropDown = props => {
 export default RNBDropDown;
 
 const styles = StyleSheet.create({
-  dropstyle: {
-    alignSelf: 'center',
-    width: '100%',
-    padding: deviceWidth * 0.023,
-    fontFamily: 'Gilroy-SemiBold',
-    borderRadius: 5,
-    borderWidth: 1,
-    borderColor: Colors.primary,
-    marginTop: 6,
-    paddingHorizontal: deviceWidth * 0.028,
-    backgroundColor: Colors.white,
-    color: Colors.black,
-  },
-
   placeholderStyle: {
     fontSize: 16,
     color: Colors.black,

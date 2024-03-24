@@ -16,14 +16,14 @@ const SchoolLibraryOptions = () => {
       <View style={styles.mainview}>
         <TouchableOpacity onPress={() => navigation.navigate('AddBook')}>
           <View style={styles.mainoption}>
-            <FontAwesome6 name="book" color={Colors.primary} size={30} />
+            <FontAwesome6 name="book" color={Colors.optionColor} size={30} />
             <Text style={styles.titlestyle}>Add Book</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => navigation.navigate('AddStudentToLibrary')}>
           <View style={styles.mainoption}>
-            <FontAwesome6 name="user-plus" color={Colors.primary} size={30} />
+            <FontAwesome6 name="user-plus" color={Colors.optionColor} size={30} />
             <Text style={styles.titlestyle}>Add Student</Text>
           </View>
         </TouchableOpacity>
@@ -31,7 +31,7 @@ const SchoolLibraryOptions = () => {
         <TouchableOpacity
           onPress={() => navigation.navigate('TabIssueOrReturn')}>
           <View style={styles.mainoption}>
-            <FontAwesome6 name="database" color={Colors.primary} size={30} />
+            <FontAwesome6 name="database" color={Colors.optionColor} size={30} />
             <Text style={styles.titlestyle}>Issue-Or-Return</Text>
           </View>
         </TouchableOpacity>
@@ -78,5 +78,6 @@ const styles = StyleSheet.create({
     marginVertical: deviceHeight * 0.01,
     fontSize: 14,
     textAlign: 'center',
+    color:Colors.optionColor
   },
 });

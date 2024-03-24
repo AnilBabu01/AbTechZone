@@ -17,13 +17,13 @@ const SchoolStudentOptions = () => {
       <View style={styles.mainview}>
         <TouchableOpacity onPress={() => navigation.navigate('Admission')}>
           <View style={styles.mainoption}>
-            <FontAwesome6 name="user-plus" color={Colors.primary} size={30} />
+            <FontAwesome6 name="user-plus" color={Colors.optionColor} size={30} />
             <Text style={styles.titlestyle}>Admission</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate('Add')}>
           <View style={styles.mainoption}>
-            <FontAwesome6 name="user-plus" color={Colors.primary} size={30} />
+            <FontAwesome6 name="user-plus" color={Colors.optionColor} size={30} />
             <Text style={styles.titlestyle}>Add</Text>
           </View>
         </TouchableOpacity>
@@ -31,7 +31,7 @@ const SchoolStudentOptions = () => {
         <TouchableOpacity
           onPress={() => navigation.navigate('AttendanceTabSchool')}>
           <View style={styles.mainoption}>
-            <FontAwesome6 name="receipt" color={Colors.primary} size={30} />
+            <FontAwesome6 name="receipt" color={Colors.optionColor} size={30} />
             <Text style={styles.titlestyle}>Attendance</Text>
           </View>
         </TouchableOpacity>
@@ -40,7 +40,7 @@ const SchoolStudentOptions = () => {
           <View style={styles.mainoption}>
             <FontAwesome6
               name="indian-rupee-sign"
-              color={Colors.primary}
+              color={Colors.optionColor}
               size={30}
             />
             <Text style={styles.titlestyle}>Add Other Fee</Text>
@@ -48,7 +48,7 @@ const SchoolStudentOptions = () => {
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate('AddTimeTable')}>
           <View style={styles.mainoption}>
-            <FontAwesome6 name="calendar" color={Colors.primary} size={30} />
+            <FontAwesome6 name="calendar" color={Colors.optionColor} size={30} />
             <Text style={styles.titlestyle}>Time Table</Text>
           </View>
         </TouchableOpacity>
@@ -57,7 +57,7 @@ const SchoolStudentOptions = () => {
           <View style={styles.mainoption}>
             <FontAwesome6
               name="person-military-to-person"
-              color={Colors.primary}
+              color={Colors.optionColor}
               size={30}
             />
             <Text style={styles.titlestyle}>Student Credentials</Text>
@@ -67,7 +67,7 @@ const SchoolStudentOptions = () => {
           <View style={styles.mainoption}>
             <FontAwesome6
               name="person-military-to-person"
-              color={Colors.primary}
+              color={Colors.optionColor}
               size={30}
             />
             <Text style={styles.titlestyle}>Parent Credentials</Text>
@@ -75,34 +75,34 @@ const SchoolStudentOptions = () => {
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate('ChangeSession')}>
           <View style={styles.mainoption}>
-            <FontAwesome6 name="database" color={Colors.primary} size={30} />
+            <FontAwesome6 name="database" color={Colors.optionColor} size={30} />
             <Text style={styles.titlestyle}>Change Session</Text>
           </View>
         </TouchableOpacity>
 
         <TouchableOpacity onPress={() => navigation.navigate('TCTab')}>
           <View style={styles.mainoption}>
-            <FontAwesome6 name="certificate" color={Colors.primary} size={30} />
+            <FontAwesome6 name="certificate" color={Colors.optionColor} size={30} />
             <Text style={styles.titlestyle}>TC</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate('CCTab')}>
           <View style={styles.mainoption}>
-            <FontAwesome6 name="certificate" color={Colors.primary} size={30} />
+            <FontAwesome6 name="certificate" color={Colors.optionColor} size={30} />
             <Text style={styles.titlestyle}>CC</Text>
           </View>
         </TouchableOpacity>
 
         <TouchableOpacity onPress={() => navigation.navigate('IdCardView')}>
           <View style={styles.mainoption}>
-            <FontAwesome6 name="certificate" color={Colors.primary} size={30} />
+            <FontAwesome6 name="certificate" color={Colors.optionColor} size={30} />
             <Text style={styles.titlestyle}>Id Card</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => navigation.navigate('CommunicationTab')}>
           <View style={styles.mainoption}>
-            <FontAwesome6 name="comment-sms" color={Colors.primary} size={30} />
+            <FontAwesome6 name="comment-sms" color={Colors.optionColor} size={30} />
             <Text style={styles.titlestyle}>Send SMS</Text>
           </View>
         </TouchableOpacity>
@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
     marginVertical: deviceHeight * 0.01,
     fontSize: 14,
     textAlign: 'center',
-    color: Colors.primary,
+    color: Colors.optionColor,
     fontWeight: 'bold',
   },
 });

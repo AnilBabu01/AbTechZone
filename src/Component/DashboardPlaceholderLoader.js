@@ -3,6 +3,7 @@ import {StyleSheet, Text, View} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {createShimmerPlaceholder} from 'react-native-shimmer-placeholder';
 import {deviceHeight, deviceWidth} from '../utils/constant';
+import {Height, Width} from '../utils/responsive';
 const DashboardPlaceholderLoader = ({type}) => {
   const ShimmerPlaceHolder = createShimmerPlaceholder(LinearGradient);
   return (
@@ -43,13 +44,13 @@ const DashboardPlaceholderLoader = ({type}) => {
 
       {type === 'card' && (
         <>
-          <View style={styles.card}>
-            <ShimmerPlaceHolder
-              width={deviceWidth * 0.9}
-              height={deviceHeight * 0.3}
-              shimmerStyle={{borderRadius: 12}}
-            />
-          </View>
+          {/* <View style={styles.card}> */}
+          <ShimmerPlaceHolder
+            width={deviceWidth * 0.9}
+            height={deviceHeight * 0.3}
+            shimmerStyle={{borderRadius: 12}}
+          />
+          {/* </View> */}
         </>
       )}
 
@@ -92,8 +93,8 @@ const DashboardPlaceholderLoader = ({type}) => {
           {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(item => (
             <View key={item} style={styles.cardholder}>
               <ShimmerPlaceHolder
-                width={deviceWidth * 0.4}
-                height={deviceHeight * 0.1}
+                width={Width(170)}
+                height={deviceHeight * 0.3}
                 shimmerStyle={{borderRadius: 14}}
               />
             </View>
@@ -109,11 +110,13 @@ export default DashboardPlaceholderLoader;
 const styles = StyleSheet.create({
   cardholder: {
     borderRadius: 8,
-    width: deviceWidth * 0.4,
+    // width: deviceWidth * 0.3,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+    flexWrap: 'wrap',
     marginVertical: deviceHeight * 0.01,
+    // marginHorizontal: 10
   },
 
   card: {

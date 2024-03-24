@@ -54,7 +54,7 @@ const AddSubject = ({navigation}) => {
     {
       title: 'Action',
       items: [],
-      width: 0.40,
+      width: 0.4,
       align: 'center',
     },
   ];
@@ -113,12 +113,12 @@ const AddSubject = ({navigation}) => {
           <Text style={styles.secondaryTitle}>Subject Master</Text>
         </View>
         <View style={{flexDirection: 'row', gap: 10}}>
-          {/* <Pressable
+          <Pressable
             onPress={() => setShowDocOptions(true)}
             style={styles.filterBtnContainer}>
             <FontAwesome6 name="download" color={Colors.primary} size={25} />
           </Pressable>
-          <Pressable
+          {/* <Pressable
             onPress={() => setShowModal(true)}
             style={styles.filterBtnContainer}>
             <Ionicons name="filter" color={Colors.primary} size={25} />
@@ -170,7 +170,12 @@ const AddSubject = ({navigation}) => {
           <EnquiryFilter setShowModal={setShowModal} showModal={showModal} />
         </>
       )}
-      <DownEnquiry visible={showDocOptions} hideModal={setShowDocOptions} />
+      <DownEnquiry
+        enquiry={Classsubject}
+        filename={'ClasssubjectList'}
+        visible={showDocOptions}
+        hideModal={setShowDocOptions}
+      />
 
       <AnimatedFAB
         icon={'plus'}

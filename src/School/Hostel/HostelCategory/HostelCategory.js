@@ -14,6 +14,7 @@ import RNTable from '../../../Component/RNTable';
 import DownEnquiry from '../../../Component/school/DownloadExcel';
 import EnquiryFilter from '../../../Component/school/EnquiryFilter';
 import BackHeader from '../../../Component/Header/BackHeader';
+
 const HostelCategory = ({navigation}) => {
   const dispatch = useDispatch();
   const [openModel, setopenModel] = useState(false);
@@ -94,12 +95,12 @@ const HostelCategory = ({navigation}) => {
           <Text style={styles.secondaryTitle}>Hostel Category List</Text>
         </View>
         <View style={{flexDirection: 'row', gap: 10}}>
-          {/* <Pressable
+          <Pressable
             onPress={() => setShowDocOptions(true)}
             style={styles.filterBtnContainer}>
             <FontAwesome6 name="download" color={Colors.primary} size={25} />
           </Pressable>
-          <Pressable
+          {/* <Pressable
             onPress={() => setShowModal(true)}
             style={styles.filterBtnContainer}>
             <Ionicons name="filter" color={Colors.primary} size={25} />
@@ -121,39 +122,42 @@ const HostelCategory = ({navigation}) => {
       </View>
 
       <ScrollView>
-       
-          {loading ? (
-            <>
-              <DashboardPlaceholderLoader type="table" />
-            </>
-          ) : (
-            <>
-              {viewdata ? (
-                <>
-                  <View style={styles.enquirymainview}>
-                    {enquirylist?.length > 0 &&
-                      enquirylist?.map((item, index) => {
-                        return <CardEnquiry key={index} data={item} />;
-                      })}
-                  </View>
-                </>
-              ) : (
-                <>
-                  <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                    <RNTable theme="primary" data={Tabledata} />
-                  </ScrollView>
-                </>
-              )}
-            </>
-          )}
-       
+        {loading ? (
+          <>
+            <DashboardPlaceholderLoader type="table" />
+          </>
+        ) : (
+          <>
+            {viewdata ? (
+              <>
+                <View style={styles.enquirymainview}>
+                  {enquirylist?.length > 0 &&
+                    enquirylist?.map((item, index) => {
+                      return <CardEnquiry key={index} data={item} />;
+                    })}
+                </View>
+              </>
+            ) : (
+              <>
+                <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                  <RNTable theme="primary" data={Tabledata} />
+                </ScrollView>
+              </>
+            )}
+          </>
+        )}
       </ScrollView>
       {showModal && (
         <>
           <EnquiryFilter setShowModal={setShowModal} showModal={showModal} />
         </>
       )}
-      <DownEnquiry visible={showDocOptions} hideModal={setShowDocOptions} />
+      <DownEnquiry
+        enquiry={roomcategory}
+        filename={'HostelCategoryList'}
+        visible={showDocOptions}
+        hideModal={setShowDocOptions}
+      />
 
       <AnimatedFAB
         icon={'plus'}

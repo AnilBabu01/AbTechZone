@@ -16,21 +16,30 @@ const ExpensesOptions = () => {
       <View style={styles.mainview}>
         <TouchableOpacity onPress={() => navigation.navigate('AddExpenses')}>
           <View style={styles.mainoption}>
-            <FontAwesome6 name="layer-group" color={Colors.primary} size={30} />
+            <FontAwesome6
+              name="layer-group"
+              color={Colors.optionColor}
+              size={30}
+            />
             <Text style={styles.titlestyle}>Add Expenses</Text>
           </View>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => navigation.navigate('TransferCaseOnline')}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('TransferCaseOnline')}>
           <View style={styles.mainoption}>
-            <FontAwesome6 name="hotel" color={Colors.primary} size={30} />
+            <FontAwesome6 name="hotel" color={Colors.optionColor} size={30} />
             <Text style={styles.titlestyle}>Cash/Bank Transfer</Text>
           </View>
         </TouchableOpacity>
 
         <TouchableOpacity onPress={() => navigation.navigate('Analysie')}>
           <View style={styles.mainoption}>
-            <FontAwesome6 name="restroom" color={Colors.primary} size={30} />
+            <FontAwesome6
+              name="restroom"
+              color={Colors.optionColor}
+              size={30}
+            />
             <Text style={styles.titlestyle}>Expenses Analysie</Text>
           </View>
         </TouchableOpacity>
@@ -56,11 +65,12 @@ const styles = StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    width: deviceWidth*0.3,
+    width: deviceWidth * 0.3,
     paddingVertical: 5,
     backgroundColor: Colors.optionBGColor,
     margin: deviceWidth * 0.01,
     borderRadius: 10,
+    height: Height(120),
   },
   mainoptionEmpty: {
     width: Width(110),
@@ -73,7 +83,7 @@ const styles = StyleSheet.create({
     marginVertical: deviceHeight * 0.01,
     fontSize: 14,
     textAlign: 'center',
-    color: Colors.primary,
+    color: Colors.optionColor,
   },
   optionimg: {
     width: Width(30),

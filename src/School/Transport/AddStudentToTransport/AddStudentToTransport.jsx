@@ -33,7 +33,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import DashboardPlaceholderLoader from '../../../Component/DashboardPlaceholderLoader';
 import {deviceHeight, deviceWidth} from '../../../utils/constant';
 import RNTable from '../../../Component/RNTable';
-import DownloadStudentData from '../../../Component/school/DownloadStudentData';
+import DownloadStudentData from '../../../Component/school/DownloadExcel';
 import BackHeader from '../../../Component/Header/BackHeader';
 import StudentFilter from '../../../Component/school/StudentFilter';
 const AddStudentToTransport = () => {
@@ -312,6 +312,8 @@ const AddStudentToTransport = () => {
         )}
 
         <DownloadStudentData
+          enquiry={student}
+          filename={'StudentList'}
           visible={showDocOptions}
           hideModal={setShowDocOptions}
         />

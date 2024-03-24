@@ -9,7 +9,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Loader from '../Component/Loader/Loader';
 import {Colors} from '../utils/Colors';
 import {deviceWidth} from '../utils/constant';
-const SchoolDrawerItem = ({navigation, setuserData}) => {
+const CoachingEmployee = ({navigation, setuserData}) => {
   const [loader, setloader] = useState(false);
   const [sms, setsms] = useState('');
   const dispatch = useDispatch();
@@ -30,7 +30,9 @@ const SchoolDrawerItem = ({navigation, setuserData}) => {
     return (
       <TouchableOpacity
         style={styles.menu}
-        onPress={() => navigation.navigate(routename)}>
+        // onPress={() => navigation.navigate(routename)}
+        
+        >
         <View style={styles.innearview}>
           <View style={styles.inneartitle}>
             <Ionicons name={icon} color={Colors.primary} size={25} />
@@ -85,7 +87,7 @@ const SchoolDrawerItem = ({navigation, setuserData}) => {
       <CommonBTN routename="DashboardSchool" title="DashBoard" icon="grid" />
 
       <CommonBTN
-        routename="FrontOfficeOptions"
+        routename="FrontOfficeSchool"
         title="Front Office"
         icon="storefront"
       />
@@ -95,64 +97,23 @@ const SchoolDrawerItem = ({navigation, setuserData}) => {
         title="Student"
         icon="people"
       />
-
-      <CommonBTN
-        routename="FeeCollectOptions"
-        title="Account"
-        icon="storefront"
-      />
+      <CommonBTN routename="SchoolAccounts" title="Account" icon="storefront" />
       <CommonBTN
         routename="SchoolHrOptions"
         title="Human Resourse"
         icon="people"
       />
-      {user?.data?.CredentailsData?.hostel === true && (
-        <>
-          <CommonBTN
-            routename="SchoolHostelOptiins"
-            title="Hostel"
-            icon="home"
-          />
-        </>
-      )}
-
-      {user?.data?.CredentailsData?.hostel === true && (
-        <>
-          <CommonBTN
-            routename="SchoolLibraryOptions"
-            title="Library"
-            icon="book"
-          />
-        </>
-      )}
-
-      {user?.data?.CredentailsData?.Transport === true && (
-        <>
-          <CommonBTN
-            routename="SchoolTranportOptions"
-            title="Transport"
-            icon="bus"
-          />
-        </>
-      )}
-
+      <CommonBTN routename="SchoolHostelOptiins" title="Hostel" icon="home" />
+      <CommonBTN routename="SchoolLibraryOptions" title="Library" icon="book" />
       <CommonBTN
-        routename="MasterOptionsSchool"
-        title="Masters"
-        icon="logo-mastodon"
-      />
-      <CommonBTN
-        routename="ReportsOptionsSchool"
-        title="Reports"
-        icon="receipt"
-      />
-      <CommonBTN routename="ExpensesOptions" title="Finance" icon="receipt" />
+        routename="SchoolTranportOptions"
+        title="Transport"
+        icon="bus"
+      />  
+      <CommonBTN routename="MasterOptionsSchool" title="Masters" icon="logo-mastodon" />
+      <CommonBTN routename="ReportsOptionsSchool" title="Reparts" icon="receipt" />
       <CommonBTN routename="SchoolTestOptions" title="Test" icon="receipt" />
-      {/* <CommonBTN
-        routename="HelpCenter"
-        title="Help Center"
-        icon="help-circle"
-      /> */}
+      <CommonBTN routename="HelpCenter" title="Help Center" icon="help-circle" />
       <TouchableOpacity style={styles.menu} onPress={() => logout()}>
         <View style={styles.innearview}>
           <View style={styles.inneartitle}>
@@ -167,16 +128,17 @@ const SchoolDrawerItem = ({navigation, setuserData}) => {
           />
         </View>
       </TouchableOpacity>
+
+    
     </View>
   );
 };
 
-export default SchoolDrawerItem;
+export default CoachingEmployee;
 
 const styles = StyleSheet.create({
   mainprofile: {
     paddingHorizontal: 10,
-    width: '100%',
   },
 
   innearview: {
@@ -198,7 +160,6 @@ const styles = StyleSheet.create({
     paddingVertical: deviceWidth * 0.02,
     paddingRight: deviceWidth * 0.07,
   },
-
   inneartitle: {
     display: 'flex',
     flexDirection: 'row',
@@ -206,9 +167,8 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   textstyle: {
-    color: Colors.primary,
+    color: Colors.black,
     paddingLeft: deviceWidth * 0.02,
-    fontWeight: 'bold',
   },
   divider: {
     borderWidth: 1,

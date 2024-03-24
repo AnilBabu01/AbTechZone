@@ -16,7 +16,11 @@ const SchoolHrOptions = () => {
       <View style={styles.mainview}>
         <TouchableOpacity onPress={() => navigation.navigate('Employee')}>
           <View style={styles.mainoption}>
-            <FontAwesome6 name="user-plus" color={Colors.primary} size={30} />
+            <FontAwesome6
+              name="user-plus"
+              color={Colors.optionColor}
+              size={30}
+            />
             <Text style={styles.titlestyle}>Add Staff</Text>
           </View>
         </TouchableOpacity>
@@ -25,7 +29,7 @@ const SchoolHrOptions = () => {
           <View style={styles.mainoption}>
             <FontAwesome6
               name="critical-role"
-              color={Colors.primary}
+              color={Colors.optionColor}
               size={30}
             />
             <Text style={styles.titlestyle}>Assign role</Text>
@@ -35,7 +39,7 @@ const SchoolHrOptions = () => {
         <TouchableOpacity
           onPress={() => navigation.navigate('AttendanceTabEmployee')}>
           <View style={styles.mainoption}>
-            <FontAwesome6 name="receipt" color={Colors.primary} size={30} />
+            <FontAwesome6 name="receipt" color={Colors.optionColor} size={30} />
             <Text style={styles.titlestyle}>Attendance</Text>
           </View>
         </TouchableOpacity>
@@ -52,7 +56,7 @@ const SchoolHrOptions = () => {
         </TouchableOpacity> */}
         <TouchableOpacity onPress={() => navigation.navigate('EmpAddholiday')}>
           <View style={styles.mainoption}>
-            <FontAwesome6 name="mug-hot" color={Colors.primary} size={30} />
+            <FontAwesome6 name="mug-hot" color={Colors.optionColor} size={30} />
             <Text style={styles.titlestyle}>Add Holiday</Text>
           </View>
         </TouchableOpacity>
@@ -61,7 +65,7 @@ const SchoolHrOptions = () => {
           <View style={styles.mainoption}>
             <FontAwesome6
               name="indian-rupee-sign"
-              color={Colors.primary}
+              color={Colors.optionColor}
               size={30}
             />
             <Text style={styles.titlestyle}>Add Payroll</Text>
@@ -111,5 +115,6 @@ const styles = StyleSheet.create({
     marginVertical: deviceHeight * 0.01,
     fontSize: 14,
     textAlign: 'center',
+    color: Colors.optionColor,
   },
 });

@@ -33,7 +33,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import DashboardPlaceholderLoader from '../../../Component/DashboardPlaceholderLoader';
 import {deviceHeight, deviceWidth} from '../../../utils/constant';
 import RNTable from '../../../Component/RNTable';
-import DownloadStudentData from '../../../Component/school/DownloadStudentData';
+import DownloadStudentData from '../../../Component/school/DownloadExcel';
 import BackHeader from '../../../Component/Header/BackHeader';
 import StudentFilter from '../../../Component/school/StudentFilter';
 
@@ -223,7 +223,11 @@ const Checking = () => {
             StudentTableList[15].items.push({
               id: index,
               value: (
-                <FontAwesome6 name="check-to-slot" color={Colors.primary} size={18.3} />
+                <FontAwesome6
+                  name="check-to-slot"
+                  color={Colors.primary}
+                  size={18.3}
+                />
               ),
               allDetails: item,
               redirect: 'CheckinScreen',
@@ -310,6 +314,8 @@ const Checking = () => {
         )}
 
         <DownloadStudentData
+          enquiry={isdata}
+          filename={'StudentList'}
           visible={showDocOptions}
           hideModal={setShowDocOptions}
         />

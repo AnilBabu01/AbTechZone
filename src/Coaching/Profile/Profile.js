@@ -717,7 +717,7 @@ const Profile = () => {
 
             <View style={{marginVertical: 20}}>
               <RNButton
-                loading={updating}
+                loading={backuping}
                 style={{paddingHorizontal: 25}}
                 onPress={() => {
                   handlebackup();

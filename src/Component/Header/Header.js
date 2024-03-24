@@ -19,7 +19,7 @@ import Notification from './Notification';
 import {deviceHeight,deviceWidth}  from '../../utils/constant';
 const windowWidth = Dimensions.get('window').width;
 const Header = () => {
-  const [notificationCount, setNotificationCount] = useState(3);
+  const [notificationCount, setNotificationCount] = useState(0);
   const navigation = useNavigation();
   const {user} = useSelector(state => state.auth);
   const [istoken, setistoken] = useState('');

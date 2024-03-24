@@ -174,7 +174,7 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     paddingVertical: 10,
     paddingHorizontal: 10,
-    borderWidth: 1,
+    borderWidth: 2,
     borderColor: Colors.primary,
     display: 'flex',
     justifyContent: 'space-between',
