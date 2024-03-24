@@ -403,16 +403,12 @@ export default Card;
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: Colors.white,
-    padding: 16,
-    borderRadius: 10,
-    shadowColor: '#000',
-    shadowOffset: {width: 0, height: 2},
-    shadowOpacity: 0.3,
-    shadowRadius: 10,
-    elevation: 5,
     width: '100%',
     marginVertical: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+    borderWidth: 2,
+    borderColor: Colors.primary,
   },
   name: {
     fontSize: 18,

@@ -8,120 +8,37 @@ import {
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {Height, Width} from '../../../utils/responsive';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import {primary, Colors} from '../../../utils/Colors';
-import {AnimatedFAB} from 'react-native-paper';
-import {
-  getcourse,
-  getbatch,
-  getstudent,
-  getfee,
-  getcategory,
-  GetSession,
-  GetSection,
-  getcurrentsession,
-} from '../../../redux/action/commanAction';
-import {
-  GetHostel,
-  GetFacility,
-  GetCategory,
-} from '../../../redux/action/hostelActions';
-import {GetRoute} from '../../../redux/action/transportActions';
 import {useDispatch, useSelector} from 'react-redux';
 import DashboardPlaceholderLoader from '../../../Component/DashboardPlaceholderLoader';
-import {deviceHeight, deviceWidth} from '../../../utils/constant';
+import {deviceWidth} from '../../../utils/constant';
 import RNTable from '../../../Component/RNTable';
 import DownloadStudentData from '../../../Component/school/DownloadExcel';
-import BackHeader from '../../../Component/Header/BackHeader';
 import StudentFilter from '../../../Component/school/StudentFilter';
-const TodayTimeTable = ({navigation}) => {
-  const dispatch = useDispatch();
+import {serverInstance} from '../../../API/ServerInstance';
+const TodayTimeTable = () => {
+  const [loading, setloading] = useState(false);
   const [isdata, setisdata] = useState([]);
+  const [todayTimeTable, settodayTimeTable] = useState([]);
   const [Tabledata, setTabledata] = useState([]);
-  const [viewdata, setviewdata] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [showDocOptions, setShowDocOptions] = useState(false);
-  const {loading, student} = useSelector(state => state.getstudent);
-
-  useEffect(() => {
-    dispatch(getcourse());
-    dispatch(getbatch());
-    dispatch(getstudent());
-    dispatch(getfee());
-    dispatch(getcategory());
-    dispatch(GetSession());
-    dispatch(GetSection());
-    dispatch(getcurrentsession());
-    dispatch(GetHostel());
-    dispatch(GetFacility());
-    dispatch(GetCategory());
-    dispatch(GetRoute());
-  }, []);
+  const {student} = useSelector(state => state.getstudent);
 
   const StudentTableList = [
     {
-      title: 'Sr.No',
+      title: 'Day',
       items: [],
       width: 0.33,
       align: 'center',
     },
     {
-      title: 'Session',
+      title: 'Subject',
       items: [],
       width: 0.33,
       align: 'center',
     },
-    {
-      title: 'SNO',
-      items: [],
-      width: 0.33,
-      align: 'center',
-    },
-    {
-      title: 'Roll_No',
-      items: [],
-      width: 0.33,
-      align: 'center',
-    },
-
-    {
-      title: 'Section',
-      items: [],
-      width: 0.33,
-      align: 'center',
-    },
-    {
-      title: 'Stream',
-      items: [],
-      width: 0.33,
-      align: 'center',
-    },
-    {
-      title: 'Student_Name',
-      items: [],
-      width: 0.33,
-      align: 'center',
-    },
-    {
-      title: 'Student_Email',
-      items: [],
-      width: 0.33,
-      align: 'center',
-    },
-    {
-      title: 'Student_Phone',
-      items: [],
-      width: 0.33,
-      align: 'center',
-    },
-    {
-      title: 'Adminssion_Date',
-      items: [],
-      width: 0.33,
-      align: 'center',
-    },
-
     {
       title: 'Class',
       items: [],
@@ -129,19 +46,20 @@ const TodayTimeTable = ({navigation}) => {
       align: 'center',
     },
     {
-      title: 'Category',
+      title: 'Section',
+      items: [],
+      width: 0.33,
+      align: 'center',
+    },
+
+    {
+      title: 'Start Time',
       items: [],
       width: 0.33,
       align: 'center',
     },
     {
-      title: 'Student_Status',
-      items: [],
-      width: 0.33,
-      align: 'center',
-    },
-    {
-      title: 'Action',
+      title: 'End Time',
       items: [],
       width: 0.33,
       align: 'center',
@@ -149,101 +67,112 @@ const TodayTimeTable = ({navigation}) => {
   ];
 
   const convertdata = async () => {
-    if (StudentTableList?.length > 13) {
-      await Promise.all(
-        student?.length > 0 &&
-          student?.map((item, index) => {
-            StudentTableList[0].items.push({id: index, value: index + 1});
-            StudentTableList[1].items.push({id: index, value: item.Session});
-            StudentTableList[2].items.push({id: index, value: item.SrNumber});
-            StudentTableList[3].items.push({
-              id: index,
-              value: item.rollnumber,
-            });
-            StudentTableList[4].items.push({
-              id: index,
-              value: item.Section,
-            });
-            StudentTableList[5].items.push({
-              id: index,
-              value: item.Stream,
-            });
-            StudentTableList[6].items.push({
-              id: index,
-              value: item.name,
-            });
-            StudentTableList[7].items.push({
-              id: index,
-              value: item.email,
-            });
-            StudentTableList[8].items.push({
-              id: index,
-              value: item.phoneno1,
-            });
-            StudentTableList[9].items.push({
-              id: index,
-              value: item.admissionDate,
-            });
-            StudentTableList[10].items.push({
-              id: index,
-              value: item.courseorclass,
-            });
-            StudentTableList[11].items.push({
-              id: index,
-              value: item.StudentCategory,
-            });
-            StudentTableList[12].items.push({
-              id: index,
-              value: item.StudentStatus,
-            });
-            StudentTableList[13].items.push({
-              id: index,
-              value: (
-                <Ionicons
-                  name="create-outline"
-                  color={Colors.primary}
-                  size={18.3}
-                />
-              ),
-              Deleteicon: (
-                <Ionicons name="trash-outline" color={Colors.red} size={18.3} />
-              ),
-              deleteUrl: 'student/addstudent',
-              allDetails: item,
-              redirect: 'UpdateAdmission',
-            });
-          }),
-      );
-      setTabledata(StudentTableList);
-    }
+    await Promise.all(
+      todayTimeTable?.length > 0 &&
+        filterdata(todayTimeTable)?.map((item, index) => {
+          StudentTableList[0].items.push({
+            id: index,
+            value: item?.subject?.dayname,
+          });
+          StudentTableList[1].items.push({
+            id: index,
+            value: item?.subject?.subject,
+          });
+          StudentTableList[2].items.push({
+            id: index,
+            value: item?.classname?.coursename,
+          });
+          StudentTableList[3].items.push({
+            id: index,
+            value: item?.subject?.section,
+          });
+          StudentTableList[4].items.push({
+            id: index,
+            value: item?.subject?.starttime,
+          });
+          StudentTableList[5].items.push({
+            id: index,
+            value: item?.subject?.endtime,
+          });
+        }),
+    );
+    setTabledata(StudentTableList);
+  };
+
+  const GetTimeTable = () => {
+    setloading(true);
+    serverInstance('comman/GetEmpTimeTable', 'get').then(res => {
+      if (res?.status === true) {
+        settodayTimeTable(res?.data);
+        setloading(false);
+      }
+      if (res?.status === false) {
+        setloading(false);
+      }
+    });
+  };
+
+  function getDayName() {
+    let date = new Date();
+    const days = [
+      'Sunday',
+      'Monday',
+      'Tuesday',
+      'Wednesday',
+      'Thursday',
+      'Friday',
+      'Saturday',
+    ];
+    const dayIndex = new Date(date).getDay();
+    return days[dayIndex];
+  }
+  const compareMonths = (a, b) => {
+    const monthsOrder = [
+      'Monday',
+      'Tuesday',
+      'Wednesday',
+      'Thursday',
+      'Friday',
+      'Saturday',
+      'Sunday',
+    ];
+
+    return (
+      monthsOrder.indexOf(a?.subject?.dayname) -
+      monthsOrder.indexOf(b?.subject?.dayname)
+    );
+  };
+
+  const filterdata = data => {
+    let filterdata = data?.filter(item => {
+      return item?.subject?.dayname === getDayName();
+    });
+
+    return filterdata;
   };
 
   useEffect(() => {
-    if (student) {
-      convertdata(student);
-      setisdata(student);
-      setShowModal(false);
+    GetTimeTable();
+  }, []);
+
+  useEffect(() => {
+    if (todayTimeTable) {
+      convertdata(todayTimeTable);
     }
-  }, [student]);
+  }, [todayTimeTable]);
 
   return (
     <>
       <View style={{flex: 1}}>
-        <BackHeader title={'Add Student'} icon={'person'} />
         <View style={styles.headerTitleContainer}>
           <View>
-            <Text style={styles.secondaryTitle}>Student</Text>
+            <Text style={styles.secondaryTitle}>Time Table</Text>
           </View>
           <View style={{flexDirection: 'row', gap: 10}}>
             <Pressable
               onPress={() => setShowDocOptions(true)}
               style={styles.filterBtnContainer}>
               <FontAwesome6 name="download" color={Colors.primary} size={25} />
-            </Pressable>
-            <Pressable
-              onPress={() => setShowModal(true)}
-              style={styles.filterBtnContainer}>
-              <Ionicons name="filter" color={Colors.primary} size={25} />
             </Pressable>
           </View>
         </View>
@@ -272,15 +201,6 @@ const TodayTimeTable = ({navigation}) => {
           hideModal={setShowDocOptions}
           enquiry={student}
           filename={'StudentList'}
-        />
-
-        <AnimatedFAB
-          icon={'plus'}
-          onPress={() => navigation.navigate('AddStudent')}
-          label="Add"
-          extended={false}
-          color={Colors.white}
-          style={styles.fabStyle}
         />
       </View>
     </>
