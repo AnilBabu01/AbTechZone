@@ -1,5 +1,5 @@
 import {StyleSheet, View} from 'react-native';
-import React, {useState} from 'react';
+import React from 'react';
 import {useSelector} from 'react-redux';
 import {Colors} from '../utils/Colors';
 import {deviceWidth} from '../utils/constant';

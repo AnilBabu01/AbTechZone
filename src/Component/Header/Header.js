@@ -16,17 +16,14 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import {Colors} from '../../utils/Colors';
 import Notification from './Notification';
-import {deviceHeight,deviceWidth}  from '../../utils/constant';
+import {deviceHeight, deviceWidth} from '../../utils/constant';
 const windowWidth = Dimensions.get('window').width;
 const Header = () => {
   const [notificationCount, setNotificationCount] = useState(0);
   const navigation = useNavigation();
   const {user} = useSelector(state => state.auth);
   const [istoken, setistoken] = useState('');
-  const [openModel, setopenModel] = useState(false);
-  const [visible, setVisible] = useState(false);
-  const onToggleSnackBar = () => setVisible(!visible);
-  const onDismissSnackBar = () => setVisible(false);
+
   const getToken = async () => {
     let token = await AsyncStorage.getItem('erptoken');
     setistoken(token);
@@ -34,6 +31,8 @@ const Header = () => {
   useEffect(() => {
     getToken();
   }, []);
+
+  console.log('user?.data?.User?.userType', user?.data?.User?.userType);
 
   return (
     <View>
@@ -48,12 +47,17 @@ const Header = () => {
         {istoken ? (
           <>
             <View style={styles.profile}>
-              <View style={styles.notificationView}>
-                <Notification
-                  count={notificationCount}
-                  onPress={() => navigation.navigate('ViewNotification')}
-                />
-              </View>
+              {user?.data?.User?.userType === 'student' ||
+              user?.data?.User?.userType === 'parent' ? (
+                <></>
+              ) : (
+                <View style={styles.notificationView}>
+                  <Notification
+                    count={notificationCount}
+                    onPress={() => navigation.navigate('ViewNotification')}
+                  />
+                </View>
+              )}
 
               <Pressable onPress={() => navigation.navigate('ProfileCoaching')}>
                 {user?.data?.CredentailsData?.profileurl ? (
@@ -83,8 +87,6 @@ const Header = () => {
           </>
         )}
       </View>
-
-  
     </View>
   );
 };
@@ -102,13 +104,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     paddingHorizontal: 10,
-    height: deviceHeight*0.06,
+    height: deviceHeight * 0.06,
     backgroundColor: primary,
     paddingBottom: 5,
   },
   loginbtn: {
-    width: deviceWidth*0.3,
-    height: deviceHeight*0.05,
+    width: deviceWidth * 0.3,
+    height: deviceHeight * 0.05,
     // backgroundColor: hightlight,
     borderRadius: 10,
     display: 'flex',
@@ -132,7 +134,7 @@ const styles = StyleSheet.create({
     width: 35,
     height: 35,
     borderRadius: 50,
-    resizeMode:'contain'
+    resizeMode: 'contain',
   },
   logoimg: {
     height: Height(50),
