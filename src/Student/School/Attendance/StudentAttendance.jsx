@@ -7,6 +7,8 @@ import MonthlyAttendance from './MonthlyAttendance';
 import DateWiseAttendance from './DateWiseAttendance';
 import BackHeader from '../../../Component/Header/BackHeader';
 const StudentAttendance = () => {
+
+
   const [selected, setselected] = useState(0);
   return (
     <>
