@@ -292,7 +292,7 @@ let formData = new FormData();
   
     return (
       <>
-        <Header />
+       
         <ScrollView>
           <View style={styles.connainer}>
             <View style={styles.card10}>

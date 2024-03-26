@@ -13,6 +13,7 @@ import CoachingStudent from './Coaching/CoachingStudent';
 import CollegeParent from './College/CollegeParent';
 import SchoolParent from './School/SchoolParent';
 import CoachingParent from './Coaching/CoachingParent';
+import Header from '../../Component/Header/Header';
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -21,6 +22,7 @@ const Profile = () => {
 
   return (
     <>
+      <Header/>
       <ScrollView>
         {user?.data?.User?.userType === 'employee' ? (
           <>

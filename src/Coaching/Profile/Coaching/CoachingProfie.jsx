@@ -293,7 +293,7 @@ import {
   
     return (
       <>
-        <Header />
+       
         <ScrollView>
           <View style={styles.connainer}>
             <View style={styles.card10}>

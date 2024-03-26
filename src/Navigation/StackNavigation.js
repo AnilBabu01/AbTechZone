@@ -9,7 +9,7 @@ import DashboardCoaching from '../Coaching/Dashboard/Dashboard';
 import DashboardCollege from '../College/Dashboard/Dashboard';
 import DashboardSchool from '../School/Dashboard/Dashboard';
 import DashboardEmplyee from '../Employee/Dashboard/Dashboard';
-import DashboardStudent from '../School/Dashboard/Dashboard';
+import DashboardStudent from '../Student/Dashboard/Dashboard';
 import DashboardParent from '../Parent/Dashboard/Dashboard';
 import DashboardOwner from '../Owner/Dashboard/Dashboard';
 ///Coaching screens
@@ -260,6 +260,11 @@ import AddVisitor from '../School/FrontOffice/AddVisitor/AddVisitor';
 import Visitor from '../School/FrontOffice/AddVisitor/Visitor';
 import UpdateVisitor from '../School/FrontOffice/AddVisitor/UpdateVisitor';
 import FrontOfficeOptions from '../School/FrontOffice/FrontOfficeOptions';
+
+///School and Parent
+import StudentOptionsSchool from '../Student/School/StudentOptions';
+import StudentOptionsCollege from '../Student/College/StudentOptions';
+import StudentOptionsCoaching from '../Student/Coaching/StudentOptions';
 
 const Stack = createNativeStackNavigator();
 
@@ -682,6 +687,20 @@ function StackNavigation() {
       <Stack.Screen name="AddVisitor" component={AddVisitor} />
       <Stack.Screen name="Visitor" component={Visitor} />
       <Stack.Screen name="UpdateVisitor" component={UpdateVisitor} />
+
+      {/* Student */}
+      <Stack.Screen
+        name="StudentOptionsSchool"
+        component={StudentOptionsSchool}
+      />
+      <Stack.Screen
+        name="StudentOptionsCollege"
+        component={StudentOptionsCollege}
+      />
+      <Stack.Screen
+        name="StudentOptionsCoaching"
+        component={StudentOptionsCoaching}
+      />
 
       <Stack.Screen name="DashboardCollege" component={DashboardCollege} />
       <Stack.Screen name="DashboardSchool" component={DashboardSchool} />
