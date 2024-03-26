@@ -1,16 +1,19 @@
-import {StyleSheet, Text, View} from 'react-native';
-import React from 'react';
+import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
+import Result from './Result';
+import TestList from './TestList';
+import BackHeader from '../../../Component/Header/BackHeader';
+const Tab = createMaterialTopTabNavigator();
 
-const StudentTest = () => {
+function StudentTest() {
   return (
     <>
-      <View>
-        <Text>StudentTest</Text>
-      </View>
+      <BackHeader title={'Test'} />
+      <Tab.Navigator>
+        <Tab.Screen name="TestList" component={TestList} />
+        <Tab.Screen name="Result" component={Result} />
+      </Tab.Navigator>
     </>
   );
-};
+}
 
 export default StudentTest;
-
-const styles = StyleSheet.create({});

@@ -27,6 +27,8 @@ import {backendApiUrl} from '../Config/config';
 import axios from 'axios';
 import Toast from 'react-native-toast-message';
 import RNBDropDown from '../Component/RNBDropDown';
+import {indiaStatesData} from './StaticData';
+
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
@@ -54,22 +56,19 @@ const SignUp = () => {
   const [showPasswordConfirm, setShowPasswordConfirm] = useState(true);
   const [selctplanSkip, setselctplanSkip] = useState(true);
   const [planId, setplanId] = useState('');
-  // const [loader, setloader] = useState(false);
-  // const [sms, setsms] = useState('');
   const [owername, setowername] = useState('');
   const [email, setemail] = useState('');
   const [phoneno1, setphoneno1] = useState('');
   const [organizationName, setorganizationName] = useState('');
   const [address, setaddress] = useState('');
-  const [confirmpassword, setconfirmpassword] = useState('');
   const [phoneotp, setphoneotp] = useState('');
   const [emailOtp, setemailOtp] = useState('');
   const [city, setcity] = useState('');
   const [state, setstate] = useState('');
+  const [statename, setstatename] = useState('');
+  const [cityname, setcityname] = useState('');
   const [pincode, setpincode] = useState('');
   const [guestloginas, setguestloginas] = useState('college');
-  const [userid, setuserid] = useState('');
-  const [Fullname, setFullname] = useState('');
   const [time, setTime] = useState(60);
   const [isRunning, setIsRunning] = useState(false);
   const [intervalId, setIntervalId] = useState(null);
@@ -263,8 +262,8 @@ const SignUp = () => {
     formData.append('institutename', organizationName);
     formData.append('phoneno1', phoneno1);
     formData.append('address', address);
-    formData.append('city', city);
-    formData.append('state', state);
+    formData.append('city', cityname);
+    formData.append('state', statename);
     formData.append('pincode', pincode);
     formData.append('userType', guestloginas);
     formData.append('planId', planId);
@@ -302,6 +301,22 @@ const SignUp = () => {
     formData = new FormData();
   }, []);
 
+  const filterData = () => {
+    let FilteredData;
+    if (state) {
+      FilteredData = indiaStatesData?.states
+        ?.find(item => item?.id === Number(state))
+        ?.districts?.map(item => ({
+          label: item?.name,
+          value: item?.id,
+        }));
+    } else {
+      FilteredData = [{label: '', value: 'Please Select'}];
+    }
+
+    return FilteredData;
+  };
+
   return (
     <>
       <BackHeader title={'Sign-up'} />
@@ -329,7 +344,7 @@ const SignUp = () => {
                       onChangeText={data => setphoneno1(data)}
                     />
                   </View>
-                  <View style={{marginBottom:10}}>
+                  <View style={{marginBottom: 10}}>
                     <RNButton
                       style={{paddingHorizontal: 25}}
                       loading={sendingPhone}
@@ -348,7 +363,7 @@ const SignUp = () => {
                       onChangeText={data => setphoneotp(data)}
                     />
                   </View>
-                  <View style={{marginBottom:10}}>
+                  <View style={{marginBottom: 10}}>
                     <RNButton
                       style={{paddingHorizontal: 25}}
                       loading={verifyphone}
@@ -366,7 +381,7 @@ const SignUp = () => {
                       onChangeText={data => setemail(data)}
                     />
                   </View>
-                  <View style={{marginBottom:10}}>
+                  <View style={{marginBottom: 10}}>
                     <RNButton
                       style={{paddingHorizontal: 25}}
                       loading={sendingEmail}
@@ -384,7 +399,7 @@ const SignUp = () => {
                       onChangeText={data => setemailOtp(data)}
                     />
                   </View>
-                  <View style={{marginBottom:10}}>
+                  <View style={{marginBottom: 10}}>
                     <RNButton
                       loading={verifyemail}
                       onPress={() => EmailOtpVerify()}>
@@ -394,7 +409,15 @@ const SignUp = () => {
                   <View style={{marginVertical: 20}}>
                     <RNButton
                       onPress={() => {
-                        setproceed(true);
+                        if (isPhoneVerify === false) {
+                          Toast.show({
+                            type: 'error',
+                            text1: 'Error',
+                            text2: 'First Verify Phone No',
+                          });
+                        } else {
+                          setproceed(true);
+                        }
                       }}>
                       Proceed
                     </RNButton>
@@ -421,6 +444,30 @@ const SignUp = () => {
                     OptionsList={dataguest}
                     onChange={data => setguestloginas(data.value)}
                   />
+
+                  <RNBDropDown
+                    label="State"
+                    value={state}
+                    OptionsList={indiaStatesData?.states?.map(item => ({
+                      label: item?.state,
+                      value: item?.id,
+                    }))}
+                    onChange={data => {
+                      setstate(data.value);
+                      setstatename(data.label);
+                    }}
+                  />
+
+                  <RNBDropDown
+                    label="District"
+                    value={city}
+                    OptionsList={filterData()}
+                    onChange={data => {
+                      setcity(data.value);
+                      setcityname(data.label);
+                    }}
+                  />
+
                   <View
                     style={{
                       position: 'relative',
@@ -435,6 +482,7 @@ const SignUp = () => {
                       {address.length} / 500
                     </Text>
                     <RNInputField
+                      style={{paddingTop: 10}}
                       label="Address"
                       placeholder="Address"
                       value={address}
@@ -444,20 +492,6 @@ const SignUp = () => {
                       maxLength={500}
                     />
                   </View>
-
-                  <RNInputField
-                    label="State"
-                    placeholder="Enter State"
-                    value={state}
-                    onChangeText={data => setstate(data)}
-                  />
-
-                  <RNInputField
-                    label="District"
-                    placeholder="Enter District"
-                    value={city}
-                    onChangeText={data => setcity(data)}
-                  />
 
                   <RNInputField
                     label="pincode"

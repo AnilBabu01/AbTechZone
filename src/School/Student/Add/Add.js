@@ -36,6 +36,7 @@ import RNTable from '../../../Component/RNTable';
 import DownloadStudentData from '../../../Component/school/DownloadExcel';
 import BackHeader from '../../../Component/Header/BackHeader';
 import StudentFilter from '../../../Component/school/StudentFilter';
+import moment from 'moment';
 const Add = ({navigation}) => {
   const dispatch = useDispatch();
   const [isdata, setisdata] = useState([]);
@@ -119,7 +120,7 @@ const Add = ({navigation}) => {
     {
       title: 'Adminssion_Date',
       items: [],
-      width: 0.33,
+      width: 0.4,
       align: 'center',
     },
 
@@ -183,7 +184,7 @@ const Add = ({navigation}) => {
             });
             StudentTableList[9].items.push({
               id: index,
-              value: item.admissionDate,
+              value: moment(item.admissionDate).format('DD/MM/YYYY'),
             });
             StudentTableList[10].items.push({
               id: index,

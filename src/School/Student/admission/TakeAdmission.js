@@ -33,62 +33,17 @@ import {deviceHeight, deviceWidth} from '../../../utils/constant';
 import {Colors} from '../../../utils/Colors';
 import {ADD_STUDENT_RESET} from '../../../redux/constants/commanConstants';
 import moment from 'moment';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import BackHeader from '../../../Component/Header/BackHeader';
-import {indiaStatesData} from '../StaticData';
+import {
+  indiaStatesData,
+  streamlist,
+  studentStatus,
+  CasteList,
+  BloodGroupList,
+  religionList,
+  GenderListList,
+} from '../StaticData';
 import RNBDropDown from '../../../Component/RNBDropDown';
-const streamlist = [
-  {label: 'NONE', value: 'NONE'},
-  {label: 'Arts', value: 'Arts'},
-  {label: 'COMMERCE', value: 'COMMERCE'},
-  {label: 'SCIENCE', value: 'SCIENCE'},
-];
-const studentStatus = [
-  {label: 'Active', value: 'Active'},
-  {label: 'On Leave', value: 'On Leave'},
-  {label: 'Left In Middle', value: 'Left In Middle'},
-  {label: 'Completed', value: 'Completed'},
-  {label: 'Unknown', value: 'Unknown'},
-];
-
-const CasteList = [
-  {label: 'General', value: 'General'},
-  {label: 'OBC', value: 'OBC'},
-  {label: 'SC', value: 'SC'},
-  {label: 'ST', value: 'ST'},
-  {label: 'Others', value: 'Others'},
-];
-
-const BloodGroupList = [
-  {label: '(A+)', value: '(A+)'},
-  {label: '(A-)', value: '(A-)'},
-  {label: '(B+)', value: '(B+)'},
-  {label: '(B-)', value: '(B-)'},
-  {label: '(O+)', value: '(O+)'},
-  {label: '(O-)', value: '(O-)'},
-  {label: '(AB+)', value: '(AB+)'},
-  {label: '(AB-)', value: '(AB-)'},
-  {
-    label: 'Under Investigation OR N.A.',
-    value: 'Under Investigation OR N.A.',
-  },
-];
-
-const religionList = [
-  {label: 'Hinduism', value: 'Hinduism'},
-  {label: 'Muslim', value: 'Muslim'},
-  {label: 'Sikhism', value: 'Sikhism'},
-  {label: 'Buddhism', value: 'Buddhism'},
-  {label: 'Jainism', value: 'Jainism'},
-  {label: 'Christianity', value: 'Christianity'},
-  {label: 'Others', value: 'Others'},
-];
-
-const GenderListList = [
-  {label: 'Male', value: 'Male'},
-  {label: 'Female', value: 'Female'},
-  {label: 'Others', value: 'Others'},
-];
 
 let formData = new FormData();
 const TakeAdmission = () => {
@@ -141,9 +96,10 @@ const TakeAdmission = () => {
   const [marksheetName, setmarksheetName] = useState('');
   const [otherspreview, setotherspreview] = useState('');
   const [othersname, setothersname] = useState('');
-  const [photo, setphoto] = useState('');
   const [city, setcity] = useState('');
   const [state, setstate] = useState('');
+  const [statename, setstatename] = useState('');
+  const [cityname, setcityname] = useState('');
   const [Pincode, setPincode] = useState('');
   const [pano, setpano] = useState('');
   const [courseorclass, setcourseorclass] = useState('');
@@ -220,8 +176,6 @@ const TakeAdmission = () => {
     AnnualFee,
   ] = valuesArray;
 
-  console.log('pano data is', pano);
-
   const submit = async () => {
     try {
       var momentDate = moment(adminssiondate, 'DD/MM/YYYY');
@@ -254,7 +208,8 @@ const TakeAdmission = () => {
       formData.append('rollnumber', studentrollno);
       formData.append('StudentStatus', studentstatus);
       formData.append('batch', batchname);
-
+      formData.append('city', cityname);
+      formData.append('state', statename);
       formData.append('admissionDate', newadminssiondate);
 
       formData.append('courseduration', '');
@@ -342,7 +297,7 @@ const TakeAdmission = () => {
 
       setsms('Adding...');
 
-      dispatch(Addstudent(formData));
+      dispatch(Addstudent(formData,setopenModel));
     } catch (error) {
       console.log(error);
     }
@@ -804,6 +759,23 @@ const TakeAdmission = () => {
       setloading2(false);
     }
   };
+
+  const filterData = () => {
+    let FilteredData;
+    if (state) {
+      FilteredData = indiaStatesData?.states
+        ?.find(item => item?.id === Number(state))
+        ?.districts?.map(item => ({
+          label: item?.name,
+          value: item?.id,
+        }));
+    } else {
+      FilteredData = [{label: '', value: 'Please Select'}];
+    }
+
+    return FilteredData;
+  };
+  
   return (
     <View>
       <BackHeader title={'Take Admission'} icon={'person'} />
@@ -879,38 +851,25 @@ const TakeAdmission = () => {
                 />
               </View>
             </FlexRowWrapper>
+            <View
+              style={{
+                marginHorizontal: deviceWidth * 0.04,
+                position: 'relative',
+              }}>
+              <RNBDropDown
+                label="Session"
+                value={sessionname}
+                OptionsList={
+                  sessionList &&
+                  sessionList?.map(item => ({
+                    label: `${item?.Session}`,
+                    value: `${item?.Session}`,
+                  }))
+                }
+                onChange={data => setsessionname(data.value)}
+              />
+            </View>
 
-            <FlexRowWrapper>
-              <View style={{width: '45%'}}>
-                <RNBDropDown
-                  label="Session"
-                  value={sessionname}
-                  OptionsList={
-                    sessionList &&
-                    sessionList?.map(item => ({
-                      label: `${item?.Session}`,
-                      value: `${item?.Session}`,
-                    }))
-                  }
-                  onChange={data => setsessionname(data.value)}
-                />
-              </View>
-              <View style={{width: '45%'}}>
-                <RNBDropDown
-                  label="Section"
-                  value={sectionname}
-                  OptionsList={
-                    sessionList &&
-                    sectionlist &&
-                    sectionlist?.map(item => ({
-                      label: `${item?.section}`,
-                      value: `${item?.section}`,
-                    }))
-                  }
-                  onChange={data => setsectionname(data.value)}
-                />
-              </View>
-            </FlexRowWrapper>
             <FlexRowWrapper>
               <View style={{width: '45%'}}>
                 <View style={{marginHorizontal: deviceWidth * 0.01}}>
@@ -1052,19 +1011,28 @@ const TakeAdmission = () => {
             </FlexRowWrapper>
             <FlexRowWrapper>
               <View style={{width: '45%'}}>
-                <RNInputField
+                <RNBDropDown
                   label="State"
-                  placeholder="Enter State"
                   value={state}
-                  onChangeText={data => setstate(data)}
+                  OptionsList={indiaStatesData?.states?.map(item => ({
+                    label: item?.state,
+                    value: item?.id,
+                  }))}
+                  onChange={data => {
+                    setstate(data.value);
+                    setstatename(data.label);
+                  }}
                 />
               </View>
               <View style={{width: '45%'}}>
-                <RNInputField
-                  label="City"
-                  placeholder="Enter City"
+                <RNBDropDown
+                  label="District"
                   value={city}
-                  onChangeText={data => setcity(data)}
+                  OptionsList={filterData()}
+                  onChange={data => {
+                    setcity(data.value);
+                    setcityname(data.label);
+                  }}
                 />
               </View>
             </FlexRowWrapper>
@@ -1083,7 +1051,7 @@ const TakeAdmission = () => {
                 {address.length} / 500
               </Text>
               <RNInputField
-                style={{backgroundColor: Colors.fadeGray, paddingTop: 10}}
+                style={{paddingTop: 10}}
                 label="address"
                 value={address}
                 onChangeText={data => setaddress(data)}
@@ -1169,7 +1137,7 @@ const TakeAdmission = () => {
                 {address.length} / 500
               </Text>
               <RNInputField
-                style={{backgroundColor: Colors.fadeGray, paddingTop: 10}}
+                style={{ paddingTop: 10}}
                 label="Previous School Address"
                 value={PreviousSchoolAddress}
                 onChangeText={data => setPreviousSchoolAddress(data)}
@@ -1241,6 +1209,26 @@ const TakeAdmission = () => {
                 </View>
               </View>
             </FlexRowWrapper>
+
+            <View
+              style={{
+                marginHorizontal: deviceWidth * 0.04,
+                position: 'relative',
+              }}>
+              <RNBDropDown
+                label="Section"
+                value={sectionname}
+                OptionsList={
+                  sessionList &&
+                  sectionlist &&
+                  sectionlist?.map(item => ({
+                    label: `${item?.section}`,
+                    value: `${item?.section}`,
+                  }))
+                }
+                onChange={data => setsectionname(data.value)}
+              />
+            </View>
             <FlexRowWrapper>
               <View style={styles.radioButton}>
                 <RadioButton.Android
@@ -1784,7 +1772,7 @@ const TakeAdmission = () => {
 
           <View style={{paddingHorizontal: 10}}>
             <Text style={{fontSize: 20, marginBottom: 10, marginTop: 8}}>
-              Password Size Photo
+              Passport Size Photo
             </Text>
             <View>
               {passportsize ? (

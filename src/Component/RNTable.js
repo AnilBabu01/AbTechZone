@@ -21,6 +21,7 @@ import {
   getstudent,
   getFILTComplain,
   getVisitor,
+  getEmployee,
 } from '../redux/action/commanAction';
 import {getenquiries} from '../redux/action/coachingAction';
 import {
@@ -146,6 +147,9 @@ const RNTable = ({data, theme, isBorderCurve}) => {
         }
         if (data?.deleteUrl === 'comman/visitor') {
           dispatch(getVisitor('', '', ''));
+        }
+        if (data?.deleteUrl === 'comman/deleteemployee') {
+          dispatch(getEmployee());
         }
       }
 

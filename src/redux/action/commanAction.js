@@ -1089,7 +1089,7 @@ const newboundary = () => {
   return newdate;
 };
 
-export const Addstudent = datas => async dispatch => {
+export const Addstudent = (datas, setopenModel) => async dispatch => {
   try {
     let token = await AsyncStorage.getItem('erptoken');
     const config = {
@@ -1112,6 +1112,7 @@ export const Addstudent = datas => async dispatch => {
         text1: 'Success',
         text2: data?.msg,
       });
+      setopenModel(true);
     }
 
     dispatch({
@@ -2639,93 +2640,86 @@ export const getPrintReceipt =
     }
   };
 
-
-  
 // Get all Enquiry
-export const getTC = (scoursename, sessionname, studentname, seno) => async (dispatch) => {
-  try {
-    let token = await AsyncStorage.getItem('erptoken');
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `${token}`,
-      },
-    };
-    if (scoursename||sessionname||studentname||seno) {
-      dispatch({ type: ALL_TC_REQUEST });
-      const { data } = await axios.get(
-        `${backendApiUrl}student/CreateTC?SrNo=${seno}&scoursename=${scoursename}&sessionname=${sessionname}&studentname=${studentname}`,
-        config
-      );
-      dispatch({
-        type: ALL_TC_SUCCESS,
-        payload: data?.data,
-      });
-    } else {
-      dispatch({ type: ALL_TC_REQUEST });
-      const { data } = await axios.get(
-        `${backendApiUrl}student/CreateTC`,
-
-        config
-      );
-      dispatch({
-        type: ALL_TC_SUCCESS,
-        payload: data?.data,
-      });
-    }
-  } catch (error) {
-    dispatch({
-      type: ALL_TC_FAIL,
-      payload: error?.response?.data?.msg,
-    });
-  }
-};
-
-
-
-// Get all Enquiry
-export const getFILTComplain =
-  (fromdate, todate, name) => async (dispatch) => {
+export const getTC =
+  (scoursename, sessionname, studentname, seno) => async dispatch => {
     try {
       let token = await AsyncStorage.getItem('erptoken');
       const config = {
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           Authorization: `${token}`,
         },
       };
-      dispatch({ type: ALL_COMPLAIN_REQUEST });
-      let url = `${backendApiUrl}comman/complain?fromdate=${fromdate}&todate=${todate}&name=${name}`;
-      const { data } = await axios.get(url, config);
+      if (scoursename || sessionname || studentname || seno) {
+        dispatch({type: ALL_TC_REQUEST});
+        const {data} = await axios.get(
+          `${backendApiUrl}student/CreateTC?SrNo=${seno}&scoursename=${scoursename}&sessionname=${sessionname}&studentname=${studentname}`,
+          config,
+        );
+        dispatch({
+          type: ALL_TC_SUCCESS,
+          payload: data?.data,
+        });
+      } else {
+        dispatch({type: ALL_TC_REQUEST});
+        const {data} = await axios.get(
+          `${backendApiUrl}student/CreateTC`,
 
-      dispatch({
-        type: ALL_COMPLAIN_SUCCESS,
-        payload: data?.data,
-      });
+          config,
+        );
+        dispatch({
+          type: ALL_TC_SUCCESS,
+          payload: data?.data,
+        });
+      }
     } catch (error) {
       dispatch({
-        type: ALL_COMPLAIN_FAIL,
+        type: ALL_TC_FAIL,
         payload: error?.response?.data?.msg,
       });
     }
   };
 
-
-  
 // Get all Enquiry
-export const getVisitor =
-(fromdate, todate, name) => async (dispatch) => {
+export const getFILTComplain = (fromdate, todate, name) => async dispatch => {
   try {
     let token = await AsyncStorage.getItem('erptoken');
     const config = {
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         Authorization: `${token}`,
       },
     };
-    dispatch({ type: ALL_VISITOR_REQUEST });
+    dispatch({type: ALL_COMPLAIN_REQUEST});
+    let url = `${backendApiUrl}comman/complain?fromdate=${fromdate}&todate=${todate}&name=${name}`;
+    const {data} = await axios.get(url, config);
+
+    dispatch({
+      type: ALL_COMPLAIN_SUCCESS,
+      payload: data?.data,
+    });
+  } catch (error) {
+    dispatch({
+      type: ALL_COMPLAIN_FAIL,
+      payload: error?.response?.data?.msg,
+    });
+  }
+};
+
+// Get all Enquiry
+export const getVisitor = (fromdate, todate, name) => async dispatch => {
+  try {
+    let token = await AsyncStorage.getItem('erptoken');
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `${token}`,
+      },
+    };
+    dispatch({type: ALL_VISITOR_REQUEST});
     let url = `${backendApiUrl}comman/visitor?fromdate=${fromdate}&todate=${todate}&name=${name}`;
-    const { data } = await axios.get(url, config);
+    const {data} = await axios.get(url, config);
 
     dispatch({
       type: ALL_VISITOR_SUCCESS,

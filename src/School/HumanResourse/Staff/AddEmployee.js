@@ -36,52 +36,16 @@ import axios from 'axios';
 import Toast from 'react-native-toast-message';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import RNBDropDown from '../../../Component/RNBDropDown';
+import {
+  indiaStatesData,
+  CasteList,
+  BloodGroupList,
+  religionList,
+  GenderListList,
+  EmpStatusList,
+} from '../../Student/StaticData';
+
 let formData = new FormData();
-
-const EmpStatusList = [
-  {label: 'Active', value: 'Active'},
-  {label: 'On Leave', value: 'On Leave'},
-  {label: 'Left In Middle', value: 'Left'},
-];
-
-const CasteList = [
-  {label: 'General', value: 'General'},
-  {label: 'OBC', value: 'OBC'},
-  {label: 'SC', value: 'SC'},
-  {label: 'ST', value: 'ST'},
-  {label: 'Others', value: 'Others'},
-];
-
-const BloodGroupList = [
-  {label: '(A+)', value: '(A+)'},
-  {label: '(A-)', value: '(A-)'},
-  {label: '(B+)', value: '(B+)'},
-  {label: '(B-)', value: '(B-)'},
-  {label: '(O+)', value: '(O+)'},
-  {label: '(O-)', value: '(O-)'},
-  {label: '(AB+)', value: '(AB+)'},
-  {label: '(AB-)', value: '(AB-)'},
-  {
-    label: 'Under Investigation OR N.A.',
-    value: 'Under Investigation OR N.A.',
-  },
-];
-
-const religionList = [
-  {label: 'Hinduism', value: 'Hinduism'},
-  {label: 'Muslim', value: 'Muslim'},
-  {label: 'Sikhism', value: 'Sikhism'},
-  {label: 'Buddhism', value: 'Buddhism'},
-  {label: 'Jainism', value: 'Jainism'},
-  {label: 'Christianity', value: 'Christianity'},
-  {label: 'Others', value: 'Others'},
-];
-
-const GenderListList = [
-  {label: 'Male', value: 'Male'},
-  {label: 'Female', value: 'Female'},
-  {label: 'Others', value: 'Others'},
-];
 
 const AddEmployee = () => {
   const navigation = useNavigation();
@@ -143,6 +107,8 @@ const AddEmployee = () => {
   const [passportsize, setpassportsize] = useState('');
   const [city, setcity] = useState('');
   const [state, setstate] = useState('');
+  const [statename, setstatename] = useState('');
+  const [cityname, setcityname] = useState('');
   const {designation} = useSelector(state => state.getdesignation);
   const {department} = useSelector(state => state.getpart);
 
@@ -156,8 +122,8 @@ const AddEmployee = () => {
       formData.append('email', empemail);
       formData.append('phoneno1', empphone1);
       formData.append('phoneno2', empphone2);
-      formData.append('city', city);
-      formData.append('state', state);
+      formData.append('city', cityname);
+      formData.append('state', statename);
       formData.append('pincode', pincode);
       formData.append('employeeof', designationname);
       formData.append('department', depart);
@@ -920,42 +886,25 @@ const AddEmployee = () => {
     setisdata1(department, department);
   }, [designation, department]);
 
+  const filterData = () => {
+    let FilteredData;
+    if (state) {
+      FilteredData = indiaStatesData?.states
+        ?.find(item => item?.id === Number(state))
+        ?.districts?.map(item => ({
+          label: item?.name,
+          value: item?.id,
+        }));
+    } else {
+      FilteredData = [{label: '', value: 'Please Select'}];
+    }
+
+    return FilteredData;
+  };
+
   return (
     <View>
       <BackHeader title={'Add Employee'} icon={'person'} />
-      <Modal animationType={'fade'} transparent={true} visible={openModel}>
-        <View
-          style={{
-            flex: 1,
-            backgroundColor: 'rgba(52, 52, 52, 0.8)',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}>
-          <View style={[styles.modal, styles.elevation]}>
-            <View style={styles.cancalView}>
-              <TouchableOpacity>
-                <Image source={check} style={styles.checkstyleimg} />
-              </TouchableOpacity>
-            </View>
-            <View style={styles.buttonmodal}>
-              <TouchableOpacity style={styles.processpatbtn}>
-                <View>
-                  <Text style={{color: 'white', fontSize: 16}}>
-                    Process To Fee
-                  </Text>
-                </View>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => navigation.goBack()}
-                style={styles.okbtn}>
-                <View>
-                  <Text style={{color: 'white', fontSize: 16}}>Ok!</Text>
-                </View>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-      </Modal>
 
       <ScrollView>
         <View style={styles.enquirymainview}>
@@ -1083,41 +1032,71 @@ const AddEmployee = () => {
 
             <FlexRowWrapper>
               <View style={{width: '45%'}}>
-                <RNInputField
-                  label="City"
-                  placeholder="Enter City"
-                  value={city}
-                  onChangeText={data => setcity(data)}
-                />
-              </View>
-              <View style={{width: '45%'}}>
-                <RNInputField
+                <RNBDropDown
                   label="State"
-                  placeholder="Enter State"
                   value={state}
-                  onChangeText={data => setstate(data)}
+                  OptionsList={indiaStatesData?.states?.map(item => ({
+                    label: item?.state,
+                    value: item?.id,
+                  }))}
+                  onChange={data => {
+                    setstate(data.value);
+                    setstatename(data.label);
+                  }}
+                />
+              </View>
+              <View style={{width: '45%'}}>
+                <RNBDropDown
+                  label="District"
+                  value={city}
+                  OptionsList={filterData()}
+                  onChange={data => {
+                    setcity(data.value);
+                    setcityname(data.label);
+                  }}
                 />
               </View>
             </FlexRowWrapper>
+            <View
+              style={{
+                marginHorizontal: deviceWidth * 0.04,
+                position: 'relative',
+              }}>
+              <RNInputField
+                label="Pin Code"
+                placeholder="Enter Pin Code"
+                value={pincode}
+                onChangeText={data => setpincode(data)}
+              />
+            </View>
 
-            <FlexRowWrapper>
-              <View style={{width: '45%'}}>
-                <RNInputField
-                  label="Pin Code"
-                  placeholder="Enter Pin Code"
-                  value={pincode}
-                  onChangeText={data => setpincode(data)}
-                />
-              </View>
-              <View style={{width: '45%'}}>
-                <RNInputField
-                  label="Address"
-                  placeholder="Enter Address"
-                  value={address}
-                  onChangeText={data => setaddress(data)}
-                />
-              </View>
-            </FlexRowWrapper>
+            <View
+              style={{
+                marginHorizontal: deviceWidth * 0.04,
+                position: 'relative',
+              }}>
+              <Text
+                style={{
+                  textAlign: 'right',
+                  fontWeight: '800',
+                  position: 'absolute',
+                  right: deviceWidth * 0.05,
+                  color:Colors.black
+                }}>
+                {address.length} / 500
+              </Text>
+              <RNInputField
+                style={{paddingTop: 10}}
+                label="Address"
+                placeholder="Enter Address"
+                value={address}
+                onChangeText={data => setaddress(data)}
+                multiline
+                numberOfLines={5}
+                maxLength={500}
+              />
+            </View>
+
             <FlexRowWrapper>
               <View style={{width: '45%'}}>
                 <View style={{marginHorizontal: deviceWidth * 0.01}}>

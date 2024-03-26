@@ -38,58 +38,15 @@ import {UPDATE_STUDENT_RESET} from '../../../redux/constants/commanConstants';
 import moment from 'moment';
 import BackHeader from '../../../Component/Header/BackHeader';
 import RNBDropDown from '../../../Component/RNBDropDown';
-const streamlist = [
-  {label: 'NONE', value: 'NONE'},
-  {label: 'Arts', value: 'Arts'},
-  {label: 'COMMERCE', value: 'COMMERCE'},
-  {label: 'SCIENCE', value: 'SCIENCE'},
-];
-const studentStatus = [
-  {label: 'Active', value: 'Active'},
-  {label: 'On Leave', value: 'On Leave'},
-  {label: 'Left In Middle', value: 'Left In Middle'},
-  {label: 'Completed', value: 'Completed'},
-  {label: 'Unknown', value: 'Unknown'},
-];
-
-const CasteList = [
-  {label: 'General', value: 'General'},
-  {label: 'OBC', value: 'OBC'},
-  {label: 'SC', value: 'SC'},
-  {label: 'ST', value: 'ST'},
-  {label: 'Others', value: 'Others'},
-];
-
-const BloodGroupList = [
-  {label: '(A+)', value: '(A+)'},
-  {label: '(A-)', value: '(A-)'},
-  {label: '(B+)', value: '(B+)'},
-  {label: '(B-)', value: '(B-)'},
-  {label: '(O+)', value: '(O+)'},
-  {label: '(O-)', value: '(O-)'},
-  {label: '(AB+)', value: '(AB+)'},
-  {label: '(AB-)', value: '(AB-)'},
-  {
-    label: 'Under Investigation OR N.A.',
-    value: 'Under Investigation OR N.A.',
-  },
-];
-
-const religionList = [
-  {label: 'Hinduism', value: 'Hinduism'},
-  {label: 'Muslim', value: 'Muslim'},
-  {label: 'Sikhism', value: 'Sikhism'},
-  {label: 'Buddhism', value: 'Buddhism'},
-  {label: 'Jainism', value: 'Jainism'},
-  {label: 'Christianity', value: 'Christianity'},
-  {label: 'Others', value: 'Others'},
-];
-
-const GenderListList = [
-  {label: 'Male', value: 'Male'},
-  {label: 'Female', value: 'Female'},
-  {label: 'Others', value: 'Others'},
-];
+import {
+  indiaStatesData,
+  streamlist,
+  studentStatus,
+  CasteList,
+  BloodGroupList,
+  religionList,
+  GenderListList,
+} from '../StaticData';
 
 let formData = new FormData();
 const UpdateAdmission = () => {
@@ -153,6 +110,8 @@ const UpdateAdmission = () => {
   const [onlyshowrefee, setonlyshowrefee] = useState('');
   const [city, setcity] = useState('');
   const [state, setstate] = useState('');
+  const [statename, setstatename] = useState('');
+  const [cityname, setcityname] = useState('');
   const [Pincode, setPincode] = useState('');
   const [pano, setpano] = useState('');
   const [studentstatus, setstudentstatus] = useState('Active');
@@ -251,6 +210,8 @@ const UpdateAdmission = () => {
       formData.append('Gender', gender);
       formData.append('BloodGroup', BloodGroup);
       formData.append('address', address);
+      formData.append("city", cityname);
+      formData.append("state", statename);
       formData.append('PreviousTcNo', PreviousTcNo);
       formData.append('PreviousSchoolName', PreviousSchool);
       formData.append('PreviousSchoolAddress', PreviousSchoolAddress);
@@ -874,6 +835,21 @@ const UpdateAdmission = () => {
     }
   };
 
+  const filterData = () => {
+    let FilteredData;
+    if (state) {
+      FilteredData = indiaStatesData?.states
+        ?.find(item => item?.id === Number(state))
+        ?.districts?.map(item => ({
+          label: item?.name,
+          value: item?.id,
+        }));
+    } else {
+      FilteredData = [{label: '', value: 'Please Select'}];
+    }
+
+    return FilteredData;
+  };
   return (
     <View>
       <Modal animationType={'fade'} transparent={true} visible={openModel}>
@@ -948,41 +924,25 @@ const UpdateAdmission = () => {
                 />
               </View>
             </FlexRowWrapper>
+            <View
+              style={{
+                marginHorizontal: deviceWidth * 0.04,
+                position: 'relative',
+              }}>
+              <RNBDropDown
+                label="Session"
+                value={sessionname}
+                OptionsList={
+                  sessionList &&
+                  sessionList?.map(item => ({
+                    label: `${item?.Session}`,
+                    value: `${item?.Session}`,
+                  }))
+                }
+                onChange={data => setsessionname(data.value)}
+              />
+            </View>
 
-            <FlexRowWrapper>
-              <View style={{width: '45%'}}>
-                <View style={{marginHorizontal: deviceWidth * 0.01}}>
-                  <RNBDropDown
-                    label="Session"
-                    value={sessionname}
-                    OptionsList={
-                      sessionList &&
-                      sessionList?.map(item => ({
-                        label: `${item?.Session}`,
-                        value: `${item?.Session}`,
-                      }))
-                    }
-                    onChange={data => setsessionname(data.value)}
-                  />
-                </View>
-              </View>
-              <View style={{width: '45%', marginBottom: deviceHeight * 0.02}}>
-                <View style={{marginHorizontal: deviceWidth * 0.01}}>
-                  <RNBDropDown
-                    label="Section"
-                    value={sectionname}
-                    OptionsList={
-                      sectionlist &&
-                      sectionlist?.map(item => ({
-                        label: `${item?.section}`,
-                        value: `${item?.section}`,
-                      }))
-                    }
-                    onChange={data => setsectionname(data.value)}
-                  />
-                </View>
-              </View>
-            </FlexRowWrapper>
             <FlexRowWrapper>
               <View style={{width: '45%'}}>
                 <View style={{marginHorizontal: deviceWidth * 0.01}}>
@@ -1002,6 +962,7 @@ const UpdateAdmission = () => {
                 />
               </View>
             </FlexRowWrapper>
+
             <FlexRowWrapper>
               <View style={{width: '45%'}}>
                 <View style={{marginHorizontal: deviceWidth * 0.01}}>
@@ -1123,19 +1084,28 @@ const UpdateAdmission = () => {
             </FlexRowWrapper>
             <FlexRowWrapper>
               <View style={{width: '45%'}}>
-                <RNInputField
+                <RNBDropDown
                   label="State"
-                  placeholder="Enter State"
                   value={state}
-                  onChangeText={data => setstate(data)}
+                  OptionsList={indiaStatesData?.states?.map(item => ({
+                    label: item?.state,
+                    value: item?.id,
+                  }))}
+                  onChange={data => {
+                    setstate(data.value);
+                    setstatename(data.label);
+                  }}
                 />
               </View>
               <View style={{width: '45%'}}>
-                <RNInputField
-                  label="City"
-                  placeholder="Enter City"
+                <RNBDropDown
+                  label="District"
                   value={city}
-                  onChangeText={data => setcity(data)}
+                  OptionsList={filterData()}
+                  onChange={data => {
+                    setcity(data.value);
+                    setcityname(data.label);
+                  }}
                 />
               </View>
             </FlexRowWrapper>
@@ -1151,10 +1121,10 @@ const UpdateAdmission = () => {
                   position: 'absolute',
                   right: deviceWidth * 0.05,
                 }}>
-                {address?.length} / 500
+                {address.length} / 500
               </Text>
               <RNInputField
-                style={{backgroundColor: Colors.fadeGray, paddingTop: 10}}
+                style={{ paddingTop: 10}}
                 label="address"
                 value={address}
                 onChangeText={data => setaddress(data)}
@@ -1181,34 +1151,18 @@ const UpdateAdmission = () => {
                 position: 'relative',
               }}>
               <View style={{width: '100%'}}>
-                <View style={{marginHorizontal: deviceWidth * 0.01}}>
-                  <Text
-                    style={{fontSize: 14, fontWeight: '600', lineHeight: 19}}>
-                    Stream
-                  </Text>
-                  <Dropdown
-                    style={styles.dropstyleStream}
-                    placeholderStyle={styles.placeholderStyle}
-                    selectedTextStyle={styles.selectedTextStyle}
-                    inputSearchStyle={styles.inputSearchStyle}
-                    iconStyle={styles.iconStyle}
-                    data={
+                <View>
+                  <RNBDropDown
+                    label="Stream"
+                    value={stream}
+                    OptionsList={
                       streamlist &&
                       streamlist?.map(item => ({
                         label: `${item?.label}`,
                         value: `${item?.value}`,
                       }))
                     }
-                    search
-                    maxHeight={300}
-                    labelField="label"
-                    valueField="value"
-                    placeholder="Select Class"
-                    searchPlaceholder="Search..."
-                    value={stream}
-                    onChange={item => {
-                      setstream(item.value);
-                    }}
+                    onChange={data => setstream(data.value)}
                   />
                 </View>
               </View>
@@ -1253,7 +1207,7 @@ const UpdateAdmission = () => {
                   position: 'absolute',
                   right: deviceWidth * 0.05,
                 }}>
-                {PreviousSchoolAddress?.length} / 500
+                {address.length} / 500
               </Text>
               <RNInputField
                 style={{backgroundColor: Colors.fadeGray, paddingTop: 10}}
@@ -1271,7 +1225,7 @@ const UpdateAdmission = () => {
                 <View style={{marginHorizontal: deviceWidth * 0.01}}>
                   <RNBDropDown
                     label="Class"
-                    value={courses}
+                    value={stream}
                     OptionsList={
                       isdata &&
                       isdata?.map(item => ({
@@ -1280,22 +1234,33 @@ const UpdateAdmission = () => {
                       }))
                     }
                     onChange={item => {
-                      setcourses(item.value);
+                      {
+                        setcourses(item.value);
 
-                      let valuesArray = item.value?.split(' ');
-                      let [
-                        coursename,
-                        courseduration,
-                        feepermonth,
-                        Registractionfee,
-                        adminssionfee,
-                        AnnualFee,
-                      ] = valuesArray;
+                        let valuesArray = item.value?.split(' ');
+                        let [
+                          coursename,
+                          courseduration,
+                          feepermonth,
+                          Registractionfee,
+                          adminssionfee,
+                          AnnualFee,
+                        ] = valuesArray;
 
-                      setmonthlyfee(feepermonth);
-                      setamount(Registractionfee);
-                      setannualmanualfee(AnnualFee);
-                      setAdmissionFeeManual(adminssionfee);
+                        console.log(
+                          'data from select selct options',
+                          coursename,
+                          courseduration,
+                          feepermonth,
+                          Registractionfee,
+                          adminssionfee,
+                          AnnualFee,
+                        );
+                        setmonthlyfee(feepermonth);
+                        setamount(Registractionfee);
+                        setannualmanualfee(AnnualFee);
+                        setAdmissionFeeManual(adminssionfee);
+                      }
                     }}
                   />
                 </View>
@@ -1317,6 +1282,26 @@ const UpdateAdmission = () => {
                 </View>
               </View>
             </FlexRowWrapper>
+
+            <View
+              style={{
+                marginHorizontal: deviceWidth * 0.04,
+                position: 'relative',
+              }}>
+              <RNBDropDown
+                label="Section"
+                value={sectionname}
+                OptionsList={
+                  sessionList &&
+                  sectionlist &&
+                  sectionlist?.map(item => ({
+                    label: `${item?.section}`,
+                    value: `${item?.section}`,
+                  }))
+                }
+                onChange={data => setsectionname(data.value)}
+              />
+            </View>
             <FlexRowWrapper>
               <View style={styles.radioButton}>
                 <RadioButton.Android
@@ -1709,10 +1694,13 @@ const UpdateAdmission = () => {
                     <RNBDropDown
                       label="From Route"
                       value={fromroute}
-                      OptionsList={routelist?.map(item => ({
-                        label: `${item?.routeName?.FromRoute}`,
-                        value: `${item?.routeName?.FromRoute}`,
-                      }))}
+                      OptionsList={
+                        routelist &&
+                        routelist?.map(item => ({
+                          label: `${item?.routeName?.FromRoute}`,
+                          value: `${item?.routeName?.FromRoute}`,
+                        }))
+                      }
                       onChange={data => setfromroute(data.value)}
                     />
                   </View>
@@ -1857,11 +1845,10 @@ const UpdateAdmission = () => {
 
           <View style={{paddingHorizontal: 10}}>
             <Text style={{fontSize: 20, marginBottom: 10, marginTop: 8}}>
-              Password Size Photo
+              Passport Size Photo
             </Text>
-
             <View>
-              {updatedata?.profileurl || passportsize ? (
+              {passportsize ? (
                 <>
                   <View style={{position: 'relative'}}>
                     <View
@@ -1885,11 +1872,7 @@ const UpdateAdmission = () => {
                       </TouchableOpacity>
                     </View>
                     <Image
-                      source={{
-                        uri: passportsize
-                          ? passportsize
-                          : updatedata?.profileurl,
-                      }}
+                      source={{uri: passportsize}}
                       style={styles.imgprestyle}
                     />
                   </View>
@@ -1917,7 +1900,7 @@ const UpdateAdmission = () => {
               Adhar Card
             </Text>
             <View>
-              {updatedata?.adharcard || adharno ? (
+              {adharno ? (
                 <>
                   <View style={{position: 'relative'}}>
                     <View
@@ -1939,12 +1922,7 @@ const UpdateAdmission = () => {
                         </View>
                       </TouchableOpacity>
                     </View>
-
-                    
-                    <Image
-                      source={{uri: adharno ? adharno : updatedata?.adharcard}}
-                      style={styles.imgprestyle}
-                    />
+                    <Image source={{uri: adharno}} style={styles.imgprestyle} />
                   </View>
                 </>
               ) : (
@@ -1985,7 +1963,7 @@ const UpdateAdmission = () => {
               </View>
             </View>
             <View>
-              {updatedata?.markSheet || premarksheet ? (
+              {premarksheet ? (
                 <>
                   <View style={{position: 'relative'}}>
                     <View
@@ -2007,12 +1985,7 @@ const UpdateAdmission = () => {
                         </View>
                       </TouchableOpacity>
                     </View>
-                    <Image
-                      source={{
-                        uri: marksheet ? marksheet : updatedata?.markSheet,
-                      }}
-                      style={styles.imgprestyle}
-                    />
+                    <Image source={{uri: adharno}} style={styles.imgprestyle} />
                   </View>
                 </>
               ) : (
@@ -2040,7 +2013,7 @@ const UpdateAdmission = () => {
             </Text>
 
             <View>
-              {updatedata?.BirthDocument || datecertificatePreview ? (
+              {datecertificatePreview ? (
                 <>
                   <View style={{position: 'relative'}}>
                     <View
@@ -2064,11 +2037,7 @@ const UpdateAdmission = () => {
                       </TouchableOpacity>
                     </View>
                     <Image
-                      source={{
-                        uri: datecertificatePreview
-                          ? datecertificatePreview
-                          : updatedata?.BirthDocument,
-                      }}
+                      source={{uri: datecertificatePreview}}
                       style={styles.imgprestyle}
                     />
                   </View>
@@ -2114,7 +2083,7 @@ const UpdateAdmission = () => {
               </View>
             </View>
             <View>
-              {updatedata?.othersdoc || otherspreview ? (
+              {otherspreview ? (
                 <>
                   <View style={{position: 'relative'}}>
                     <View
@@ -2138,11 +2107,7 @@ const UpdateAdmission = () => {
                       </TouchableOpacity>
                     </View>
                     <Image
-                      source={{
-                        uri: otherspreview
-                          ? otherspreview
-                          : updatedata?.othersdoc,
-                      }}
+                      source={{uri: otherspreview}}
                       style={styles.imgprestyle}
                     />
                   </View>

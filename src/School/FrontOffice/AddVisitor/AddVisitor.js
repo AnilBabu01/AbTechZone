@@ -84,14 +84,14 @@ const AddVisitor = () => {
           <FlexRowWrapper>
             <View style={{width: '45%'}}>
               <RNDatePicker
-                title="Visite Date"
+                title="Date In"
                 value={enquirydate}
                 onDateChange={date => setenquirydate(handleDate(date))}
               />
             </View>
             <View style={{width: '45%'}}>
               <RNTimePicker
-                title="Visit Time"
+                title="Time In"
                 value={visitTime}
                 onDateChange={date => setvisitTime(handleTime(date))}
               />

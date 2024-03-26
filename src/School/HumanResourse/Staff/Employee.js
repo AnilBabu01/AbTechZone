@@ -159,6 +159,10 @@ const Employee = ({navigation}) => {
               size={18.3}
             />
           ),
+          Deleteicon: (
+            <Ionicons name="trash-outline" color={Colors.red} size={18.3} />
+          ),
+          deleteUrl: 'comman/deleteemployee',
           allDetails: item,
           redirect: 'UpdateEmployee',
         });

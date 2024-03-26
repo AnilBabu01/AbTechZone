@@ -106,14 +106,14 @@ const UpdateVisitor = () => {
           <FlexRowWrapper>
             <View style={{width: '45%'}}>
               <RNDatePicker
-                title="Visite Date"
+                title="In Date"
                 value={enquirydate}
                 onDateChange={date => setenquirydate(handleDate(date))}
               />
             </View>
             <View style={{width: '45%'}}>
               <RNTimePicker
-                title="Visit Time"
+                title="In Time"
                 value={visitTime}
                 onDateChange={date => setvisitTime(handleTime(date))}
               />
@@ -123,14 +123,14 @@ const UpdateVisitor = () => {
           <FlexRowWrapper>
             <View style={{width: '45%'}}>
               <RNDatePicker
-                title="Visitor Out Date"
+                title="Out Date"
                 value={visitoroutDate}
                 onDateChange={date => setvisitoroutDate(handleDate(date))}
               />
             </View>
             <View style={{width: '45%'}}>
               <RNTimePicker
-                title="Visitor Out Time"
+                title="Out Time"
                 value={VisitorOutTime}
                 onDateChange={date => setVisitorOutTime(handleTime(date))}
               />
