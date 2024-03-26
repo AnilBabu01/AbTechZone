@@ -29,7 +29,7 @@ const SchoolDrawer = ({navigation, setuserData}) => {
     return (
       <Pressable
         style={styles.menu}
-        // onPress={() => navigation.navigate(routename)}
+        onPress={() => navigation.navigate(routename)}
       >
         <View style={styles.innearview}>
           <View style={styles.inneartitle}>
@@ -81,11 +81,14 @@ const SchoolDrawer = ({navigation, setuserData}) => {
         </View>
       </View>
       <View style={styles.divider}></View>
+
       <CommonBTN routename="DashboardSchool" title="Home" icon="grid" />
       <CommonBTN routename="TimeTabletab" title="Time Table" icon="grid" />
       <CommonBTN routename="StudentAttendance" title="Attendance" icon="grid" />
       <CommonBTN routename="StudentFee" title="Fee" icon="grid" />
       <CommonBTN routename="StudentTransport" title="Transport" icon="grid" />
+      <CommonBTN routename="StudentHostel" title="Hostel" icon="grid" />
+      <CommonBTN routename="StudentLibrary" title="Library" icon="grid" />
       <CommonBTN routename="StudentTest" title="Test" icon="grid" />
       <Pressable style={styles.menu} onPress={() => logout()}>
         <View style={styles.innearview}>

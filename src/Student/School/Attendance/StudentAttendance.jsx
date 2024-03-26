@@ -1,14 +1,18 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import {StyleSheet, Text, View} from 'react-native';
+import React from 'react';
+import BackHeader from '../../../Component/Header/BackHeader';
 
 const StudentAttendance = () => {
   return (
-    <View>
-      <Text>StudentAttendance</Text>
-    </View>
-  )
-}
+    <>
+      <BackHeader title={'Student Attendance'} />
+      <View>
+        <Text>Student Attendance</Text>
+      </View>
+    </>
+  );
+};
 
-export default StudentAttendance
+export default StudentAttendance;
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({});

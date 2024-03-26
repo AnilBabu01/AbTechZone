@@ -4,10 +4,12 @@ import {Colors} from '../../../utils/Colors';
 import {deviceHeight, deviceWidth} from '../../../utils/constant';
 import TodayTimeTable from './TodayTimeTable';
 import WeklyTimeTable from './WeklyTimeTable';
+import BackHeader from '../../../Component/Header/BackHeader';
 const TimeTabletab = () => {
   const [selected, setselected] = useState(true);
   return (
     <>
+      <BackHeader title={'Time Table'} />
       <View style={styles.mainHeader}>
         <Pressable onPress={() => setselected(true)}>
           <View style={selected ? styles.btnviewActive : styles.btnview}>

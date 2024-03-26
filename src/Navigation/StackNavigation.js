@@ -272,7 +272,8 @@ import StudentFee from '../Student/School/Fee/StudentFee';
 import TimeTabletab from '../Student/School/TimeTbale/TimeTabletab';
 import StudentTransport from '../Student/School/Transport/StudentTransport';
 import StudentTest from '../Student/School/Test/StudentTest';
-
+import StudentHostel from '../Student/School/Hostel/StudentHostel';
+import StudentLibrary from '../Student/School/Library/StudentLibrary';
 const Stack = createNativeStackNavigator();
 
 function StackNavigation() {
@@ -715,6 +716,8 @@ function StackNavigation() {
       <Stack.Screen name="TimeTabletab" component={TimeTabletab} />
       <Stack.Screen name="StudentTransport" component={StudentTransport} />
       <Stack.Screen name="StudentTest" component={StudentTest} />
+      <Stack.Screen name="StudentHostel" component={StudentHostel} />
+      <Stack.Screen name="StudentLibrary" component={StudentLibrary} />
 
       <Stack.Screen name="DashboardCollege" component={DashboardCollege} />
       <Stack.Screen name="DashboardSchool" component={DashboardSchool} />
