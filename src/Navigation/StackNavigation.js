@@ -266,6 +266,13 @@ import StudentOptionsSchool from '../Student/School/StudentOptions';
 import StudentOptionsCollege from '../Student/College/StudentOptions';
 import StudentOptionsCoaching from '../Student/Coaching/StudentOptions';
 
+//School
+import StudentAttendance from '../Student/School/Attendance/StudentAttendance';
+import StudentFee from '../Student/School/Fee/StudentFee';
+import TimeTabletab from '../Student/School/TimeTbale/TimeTabletab';
+import StudentTransport from '../Student/School/Transport/StudentTransport';
+import StudentTest from '../Student/School/Test/StudentTest';
+
 const Stack = createNativeStackNavigator();
 
 function StackNavigation() {
@@ -701,6 +708,13 @@ function StackNavigation() {
         name="StudentOptionsCoaching"
         component={StudentOptionsCoaching}
       />
+      {/* Student Options */}
+
+      <Stack.Screen name="StudentAttendance" component={StudentAttendance} />
+      <Stack.Screen name="StudentFee" component={StudentFee} />
+      <Stack.Screen name="TimeTabletab" component={TimeTabletab} />
+      <Stack.Screen name="StudentTransport" component={StudentTransport} />
+      <Stack.Screen name="StudentTest" component={StudentTest} />
 
       <Stack.Screen name="DashboardCollege" component={DashboardCollege} />
       <Stack.Screen name="DashboardSchool" component={DashboardSchool} />

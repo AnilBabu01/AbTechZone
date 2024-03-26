@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
+import {StyleSheet, Text, View, Image, Pressable} from 'react-native';
 import React, {useState} from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import profileimg from '../../assets/profileimg.jpg';
@@ -27,7 +27,7 @@ const SchoolDrawer = ({navigation, setuserData}) => {
 
   const CommonBTN = ({routename, icon, title}) => {
     return (
-      <TouchableOpacity
+      <Pressable
         style={styles.menu}
         // onPress={() => navigation.navigate(routename)}
       >
@@ -43,7 +43,7 @@ const SchoolDrawer = ({navigation, setuserData}) => {
             size={25}
           />
         </View>
-      </TouchableOpacity>
+      </Pressable>
     );
   };
   return (
@@ -81,23 +81,25 @@ const SchoolDrawer = ({navigation, setuserData}) => {
         </View>
       </View>
       <View style={styles.divider}></View>
-
-      <CommonBTN routename="DashboardSchool" title="DashBoard" icon="grid" />
-
-      <TouchableOpacity style={styles.menu} onPress={() => logout()}>
+      <CommonBTN routename="DashboardSchool" title="Home" icon="grid" />
+      <CommonBTN routename="TimeTabletab" title="Time Table" icon="grid" />
+      <CommonBTN routename="StudentAttendance" title="Attendance" icon="grid" />
+      <CommonBTN routename="StudentFee" title="Fee" icon="grid" />
+      <CommonBTN routename="StudentTransport" title="Transport" icon="grid" />
+      <CommonBTN routename="StudentTest" title="Test" icon="grid" />
+      <Pressable style={styles.menu} onPress={() => logout()}>
         <View style={styles.innearview}>
           <View style={styles.inneartitle}>
             <Ionicons name="log-out" color={Colors.primary} size={25} />
             <Text style={styles.textstyle}>Logout</Text>
           </View>
-
           <Ionicons
             name="chevron-forward-outline"
             color={Colors.primary}
             size={25}
           />
         </View>
-      </TouchableOpacity>
+      </Pressable>
     </View>
   );
 };
@@ -140,6 +142,6 @@ const styles = StyleSheet.create({
   },
   divider: {
     borderWidth: 1,
-    borderColor: Colors.fadeGray,
+    borderColor: Colors.primary,
   },
 });

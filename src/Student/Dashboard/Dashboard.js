@@ -13,6 +13,7 @@ import dash2 from '../../assets/dash2.jpg';
 import dash3 from '../../assets/dash3.jpg';
 import dash4 from '../../assets/dash4.jpg';
 import Linechart from './Chart/Linechart';
+import Piechart from './Chart/Piechart';
 import Header from '../../Component/Header/Header';
 import {primary} from '../../utils/Colors';
 import Loader from '../../Component/Loader/Loader';
@@ -56,9 +57,14 @@ const Dashboard = () => {
             <Text>Monthly Deactive Students Data</Text>
             <Linechart color={'#008080'} />
           </View>
+          
           <View style={styles.card}>
             <Text>Monthly Fee Collection Data</Text>
             <Linechart color={'#0000FF'} />
+          </View>
+          <View style={styles.card}>
+            <Text>Monthly Fee Collection Data</Text>
+            <Piechart color={'#0000FF'} />
           </View>
         </View>
       </ScrollView>

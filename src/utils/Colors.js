@@ -1,4 +1,4 @@
-export const primary = '#488A99';
+export const primary = '#093959';
 export const secondary = 'rgb(200, 200, 200)';
 export const hightlight = '#ff6900';
 export const savebtn = 'green';
@@ -6,7 +6,7 @@ export const resetbtn = 'red';
 export const profileheader ='linear-gradient(90.57deg, rgba(162, 7, 43, 0.85) 12.07%, rgba(255, 0, 59, 0.85) 99.52%)';
 
 export const Colors = {
-    primary:"#488A99",
+    primary:"#093959",
     white:'#fff',
     textPrimary:'#09101D',
     lightGrey:'#F8F8F8',
@@ -20,6 +20,7 @@ export const Colors = {
     purple:'#800080',
     red:"red",
     green:'green',
-    optionBGColor:'#488A99',
+    optionBGColor:'#093959',
     optionColor:'#fff'
 }
+
