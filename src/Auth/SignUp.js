@@ -192,27 +192,38 @@ const SignUp = () => {
   };
 
   const sendOtpOnEmail = () => {
-    serverInstance('clientVerify/emailverification', 'post', {
-      email: email,
-      phone: phoneno1,
-    }).then(res => {
-      if (res?.status) {
-        Toast.show({
-          type: 'success',
-          text1: 'Success',
-          text2: res?.msg,
-        });
-        startTimeremail();
-      }
-      if (res?.status === false) {
-        Toast.show({
-          type: 'error',
-          text1: 'Error',
-          text2: res?.msg,
-        });
-        stopTimeremail();
-      }
-    });
+    try {
+      setsendingEmail(true);
+      serverInstance('clientVerify/emailverification', 'post', {
+        email: email,
+        phone: phoneno1,
+      }).then(res => {
+        console.log('res', res);
+        if (res?.status) {
+          Toast.show({
+            type: 'success',
+            text1: 'Success',
+            text2: res?.msg,
+          });
+          startTimeremail();
+          setsendingEmail(false);
+        }
+        if (res?.status === false) {
+          Toast.show({
+            type: 'error',
+            text1: 'Error',
+            text2: res?.msg,
+          });
+
+          console.log('res', res);
+
+          stopTimeremail();
+          setsendingEmail(false);
+        }
+      });
+    } catch (error) {
+      console.log('ss', error);
+    }
   };
 
   const EmailOtpVerify = () => {
