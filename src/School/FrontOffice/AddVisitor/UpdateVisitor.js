@@ -42,10 +42,16 @@ const UpdateVisitor = () => {
     if (enquirydate) {
       setloader(true);
 
+      var momentDate = moment(enquirydate, 'DD/MM/YYYY');
+      var newenquirydate = momentDate.format('YYYY-MM-DD');
+
+      var momentDatevisitoroutDate = moment(visitoroutDate, 'DD/MM/YYYY');
+      var newvisitoroutDate = momentDatevisitoroutDate.format('YYYY-MM-DD');
+
       const data = {
         id: isdata?.id,
-        VisitDate: moment(enquirydate, 'YYYY-MM-DD'),
-        VisitDateOutTime: moment(visitoroutDate, 'YYYY-MM-DD'),
+        VisitDate: newenquirydate,
+        VisitDateOutTime: newvisitoroutDate,
         VisitOutTime: VisitorOutTime,
         VisitorName: studentname,
         VisitorMobile: studentPhone,

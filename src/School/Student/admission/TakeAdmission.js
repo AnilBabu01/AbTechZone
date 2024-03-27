@@ -44,7 +44,9 @@ import {
   GenderListList,
 } from '../StaticData';
 import RNBDropDown from '../../../Component/RNBDropDown';
-
+import {backendApiUrl} from '../../../Config/config';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 let formData = new FormData();
 const TakeAdmission = () => {
   const navigation = useNavigation();
@@ -178,6 +180,7 @@ const TakeAdmission = () => {
 
   const submit = async () => {
     try {
+      let token = await AsyncStorage.getItem('erptoken');
       var momentDate = moment(adminssiondate, 'DD/MM/YYYY');
       var newadminssiondate = momentDate.format('YYYY-MM-DD');
       var momentDateOfBirth = moment(DateOfBirth, 'DD/MM/YYYY');
@@ -295,9 +298,33 @@ const TakeAdmission = () => {
 
       setloader(true);
 
-      setsms('Adding...');
+      const config = {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `${token}`,
+        },
+      };
+      const {data} = await axios.post(
+        `${backendApiUrl}student/addstudent`,
+        formData,
+        config,
+      );
 
-      dispatch(Addstudent(formData, setopenModel));
+      console.log('addd studetn data is', data);
+
+      if (data?.status === true) {
+        Toast.show({
+          type: 'success',
+          text1: 'Success',
+          text2: data?.msg,
+        });
+
+        setloader(false);
+        dispatch(getstudent());
+        navigation.goBack();
+      }
+      if (data?.status === false) {
+      }
     } catch (error) {
       console.log(error);
     }
@@ -426,6 +453,8 @@ const TakeAdmission = () => {
 
         if (file != null) {
           formData.append('profileurl', file);
+
+          
         }
       }
     });
@@ -775,7 +804,6 @@ const TakeAdmission = () => {
 
     return FilteredData;
   };
-
   return (
     <View>
       <BackHeader title={'Take Admission'} icon={'person'} />
@@ -872,7 +900,7 @@ const TakeAdmission = () => {
 
             <FlexRowWrapper>
               <View style={{width: '45%'}}>
-                <View style={{marginHorizontal: deviceWidth * 0.01}}>
+                <View>
                   <RNBDropDown
                     label="Caste"
                     value={categoryname}
@@ -892,7 +920,7 @@ const TakeAdmission = () => {
 
             <FlexRowWrapper>
               <View style={{width: '45%'}}>
-                <View style={{marginHorizontal: deviceWidth * 0.01}}>
+                <View>
                   <RNBDropDown
                     label="Gender"
                     value={gender}
@@ -902,7 +930,7 @@ const TakeAdmission = () => {
                 </View>
               </View>
               <View style={{width: '45%', marginBottom: deviceHeight * 0.02}}>
-                <View style={{marginHorizontal: deviceWidth * 0.01}}>
+                <View>
                   <RNBDropDown
                     label="Blood Group"
                     value={BloodGroup}
@@ -914,7 +942,7 @@ const TakeAdmission = () => {
             </FlexRowWrapper>
             <FlexRowWrapper>
               <View style={{width: '45%'}}>
-                <View style={{marginHorizontal: deviceWidth * 0.01}}>
+                <View>
                   <RNBDropDown
                     label="Religion"
                     value={Religion}
@@ -1047,11 +1075,12 @@ const TakeAdmission = () => {
                   fontWeight: '800',
                   position: 'absolute',
                   right: deviceWidth * 0.05,
+                  color: Colors.black,
                 }}>
-                {address.length} / 500
+                {address?.length} / 500
               </Text>
               <RNInputField
-                style={{paddingTop: 10}}
+                style={{backgroundColor: Colors.white, paddingTop: 10}}
                 label="address"
                 value={address}
                 onChangeText={data => setaddress(data)}
@@ -1100,7 +1129,8 @@ const TakeAdmission = () => {
                 marginHorizontal: deviceWidth * 0.04,
                 marginTop: 10,
               }}>
-              <Text style={{color: Colors.black,fontWeight:"bold"}}>
+              <Text
+                style={{color: Colors.black, fontSize: 16, fontWeight: 'bold'}}>
                 Previous School Details
               </Text>
             </View>
@@ -1135,11 +1165,12 @@ const TakeAdmission = () => {
                   fontWeight: '800',
                   position: 'absolute',
                   right: deviceWidth * 0.05,
+                  color: Colors.black,
                 }}>
-                {address.length} / 500
+                {PreviousSchoolAddress?.length} / 500
               </Text>
               <RNInputField
-                style={{paddingTop: 10}}
+                style={{backgroundColor: Colors.white, paddingTop: 10}}
                 label="Previous School Address"
                 value={PreviousSchoolAddress}
                 onChangeText={data => setPreviousSchoolAddress(data)}
@@ -1151,7 +1182,7 @@ const TakeAdmission = () => {
             </View>
             <FlexRowWrapper>
               <View style={{width: '45%'}}>
-                <View style={{marginHorizontal: deviceWidth * 0.01}}>
+                <View>
                   <RNBDropDown
                     label="Class"
                     value={stream}
@@ -1195,7 +1226,7 @@ const TakeAdmission = () => {
                 </View>
               </View>
               <View style={{width: '45%', marginBottom: deviceHeight * 0.02}}>
-                <View style={{marginHorizontal: deviceWidth * 0.01}}>
+                <View>
                   <RNBDropDown
                     label="Status"
                     value={studentstatus}
@@ -1261,7 +1292,6 @@ const TakeAdmission = () => {
                     position: 'relative',
                   }}>
                   <RNInputField
-                    disabled
                     style={{backgroundColor: Colors.white}}
                     label="Registration Fee"
                     value={Registractionfee}
@@ -1276,7 +1306,6 @@ const TakeAdmission = () => {
                     position: 'relative',
                   }}>
                   <RNInputField
-                    disabled
                     style={{backgroundColor: Colors.white}}
                     label="Annual Fee"
                     value={AnnualFee}
@@ -1291,7 +1320,6 @@ const TakeAdmission = () => {
                     position: 'relative',
                   }}>
                   <RNInputField
-                    disabled
                     style={{backgroundColor: Colors.white}}
                     label="Admission Fee"
                     value={adminssionfee}
@@ -1305,7 +1333,6 @@ const TakeAdmission = () => {
                     position: 'relative',
                   }}>
                   <RNInputField
-                    disabled
                     style={{backgroundColor: Colors.white}}
                     label="Monthly Fee"
                     value={feepermonth}
@@ -1451,7 +1478,7 @@ const TakeAdmission = () => {
             <>
               <FlexRowWrapper>
                 <View style={{width: '45%'}}>
-                  <View style={{marginHorizontal: deviceWidth * 0.01}}>
+                  <View>
                     <RNBDropDown
                       label="Hostel Name"
                       value={hostelname}
@@ -1467,7 +1494,7 @@ const TakeAdmission = () => {
                   </View>
                 </View>
                 <View style={{width: '45%', marginBottom: deviceHeight * 0.02}}>
-                  <View style={{marginHorizontal: deviceWidth * 0.01}}>
+                  <View>
                     <RNBDropDown
                       label="Category"
                       value={hostelcategoryname}
@@ -1619,7 +1646,7 @@ const TakeAdmission = () => {
             <>
               <FlexRowWrapper>
                 <View style={{width: '45%'}}>
-                  <View style={{marginHorizontal: deviceWidth * 0.01}}>
+                  <View>
                     <RNBDropDown
                       label="From Route"
                       value={fromroute}
@@ -1635,7 +1662,7 @@ const TakeAdmission = () => {
                   </View>
                 </View>
                 <View style={{width: '45%', marginBottom: deviceHeight * 0.02}}>
-                  <View style={{marginHorizontal: deviceWidth * 0.01}}>
+                  <View>
                     <RNBDropDown
                       label="To Route"
                       value={toroute}
@@ -1773,7 +1800,14 @@ const TakeAdmission = () => {
           )}
 
           <View style={{paddingHorizontal: 10}}>
-            <Text style={{fontSize: 20, marginBottom: 10, marginTop: 8}}>
+            <Text
+              style={{
+                fontSize: 20,
+                marginBottom: 10,
+                marginTop: 8,
+                color: Colors.black,
+                fontWeight: 'bold',
+              }}>
               Passport Size Photo
             </Text>
             <View>
@@ -1790,13 +1824,21 @@ const TakeAdmission = () => {
                       <TouchableOpacity
                         onPress={() => handleTakePhotoSignature()}>
                         <View>
-                          <Ionicons name="camera" size={50} />
+                          <Ionicons
+                            name="camera"
+                            size={50}
+                            color={Colors.black}
+                          />
                         </View>
                       </TouchableOpacity>
                       <TouchableOpacity
                         onPress={() => handleChoosePhotoSignature()}>
                         <View>
-                          <Ionicons name="image" size={50} />
+                          <Ionicons
+                            name="image"
+                            size={50}
+                            color={Colors.black}
+                          />
                         </View>
                       </TouchableOpacity>
                     </View>
@@ -1812,20 +1854,31 @@ const TakeAdmission = () => {
                     <TouchableOpacity
                       onPress={() => handleTakePhotoSignature()}>
                       <View>
-                        <Ionicons name="camera" size={50} />
+                        <Ionicons
+                          name="camera"
+                          size={50}
+                          color={Colors.black}
+                        />
                       </View>
                     </TouchableOpacity>
                     <TouchableOpacity
                       onPress={() => handleChoosePhotoSignature()}>
                       <View>
-                        <Ionicons name="image" size={50} />
+                        <Ionicons name="image" size={50} color={Colors.black} />
                       </View>
                     </TouchableOpacity>
                   </View>
                 </>
               )}
             </View>
-            <Text style={{fontSize: 20, marginBottom: 10, marginTop: 8}}>
+            <Text
+              style={{
+                fontSize: 20,
+                marginBottom: 10,
+                marginTop: 8,
+                color: Colors.black,
+                fontWeight: 'bold',
+              }}>
               Adhar Card
             </Text>
             <View>
@@ -1841,13 +1894,21 @@ const TakeAdmission = () => {
                       }}>
                       <TouchableOpacity onPress={() => handleTakePhotoAdhar()}>
                         <View>
-                          <Ionicons name="camera" size={50} />
+                          <Ionicons
+                            name="camera"
+                            size={50}
+                            color={Colors.black}
+                          />
                         </View>
                       </TouchableOpacity>
                       <TouchableOpacity
                         onPress={() => handleChoosePhotoAdhar()}>
                         <View>
-                          <Ionicons name="image" size={50} />
+                          <Ionicons
+                            name="image"
+                            size={50}
+                            color={Colors.black}
+                          />
                         </View>
                       </TouchableOpacity>
                     </View>
@@ -1859,19 +1920,30 @@ const TakeAdmission = () => {
                   <View style={styles.imgpreview}>
                     <TouchableOpacity onPress={() => handleTakePhotoAdhar()}>
                       <View>
-                        <Ionicons name="camera" size={50} />
+                        <Ionicons
+                          name="camera"
+                          size={50}
+                          color={Colors.black}
+                        />
                       </View>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => handleChoosePhotoAdhar()}>
                       <View>
-                        <Ionicons name="image" size={50} />
+                        <Ionicons name="image" size={50} color={Colors.black} />
                       </View>
                     </TouchableOpacity>
                   </View>
                 </>
               )}
             </View>
-            <Text style={{fontSize: 20, marginBottom: 10, marginTop: 8}}>
+            <Text
+              style={{
+                fontSize: 20,
+                marginBottom: 10,
+                marginTop: 8,
+                color: Colors.black,
+                fontWeight: 'bold',
+              }}>
               Previous MarkSheet
             </Text>
             <View
@@ -1880,7 +1952,7 @@ const TakeAdmission = () => {
                 position: 'relative',
               }}>
               <View style={{width: '100%'}}>
-                <View style={{marginHorizontal: deviceWidth * 0.01}}>
+                <View>
                   <RNInputField
                     style={{backgroundColor: Colors.white}}
                     label="MarkSheet Class"
@@ -1904,13 +1976,21 @@ const TakeAdmission = () => {
                       }}>
                       <TouchableOpacity onPress={() => handleTakePhotoAdhar()}>
                         <View>
-                          <Ionicons name="camera" size={50} />
+                          <Ionicons
+                            name="camera"
+                            size={50}
+                            color={Colors.black}
+                          />
                         </View>
                       </TouchableOpacity>
                       <TouchableOpacity
                         onPress={() => handleChoosePhotoAdhar()}>
                         <View>
-                          <Ionicons name="image" size={50} />
+                          <Ionicons
+                            name="image"
+                            size={50}
+                            color={Colors.black}
+                          />
                         </View>
                       </TouchableOpacity>
                     </View>
@@ -1923,13 +2003,17 @@ const TakeAdmission = () => {
                     <TouchableOpacity
                       onPress={() => handleTakePhotoMarksheet()}>
                       <View>
-                        <Ionicons name="camera" size={50} />
+                        <Ionicons
+                          name="camera"
+                          size={50}
+                          color={Colors.black}
+                        />
                       </View>
                     </TouchableOpacity>
                     <TouchableOpacity
                       onPress={() => handleChoosePhotoMarksheet()}>
                       <View>
-                        <Ionicons name="image" size={50} />
+                        <Ionicons name="image" size={50} color={Colors.black} />
                       </View>
                     </TouchableOpacity>
                   </View>
@@ -1937,7 +2021,14 @@ const TakeAdmission = () => {
               )}
             </View>
 
-            <Text style={{fontSize: 20, marginBottom: 10, marginTop: 8}}>
+            <Text
+              style={{
+                fontSize: 20,
+                marginBottom: 10,
+                marginTop: 8,
+                color: Colors.black,
+                fontWeight: 'bold',
+              }}>
               Birth Certificate
             </Text>
 
@@ -1955,13 +2046,21 @@ const TakeAdmission = () => {
                       <TouchableOpacity
                         onPress={() => handleTakePhotoBirthCert()}>
                         <View>
-                          <Ionicons name="camera" size={50} />
+                          <Ionicons
+                            name="camera"
+                            size={50}
+                            color={Colors.black}
+                          />
                         </View>
                       </TouchableOpacity>
                       <TouchableOpacity
                         onPress={() => handleChoosePhotoBirthCert()}>
                         <View>
-                          <Ionicons name="image" size={50} />
+                          <Ionicons
+                            name="image"
+                            size={50}
+                            color={Colors.black}
+                          />
                         </View>
                       </TouchableOpacity>
                     </View>
@@ -1977,13 +2076,17 @@ const TakeAdmission = () => {
                     <TouchableOpacity
                       onPress={() => handleTakePhotoBirthCert()}>
                       <View>
-                        <Ionicons name="camera" size={50} />
+                        <Ionicons
+                          name="camera"
+                          size={50}
+                          color={Colors.black}
+                        />
                       </View>
                     </TouchableOpacity>
                     <TouchableOpacity
                       onPress={() => handleChoosePhotoBirthCert()}>
                       <View>
-                        <Ionicons name="image" size={50} />
+                        <Ionicons name="image" size={50} color={Colors.black} />
                       </View>
                     </TouchableOpacity>
                   </View>
@@ -1991,7 +2094,14 @@ const TakeAdmission = () => {
               )}
             </View>
 
-            <Text style={{fontSize: 20, marginBottom: 10, marginTop: 8}}>
+            <Text
+              style={{
+                fontSize: 20,
+                marginBottom: 10,
+                marginTop: 8,
+                color: Colors.black,
+                fontWeight: 'bold',
+              }}>
               Others
             </Text>
             <View
@@ -2000,7 +2110,7 @@ const TakeAdmission = () => {
                 position: 'relative',
               }}>
               <View style={{width: '100%'}}>
-                <View style={{marginHorizontal: deviceWidth * 0.01}}>
+                <View>
                   <RNInputField
                     style={{backgroundColor: Colors.white}}
                     label="Other Doc Name"
@@ -2025,13 +2135,21 @@ const TakeAdmission = () => {
                       <TouchableOpacity
                         onPress={() => handleTakePhotoOthersDoc()}>
                         <View>
-                          <Ionicons name="camera" size={50} />
+                          <Ionicons
+                            name="camera"
+                            size={50}
+                            color={Colors.black}
+                          />
                         </View>
                       </TouchableOpacity>
                       <TouchableOpacity
                         onPress={() => handleChoosePhotoOthersDoc()}>
                         <View>
-                          <Ionicons name="image" size={50} />
+                          <Ionicons
+                            name="image"
+                            size={50}
+                            color={Colors.black}
+                          />
                         </View>
                       </TouchableOpacity>
                     </View>
@@ -2047,13 +2165,17 @@ const TakeAdmission = () => {
                     <TouchableOpacity
                       onPress={() => handleTakePhotoOthersDoc()}>
                       <View>
-                        <Ionicons name="camera" size={50} />
+                        <Ionicons
+                          name="camera"
+                          size={50}
+                          color={Colors.black}
+                        />
                       </View>
                     </TouchableOpacity>
                     <TouchableOpacity
                       onPress={() => handleChoosePhotoOthersDoc()}>
                       <View>
-                        <Ionicons name="image" size={50} />
+                        <Ionicons name="image" size={50} color={Colors.black} />
                       </View>
                     </TouchableOpacity>
                   </View>
@@ -2187,8 +2309,8 @@ const styles = StyleSheet.create({
   },
   imgpreview: {
     height: 200,
-    borderWidth: 1.5,
-    borderColor: primary,
+    borderWidth: 2,
+    borderColor: Colors.black,
     backgroundColor: Colors.white,
     borderStyle: 'dotted',
     borderRadius: 20,
@@ -2210,8 +2332,9 @@ const styles = StyleSheet.create({
   },
   radioLabel: {
     marginLeft: 8,
+    color: Colors.black,
     fontSize: 16,
-    color: '#333',
+    fontWeight: 'bold',
   },
 
   modal: {
@@ -2301,19 +2424,19 @@ const styles = StyleSheet.create({
   },
   totalamountstyle: {
     width: '100%',
-    height: Height(55),
+    height: Height(60),
     fontFamily: 'Gilroy-SemiBold',
+    display: 'flex',
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: Colors.black,
     fontSize: Height(16),
     marginTop: Height(10),
     backgroundColor: Colors.white,
     color: Colors.black,
-    paddingTop: deviceHeight * 0.01,
-    borderWidth: 1,
-    borderColor: Colors.primary,
   },
   inputLabel: {
     fontSize: 16,
     color: Colors.black,
-    fontWeight: 'bold',
   },
 });

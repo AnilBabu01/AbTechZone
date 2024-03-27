@@ -40,9 +40,11 @@ const UpdateEnquiry = () => {
     if (enquirydate) {
       setloader(true);
       setsms('Updating...');
+      var momentDate = moment(enquirydate, 'DD/MM/YYYY');
+      var newenquirydate = momentDate.format('YYYY-MM-DD');
       const data = {
         id: isdata?.id,
-        EnquiryDate: moment(enquirydate, 'YYYY-MM-DD'),
+        EnquiryDate: newenquirydate,
         StudentName: studentname,
         StudentNumber: studentPhone,
         StudentEmail: email,
@@ -234,7 +236,7 @@ const UpdateEnquiry = () => {
           </View>
           <View style={{marginBottom: deviceHeight * 0.08}}>
             <RNButton
-              loading={loading}
+              loading={loader}
               onPress={submit}
               style={{marginHorizontal: 20, marginTop: 20}}>
               Update & Next

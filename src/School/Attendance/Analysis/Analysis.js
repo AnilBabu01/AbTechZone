@@ -14,7 +14,7 @@ import {
   getbatch,
   GetSession,
   GetSection,
-  getcurrentsession
+  getcurrentsession,
 } from '../../../redux/action/commanAction';
 import {useDispatch, useSelector} from 'react-redux';
 import {Colors} from '../../../utils/Colors';
@@ -45,8 +45,6 @@ const Analysis = () => {
     );
   }
 
-
-
   const AttendanceTableList = [
     {
       title: 'Sr.No',
@@ -76,6 +74,12 @@ const Analysis = () => {
 
     {
       title: 'Section',
+      items: [],
+      width: 0.33,
+      align: 'center',
+    },
+    {
+      title: 'Name',
       items: [],
       width: 0.33,
       align: 'center',
@@ -113,9 +117,13 @@ const Analysis = () => {
             id: index,
             value: item?.student?.Section,
           });
-          
+          AttendanceTableList[5].items.push({
+            id: index,
+            value: item?.student?.name,
+          });
+
           item?.attendance?.map((data, index) => {
-            return AttendanceTableList[index + 5].items.push({
+            return AttendanceTableList[index + 6].items.push({
               id: index,
               value: data?.attendaceStatusIntext,
             });
@@ -136,7 +144,6 @@ const Analysis = () => {
     }
   }, [monthlyattendance]);
 
-
   useEffect(() => {
     dispatch(getcourse());
     dispatch(getbatch());
@@ -144,7 +151,7 @@ const Analysis = () => {
     dispatch(GetSection());
     dispatch(getcurrentsession());
   }, []);
-  
+
   return (
     <View style={{flex: 1}}>
       <View style={styles.headerTitleContainer}>

@@ -876,7 +876,7 @@ const AddStudent = () => {
 
             <FlexRowWrapper>
               <View style={{width: '45%'}}>
-                <View style={{marginHorizontal: deviceWidth * 0.01}}>
+              <View>
                   <RNBDropDown
                     label="Caste"
                     value={categoryname}
@@ -896,7 +896,7 @@ const AddStudent = () => {
 
             <FlexRowWrapper>
               <View style={{width: '45%'}}>
-                <View style={{marginHorizontal: deviceWidth * 0.01}}>
+              <View>
                   <RNBDropDown
                     label="Gender"
                     value={gender}
@@ -906,7 +906,7 @@ const AddStudent = () => {
                 </View>
               </View>
               <View style={{width: '45%', marginBottom: deviceHeight * 0.02}}>
-                <View style={{marginHorizontal: deviceWidth * 0.01}}>
+              <View>
                   <RNBDropDown
                     label="Blood Group"
                     value={BloodGroup}
@@ -918,7 +918,7 @@ const AddStudent = () => {
             </FlexRowWrapper>
             <FlexRowWrapper>
               <View style={{width: '45%'}}>
-                <View style={{marginHorizontal: deviceWidth * 0.01}}>
+              <View>
                   <RNBDropDown
                     label="Religion"
                     value={Religion}
@@ -1051,11 +1051,12 @@ const AddStudent = () => {
                   fontWeight: '800',
                   position: 'absolute',
                   right: deviceWidth * 0.05,
+                  color: Colors.black,
                 }}>
-                {address.length} / 500
+                {address?.length} / 500
               </Text>
               <RNInputField
-                style={{paddingTop: 10}}
+                style={{backgroundColor: Colors.white, paddingTop: 10}}
                 label="address"
                 value={address}
                 onChangeText={data => setaddress(data)}
@@ -1104,7 +1105,8 @@ const AddStudent = () => {
                 marginHorizontal: deviceWidth * 0.04,
                 marginTop: 10,
               }}>
-              <Text style={{color: Colors.black, fontWeight: 'bold'}}>
+              <Text
+                style={{color: Colors.black, fontSize: 16, fontWeight: 'bold'}}>
                 Previous School Details
               </Text>
             </View>
@@ -1139,11 +1141,12 @@ const AddStudent = () => {
                   fontWeight: '800',
                   position: 'absolute',
                   right: deviceWidth * 0.05,
+                  color: Colors.black,
                 }}>
-                {address.length} / 500
+                {PreviousSchoolAddress?.length} / 500
               </Text>
               <RNInputField
-                style={{paddingTop: 10}}
+                style={{backgroundColor: Colors.white, paddingTop: 10}}
                 label="Previous School Address"
                 value={PreviousSchoolAddress}
                 onChangeText={data => setPreviousSchoolAddress(data)}
@@ -1155,7 +1158,7 @@ const AddStudent = () => {
             </View>
             <FlexRowWrapper>
               <View style={{width: '45%'}}>
-                <View style={{marginHorizontal: deviceWidth * 0.01}}>
+              <View>
                   <RNBDropDown
                     label="Class"
                     value={stream}
@@ -1199,7 +1202,7 @@ const AddStudent = () => {
                 </View>
               </View>
               <View style={{width: '45%', marginBottom: deviceHeight * 0.02}}>
-                <View style={{marginHorizontal: deviceWidth * 0.01}}>
+              <View>
                   <RNBDropDown
                     label="Status"
                     value={studentstatus}
@@ -1265,7 +1268,6 @@ const AddStudent = () => {
                     position: 'relative',
                   }}>
                   <RNInputField
-                    disabled
                     style={{backgroundColor: Colors.white}}
                     label="Registration Fee"
                     value={Registractionfee}
@@ -1280,7 +1282,6 @@ const AddStudent = () => {
                     position: 'relative',
                   }}>
                   <RNInputField
-                    disabled
                     style={{backgroundColor: Colors.white}}
                     label="Annual Fee"
                     value={AnnualFee}
@@ -1295,7 +1296,6 @@ const AddStudent = () => {
                     position: 'relative',
                   }}>
                   <RNInputField
-                    disabled
                     style={{backgroundColor: Colors.white}}
                     label="Admission Fee"
                     value={adminssionfee}
@@ -1309,7 +1309,6 @@ const AddStudent = () => {
                     position: 'relative',
                   }}>
                   <RNInputField
-                    disabled
                     style={{backgroundColor: Colors.white}}
                     label="Monthly Fee"
                     value={feepermonth}
@@ -1455,7 +1454,7 @@ const AddStudent = () => {
             <>
               <FlexRowWrapper>
                 <View style={{width: '45%'}}>
-                  <View style={{marginHorizontal: deviceWidth * 0.01}}>
+                <View>
                     <RNBDropDown
                       label="Hostel Name"
                       value={hostelname}
@@ -1471,7 +1470,7 @@ const AddStudent = () => {
                   </View>
                 </View>
                 <View style={{width: '45%', marginBottom: deviceHeight * 0.02}}>
-                  <View style={{marginHorizontal: deviceWidth * 0.01}}>
+                <View>
                     <RNBDropDown
                       label="Category"
                       value={hostelcategoryname}
@@ -1623,7 +1622,7 @@ const AddStudent = () => {
             <>
               <FlexRowWrapper>
                 <View style={{width: '45%'}}>
-                  <View style={{marginHorizontal: deviceWidth * 0.01}}>
+                <View>
                     <RNBDropDown
                       label="From Route"
                       value={fromroute}
@@ -1639,7 +1638,7 @@ const AddStudent = () => {
                   </View>
                 </View>
                 <View style={{width: '45%', marginBottom: deviceHeight * 0.02}}>
-                  <View style={{marginHorizontal: deviceWidth * 0.01}}>
+                <View>
                     <RNBDropDown
                       label="To Route"
                       value={toroute}
@@ -1783,6 +1782,7 @@ const AddStudent = () => {
                 marginBottom: 10,
                 marginTop: 8,
                 color: Colors.black,
+                fontWeight: 'bold',
               }}>
               Passport Size Photo
             </Text>
@@ -1800,13 +1800,21 @@ const AddStudent = () => {
                       <TouchableOpacity
                         onPress={() => handleTakePhotoSignature()}>
                         <View>
-                          <Ionicons name="camera" size={50} />
+                          <Ionicons
+                            name="camera"
+                            size={50}
+                            color={Colors.black}
+                          />
                         </View>
                       </TouchableOpacity>
                       <TouchableOpacity
                         onPress={() => handleChoosePhotoSignature()}>
                         <View>
-                          <Ionicons name="image" size={50} />
+                          <Ionicons
+                            name="image"
+                            size={50}
+                            color={Colors.black}
+                          />
                         </View>
                       </TouchableOpacity>
                     </View>
@@ -1822,13 +1830,17 @@ const AddStudent = () => {
                     <TouchableOpacity
                       onPress={() => handleTakePhotoSignature()}>
                       <View>
-                        <Ionicons name="camera" size={50} />
+                        <Ionicons
+                          name="camera"
+                          size={50}
+                          color={Colors.black}
+                        />
                       </View>
                     </TouchableOpacity>
                     <TouchableOpacity
                       onPress={() => handleChoosePhotoSignature()}>
                       <View>
-                        <Ionicons name="image" size={50} />
+                        <Ionicons name="image" size={50} color={Colors.black} />
                       </View>
                     </TouchableOpacity>
                   </View>
@@ -1841,6 +1853,7 @@ const AddStudent = () => {
                 marginBottom: 10,
                 marginTop: 8,
                 color: Colors.black,
+                fontWeight: 'bold',
               }}>
               Adhar Card
             </Text>
@@ -1857,13 +1870,21 @@ const AddStudent = () => {
                       }}>
                       <TouchableOpacity onPress={() => handleTakePhotoAdhar()}>
                         <View>
-                          <Ionicons name="camera" size={50} />
+                          <Ionicons
+                            name="camera"
+                            size={50}
+                            color={Colors.black}
+                          />
                         </View>
                       </TouchableOpacity>
                       <TouchableOpacity
                         onPress={() => handleChoosePhotoAdhar()}>
                         <View>
-                          <Ionicons name="image" size={50} />
+                          <Ionicons
+                            name="image"
+                            size={50}
+                            color={Colors.black}
+                          />
                         </View>
                       </TouchableOpacity>
                     </View>
@@ -1875,12 +1896,16 @@ const AddStudent = () => {
                   <View style={styles.imgpreview}>
                     <TouchableOpacity onPress={() => handleTakePhotoAdhar()}>
                       <View>
-                        <Ionicons name="camera" size={50} />
+                        <Ionicons
+                          name="camera"
+                          size={50}
+                          color={Colors.black}
+                        />
                       </View>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => handleChoosePhotoAdhar()}>
                       <View>
-                        <Ionicons name="image" size={50} />
+                        <Ionicons name="image" size={50} color={Colors.black} />
                       </View>
                     </TouchableOpacity>
                   </View>
@@ -1893,6 +1918,7 @@ const AddStudent = () => {
                 marginBottom: 10,
                 marginTop: 8,
                 color: Colors.black,
+                fontWeight: 'bold',
               }}>
               Previous MarkSheet
             </Text>
@@ -1902,7 +1928,7 @@ const AddStudent = () => {
                 position: 'relative',
               }}>
               <View style={{width: '100%'}}>
-                <View style={{marginHorizontal: deviceWidth * 0.01}}>
+              <View>
                   <RNInputField
                     style={{backgroundColor: Colors.white}}
                     label="MarkSheet Class"
@@ -1926,13 +1952,21 @@ const AddStudent = () => {
                       }}>
                       <TouchableOpacity onPress={() => handleTakePhotoAdhar()}>
                         <View>
-                          <Ionicons name="camera" size={50} />
+                          <Ionicons
+                            name="camera"
+                            size={50}
+                            color={Colors.black}
+                          />
                         </View>
                       </TouchableOpacity>
                       <TouchableOpacity
                         onPress={() => handleChoosePhotoAdhar()}>
                         <View>
-                          <Ionicons name="image" size={50} />
+                          <Ionicons
+                            name="image"
+                            size={50}
+                            color={Colors.black}
+                          />
                         </View>
                       </TouchableOpacity>
                     </View>
@@ -1945,13 +1979,17 @@ const AddStudent = () => {
                     <TouchableOpacity
                       onPress={() => handleTakePhotoMarksheet()}>
                       <View>
-                        <Ionicons name="camera" size={50} />
+                        <Ionicons
+                          name="camera"
+                          size={50}
+                          color={Colors.black}
+                        />
                       </View>
                     </TouchableOpacity>
                     <TouchableOpacity
                       onPress={() => handleChoosePhotoMarksheet()}>
                       <View>
-                        <Ionicons name="image" size={50} />
+                        <Ionicons name="image" size={50} color={Colors.black} />
                       </View>
                     </TouchableOpacity>
                   </View>
@@ -1965,6 +2003,7 @@ const AddStudent = () => {
                 marginBottom: 10,
                 marginTop: 8,
                 color: Colors.black,
+                fontWeight: 'bold',
               }}>
               Birth Certificate
             </Text>
@@ -1983,13 +2022,21 @@ const AddStudent = () => {
                       <TouchableOpacity
                         onPress={() => handleTakePhotoBirthCert()}>
                         <View>
-                          <Ionicons name="camera" size={50} />
+                          <Ionicons
+                            name="camera"
+                            size={50}
+                            color={Colors.black}
+                          />
                         </View>
                       </TouchableOpacity>
                       <TouchableOpacity
                         onPress={() => handleChoosePhotoBirthCert()}>
                         <View>
-                          <Ionicons name="image" size={50} />
+                          <Ionicons
+                            name="image"
+                            size={50}
+                            color={Colors.black}
+                          />
                         </View>
                       </TouchableOpacity>
                     </View>
@@ -2005,13 +2052,17 @@ const AddStudent = () => {
                     <TouchableOpacity
                       onPress={() => handleTakePhotoBirthCert()}>
                       <View>
-                        <Ionicons name="camera" size={50} />
+                        <Ionicons
+                          name="camera"
+                          size={50}
+                          color={Colors.black}
+                        />
                       </View>
                     </TouchableOpacity>
                     <TouchableOpacity
                       onPress={() => handleChoosePhotoBirthCert()}>
                       <View>
-                        <Ionicons name="image" size={50} />
+                        <Ionicons name="image" size={50} color={Colors.black} />
                       </View>
                     </TouchableOpacity>
                   </View>
@@ -2025,6 +2076,7 @@ const AddStudent = () => {
                 marginBottom: 10,
                 marginTop: 8,
                 color: Colors.black,
+                fontWeight: 'bold',
               }}>
               Others
             </Text>
@@ -2034,7 +2086,7 @@ const AddStudent = () => {
                 position: 'relative',
               }}>
               <View style={{width: '100%'}}>
-                <View style={{marginHorizontal: deviceWidth * 0.01}}>
+              <View>
                   <RNInputField
                     style={{backgroundColor: Colors.white}}
                     label="Other Doc Name"
@@ -2059,13 +2111,21 @@ const AddStudent = () => {
                       <TouchableOpacity
                         onPress={() => handleTakePhotoOthersDoc()}>
                         <View>
-                          <Ionicons name="camera" size={50} />
+                          <Ionicons
+                            name="camera"
+                            size={50}
+                            color={Colors.black}
+                          />
                         </View>
                       </TouchableOpacity>
                       <TouchableOpacity
                         onPress={() => handleChoosePhotoOthersDoc()}>
                         <View>
-                          <Ionicons name="image" size={50} />
+                          <Ionicons
+                            name="image"
+                            size={50}
+                            color={Colors.black}
+                          />
                         </View>
                       </TouchableOpacity>
                     </View>
@@ -2081,13 +2141,17 @@ const AddStudent = () => {
                     <TouchableOpacity
                       onPress={() => handleTakePhotoOthersDoc()}>
                       <View>
-                        <Ionicons name="camera" size={50} />
+                        <Ionicons
+                          name="camera"
+                          size={50}
+                          color={Colors.black}
+                        />
                       </View>
                     </TouchableOpacity>
                     <TouchableOpacity
                       onPress={() => handleChoosePhotoOthersDoc()}>
                       <View>
-                        <Ionicons name="image" size={50} />
+                        <Ionicons name="image" size={50} color={Colors.black} />
                       </View>
                     </TouchableOpacity>
                   </View>
@@ -2221,8 +2285,8 @@ const styles = StyleSheet.create({
   },
   imgpreview: {
     height: 200,
-    borderWidth: 1.5,
-    borderColor: primary,
+    borderWidth: 2,
+    borderColor: Colors.black,
     backgroundColor: Colors.white,
     borderStyle: 'dotted',
     borderRadius: 20,

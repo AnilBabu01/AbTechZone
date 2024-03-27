@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import {Height, Width} from '../../utils/responsive';
-import {primary} from '../../utils/Colors';
+import {primary, Colors} from '../../utils/Colors';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import BackHeader from '../../Component/Header/BackHeader';
@@ -57,20 +57,7 @@ const UpdateImgaes = () => {
       formData.append('city', city);
       formData.append('state', state);
       formData.append('pincode', pincode);
-      formData.append(
-        'profileurl',
-        passportsize ? passportsize : user?.data?.CredentailsData?.profileurl,
-      );
-      formData.append(
-        'certificatelogo',
-        Certificatelogo
-          ? Certificatelogo
-          : user?.data?.CredentailsData?.certificatelogo,
-      );
-      formData.append(
-        'logourl',
-        logo ? logo : user?.data?.CredentailsData?.logourl,
-      );
+
       let token = await AsyncStorage.getItem('erptoken');
 
       const config = {
@@ -160,7 +147,7 @@ const UpdateImgaes = () => {
           type: type,
         };
         if (file != null) {
-          passportsize(file);
+          formData.append('profileurl', file);
         }
       }
     });
@@ -194,7 +181,7 @@ const UpdateImgaes = () => {
         };
 
         if (file != null) {
-          passportsize(file);
+          formData.append('profileurl', file);
         }
       }
     });
@@ -226,7 +213,7 @@ const UpdateImgaes = () => {
           type: type,
         };
         if (file != null) {
-          setlogo(file);
+          formData.append('logourl', file);
         }
       }
     });
@@ -260,7 +247,7 @@ const UpdateImgaes = () => {
         };
 
         if (file != null) {
-          setlogo(file);
+          formData.append('logourl', file);
         }
       }
     });
@@ -292,7 +279,7 @@ const UpdateImgaes = () => {
           type: type,
         };
         if (file != null) {
-          setCertificatelogo(file);
+          formData.append('certificatelogo', file);
         }
       }
     });
@@ -326,7 +313,7 @@ const UpdateImgaes = () => {
         };
 
         if (file != null) {
-          setCertificatelogo(file);
+          formData.append('certificatelogo', file);
         }
       }
     });
@@ -339,7 +326,14 @@ const UpdateImgaes = () => {
         <View style={styles.enquirymainview}>
           <View style={styles.dateview}>
             <View style={{paddingHorizontal: 10}}>
-              <Text style={{fontSize: 20, marginBottom: 10, marginTop: 8}}>
+              <Text
+                style={{
+                  fontSize: 20,
+                  marginBottom: 10,
+                  marginTop: 8,
+                  color: Colors.black,
+                  fontWeight: 'bold',
+                }}>
                 Profile Photo
               </Text>
               <View>
@@ -395,7 +389,14 @@ const UpdateImgaes = () => {
                   </>
                 )}
               </View>
-              <Text style={{fontSize: 20, marginBottom: 10, marginTop: 8}}>
+              <Text
+                style={{
+                  fontSize: 20,
+                  marginBottom: 10,
+                  marginTop: 8,
+                  color: Colors.black,
+                  fontWeight: 'bold',
+                }}>
                 Logo
               </Text>
               <View>
@@ -448,7 +449,14 @@ const UpdateImgaes = () => {
                   </>
                 )}
               </View>
-              <Text style={{fontSize: 20, marginBottom: 10, marginTop: 8}}>
+              <Text
+                style={{
+                  fontSize: 20,
+                  marginBottom: 10,
+                  marginTop: 8,
+                  color: Colors.black,
+                  fontWeight: 'bold',
+                }}>
                 Certificate
               </Text>
               <View>

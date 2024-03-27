@@ -41,13 +41,13 @@ const Complain = ({navigation}) => {
     {
       title: 'Complainer_Name',
       items: [],
-      width: 0.33,
+      width: 0.40,
       align: 'center',
     },
     {
       title: 'Complainer_Mobile',
       items: [],
-      width: 0.33,
+      width: 0.40,
       align: 'center',
     },
 

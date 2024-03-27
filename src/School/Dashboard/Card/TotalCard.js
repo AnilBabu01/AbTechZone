@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
   card10: {
     borderRadius: 8,
     width: Width(170),
-    height: deviceHeight * 0.3,
+    height: deviceHeight * 0.2,
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -38,8 +38,8 @@ const styles = StyleSheet.create({
 
   img: {
     borderRadius: 50,
-    width: Width(70),
-    height: Width(70),
+    width: Width(50),
+    height: Width(50),
     resizeMode: 'cover',
   },
 });

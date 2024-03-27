@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   ScrollView,
   Image,
+  Alert,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import {Height, Width} from '../../../utils/responsive';
@@ -13,6 +14,7 @@ import {primary} from '../../../utils/Colors';
 import {Dropdown} from 'react-native-element-dropdown';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import {RadioButton} from 'react-native-paper';
 import check from '../../../assets/check1.png';
 import {serverInstance} from '../../../API/ServerInstance';
@@ -47,13 +49,16 @@ import {
   religionList,
   GenderListList,
 } from '../StaticData';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {DownloadFile} from '../../../Funtion/DownloadFile';
+import {ProgressBar, MD3Colors} from 'react-native-paper';
 let formData = new FormData();
 const UpdateAdmission = () => {
   const newroute = useRoute();
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const [sms, setsms] = useState('');
+  const [progress, setProgress] = useState(0);
   const [loader, setloader] = useState(false);
   const [index, setIndex] = useState(0);
   const [updatedata, setupdatedata] = useState('');
@@ -150,6 +155,7 @@ const UpdateAdmission = () => {
   const [annualmanualfee, setannualmanualfee] = useState('');
 
   const [AdmissionFee, setAdmissionFee] = useState('');
+
   const [AdmissionFeeManual, setAdmissionFeeManual] = useState('');
   const [profile64, setprofile64] = useState('');
   const [adhar64, setadhar64] = useState('');
@@ -195,8 +201,12 @@ const UpdateAdmission = () => {
     AnnualFee,
   ] = valuesArray;
 
+  console.log('profile64', profile64);
+
   const submit = async () => {
     try {
+      setloader(true);
+      let token = await AsyncStorage.getItem('erptoken');
       var momentDate = moment(adminssiondate, 'DD/MM/YYYY');
       var newadminssiondate = momentDate.format('YYYY-MM-DD');
       var momentDateOfBirth = moment(DateOfBirth, 'DD/MM/YYYY');
@@ -210,8 +220,8 @@ const UpdateAdmission = () => {
       formData.append('Gender', gender);
       formData.append('BloodGroup', BloodGroup);
       formData.append('address', address);
-      formData.append('city', cityname);
-      formData.append('state', statename);
+      formData.append('city', city);
+      formData.append('state', state);
       formData.append('PreviousTcNo', PreviousTcNo);
       formData.append('PreviousSchoolName', PreviousSchool);
       formData.append('PreviousSchoolAddress', PreviousSchoolAddress);
@@ -220,9 +230,15 @@ const UpdateAdmission = () => {
       formData.append('MathersName', mothersname);
       formData.append('MathersPhoneNo', mothersPhoneNo);
       formData.append('MatherswhatsappNo', mothersPhoneNo);
+      formData.append('markSheetname', marksheetName);
+      formData.append('othersdocName', othersname);
 
-      formData.append('othersdoc', '');
-      formData.append('BirthDocument', '');
+      // formData.append('profileurl', profile64 ? profile64 : photo);
+      // formData.append('adharcard', adhar64 ? adhar64 : adharcard);
+      // formData.append('othersdoc', other64 ? other64 : others);
+      // formData.append('BirthDocument', birth64 ? birth64 : birth);
+      // formData.append('markSheet', markSheet64 ? markSheet64 : marksheet);
+
       formData.append('fathersPhoneNo', fathersphone);
       formData.append('fathersName', fathersname);
       formData.append('courseorclass', coursename);
@@ -237,8 +253,6 @@ const UpdateAdmission = () => {
       formData.append('adharno', adharcardno);
       formData.append('pancardnno', pano);
       formData.append('PEN', pano);
-      formData.append('markSheetname', marksheetName);
-      formData.append('othersdocName', othersname);
 
       formData.append('Transport', istransport);
       formData.append('FromRoute', '');
@@ -315,12 +329,35 @@ const UpdateAdmission = () => {
       );
 
       setloader(true);
+      const config = {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `${token}`,
+        },
+      };
+      const {data} = await axios.put(
+        `${backendApiUrl}student/addstudent`,
+        formData,
+        config,
+      );
 
-      setsms('Adding...');
+      if (data?.status === true) {
+        Toast.show({
+          type: 'success',
+          text1: 'Success',
+          text2: data?.msg,
+        });
 
-      dispatch(Updatestudent(formData));
+        setloader(false);
+        dispatch(getstudent());
+        navigation.goBack();
+      }
+      if (data?.status === false) {
+        setloader(false);
+      }
     } catch (error) {
       console.log(error);
+      setloader(false);
     }
   };
 
@@ -353,12 +390,15 @@ const UpdateAdmission = () => {
       setwhatsaapnumber(updatedata?.whatsappNo);
       setothersname(updatedata?.othersdocName);
       setmarksheetName(updatedata?.markSheetname);
+
       setbirth(updatedata?.BirthDocument);
       setmarksheet(updatedata?.markSheet);
       setadharcard(updatedata?.adharno);
       setothers(updatedata?.othersdoc);
       setphoto(updatedata?.profileurl);
+
       setstatus(updatedata?.Status);
+
       setnoofMonth(updatedata?.courseduration);
 
       setamount(updatedata?.regisgrationfee?.toString());
@@ -483,7 +523,7 @@ const UpdateAdmission = () => {
         };
 
         if (file != null) {
-          setprofile64(file);
+          formData.append('profileurl', file);
         }
       }
     });
@@ -517,7 +557,7 @@ const UpdateAdmission = () => {
         };
 
         if (file != null) {
-          setprofile64(file);
+          formData.append('profileurl', file);
         }
       }
     });
@@ -550,7 +590,7 @@ const UpdateAdmission = () => {
         };
 
         if (file != null) {
-          setadhar64(file);
+          formData.append('adharcard', file);
         }
       }
     });
@@ -583,7 +623,7 @@ const UpdateAdmission = () => {
           type: type,
         };
         if (file != null) {
-          setadhar64(file);
+          formData.append('adharcard', file);
         }
       }
     });
@@ -615,7 +655,7 @@ const UpdateAdmission = () => {
           type: type,
         };
         if (file != null) {
-          setmarkSheet64(file);
+          formData.append('markSheet', file);
         }
       }
     });
@@ -648,7 +688,7 @@ const UpdateAdmission = () => {
           type: type,
         };
         if (file != null) {
-          setmarkSheet64(file);
+          formData.append('markSheet', file);
         }
       }
     });
@@ -680,7 +720,7 @@ const UpdateAdmission = () => {
           type: type,
         };
         if (file != null) {
-          setprofile64(file);
+          formData.append('BirthDocument', file);
         }
       }
     });
@@ -713,7 +753,7 @@ const UpdateAdmission = () => {
           type: type,
         };
         if (file != null) {
-          setprofile64(file);
+          formData.append('BirthDocument', file);
         }
       }
     });
@@ -745,7 +785,7 @@ const UpdateAdmission = () => {
           type: type,
         };
         if (file != null) {
-          setother64(file);
+          formData.append('othersdoc', file);
         }
       }
     });
@@ -778,7 +818,7 @@ const UpdateAdmission = () => {
           type: type,
         };
         if (file != null) {
-          setother64(file);
+          formData.append('othersdoc', file);
         }
       }
     });
@@ -835,42 +875,58 @@ const UpdateAdmission = () => {
     }
   };
 
+  const ClickOpendelete = (url, deletedfile) => {
+    serverInstance('student/DeleteStudentFiles', 'post', {
+      url: url,
+      id: updatedata?.id,
+      deletedfile: deletedfile,
+    }).then(res => {
+      if (res?.status === true) {
+        Toast.show({
+          type: 'success',
+          text1: 'Success',
+          text2: res?.msg,
+        });
+        dispatch(getstudent());
+      }
+
+      if (res?.status === false) {
+        Toast.show({
+          type: 'error',
+          text1: 'Error',
+          text2: res?.msg,
+        });
+        dispatch(getstudent());
+      }
+    });
+  };
+
+  const confirmation = (url, deletedfile) => {
+    Alert.alert(
+      'Delete',
+      'Do you really want to Delete ?',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'OK',
+          onPress: () => ClickOpendelete(url, deletedfile),
+        },
+      ],
+      {
+        cancelable: false,
+      },
+    );
+    return true;
+  };
+
   return (
     <View>
-      <Modal animationType={'fade'} transparent={true} visible={openModel}>
-        <View
-          style={{
-            flex: 1,
-            backgroundColor: 'rgba(52, 52, 52, 0.8)',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}>
-          <View style={[styles.modal, styles.elevation]}>
-            <View style={styles.cancalView}>
-              <TouchableOpacity>
-                <Image source={check} style={styles.checkstyleimg} />
-              </TouchableOpacity>
-            </View>
-            <View style={styles.buttonmodal}>
-              <TouchableOpacity style={styles.processpatbtn}>
-                <View>
-                  <Text style={{color: 'white', fontSize: 16}}>
-                    Process To Fee
-                  </Text>
-                </View>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => navigation.goBack()}
-                style={styles.okbtn}>
-                <View>
-                  <Text style={{color: 'white', fontSize: 16}}>Ok!</Text>
-                </View>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-      </Modal>
       <BackHeader title={'Update Admission'} />
+      <ProgressBar progress={progress} color={MD3Colors.error50} />
+
       <ScrollView>
         <View style={styles.enquirymainview}>
           <View style={styles.dateview}>
@@ -930,16 +986,14 @@ const UpdateAdmission = () => {
 
             <FlexRowWrapper>
               <View style={{width: '45%'}}>
-                <View style={{marginHorizontal: deviceWidth * 0.01}}>
-                  <RNBDropDown
-                    label="Caste"
-                    value={categoryname}
-                    OptionsList={CasteList}
-                    onChange={data => setcategoryname(data.value)}
-                  />
-                </View>
+                <RNBDropDown
+                  label="Caste"
+                  value={categoryname}
+                  OptionsList={CasteList}
+                  onChange={data => setcategoryname(data.value)}
+                />
               </View>
-              <View style={{width: '45%', marginBottom: deviceHeight * 0.02}}>
+              <View style={{width: '45%'}}>
                 <RNDatePicker
                   title="Date Of Birth"
                   value={DateOfBirth}
@@ -950,36 +1004,31 @@ const UpdateAdmission = () => {
 
             <FlexRowWrapper>
               <View style={{width: '45%'}}>
-                <View style={{marginHorizontal: deviceWidth * 0.01}}>
-                  <RNBDropDown
-                    label="Gender"
-                    value={gender}
-                    OptionsList={GenderListList}
-                    onChange={data => setgender(data.value)}
-                  />
-                </View>
+                <RNBDropDown
+                  label="Gender"
+                  value={gender}
+                  OptionsList={GenderListList}
+                  onChange={data => setgender(data.value)}
+                />
               </View>
-              <View style={{width: '45%', marginBottom: deviceHeight * 0.02}}>
-                <View style={{marginHorizontal: deviceWidth * 0.01}}>
-                  <RNBDropDown
-                    label="Blood Group"
-                    value={BloodGroup}
-                    OptionsList={BloodGroupList}
-                    onChange={data => setBloodGroup(data.value)}
-                  />
-                </View>
+
+              <View style={{width: '45%'}}>
+                <RNBDropDown
+                  label="Blood Group"
+                  value={BloodGroup}
+                  OptionsList={BloodGroupList}
+                  onChange={data => setBloodGroup(data.value)}
+                />
               </View>
             </FlexRowWrapper>
             <FlexRowWrapper>
               <View style={{width: '45%'}}>
-                <View style={{marginHorizontal: deviceWidth * 0.01}}>
-                  <RNBDropDown
-                    label="Religion"
-                    value={Religion}
-                    OptionsList={religionList}
-                    onChange={data => setReligion(data.value)}
-                  />
-                </View>
+                <RNBDropDown
+                  label="Religion"
+                  value={Religion}
+                  OptionsList={religionList}
+                  onChange={data => setReligion(data.value)}
+                />
               </View>
               <View style={{width: '45%'}}>
                 <RNInputField
@@ -1070,11 +1119,23 @@ const UpdateAdmission = () => {
             <FlexRowWrapper>
               <View style={{width: '45%'}}>
                 <RNInputField
-                  label="State"
-                  placeholder="Enter Pin Code"
+                  label="state"
+                  placeholder="Enter state"
                   value={state}
                   onChangeText={data => setstate(data)}
                 />
+                {/* <RNBDropDown
+                  label="State"
+                  value={state}
+                  OptionsList={indiaStatesData?.states?.map(item => ({
+                    label: item?.state,
+                    value: item?.id,
+                  }))}
+                  onChange={data => {
+                    setstate(data.value);
+                    setstatename(data.label);
+                  }}
+                /> */}
               </View>
               <View style={{width: '45%'}}>
                 <RNInputField
@@ -1083,6 +1144,15 @@ const UpdateAdmission = () => {
                   value={city}
                   onChangeText={data => setcity(data)}
                 />
+                {/* <RNBDropDown
+                  label="District"
+                  value={city}
+                  OptionsList={filterData()}
+                  onChange={data => {
+                    setcity(data.value);
+                    setcityname(data.label);
+                  }}
+                /> */}
               </View>
             </FlexRowWrapper>
             <View
@@ -1096,11 +1166,12 @@ const UpdateAdmission = () => {
                   fontWeight: '800',
                   position: 'absolute',
                   right: deviceWidth * 0.05,
+                  color: Colors.black,
                 }}>
                 {address?.length} / 500
               </Text>
               <RNInputField
-                style={{paddingTop: 10}}
+                style={{backgroundColor: Colors.white, paddingTop: 10}}
                 label="address"
                 value={address}
                 onChangeText={data => setaddress(data)}
@@ -1149,7 +1220,8 @@ const UpdateAdmission = () => {
                 marginHorizontal: deviceWidth * 0.04,
                 marginTop: 10,
               }}>
-              <Text style={{color: Colors.black, fontWeight: 'bold'}}>
+              <Text
+                style={{color: Colors.black, fontSize: 16, fontWeight: 'bold'}}>
                 Previous School Details
               </Text>
             </View>
@@ -1184,11 +1256,12 @@ const UpdateAdmission = () => {
                   fontWeight: '800',
                   position: 'absolute',
                   right: deviceWidth * 0.05,
+                  color: Colors.black,
                 }}>
-                {address?.length} / 500
+                {PreviousSchoolAddress?.length} / 500
               </Text>
               <RNInputField
-                style={{paddingTop: 10}}
+                style={{backgroundColor: Colors.white, paddingTop: 10}}
                 label="Previous School Address"
                 value={PreviousSchoolAddress}
                 onChangeText={data => setPreviousSchoolAddress(data)}
@@ -1200,64 +1273,60 @@ const UpdateAdmission = () => {
             </View>
             <FlexRowWrapper>
               <View style={{width: '45%'}}>
-                <View style={{marginHorizontal: deviceWidth * 0.01}}>
-                  <RNBDropDown
-                    label="Class"
-                    value={stream}
-                    OptionsList={
-                      isdata &&
-                      isdata?.map(item => ({
-                        label: `${item?.coursename}`,
-                        value: `${item?.coursename} ${item?.courseduration} ${item?.feepermonth} ${item?.Registractionfee} ${item?.adminssionfee} ${item?.AnnualFee}`,
-                      }))
+                <RNBDropDown
+                  label="Class"
+                  value={stream}
+                  OptionsList={
+                    isdata &&
+                    isdata?.map(item => ({
+                      label: `${item?.coursename}`,
+                      value: `${item?.coursename} ${item?.courseduration} ${item?.feepermonth} ${item?.Registractionfee} ${item?.adminssionfee} ${item?.AnnualFee}`,
+                    }))
+                  }
+                  onChange={item => {
+                    {
+                      setcourses(item.value);
+
+                      let valuesArray = item.value?.split(' ');
+                      let [
+                        coursename,
+                        courseduration,
+                        feepermonth,
+                        Registractionfee,
+                        adminssionfee,
+                        AnnualFee,
+                      ] = valuesArray;
+
+                      console.log(
+                        'data from select selct options',
+                        coursename,
+                        courseduration,
+                        feepermonth,
+                        Registractionfee,
+                        adminssionfee,
+                        AnnualFee,
+                      );
+                      setmonthlyfee(feepermonth);
+                      setamount(Registractionfee);
+                      setannualmanualfee(AnnualFee);
+                      setAdmissionFeeManual(adminssionfee);
                     }
-                    onChange={item => {
-                      {
-                        setcourses(item.value);
-
-                        let valuesArray = item.value?.split(' ');
-                        let [
-                          coursename,
-                          courseduration,
-                          feepermonth,
-                          Registractionfee,
-                          adminssionfee,
-                          AnnualFee,
-                        ] = valuesArray;
-
-                        console.log(
-                          'data from select selct options',
-                          coursename,
-                          courseduration,
-                          feepermonth,
-                          Registractionfee,
-                          adminssionfee,
-                          AnnualFee,
-                        );
-                        setmonthlyfee(feepermonth);
-                        setamount(Registractionfee);
-                        setannualmanualfee(AnnualFee);
-                        setAdmissionFeeManual(adminssionfee);
-                      }
-                    }}
-                  />
-                </View>
+                  }}
+                />
               </View>
               <View style={{width: '45%', marginBottom: deviceHeight * 0.02}}>
-                <View style={{marginHorizontal: deviceWidth * 0.01}}>
-                  <RNBDropDown
-                    label="Status"
-                    value={studentstatus}
-                    OptionsList={
-                      studentStatus &&
-                      studentStatus?.map(item => ({
-                        label: `${item?.value}`,
-                        value: `${item?.value}`,
-                      }))
-                    }
-                    onChange={data => setstudentstatus(data.value)}
-                  />
-                </View>
+                <RNBDropDown
+                  label="Status"
+                  value={studentstatus}
+                  OptionsList={
+                    studentStatus &&
+                    studentStatus?.map(item => ({
+                      label: `${item?.value}`,
+                      value: `${item?.value}`,
+                    }))
+                  }
+                  onChange={data => setstudentstatus(data.value)}
+                />
               </View>
             </FlexRowWrapper>
 
@@ -1310,8 +1379,7 @@ const UpdateAdmission = () => {
                     position: 'relative',
                   }}>
                   <RNInputField
-                    disabled
-                    // style={{backgroundColor: Colors.white}}
+                    style={{backgroundColor: Colors.white}}
                     label="Registration Fee"
                     value={Registractionfee}
                     onChangeText={data => setamount(data)}
@@ -1325,8 +1393,7 @@ const UpdateAdmission = () => {
                     position: 'relative',
                   }}>
                   <RNInputField
-                    disabled
-                    // style={{backgroundColor: Colors.white}}
+                    style={{backgroundColor: Colors.white}}
                     label="Annual Fee"
                     value={AnnualFee}
                     onChangeText={data => setannualfee(data)}
@@ -1340,8 +1407,7 @@ const UpdateAdmission = () => {
                     position: 'relative',
                   }}>
                   <RNInputField
-                    disabled
-                    // style={{backgroundColor: Colors.white}}
+                    style={{backgroundColor: Colors.white}}
                     label="Admission Fee"
                     value={adminssionfee}
                     onChangeText={data => setAdmissionFee(data)}
@@ -1354,8 +1420,7 @@ const UpdateAdmission = () => {
                     position: 'relative',
                   }}>
                   <RNInputField
-                    disabled
-                    // style={{backgroundColor: Colors.white}}
+                    style={{backgroundColor: Colors.white}}
                     label="Monthly Fee"
                     value={feepermonth}
                     onChangeText={data => setamount(data)}
@@ -1393,7 +1458,7 @@ const UpdateAdmission = () => {
                     position: 'relative',
                   }}>
                   <RNInputField
-                    // style={{backgroundColor: Colors.white}}
+                    style={{backgroundColor: Colors.white}}
                     label="Registration Fee"
                     value={amount}
                     onChangeText={data => setamount(data)}
@@ -1407,7 +1472,7 @@ const UpdateAdmission = () => {
                     position: 'relative',
                   }}>
                   <RNInputField
-                    // style={{backgroundColor: Colors.white}}
+                    style={{backgroundColor: Colors.white}}
                     label="Annual Fee"
                     value={annualmanualfee}
                     onChangeText={data => setannualmanualfee(data)}
@@ -1421,7 +1486,7 @@ const UpdateAdmission = () => {
                     position: 'relative',
                   }}>
                   <RNInputField
-                    // style={{backgroundColor: Colors.white}}
+                    style={{backgroundColor: Colors.white}}
                     label="Admission Fee"
                     value={AdmissionFeeManual}
                     onChangeText={data => setAdmissionFeeManual(data)}
@@ -1434,7 +1499,7 @@ const UpdateAdmission = () => {
                     position: 'relative',
                   }}>
                   <RNInputField
-                    // style={{backgroundColor: Colors.white}}
+                    style={{backgroundColor: Colors.white}}
                     label="Monthly Fee"
                     value={monthlyfee}
                     onChangeText={data => setmonthlyfee(data)}
@@ -1500,7 +1565,7 @@ const UpdateAdmission = () => {
             <>
               <FlexRowWrapper>
                 <View style={{width: '45%'}}>
-                  <View style={{marginHorizontal: deviceWidth * 0.01}}>
+                  <View>
                     <RNBDropDown
                       label="Hostel Name"
                       value={hostelname}
@@ -1516,7 +1581,7 @@ const UpdateAdmission = () => {
                   </View>
                 </View>
                 <View style={{width: '45%', marginBottom: deviceHeight * 0.02}}>
-                  <View style={{marginHorizontal: deviceWidth * 0.01}}>
+                  <View>
                     <RNBDropDown
                       label="Category"
                       value={hostelcategoryname}
@@ -1631,7 +1696,7 @@ const UpdateAdmission = () => {
                       position: 'relative',
                     }}>
                     <RNInputField
-                      // style={{backgroundColor: Colors.white}}
+                      style={{backgroundColor: Colors.white}}
                       label="Per Month Fee"
                       value={onlyHostelFee}
                       onChangeText={data => setonlyHostelFee(data)}
@@ -1668,7 +1733,7 @@ const UpdateAdmission = () => {
             <>
               <FlexRowWrapper>
                 <View style={{width: '45%'}}>
-                  <View style={{marginHorizontal: deviceWidth * 0.01}}>
+                  <View>
                     <RNBDropDown
                       label="From Route"
                       value={fromroute}
@@ -1684,7 +1749,7 @@ const UpdateAdmission = () => {
                   </View>
                 </View>
                 <View style={{width: '45%', marginBottom: deviceHeight * 0.02}}>
-                  <View style={{marginHorizontal: deviceWidth * 0.01}}>
+                  <View>
                     <RNBDropDown
                       label="To Route"
                       value={toroute}
@@ -1788,7 +1853,7 @@ const UpdateAdmission = () => {
                       position: 'relative',
                     }}>
                     <RNInputField
-                      // style={{backgroundColor: Colors.white}}
+                      style={{backgroundColor: Colors.white}}
                       label="Per Month Fee"
                       value={onlyTransport}
                       onChangeText={data => setonlyTransport(data)}
@@ -1822,38 +1887,83 @@ const UpdateAdmission = () => {
           )}
 
           <View style={{paddingHorizontal: 10}}>
-            <Text style={{fontSize: 20, marginBottom: 10, marginTop: 8}}>
-              Passport Size Photo
-            </Text>
+            <View
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+              }}>
+              <Text
+                style={{
+                  fontSize: 20,
+                  marginBottom: 10,
+                  marginTop: 8,
+                  color: Colors.black,
+                  fontWeight: 'bold',
+                }}>
+                Passport Size Photo
+              </Text>
+              <View
+                style={{
+                  marginLeft: 10,
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  width: '35%',
+                  justifyContent: 'space-between',
+                }}>
+                {updatedata?.profileurl && (
+                  <>
+                    <TouchableOpacity
+                      onPress={() =>
+                        DownloadFile(updatedata?.profileurl, setProgress)
+                      }>
+                      <FontAwesome6
+                        name="download"
+                        color={Colors.black}
+                        size={25}
+                      />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() =>
+                        confirmation(updatedata?.profileurl, 'profileurl')
+                      }>
+                      <Ionicons
+                        name="trash-outline"
+                        color={Colors.red}
+                        size={25}
+                      />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => handleTakePhotoSignature()}>
+                      <View>
+                        <Ionicons
+                          name="camera"
+                          size={25}
+                          color={Colors.black}
+                        />
+                      </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => handleChoosePhotoSignature()}>
+                      <View>
+                        <Ionicons name="image" size={25} color={Colors.black} />
+                      </View>
+                    </TouchableOpacity>
+                  </>
+                )}
+              </View>
+            </View>
+
             <View>
-              {passportsize ? (
+              {passportsize || updatedata?.profileurl ? (
                 <>
-                  <View style={{position: 'relative'}}>
-                    <View
-                      style={{
-                        position: 'absolute',
-                        zIndex: 10,
-                        left: Width(150),
-                        top: Height(40),
-                      }}>
-                      <TouchableOpacity
-                        onPress={() => handleTakePhotoSignature()}>
-                        <View>
-                          <Ionicons name="camera" size={50} />
-                        </View>
-                      </TouchableOpacity>
-                      <TouchableOpacity
-                        onPress={() => handleChoosePhotoSignature()}>
-                        <View>
-                          <Ionicons name="image" size={50} />
-                        </View>
-                      </TouchableOpacity>
-                    </View>
-                    <Image
-                      source={{uri: passportsize}}
-                      style={styles.imgprestyle}
-                    />
-                  </View>
+                  <Image
+                    source={{
+                      uri: passportsize ? passportsize : updatedata?.profileurl,
+                    }}
+                    style={styles.imgprestyle}
+                  />
                 </>
               ) : (
                 <>
@@ -1861,77 +1971,195 @@ const UpdateAdmission = () => {
                     <TouchableOpacity
                       onPress={() => handleTakePhotoSignature()}>
                       <View>
-                        <Ionicons name="camera" size={50} />
+                        <Ionicons
+                          name="camera"
+                          size={50}
+                          color={Colors.black}
+                        />
                       </View>
                     </TouchableOpacity>
                     <TouchableOpacity
                       onPress={() => handleChoosePhotoSignature()}>
                       <View>
-                        <Ionicons name="image" size={50} />
+                        <Ionicons name="image" size={50} color={Colors.black} />
                       </View>
                     </TouchableOpacity>
                   </View>
                 </>
               )}
             </View>
-            <Text style={{fontSize: 20, marginBottom: 10, marginTop: 8}}>
-              Adhar Card
-            </Text>
+
+            <View
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+              }}>
+              <Text
+                style={{
+                  fontSize: 20,
+                  marginBottom: 10,
+                  marginTop: 8,
+                  color: Colors.black,
+                  fontWeight: 'bold',
+                }}>
+                Adhar Card
+              </Text>
+              <View
+                style={{
+                  marginLeft: 10,
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  width: '35%',
+                  justifyContent: 'space-between',
+                }}>
+                {updatedata?.adharcard && (
+                  <>
+                    <TouchableOpacity
+                      onPress={() =>
+                        DownloadFile(updatedata?.adharcard, setProgress)
+                      }>
+                      <FontAwesome6
+                        name="download"
+                        color={Colors.black}
+                        size={25}
+                      />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() =>
+                        confirmation(updatedata?.adharcard, 'adharcard')
+                      }>
+                      <Ionicons
+                        name="trash-outline"
+                        color={Colors.red}
+                        size={25}
+                      />
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => handleTakePhotoAdhar()}>
+                      <View>
+                        <Ionicons
+                          name="camera"
+                          size={25}
+                          color={Colors.black}
+                        />
+                      </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => handleChoosePhotoAdhar()}>
+                      <View>
+                        <Ionicons name="image" size={25} color={Colors.black} />
+                      </View>
+                    </TouchableOpacity>
+                  </>
+                )}
+              </View>
+            </View>
+
             <View>
-              {adharno ? (
+              {adharno || updatedata?.adharcard ? (
                 <>
-                  <View style={{position: 'relative'}}>
-                    <View
-                      style={{
-                        position: 'absolute',
-                        zIndex: 10,
-                        left: Width(150),
-                        top: Height(40),
-                      }}>
-                      <TouchableOpacity onPress={() => handleTakePhotoAdhar()}>
-                        <View>
-                          <Ionicons name="camera" size={50} />
-                        </View>
-                      </TouchableOpacity>
-                      <TouchableOpacity
-                        onPress={() => handleChoosePhotoAdhar()}>
-                        <View>
-                          <Ionicons name="image" size={50} />
-                        </View>
-                      </TouchableOpacity>
-                    </View>
-                    <Image source={{uri: adharno}} style={styles.imgprestyle} />
-                  </View>
+                  <Image
+                    source={{uri: adharno ? adharno : updatedata?.adharcard}}
+                    style={styles.imgprestyle}
+                  />
                 </>
               ) : (
                 <>
                   <View style={styles.imgpreview}>
                     <TouchableOpacity onPress={() => handleTakePhotoAdhar()}>
                       <View>
-                        <Ionicons name="camera" size={50} />
+                        <Ionicons
+                          name="camera"
+                          size={50}
+                          color={Colors.black}
+                        />
                       </View>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => handleChoosePhotoAdhar()}>
                       <View>
-                        <Ionicons name="image" size={50} />
+                        <Ionicons name="image" size={50} color={Colors.black} />
                       </View>
                     </TouchableOpacity>
                   </View>
                 </>
               )}
             </View>
-            <Text style={{fontSize: 20, marginBottom: 10, marginTop: 8}}>
-              Previous MarkSheet
-            </Text>
+
+            <View
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+              }}>
+              <Text
+                style={{
+                  fontSize: 20,
+                  marginBottom: 10,
+                  marginTop: 8,
+                  color: Colors.black,
+                  fontWeight: 'bold',
+                }}>
+                Previous MarkSheet
+              </Text>
+              <View
+                style={{
+                  marginLeft: 10,
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  width: '35%',
+                  justifyContent: 'space-between',
+                }}>
+                {updatedata?.markSheet && (
+                  <>
+                    <TouchableOpacity
+                      onPress={() =>
+                        DownloadFile(updatedata?.markSheet, setProgress)
+                      }>
+                      <FontAwesome6
+                        name="download"
+                        color={Colors.black}
+                        size={25}
+                      />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() =>
+                        confirmation(updatedata?.markSheet, 'markSheet')
+                      }>
+                      <Ionicons
+                        name="trash-outline"
+                        color={Colors.red}
+                        size={25}
+                      />
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => handleTakePhotoAdhar()}>
+                      <View>
+                        <Ionicons
+                          name="camera"
+                          size={25}
+                          color={Colors.black}
+                        />
+                      </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => handleChoosePhotoAdhar()}>
+                      <View>
+                        <Ionicons name="image" size={25} color={Colors.black} />
+                      </View>
+                    </TouchableOpacity>
+                  </>
+                )}
+              </View>
+            </View>
+
             <View
               style={{
                 marginHorizontal: deviceWidth * 0.01,
                 position: 'relative',
               }}>
               <View style={{width: '100%'}}>
-                <View style={{marginHorizontal: deviceWidth * 0.01}}>
+                <View>
                   <RNInputField
-                    // style={{backgroundColor: Colors.white}}
+                    style={{backgroundColor: Colors.white}}
                     label="MarkSheet Class"
                     value={marksheetName}
                     onChangeText={data => setmarksheetName(data)}
@@ -1941,30 +2169,14 @@ const UpdateAdmission = () => {
               </View>
             </View>
             <View>
-              {premarksheet ? (
+              {premarksheet || updatedata?.markSheet ? (
                 <>
-                  <View style={{position: 'relative'}}>
-                    <View
-                      style={{
-                        position: 'absolute',
-                        zIndex: 10,
-                        left: Width(150),
-                        top: Height(40),
-                      }}>
-                      <TouchableOpacity onPress={() => handleTakePhotoAdhar()}>
-                        <View>
-                          <Ionicons name="camera" size={50} />
-                        </View>
-                      </TouchableOpacity>
-                      <TouchableOpacity
-                        onPress={() => handleChoosePhotoAdhar()}>
-                        <View>
-                          <Ionicons name="image" size={50} />
-                        </View>
-                      </TouchableOpacity>
-                    </View>
-                    <Image source={{uri: adharno}} style={styles.imgprestyle} />
-                  </View>
+                  <Image
+                    source={{
+                      uri: premarksheet ? premarksheet : updatedata?.markSheet,
+                    }}
+                    style={styles.imgprestyle}
+                  />
                 </>
               ) : (
                 <>
@@ -1972,13 +2184,17 @@ const UpdateAdmission = () => {
                     <TouchableOpacity
                       onPress={() => handleTakePhotoMarksheet()}>
                       <View>
-                        <Ionicons name="camera" size={50} />
+                        <Ionicons
+                          name="camera"
+                          size={50}
+                          color={Colors.black}
+                        />
                       </View>
                     </TouchableOpacity>
                     <TouchableOpacity
                       onPress={() => handleChoosePhotoMarksheet()}>
                       <View>
-                        <Ionicons name="image" size={50} />
+                        <Ionicons name="image" size={50} color={Colors.black} />
                       </View>
                     </TouchableOpacity>
                   </View>
@@ -1986,39 +2202,85 @@ const UpdateAdmission = () => {
               )}
             </View>
 
-            <Text style={{fontSize: 20, marginBottom: 10, marginTop: 8}}>
-              Birth Certificate
-            </Text>
+            <View
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+              }}>
+              <Text
+                style={{
+                  fontSize: 20,
+                  marginBottom: 10,
+                  marginTop: 8,
+                  color: Colors.black,
+                  fontWeight: 'bold',
+                }}>
+                Birth Certificate
+              </Text>
+              <View
+                style={{
+                  marginLeft: 10,
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  width: '35%',
+                  justifyContent: 'space-between',
+                }}>
+                {updatedata?.BirthDocument && (
+                  <>
+                    <TouchableOpacity
+                      onPress={() =>
+                        DownloadFile(updatedata?.BirthDocument, setProgress)
+                      }>
+                      <FontAwesome6
+                        name="download"
+                        color={Colors.black}
+                        size={25}
+                      />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() =>
+                        confirmation(updatedata?.BirthDocument, 'BirthDocument')
+                      }>
+                      <Ionicons
+                        name="trash-outline"
+                        color={Colors.red}
+                        size={25}
+                      />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => handleTakePhotoBirthCert()}>
+                      <View>
+                        <Ionicons
+                          name="camera"
+                          size={25}
+                          color={Colors.black}
+                        />
+                      </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => handleChoosePhotoBirthCert()}>
+                      <View>
+                        <Ionicons name="image" size={25} color={Colors.black} />
+                      </View>
+                    </TouchableOpacity>
+                  </>
+                )}
+              </View>
+            </View>
 
             <View>
-              {datecertificatePreview ? (
+              {datecertificatePreview || updatedata?.BirthDocument ? (
                 <>
-                  <View style={{position: 'relative'}}>
-                    <View
-                      style={{
-                        position: 'absolute',
-                        zIndex: 10,
-                        left: Width(150),
-                        top: Height(40),
-                      }}>
-                      <TouchableOpacity
-                        onPress={() => handleTakePhotoBirthCert()}>
-                        <View>
-                          <Ionicons name="camera" size={50} />
-                        </View>
-                      </TouchableOpacity>
-                      <TouchableOpacity
-                        onPress={() => handleChoosePhotoBirthCert()}>
-                        <View>
-                          <Ionicons name="image" size={50} />
-                        </View>
-                      </TouchableOpacity>
-                    </View>
-                    <Image
-                      source={{uri: datecertificatePreview}}
-                      style={styles.imgprestyle}
-                    />
-                  </View>
+                  <Image
+                    source={{
+                      uri: datecertificatePreview
+                        ? datecertificatePreview
+                        : updatedata?.BirthDocument,
+                    }}
+                    style={styles.imgprestyle}
+                  />
                 </>
               ) : (
                 <>
@@ -2026,13 +2288,17 @@ const UpdateAdmission = () => {
                     <TouchableOpacity
                       onPress={() => handleTakePhotoBirthCert()}>
                       <View>
-                        <Ionicons name="camera" size={50} />
+                        <Ionicons
+                          name="camera"
+                          size={50}
+                          color={Colors.black}
+                        />
                       </View>
                     </TouchableOpacity>
                     <TouchableOpacity
                       onPress={() => handleChoosePhotoBirthCert()}>
                       <View>
-                        <Ionicons name="image" size={50} />
+                        <Ionicons name="image" size={50} color={Colors.black} />
                       </View>
                     </TouchableOpacity>
                   </View>
@@ -2040,18 +2306,82 @@ const UpdateAdmission = () => {
               )}
             </View>
 
-            <Text style={{fontSize: 20, marginBottom: 10, marginTop: 8}}>
-              Others
-            </Text>
+            <View
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+              }}>
+              <Text
+                style={{
+                  fontSize: 20,
+                  marginBottom: 10,
+                  marginTop: 8,
+                  color: Colors.black,
+                  fontWeight: 'bold',
+                }}>
+                Others
+              </Text>
+              <View
+                style={{
+                  marginLeft: 10,
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  width: '35%',
+                  justifyContent: 'space-between',
+                }}>
+                {updatedata?.othersdoc && (
+                  <>
+                    <TouchableOpacity
+                      onPress={() =>
+                        DownloadFile(updatedata?.othersdoc, setProgress)
+                      }>
+                      <FontAwesome6
+                        name="download"
+                        color={Colors.black}
+                        size={25}
+                      />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() =>
+                        confirmation(updatedata?.othersdoc, 'othersdoc')
+                      }>
+                      <Ionicons
+                        name="trash-outline"
+                        color={Colors.red}
+                        size={25}
+                      />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => handleTakePhotoOthersDoc()}>
+                      <View>
+                        <Ionicons
+                          name="camera"
+                          size={25}
+                          color={Colors.black}
+                        />
+                      </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => handleChoosePhotoOthersDoc()}>
+                      <View>
+                        <Ionicons name="image" size={25} color={Colors.black} />
+                      </View>
+                    </TouchableOpacity>
+                  </>
+                )}
+              </View>
+            </View>
             <View
               style={{
                 marginHorizontal: deviceWidth * 0.01,
                 position: 'relative',
               }}>
               <View style={{width: '100%'}}>
-                <View style={{marginHorizontal: deviceWidth * 0.01}}>
+                <View>
                   <RNInputField
-                    // style={{backgroundColor: Colors.white}}
+                    style={{backgroundColor: Colors.white}}
                     label="Other Doc Name"
                     value={othersname}
                     onChangeText={data => setothersname(data)}
@@ -2061,34 +2391,16 @@ const UpdateAdmission = () => {
               </View>
             </View>
             <View>
-              {otherspreview ? (
+              {otherspreview || updatedata?.othersdoc ? (
                 <>
-                  <View style={{position: 'relative'}}>
-                    <View
-                      style={{
-                        position: 'absolute',
-                        zIndex: 10,
-                        left: Width(150),
-                        top: Height(40),
-                      }}>
-                      <TouchableOpacity
-                        onPress={() => handleTakePhotoOthersDoc()}>
-                        <View>
-                          <Ionicons name="camera" size={50} />
-                        </View>
-                      </TouchableOpacity>
-                      <TouchableOpacity
-                        onPress={() => handleChoosePhotoOthersDoc()}>
-                        <View>
-                          <Ionicons name="image" size={50} />
-                        </View>
-                      </TouchableOpacity>
-                    </View>
-                    <Image
-                      source={{uri: otherspreview}}
-                      style={styles.imgprestyle}
-                    />
-                  </View>
+                  <Image
+                    source={{
+                      uri: otherspreview
+                        ? otherspreview
+                        : updatedata?.othersdoc,
+                    }}
+                    style={styles.imgprestyle}
+                  />
                 </>
               ) : (
                 <>
@@ -2096,13 +2408,17 @@ const UpdateAdmission = () => {
                     <TouchableOpacity
                       onPress={() => handleTakePhotoOthersDoc()}>
                       <View>
-                        <Ionicons name="camera" size={50} />
+                        <Ionicons
+                          name="camera"
+                          size={50}
+                          color={Colors.black}
+                        />
                       </View>
                     </TouchableOpacity>
                     <TouchableOpacity
                       onPress={() => handleChoosePhotoOthersDoc()}>
                       <View>
-                        <Ionicons name="image" size={50} />
+                        <Ionicons name="image" size={50} color={Colors.black} />
                       </View>
                     </TouchableOpacity>
                   </View>
@@ -2111,7 +2427,7 @@ const UpdateAdmission = () => {
             </View>
           </View>
           <RNButton
-            loading={loading}
+            loading={loader}
             onPress={submit}
             style={{marginHorizontal: 20, marginTop: 20, marginBottom: 50}}>
             Update & Next
@@ -2236,8 +2552,8 @@ const styles = StyleSheet.create({
   },
   imgpreview: {
     height: 200,
-    borderWidth: 1.5,
-    borderColor: primary,
+    borderWidth: 2,
+    borderColor: Colors.black,
     backgroundColor: Colors.white,
     borderStyle: 'dotted',
     borderRadius: 20,
@@ -2260,7 +2576,8 @@ const styles = StyleSheet.create({
   radioLabel: {
     marginLeft: 8,
     fontSize: 16,
-    color: '#333',
+    color: Colors.black,
+    fontWeight: 'bold',
   },
 
   modal: {

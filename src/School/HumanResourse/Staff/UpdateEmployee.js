@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   ScrollView,
   Image,
+  Alert,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import {Height, Width} from '../../../utils/responsive';
@@ -13,6 +14,7 @@ import {primary} from '../../../utils/Colors';
 import {Dropdown} from 'react-native-element-dropdown';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import check from '../../../assets/check1.png';
 import {useDispatch, useSelector} from 'react-redux';
 import {
@@ -43,13 +45,16 @@ import {
   GenderListList,
   EmpStatusList,
 } from '../../Student/StaticData';
+import {DownloadFile} from '../../../Funtion/DownloadFile';
+import {serverInstance} from '../../../API/ServerInstance';
+import {ProgressBar, MD3Colors} from 'react-native-paper';
 
 let formData = new FormData();
 const UpdateEmployee = () => {
   const newroute = useRoute();
   const navigation = useNavigation();
   const dispatch = useDispatch();
-
+  const [progress, setProgress] = useState(0);
   const [categoryname, setcategoryname] = useState('');
   const [Religion, setReligion] = useState('');
   const [Nationality, setNationality] = useState('Indian');
@@ -1104,43 +1109,59 @@ const UpdateEmployee = () => {
     return FilteredData;
   };
 
+  const ClickOpendelete = (url, deletedfile) => {
+    serverInstance('comman/DeleteStudentFiles', 'post', {
+      url: url,
+      id: updatedata?.id,
+      deletedfile: deletedfile,
+    }).then(res => {
+      console.log('res', res);
+
+      if (res?.status === true) {
+        Toast.show({
+          type: 'success',
+          text1: 'Success',
+          text2: res?.msg,
+        });
+        dispatch(getEmployee());
+      }
+
+      if (res?.status === false) {
+        Toast.show({
+          type: 'error',
+          text1: 'Error',
+          text2: res?.msg,
+        });
+        dispatch(getEmployee());
+      }
+    });
+  };
+
+  const confirmation = (url, deletedfile) => {
+    Alert.alert(
+      'Delete',
+      'Do you really want to Delete ?',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'OK',
+          onPress: () => ClickOpendelete(url, deletedfile),
+        },
+      ],
+      {
+        cancelable: false,
+      },
+    );
+    return true;
+  };
+
   return (
     <View>
       <BackHeader title={'Update Employee'} icon={'person'} />
-      <Modal animationType={'fade'} transparent={true} visible={openModel}>
-        <View
-          style={{
-            flex: 1,
-            backgroundColor: 'rgba(52, 52, 52, 0.8)',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}>
-          <View style={[styles.modal, styles.elevation]}>
-            <View style={styles.cancalView}>
-              <TouchableOpacity>
-                <Image source={check} style={styles.checkstyleimg} />
-              </TouchableOpacity>
-            </View>
-            <View style={styles.buttonmodal}>
-              <TouchableOpacity style={styles.processpatbtn}>
-                <View>
-                  <Text style={{color: 'white', fontSize: 16}}>
-                    Process To Fee
-                  </Text>
-                </View>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => navigation.goBack()}
-                style={styles.okbtn}>
-                <View>
-                  <Text style={{color: 'white', fontSize: 16}}>Ok!</Text>
-                </View>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-      </Modal>
-
+      <ProgressBar progress={progress} color={MD3Colors.error50} />
       <ScrollView>
         <View style={styles.enquirymainview}>
           <View style={styles.dateview}>
@@ -1165,7 +1186,7 @@ const UpdateEmployee = () => {
 
             <FlexRowWrapper>
               <View style={{width: '45%'}}>
-                <View style={{marginHorizontal: deviceWidth * 0.01}}>
+                <View>
                   <RNBDropDown
                     label="Gender"
                     value={gender}
@@ -1174,8 +1195,8 @@ const UpdateEmployee = () => {
                   />
                 </View>
               </View>
-              <View style={{width: '45%', marginBottom: deviceHeight * 0.02}}>
-                <View style={{marginHorizontal: deviceWidth * 0.01}}>
+              <View style={{width: '45%'}}>
+                <View>
                   <RNBDropDown
                     label="Blood Group"
                     value={BloodGroup}
@@ -1185,9 +1206,10 @@ const UpdateEmployee = () => {
                 </View>
               </View>
             </FlexRowWrapper>
+
             <FlexRowWrapper>
               <View style={{width: '45%'}}>
-                <View style={{marginHorizontal: deviceWidth * 0.01}}>
+                <View>
                   <RNBDropDown
                     label="Religion"
                     value={Religion}
@@ -1208,7 +1230,7 @@ const UpdateEmployee = () => {
             </FlexRowWrapper>
             <FlexRowWrapper>
               <View style={{width: '45%'}}>
-                <View style={{marginHorizontal: deviceWidth * 0.01}}>
+                <View>
                   <RNBDropDown
                     label="Caste"
                     value={categoryname}
@@ -1272,6 +1294,7 @@ const UpdateEmployee = () => {
                   value={state}
                   onChangeText={data => setstate(data)}
                 />
+
                 {/* <RNBDropDown
                   label="State"
                   value={state}
@@ -1345,7 +1368,7 @@ const UpdateEmployee = () => {
 
             <FlexRowWrapper>
               <View style={{width: '45%'}}>
-                <View style={{marginHorizontal: deviceWidth * 0.01}}>
+                <View>
                   <RNBDropDown
                     label="Status"
                     value={status}
@@ -1354,8 +1377,8 @@ const UpdateEmployee = () => {
                   />
                 </View>
               </View>
-              <View style={{width: '45%', marginBottom: deviceHeight * 0.02}}>
-                <View style={{marginHorizontal: deviceWidth * 0.01}}>
+              <View style={{width: '45%'}}>
+                <View>
                   <RNBDropDown
                     label="Designation"
                     value={designationname}
@@ -1373,7 +1396,7 @@ const UpdateEmployee = () => {
             </FlexRowWrapper>
             <FlexRowWrapper>
               <View style={{width: '45%'}}>
-                <View style={{marginHorizontal: deviceWidth * 0.01}}>
+                <View>
                   <RNBDropDown
                     label="Deparment"
                     value={depart}
@@ -1388,7 +1411,7 @@ const UpdateEmployee = () => {
                   />
                 </View>
               </View>
-              <View style={{width: '45%', marginBottom: deviceHeight * 0.02}}>
+              <View style={{width: '45%'}}>
                 <RNDatePicker
                   title="Joining Date"
                   value={joiningdate}
@@ -1590,159 +1613,294 @@ const UpdateEmployee = () => {
           </View>
 
           <View style={{paddingHorizontal: 10}}>
-            <Text style={{fontSize: 20, marginBottom: 10, marginTop: 8}}>
-              Profile
-            </Text>
+            <View
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+              }}>
+              <Text
+                style={{
+                  fontSize: 20,
+                  marginBottom: 10,
+                  marginTop: 8,
+                  color: Colors.black,
+                  fontWeight: 'bold',
+                }}>
+                Passport Size Photo
+              </Text>
+              <View
+                style={{
+                  marginLeft: 10,
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  width: '35%',
+                  justifyContent: 'space-between',
+                }}>
+                {updatedata?.profileurl && (
+                  <>
+                    <TouchableOpacity
+                      onPress={() =>
+                        DownloadFile(updatedata?.profileurl, setProgress)
+                      }>
+                      <FontAwesome6
+                        name="download"
+                        color={Colors.black}
+                        size={25}
+                      />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() =>
+                        confirmation(updatedata?.profileurl, 'profileurl')
+                      }>
+                      <Ionicons
+                        name="trash-outline"
+                        color={Colors.red}
+                        size={25}
+                      />
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => handleTakeProfilePhoto()}>
+                      <View>
+                        <Ionicons
+                          name="camera"
+                          size={25}
+                          color={Colors.black}
+                        />
+                      </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => handleChooseProfilePhoto()}>
+                      <View>
+                        <Ionicons name="image" size={25} color={Colors.black} />
+                      </View>
+                    </TouchableOpacity>
+                  </>
+                )}
+              </View>
+            </View>
             <View>
-              {updatedata?.profileurl || passportsize ? (
+              {passportsize || updatedata?.profileurl ? (
                 <>
-                  <View style={{position: 'relative'}}>
-                    <View
-                      style={{
-                        position: 'absolute',
-                        zIndex: 10,
-                        left: Width(150),
-                        top: Height(40),
-                      }}>
-                      <TouchableOpacity
-                        onPress={() => handleTakeProfilePhoto()}>
-                        <View>
-                          <Ionicons name="camera" size={50} />
-                        </View>
-                      </TouchableOpacity>
-                      <TouchableOpacity
-                        onPress={() => handleChooseProfilePhoto()}>
-                        <View>
-                          <Ionicons name="image" size={50} />
-                        </View>
-                      </TouchableOpacity>
-                    </View>
-                    <Image
-                      source={{
-                        uri: passportsize
-                          ? passportsize
-                          : updatedata?.profileurl,
-                      }}
-                      style={styles.imgprestyle}
-                    />
-                  </View>
+                  <Image
+                    source={{
+                      uri: passportsize ? passportsize : updatedata?.profileurl,
+                    }}
+                    style={styles.imgprestyle}
+                  />
                 </>
               ) : (
                 <>
                   <View style={styles.imgpreview}>
                     <TouchableOpacity onPress={() => handleTakeProfilePhoto()}>
                       <View>
-                        <Ionicons name="camera" size={50} />
+                        <Ionicons
+                          name="camera"
+                          size={50}
+                          color={Colors.black}
+                        />
                       </View>
                     </TouchableOpacity>
                     <TouchableOpacity
                       onPress={() => handleChooseProfilePhoto()}>
                       <View>
-                        <Ionicons name="image" size={50} />
+                        <Ionicons name="image" size={50} color={Colors.black} />
                       </View>
                     </TouchableOpacity>
                   </View>
                 </>
               )}
             </View>
-            <Text style={{fontSize: 20, marginBottom: 10, marginTop: 8}}>
-              Adhar Card
-            </Text>
+
+            <View
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+              }}>
+              <Text
+                style={{
+                  fontSize: 20,
+                  marginBottom: 10,
+                  marginTop: 8,
+                  color: Colors.black,
+                  fontWeight: 'bold',
+                }}>
+                Adhar Card
+              </Text>
+              <View
+                style={{
+                  marginLeft: 10,
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  width: '35%',
+                  justifyContent: 'space-between',
+                }}>
+                {updatedata?.Aadharurl && (
+                  <>
+                    <TouchableOpacity
+                      onPress={() =>
+                        DownloadFile(updatedata?.Aadharurl, setProgress)
+                      }>
+                      <FontAwesome6
+                        name="download"
+                        color={Colors.black}
+                        size={25}
+                      />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() =>
+                        confirmation(updatedata?.Aadharurl, 'profileurl')
+                      }>
+                      <Ionicons
+                        name="trash-outline"
+                        color={Colors.red}
+                        size={25}
+                      />
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => handleTakePhotoAdhar()}>
+                      <View>
+                        <Ionicons
+                          name="camera"
+                          size={25}
+                          color={Colors.black}
+                        />
+                      </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => handleChoosePhotoAdhar()}>
+                      <View>
+                        <Ionicons name="image" size={25} color={Colors.black} />
+                      </View>
+                    </TouchableOpacity>
+                  </>
+                )}
+              </View>
+            </View>
             <View>
-              {updatedata?.Aadharurl || aadharcard ? (
+              {aadharcard || updatedata?.Aadharurl ? (
                 <>
-                  <View style={{position: 'relative'}}>
-                    <View
-                      style={{
-                        position: 'absolute',
-                        zIndex: 10,
-                        left: Width(150),
-                        top: Height(40),
-                      }}>
-                      <TouchableOpacity onPress={() => handleTakePhotoAdhar()}>
-                        <View>
-                          <Ionicons name="camera" size={50} />
-                        </View>
-                      </TouchableOpacity>
-                      <TouchableOpacity
-                        onPress={() => handleChoosePhotoAdhar()}>
-                        <View>
-                          <Ionicons name="image" size={50} />
-                        </View>
-                      </TouchableOpacity>
-                    </View>
-                    <Image
-                      source={{
-                        uri: aadharcard ? aadharcard : updatedata?.Aadharurl,
-                      }}
-                      style={styles.imgprestyle}
-                    />
-                  </View>
+                  <Image
+                    source={{
+                      uri: aadharcard ? aadharcard : updatedata?.Aadharurl,
+                    }}
+                    style={styles.imgprestyle}
+                  />
                 </>
               ) : (
                 <>
                   <View style={styles.imgpreview}>
                     <TouchableOpacity onPress={() => handleTakePhotoAdhar()}>
                       <View>
-                        <Ionicons name="camera" size={50} />
+                        <Ionicons
+                          name="camera"
+                          size={50}
+                          color={Colors.black}
+                        />
                       </View>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => handleChoosePhotoAdhar()}>
                       <View>
-                        <Ionicons name="image" size={50} />
+                        <Ionicons name="image" size={50} color={Colors.black} />
                       </View>
                     </TouchableOpacity>
                   </View>
                 </>
               )}
             </View>
-            <Text style={{fontSize: 20, marginBottom: 10, marginTop: 8}}>
-              Driving Licence
-            </Text>
+
+            <View
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+              }}>
+              <Text
+                style={{
+                  fontSize: 20,
+                  marginBottom: 10,
+                  marginTop: 8,
+                  color: Colors.black,
+                  fontWeight: 'bold',
+                }}>
+                Driving Licence
+              </Text>
+              <View
+                style={{
+                  marginLeft: 10,
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  width: '35%',
+                  justifyContent: 'space-between',
+                }}>
+                {updatedata?.Drivingurl && (
+                  <>
+                    <TouchableOpacity
+                      onPress={() =>
+                        DownloadFile(updatedata?.Drivingurl, setProgress)
+                      }>
+                      <FontAwesome6
+                        name="download"
+                        color={Colors.black}
+                        size={25}
+                      />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() =>
+                        confirmation(updatedata?.Drivingurl, 'profileurl')
+                      }>
+                      <Ionicons
+                        name="trash-outline"
+                        color={Colors.red}
+                        size={25}
+                      />
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => handleTakePhotoDriving()}>
+                      <View>
+                        <Ionicons
+                          name="camera"
+                          size={25}
+                          color={Colors.black}
+                        />
+                      </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => handleChoosePhotoDriving()}>
+                      <View>
+                        <Ionicons name="image" size={25} color={Colors.black} />
+                      </View>
+                    </TouchableOpacity>
+                  </>
+                )}
+              </View>
+            </View>
             <View>
-              {updatedata?.Drivingurl || Drivingimg ? (
+              {Drivingimg || updatedata?.Drivingurl ? (
                 <>
-                  <View style={{position: 'relative'}}>
-                    <View
-                      style={{
-                        position: 'absolute',
-                        zIndex: 10,
-                        left: Width(150),
-                        top: Height(40),
-                      }}>
-                      <TouchableOpacity
-                        onPress={() => handleTakePhotoDriving()}>
-                        <View>
-                          <Ionicons name="camera" size={50} />
-                        </View>
-                      </TouchableOpacity>
-                      <TouchableOpacity
-                        onPress={() => handleChoosePhotoDriving()}>
-                        <View>
-                          <Ionicons name="image" size={50} />
-                        </View>
-                      </TouchableOpacity>
-                    </View>
-                    <Image
-                      source={{
-                        uri: Drivingimg ? Drivingimg : updatedata?.Drivingurl,
-                      }}
-                      style={styles.imgprestyle}
-                    />
-                  </View>
+                  <Image
+                    source={{
+                      uri: Drivingimg ? Drivingimg : updatedata?.Drivingurl,
+                    }}
+                    style={styles.imgprestyle}
+                  />
                 </>
               ) : (
                 <>
                   <View style={styles.imgpreview}>
                     <TouchableOpacity onPress={() => handleTakePhotoDriving()}>
                       <View>
-                        <Ionicons name="camera" size={50} />
+                        <Ionicons
+                          name="camera"
+                          size={50}
+                          color={Colors.black}
+                        />
                       </View>
                     </TouchableOpacity>
                     <TouchableOpacity
                       onPress={() => handleChoosePhotoDriving()}>
                       <View>
-                        <Ionicons name="image" size={50} />
+                        <Ionicons name="image" size={50} color={Colors.black} />
                       </View>
                     </TouchableOpacity>
                   </View>
@@ -1750,39 +1908,81 @@ const UpdateEmployee = () => {
               )}
             </View>
 
-            <Text style={{fontSize: 20, marginBottom: 10, marginTop: 8}}>
-              10Th Marksheet
-            </Text>
+            <View
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+              }}>
+              <Text
+                style={{
+                  fontSize: 20,
+                  marginBottom: 10,
+                  marginTop: 8,
+                  color: Colors.black,
+                  fontWeight: 'bold',
+                }}>
+                10Th Marksheet
+              </Text>
+              <View
+                style={{
+                  marginLeft: 10,
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  width: '35%',
+                  justifyContent: 'space-between',
+                }}>
+                {updatedata?.tenurl && (
+                  <>
+                    <TouchableOpacity
+                      onPress={() =>
+                        DownloadFile(updatedata?.tenurl, setProgress)
+                      }>
+                      <FontAwesome6
+                        name="download"
+                        color={Colors.black}
+                        size={25}
+                      />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() =>
+                        confirmation(updatedata?.tenurl, 'tenurl')
+                      }>
+                      <Ionicons
+                        name="trash-outline"
+                        color={Colors.red}
+                        size={25}
+                      />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => handleTakePhotoMarksheet10()}>
+                      <View>
+                        <Ionicons
+                          name="camera"
+                          size={25}
+                          color={Colors.black}
+                        />
+                      </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => handleChoosePhotoMarksheet10()}>
+                      <View>
+                        <Ionicons name="image" size={25} color={Colors.black} />
+                      </View>
+                    </TouchableOpacity>
+                  </>
+                )}
+              </View>
+            </View>
 
             <View>
-              {updatedata?.tenurl || tenthimg ? (
+              {tenthimg || updatedata?.tenurl ? (
                 <>
-                  <View style={{position: 'relative'}}>
-                    <View
-                      style={{
-                        position: 'absolute',
-                        zIndex: 10,
-                        left: Width(150),
-                        top: Height(40),
-                      }}>
-                      <TouchableOpacity
-                        onPress={() => handleTakePhotoMarksheet10()}>
-                        <View>
-                          <Ionicons name="camera" size={50} />
-                        </View>
-                      </TouchableOpacity>
-                      <TouchableOpacity
-                        onPress={() => handleChoosePhotoMarksheet10()}>
-                        <View>
-                          <Ionicons name="image" size={50} />
-                        </View>
-                      </TouchableOpacity>
-                    </View>
-                    <Image
-                      source={{uri: tenthimg ? tenthimg : updatedata?.tenurl}}
-                      style={styles.imgprestyle}
-                    />
-                  </View>
+                  <Image
+                    source={{uri: tenthimg ? tenthimg : updatedata?.tenurl}}
+                    style={styles.imgprestyle}
+                  />
                 </>
               ) : (
                 <>
@@ -1790,13 +1990,17 @@ const UpdateEmployee = () => {
                     <TouchableOpacity
                       onPress={() => handleTakePhotoMarksheet10()}>
                       <View>
-                        <Ionicons name="camera" size={50} />
+                        <Ionicons
+                          name="camera"
+                          size={50}
+                          color={Colors.black}
+                        />
                       </View>
                     </TouchableOpacity>
                     <TouchableOpacity
                       onPress={() => handleChoosePhotoMarksheet10()}>
                       <View>
-                        <Ionicons name="image" size={50} />
+                        <Ionicons name="image" size={50} color={Colors.black} />
                       </View>
                     </TouchableOpacity>
                   </View>
@@ -1804,39 +2008,81 @@ const UpdateEmployee = () => {
               )}
             </View>
 
-            <Text style={{fontSize: 20, marginBottom: 10, marginTop: 8}}>
-              12Th Marksheet
-            </Text>
+            <View
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+              }}>
+              <Text
+                style={{
+                  fontSize: 20,
+                  marginBottom: 10,
+                  marginTop: 8,
+                  color: Colors.black,
+                  fontWeight: 'bold',
+                }}>
+                12Th Marksheet
+              </Text>
+              <View
+                style={{
+                  marginLeft: 10,
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  width: '35%',
+                  justifyContent: 'space-between',
+                }}>
+                {updatedata?.twelturl && (
+                  <>
+                    <TouchableOpacity
+                      onPress={() =>
+                        DownloadFile(updatedata?.twelturl, setProgress)
+                      }>
+                      <FontAwesome6
+                        name="download"
+                        color={Colors.black}
+                        size={25}
+                      />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() =>
+                        confirmation(updatedata?.twelturl, 'twelturl')
+                      }>
+                      <Ionicons
+                        name="trash-outline"
+                        color={Colors.red}
+                        size={25}
+                      />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => handleTakePhotoMarksheet12()}>
+                      <View>
+                        <Ionicons
+                          name="camera"
+                          size={25}
+                          color={Colors.black}
+                        />
+                      </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => handleChoosePhotoMarksheet12()}>
+                      <View>
+                        <Ionicons name="image" size={25} color={Colors.black} />
+                      </View>
+                    </TouchableOpacity>
+                  </>
+                )}
+              </View>
+            </View>
 
             <View>
-              {updatedata?.twelturl || twethimg ? (
+              {twethimg || updatedata?.twelturl ? (
                 <>
-                  <View style={{position: 'relative'}}>
-                    <View
-                      style={{
-                        position: 'absolute',
-                        zIndex: 10,
-                        left: Width(150),
-                        top: Height(40),
-                      }}>
-                      <TouchableOpacity
-                        onPress={() => handleTakePhotoMarksheet12()}>
-                        <View>
-                          <Ionicons name="camera" size={50} />
-                        </View>
-                      </TouchableOpacity>
-                      <TouchableOpacity
-                        onPress={() => handleChoosePhotoMarksheet12()}>
-                        <View>
-                          <Ionicons name="image" size={50} />
-                        </View>
-                      </TouchableOpacity>
-                    </View>
-                    <Image
-                      source={{uri: twethimg ? twethimg : updatedata?.twelturl}}
-                      style={styles.imgprestyle}
-                    />
-                  </View>
+                  <Image
+                    source={{uri: twethimg ? tenthimg : updatedata?.twelturl}}
+                    style={styles.imgprestyle}
+                  />
                 </>
               ) : (
                 <>
@@ -1844,13 +2090,17 @@ const UpdateEmployee = () => {
                     <TouchableOpacity
                       onPress={() => handleTakePhotoMarksheet12()}>
                       <View>
-                        <Ionicons name="camera" size={50} />
+                        <Ionicons
+                          name="camera"
+                          size={50}
+                          color={Colors.black}
+                        />
                       </View>
                     </TouchableOpacity>
                     <TouchableOpacity
                       onPress={() => handleChoosePhotoMarksheet12()}>
                       <View>
-                        <Ionicons name="image" size={50} />
+                        <Ionicons name="image" size={50} color={Colors.black} />
                       </View>
                     </TouchableOpacity>
                   </View>
@@ -1858,43 +2108,85 @@ const UpdateEmployee = () => {
               )}
             </View>
 
-            <Text style={{fontSize: 20, marginBottom: 10, marginTop: 8}}>
-              Graduation Final Year
-            </Text>
+            <View
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+              }}>
+              <Text
+                style={{
+                  fontSize: 20,
+                  marginBottom: 10,
+                  marginTop: 8,
+                  color: Colors.black,
+                  fontWeight: 'bold',
+                }}>
+                Graduation Final Year
+              </Text>
+              <View
+                style={{
+                  marginLeft: 10,
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  width: '35%',
+                  justifyContent: 'space-between',
+                }}>
+                {updatedata?.Graduationurl && (
+                  <>
+                    <TouchableOpacity
+                      onPress={() =>
+                        DownloadFile(updatedata?.Graduationurl, setProgress)
+                      }>
+                      <FontAwesome6
+                        name="download"
+                        color={Colors.black}
+                        size={25}
+                      />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() =>
+                        confirmation(updatedata?.Graduationurl, 'profileurl')
+                      }>
+                      <Ionicons
+                        name="trash-outline"
+                        color={Colors.red}
+                        size={25}
+                      />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => handleTakePhotoGraduation()}>
+                      <View>
+                        <Ionicons
+                          name="camera"
+                          size={25}
+                          color={Colors.black}
+                        />
+                      </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => handleChoosePhotoGraduation()}>
+                      <View>
+                        <Ionicons name="image" size={25} color={Colors.black} />
+                      </View>
+                    </TouchableOpacity>
+                  </>
+                )}
+              </View>
+            </View>
 
             <View>
-              {updatedata?.Graduationurl || Graduationimg ? (
+              {Graduationimg || updatedata?.Graduationurl ? (
                 <>
-                  <View style={{position: 'relative'}}>
-                    <View
-                      style={{
-                        position: 'absolute',
-                        zIndex: 10,
-                        left: Width(150),
-                        top: Height(40),
-                      }}>
-                      <TouchableOpacity
-                        onPress={() => handleTakePhotoGraduation()}>
-                        <View>
-                          <Ionicons name="camera" size={50} />
-                        </View>
-                      </TouchableOpacity>
-                      <TouchableOpacity
-                        onPress={() => handleChoosePhotoGraduation()}>
-                        <View>
-                          <Ionicons name="image" size={50} />
-                        </View>
-                      </TouchableOpacity>
-                    </View>
-                    <Image
-                      source={{
-                        uri: Graduationimg
-                          ? Graduationimg
-                          : updatedata?.Graduationurl,
-                      }}
-                      style={styles.imgprestyle}
-                    />
-                  </View>
+                  <Image
+                    source={{
+                      uri: Graduationimg
+                        ? Graduationimg
+                        : updatedata?.Graduationurl,
+                    }}
+                    style={styles.imgprestyle}
+                  />
                 </>
               ) : (
                 <>
@@ -1902,56 +2194,106 @@ const UpdateEmployee = () => {
                     <TouchableOpacity
                       onPress={() => handleTakePhotoGraduation()}>
                       <View>
-                        <Ionicons name="camera" size={50} />
+                        <Ionicons
+                          name="camera"
+                          size={50}
+                          color={Colors.black}
+                        />
                       </View>
                     </TouchableOpacity>
                     <TouchableOpacity
                       onPress={() => handleChoosePhotoGraduation()}>
                       <View>
-                        <Ionicons name="image" size={50} />
+                        <Ionicons name="image" size={50} color={Colors.black} />
                       </View>
                     </TouchableOpacity>
                   </View>
                 </>
               )}
             </View>
-            <Text style={{fontSize: 20, marginBottom: 10, marginTop: 8}}>
-              Post Graduation Final Year
-            </Text>
+
+            <View
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+              }}>
+              <Text
+                style={{
+                  fontSize: 20,
+                  marginBottom: 10,
+                  marginTop: 8,
+                  color: Colors.black,
+                  fontWeight: 'bold',
+                }}>
+                Post Graduation Final Year
+              </Text>
+              <View
+                style={{
+                  marginLeft: 10,
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  width: '15%',
+                  justifyContent: 'space-between',
+                }}>
+                {updatedata?.PostGraduationurl && (
+                  <>
+                    <TouchableOpacity
+                      onPress={() =>
+                        DownloadFile(updatedata?.PostGraduationurl, setProgress)
+                      }>
+                      <FontAwesome6
+                        name="download"
+                        color={Colors.black}
+                        size={25}
+                      />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() =>
+                        confirmation(
+                          updatedata?.PostGraduationurl,
+                          'PostGraduationurl',
+                        )
+                      }>
+                      <Ionicons
+                        name="trash-outline"
+                        color={Colors.red}
+                        size={25}
+                      />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => handleTakePhotoPostGraduation()}>
+                      <View>
+                        <Ionicons
+                          name="camera"
+                          size={25}
+                          color={Colors.black}
+                        />
+                      </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => handleChoosePhotoPostGraduation()}>
+                      <View>
+                        <Ionicons name="image" size={25} color={Colors.black} />
+                      </View>
+                    </TouchableOpacity>
+                  </>
+                )}
+              </View>
+            </View>
 
             <View>
-              {updatedata?.PostGraduationurl || postgraduationimg ? (
+              {postgraduationimg || updatedata?.PostGraduationurl ? (
                 <>
-                  <View style={{position: 'relative'}}>
-                    <View
-                      style={{
-                        position: 'absolute',
-                        zIndex: 10,
-                        left: Width(150),
-                        top: Height(40),
-                      }}>
-                      <TouchableOpacity
-                        onPress={() => handleTakePhotoPostGraduation()}>
-                        <View>
-                          <Ionicons name="camera" size={50} />
-                        </View>
-                      </TouchableOpacity>
-                      <TouchableOpacity
-                        onPress={() => handleChoosePhotoPostGraduation()}>
-                        <View>
-                          <Ionicons name="image" size={50} />
-                        </View>
-                      </TouchableOpacity>
-                    </View>
-                    <Image
-                      source={{
-                        uri: postgraduationimg
-                          ? postgraduationimg
-                          : updatedata?.PostGraduationurl,
-                      }}
-                      style={styles.imgprestyle}
-                    />
-                  </View>
+                  <Image
+                    source={{
+                      uri: postgraduationimg
+                        ? postgraduationimg
+                        : updatedata?.PostGraduationurl,
+                    }}
+                    style={styles.imgprestyle}
+                  />
                 </>
               ) : (
                 <>
@@ -1959,56 +2301,106 @@ const UpdateEmployee = () => {
                     <TouchableOpacity
                       onPress={() => handleTakePhotoPostGraduation()}>
                       <View>
-                        <Ionicons name="camera" size={50} />
+                        <Ionicons
+                          name="camera"
+                          size={50}
+                          color={Colors.black}
+                        />
                       </View>
                     </TouchableOpacity>
                     <TouchableOpacity
                       onPress={() => handleChoosePhotoPostGraduation()}>
                       <View>
-                        <Ionicons name="image" size={50} />
+                        <Ionicons name="image" size={50} color={Colors.black} />
                       </View>
                     </TouchableOpacity>
                   </View>
                 </>
               )}
             </View>
-            <Text style={{fontSize: 20, marginBottom: 10, marginTop: 8}}>
-              Cartificate 1
-            </Text>
+
+            <View
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+              }}>
+              <Text
+                style={{
+                  fontSize: 20,
+                  marginBottom: 10,
+                  marginTop: 8,
+                  color: Colors.black,
+                  fontWeight: 'bold',
+                }}>
+                Cartificate 1
+              </Text>
+              <View
+                style={{
+                  marginLeft: 10,
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  width: '35%',
+                  justifyContent: 'space-between',
+                }}>
+                {updatedata?.Certificate1url && (
+                  <>
+                    <TouchableOpacity
+                      onPress={() =>
+                        DownloadFile(updatedata?.Certificate1url, setProgress)
+                      }>
+                      <FontAwesome6
+                        name="download"
+                        color={Colors.black}
+                        size={25}
+                      />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() =>
+                        confirmation(
+                          updatedata?.Certificate1url,
+                          'Certificate1url',
+                        )
+                      }>
+                      <Ionicons
+                        name="trash-outline"
+                        color={Colors.red}
+                        size={25}
+                      />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => handleTakePhotoBirthCert1()}>
+                      <View>
+                        <Ionicons
+                          name="camera"
+                          size={25}
+                          color={Colors.black}
+                        />
+                      </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => handleChoosePhotoBirthCert1()}>
+                      <View>
+                        <Ionicons name="image" size={25} color={Colors.black} />
+                      </View>
+                    </TouchableOpacity>
+                  </>
+                )}
+              </View>
+            </View>
 
             <View style={{marginBottom: 10}}>
-              {updatedata?.Certificate1url || certificateimg1 ? (
+              {certificateimg1 || updatedata?.Certificate1url ? (
                 <>
-                  <View style={{position: 'relative'}}>
-                    <View
-                      style={{
-                        position: 'absolute',
-                        zIndex: 10,
-                        left: Width(150),
-                        top: Height(40),
-                      }}>
-                      <TouchableOpacity
-                        onPress={() => handleTakePhotoBirthCert1()}>
-                        <View>
-                          <Ionicons name="camera" size={50} />
-                        </View>
-                      </TouchableOpacity>
-                      <TouchableOpacity
-                        onPress={() => handleChoosePhotoBirthCert1()}>
-                        <View>
-                          <Ionicons name="image" size={50} />
-                        </View>
-                      </TouchableOpacity>
-                    </View>
-                    <Image
-                      source={{
-                        uri: certificateimg1
-                          ? certificateimg1
-                          : updatedata?.Certificate1url,
-                      }}
-                      style={styles.imgprestyle}
-                    />
-                  </View>
+                  <Image
+                    source={{
+                      uri: certificateimg1
+                        ? certificateimg1
+                        : updatedata?.Certificate1url,
+                    }}
+                    style={styles.imgprestyle}
+                  />
                 </>
               ) : (
                 <>
@@ -2016,13 +2408,17 @@ const UpdateEmployee = () => {
                     <TouchableOpacity
                       onPress={() => handleTakePhotoBirthCert1()}>
                       <View>
-                        <Ionicons name="camera" size={50} />
+                        <Ionicons
+                          name="camera"
+                          size={50}
+                          color={Colors.black}
+                        />
                       </View>
                     </TouchableOpacity>
                     <TouchableOpacity
                       onPress={() => handleChoosePhotoBirthCert1()}>
                       <View>
-                        <Ionicons name="image" size={50} />
+                        <Ionicons name="image" size={50} color={Colors.black} />
                       </View>
                     </TouchableOpacity>
                   </View>
@@ -2030,39 +2426,88 @@ const UpdateEmployee = () => {
               )}
             </View>
 
+            <View
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+              }}>
+              <Text
+                style={{
+                  fontSize: 20,
+                  marginBottom: 10,
+                  marginTop: 8,
+                  color: Colors.black,
+                  fontWeight: 'bold',
+                }}>
+                Cartificate 2
+              </Text>
+              <View
+                style={{
+                  marginLeft: 10,
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  width: '35%',
+                  justifyContent: 'space-between',
+                }}>
+                {updatedata?.Certificate2url && (
+                  <>
+                    <TouchableOpacity
+                      onPress={() =>
+                        DownloadFile(updatedata?.Certificate2url, setProgress)
+                      }>
+                      <FontAwesome6
+                        name="download"
+                        color={Colors.black}
+                        size={25}
+                      />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() =>
+                        confirmation(
+                          updatedata?.Certificate2url,
+                          'Certificate2url',
+                        )
+                      }>
+                      <Ionicons
+                        name="trash-outline"
+                        color={Colors.red}
+                        size={25}
+                      />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => handleTakePhotoBirthCert2()}>
+                      <View>
+                        <Ionicons
+                          name="camera"
+                          size={25}
+                          color={Colors.black}
+                        />
+                      </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => handleChoosePhotoBirthCert2()}>
+                      <View>
+                        <Ionicons name="image" size={25} color={Colors.black} />
+                      </View>
+                    </TouchableOpacity>
+                  </>
+                )}
+              </View>
+            </View>
+
             <View style={{marginBottom: 10}}>
-              {updatedata?.Certificate2url || certificateimg2 ? (
+              {certificateimg2 || updatedata?.Certificate2url ? (
                 <>
-                  <View style={{position: 'relative'}}>
-                    <View
-                      style={{
-                        position: 'absolute',
-                        zIndex: 10,
-                        left: Width(150),
-                        top: Height(40),
-                      }}>
-                      <TouchableOpacity
-                        onPress={() => handleTakePhotoBirthCert2()}>
-                        <View>
-                          <Ionicons name="camera" size={50} />
-                        </View>
-                      </TouchableOpacity>
-                      <TouchableOpacity
-                        onPress={() => handleChoosePhotoBirthCert2()}>
-                        <View>
-                          <Ionicons name="image" size={50} />
-                        </View>
-                      </TouchableOpacity>
-                    </View>
-                    <Image
-                      source={{
-                        uri: certificateimg2
-                          ? certificateimg2
-                          : updatedata?.Certificate2url,
-                      }}
-                      style={styles.imgprestyle}
-                    />
-                  </View>
+                  <Image
+                    source={{
+                      uri: certificateimg2
+                        ? certificateimg2
+                        : updatedata?.Certificate2url,
+                    }}
+                    style={styles.imgprestyle}
+                  />
                 </>
               ) : (
                 <>
@@ -2070,67 +2515,17 @@ const UpdateEmployee = () => {
                     <TouchableOpacity
                       onPress={() => handleTakePhotoBirthCert2()}>
                       <View>
-                        <Ionicons name="camera" size={50} />
+                        <Ionicons
+                          name="camera"
+                          size={50}
+                          color={Colors.black}
+                        />
                       </View>
                     </TouchableOpacity>
                     <TouchableOpacity
                       onPress={() => handleChoosePhotoBirthCert2()}>
                       <View>
-                        <Ionicons name="image" size={50} />
-                      </View>
-                    </TouchableOpacity>
-                  </View>
-                </>
-              )}
-            </View>
-
-            <View style={{marginBottom: 10}}>
-              {updatedata?.Certificate3url || certificateimg3 ? (
-                <>
-                  <View style={{position: 'relative'}}>
-                    <View
-                      style={{
-                        position: 'absolute',
-                        zIndex: 10,
-                        left: Width(150),
-                        top: Height(40),
-                      }}>
-                      <TouchableOpacity
-                        onPress={() => handleTakePhotoBirthCert3()}>
-                        <View>
-                          <Ionicons name="camera" size={50} />
-                        </View>
-                      </TouchableOpacity>
-                      <TouchableOpacity
-                        onPress={() => handleChoosePhotoBirthCert3()}>
-                        <View>
-                          <Ionicons name="image" size={50} />
-                        </View>
-                      </TouchableOpacity>
-                    </View>
-                    <Image
-                      source={{
-                        uri: certificateimg3
-                          ? certificateimg3
-                          : updatedata?.Certificate3url,
-                      }}
-                      style={styles.imgprestyle}
-                    />
-                  </View>
-                </>
-              ) : (
-                <>
-                  <View style={styles.imgpreview}>
-                    <TouchableOpacity
-                      onPress={() => handleTakePhotoBirthCert3()}>
-                      <View>
-                        <Ionicons name="camera" size={50} />
-                      </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      onPress={() => handleChoosePhotoBirthCert3()}>
-                      <View>
-                        <Ionicons name="image" size={50} />
+                        <Ionicons name="image" size={50} color={Colors.black} />
                       </View>
                     </TouchableOpacity>
                   </View>
@@ -2146,7 +2541,7 @@ const UpdateEmployee = () => {
               marginBottom: Height(50),
               marginTop: Height(10),
             }}>
-            Update & Next
+            Save & Next
           </RNButton>
         </View>
       </ScrollView>
@@ -2268,8 +2663,8 @@ const styles = StyleSheet.create({
   },
   imgpreview: {
     height: 200,
-    borderWidth: 1.5,
-    borderColor: primary,
+    borderWidth: 2,
+    borderColor: Colors.black,
     backgroundColor: Colors.fadeGray,
     borderStyle: 'dotted',
     borderRadius: 20,

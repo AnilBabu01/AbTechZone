@@ -28,6 +28,7 @@ const RNBDropDown = props => {
           fontSize: 14,
           fontWeight: '600',
           lineHeight: 19,
+          marginBottom: 4,
           color: Colors.black,
         }}>
         {label}
@@ -40,7 +41,7 @@ const RNBDropDown = props => {
           fontFamily: 'Gilroy-SemiBold',
           borderRadius: borderRad ? borderRad : 5,
           borderWidth: 1,
-          borderColor: Colors.primary,
+          borderColor: Colors.black,
           marginTop: 6,
           paddingHorizontal: deviceWidth * 0.028,
           backgroundColor: Colors.white,
@@ -56,7 +57,7 @@ const RNBDropDown = props => {
         }}
         data={OptionsList}
         search
-        maxHeight={300}
+        // maxHeight={300}
         labelField="label"
         valueField="value"
         placeholder={placeholder ? placeholder : 'Please Select'}
@@ -90,10 +91,10 @@ const styles = StyleSheet.create({
   inputSearchStyle: {
     height: 40,
     fontSize: 16,
-    borderColor: primary,
+    // borderColor: primary,
     // borderRadius: 5,
     // borderWidth: 1,
-    borderColor: Colors.primary,
+    borderColor: Colors.black,
     color: Colors.black,
   },
 });

@@ -93,8 +93,8 @@ const DashboardPlaceholderLoader = ({type}) => {
           {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(item => (
             <View key={item} style={styles.cardholder}>
               <ShimmerPlaceHolder
-                width={Width(170)}
-                height={deviceHeight * 0.3}
+                width={Width(165)}
+                height={deviceHeight * 0.2}
                 shimmerStyle={{borderRadius: 14}}
               />
             </View>

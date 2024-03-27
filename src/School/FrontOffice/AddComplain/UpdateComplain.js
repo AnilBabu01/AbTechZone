@@ -18,6 +18,22 @@ import {useNavigation, useRoute} from '@react-navigation/native';
 import moment from 'moment';
 import BackHeader from '../../../Component/Header/BackHeader';
 import RNBDropDown from '../../../Component/RNBDropDown';
+
+const statuslist = [
+  {
+    value: 'Resolved',
+    label: 'Resolved',
+  },
+  {
+    value: 'Ignore',
+    label: 'Ignore',
+  },
+  {
+    value: 'Pending',
+    label: 'Pending',
+  },
+];
+
 const UpdateComplain = () => {
   const route = useRoute();
   const dispatch = useDispatch();
@@ -25,27 +41,30 @@ const UpdateComplain = () => {
   const [isdata, setisdata] = useState('');
   const [sms, setsms] = useState('');
   const [loader, setloader] = useState(false);
+  const [status, setstatus] = useState('Resolved');
   const [enquirydate, setenquirydate] = useState(getTodaysDate());
-  const [coursename, setcoursename] = useState('');
   const [courselist, setcourselist] = useState([{label: null, value: ''}]);
   const [studentname, setstudentname] = useState('');
   const [studentPhone, setstudentPhone] = useState('');
-  const [email, setemail] = useState('');
-  const [address, setaddress] = useState('');
   const [comment, setcomment] = useState('');
   const {enquiry, error, loading} = useSelector(state => state.updatenequiry);
   const {course} = useSelector(state => state.getcourse);
 
+  console.log(' Status: status,', status);
+
   const submit = () => {
     if (enquirydate) {
       setloader(true);
-      setsms('Updating...');
+      var momentDate = moment(enquirydate, 'DD/MM/YYYY');
+      var newenquirydate = momentDate.format('YYYY-MM-DD');
+
       const data = {
         id: isdata?.id,
-        ComplainDate: moment(enquirydate, 'YYYY-MM-DD'),
+        ComplainDate: newenquirydate,
         ComplainerName: studentname,
         ComplainerMobile: studentPhone,
         Comment: comment,
+        Status: status,
       };
       serverInstance('coaching/enquiry', 'put', data).then(res => {
         if (res?.status) {
@@ -177,10 +196,22 @@ const UpdateComplain = () => {
               />
             </View>
           </View>
+          <View
+            style={{
+              marginHorizontal: deviceWidth * 0.04,
+              position: 'relative',
+            }}>
+            <RNBDropDown
+              label="Status"
+              value={status}
+              OptionsList={statuslist}
+              onChange={data => setstatus(data.value)}
+            />
+          </View>
 
           <View style={{marginBottom: deviceHeight * 0.08}}>
             <RNButton
-              loading={loading}
+              loading={loader}
               onPress={submit}
               style={{marginHorizontal: 20, marginTop: 20}}>
               Update & Next

@@ -930,7 +930,7 @@ const AddEmployee = () => {
 
             <FlexRowWrapper>
               <View style={{width: '45%'}}>
-                <View style={{marginHorizontal: deviceWidth * 0.01}}>
+                <View>
                   <RNBDropDown
                     label="Gender"
                     value={gender}
@@ -939,8 +939,8 @@ const AddEmployee = () => {
                   />
                 </View>
               </View>
-              <View style={{width: '45%', marginBottom: deviceHeight * 0.02}}>
-                <View style={{marginHorizontal: deviceWidth * 0.01}}>
+              <View style={{width: '45%'}}>
+                <View>
                   <RNBDropDown
                     label="Blood Group"
                     value={BloodGroup}
@@ -953,7 +953,7 @@ const AddEmployee = () => {
 
             <FlexRowWrapper>
               <View style={{width: '45%'}}>
-                <View style={{marginHorizontal: deviceWidth * 0.01}}>
+                <View>
                   <RNBDropDown
                     label="Religion"
                     value={Religion}
@@ -974,7 +974,7 @@ const AddEmployee = () => {
             </FlexRowWrapper>
             <FlexRowWrapper>
               <View style={{width: '45%'}}>
-                <View style={{marginHorizontal: deviceWidth * 0.01}}>
+                <View>
                   <RNBDropDown
                     label="Caste"
                     value={categoryname}
@@ -1081,9 +1081,9 @@ const AddEmployee = () => {
                   fontWeight: '800',
                   position: 'absolute',
                   right: deviceWidth * 0.05,
-                  color:Colors.black
+                  color: Colors.black,
                 }}>
-                {address.length} / 500
+                {address?.length} / 500
               </Text>
               <RNInputField
                 style={{paddingTop: 10}}
@@ -1099,7 +1099,7 @@ const AddEmployee = () => {
 
             <FlexRowWrapper>
               <View style={{width: '45%'}}>
-                <View style={{marginHorizontal: deviceWidth * 0.01}}>
+                <View>
                   <RNBDropDown
                     label="Status"
                     value={status}
@@ -1108,8 +1108,8 @@ const AddEmployee = () => {
                   />
                 </View>
               </View>
-              <View style={{width: '45%', marginBottom: deviceHeight * 0.02}}>
-                <View style={{marginHorizontal: deviceWidth * 0.01}}>
+              <View style={{width: '45%'}}>
+                <View>
                   <RNBDropDown
                     label="Designation"
                     value={designationname}
@@ -1127,7 +1127,7 @@ const AddEmployee = () => {
             </FlexRowWrapper>
             <FlexRowWrapper>
               <View style={{width: '45%'}}>
-                <View style={{marginHorizontal: deviceWidth * 0.01}}>
+                <View>
                   <RNBDropDown
                     label="Deparment"
                     value={depart}
@@ -1142,7 +1142,7 @@ const AddEmployee = () => {
                   />
                 </View>
               </View>
-              <View style={{width: '45%', marginBottom: deviceHeight * 0.02}}>
+              <View style={{width: '45%'}}>
                 <RNDatePicker
                   title="Joining Date"
                   value={joiningdate}
@@ -1344,7 +1344,14 @@ const AddEmployee = () => {
           </View>
 
           <View style={{paddingHorizontal: 10}}>
-            <Text style={{fontSize: 20, marginBottom: 10, marginTop: 8}}>
+            <Text
+              style={{
+                fontSize: 20,
+                marginBottom: 10,
+                marginTop: 8,
+                color: Colors.black,
+                fontWeight: 'bold',
+              }}>
               Profile
             </Text>
             <View>
@@ -1361,13 +1368,21 @@ const AddEmployee = () => {
                       <TouchableOpacity
                         onPress={() => handleTakeProfilePhoto()}>
                         <View>
-                          <Ionicons name="camera" size={50} />
+                          <Ionicons
+                            name="camera"
+                            size={50}
+                            color={Colors.black}
+                          />
                         </View>
                       </TouchableOpacity>
                       <TouchableOpacity
                         onPress={() => handleChooseProfilePhoto()}>
                         <View>
-                          <Ionicons name="image" size={50} />
+                          <Ionicons
+                            name="image"
+                            size={50}
+                            color={Colors.black}
+                          />
                         </View>
                       </TouchableOpacity>
                     </View>
@@ -1382,13 +1397,17 @@ const AddEmployee = () => {
                   <View style={styles.imgpreview}>
                     <TouchableOpacity onPress={() => handleTakeProfilePhoto()}>
                       <View>
-                        <Ionicons name="camera" size={50} />
+                        <Ionicons
+                          name="camera"
+                          size={50}
+                          color={Colors.black}
+                        />
                       </View>
                     </TouchableOpacity>
                     <TouchableOpacity
                       onPress={() => handleChooseProfilePhoto()}>
                       <View>
-                        <Ionicons name="image" size={50} />
+                        <Ionicons name="image" size={50} color={Colors.black} />
                       </View>
                     </TouchableOpacity>
                   </View>
@@ -1411,13 +1430,21 @@ const AddEmployee = () => {
                       }}>
                       <TouchableOpacity onPress={() => handleTakePhotoAdhar()}>
                         <View>
-                          <Ionicons name="camera" size={50} />
+                          <Ionicons
+                            name="camera"
+                            size={50}
+                            color={Colors.black}
+                          />
                         </View>
                       </TouchableOpacity>
                       <TouchableOpacity
                         onPress={() => handleChoosePhotoAdhar()}>
                         <View>
-                          <Ionicons name="image" size={50} />
+                          <Ionicons
+                            name="image"
+                            size={50}
+                            color={Colors.black}
+                          />
                         </View>
                       </TouchableOpacity>
                     </View>
@@ -1432,19 +1459,30 @@ const AddEmployee = () => {
                   <View style={styles.imgpreview}>
                     <TouchableOpacity onPress={() => handleTakePhotoAdhar()}>
                       <View>
-                        <Ionicons name="camera" size={50} />
+                        <Ionicons
+                          name="camera"
+                          size={50}
+                          color={Colors.black}
+                        />
                       </View>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => handleChoosePhotoAdhar()}>
                       <View>
-                        <Ionicons name="image" size={50} />
+                        <Ionicons name="image" size={50} color={Colors.black} />
                       </View>
                     </TouchableOpacity>
                   </View>
                 </>
               )}
             </View>
-            <Text style={{fontSize: 20, marginBottom: 10, marginTop: 8}}>
+            <Text
+              style={{
+                fontSize: 20,
+                marginBottom: 10,
+                marginTop: 8,
+                fontWeight: 'bold',
+                color: Colors.black,
+              }}>
               Driving Licence
             </Text>
             <View>
@@ -1461,13 +1499,21 @@ const AddEmployee = () => {
                       <TouchableOpacity
                         onPress={() => handleTakePhotoDriving()}>
                         <View>
-                          <Ionicons name="camera" size={50} />
+                          <Ionicons
+                            name="camera"
+                            size={50}
+                            color={Colors.black}
+                          />
                         </View>
                       </TouchableOpacity>
                       <TouchableOpacity
                         onPress={() => handleChoosePhotoDriving()}>
                         <View>
-                          <Ionicons name="image" size={50} />
+                          <Ionicons
+                            name="image"
+                            size={50}
+                            color={Colors.black}
+                          />
                         </View>
                       </TouchableOpacity>
                     </View>
@@ -1482,13 +1528,17 @@ const AddEmployee = () => {
                   <View style={styles.imgpreview}>
                     <TouchableOpacity onPress={() => handleTakePhotoDriving()}>
                       <View>
-                        <Ionicons name="camera" size={50} />
+                        <Ionicons
+                          name="camera"
+                          size={50}
+                          color={Colors.black}
+                        />
                       </View>
                     </TouchableOpacity>
                     <TouchableOpacity
                       onPress={() => handleChoosePhotoDriving()}>
                       <View>
-                        <Ionicons name="image" size={50} />
+                        <Ionicons name="image" size={50} color={Colors.black} />
                       </View>
                     </TouchableOpacity>
                   </View>
@@ -1496,7 +1546,14 @@ const AddEmployee = () => {
               )}
             </View>
 
-            <Text style={{fontSize: 20, marginBottom: 10, marginTop: 8}}>
+            <Text
+              style={{
+                fontSize: 20,
+                marginBottom: 10,
+                marginTop: 8,
+                fontWeight: 'bold',
+                color: Colors.black,
+              }}>
               10Th Marksheet
             </Text>
 
@@ -1514,13 +1571,21 @@ const AddEmployee = () => {
                       <TouchableOpacity
                         onPress={() => handleTakePhotoMarksheet10()}>
                         <View>
-                          <Ionicons name="camera" size={50} />
+                          <Ionicons
+                            name="camera"
+                            size={50}
+                            color={Colors.black}
+                          />
                         </View>
                       </TouchableOpacity>
                       <TouchableOpacity
                         onPress={() => handleChoosePhotoMarksheet10()}>
                         <View>
-                          <Ionicons name="image" size={50} />
+                          <Ionicons
+                            name="image"
+                            size={50}
+                            color={Colors.black}
+                          />
                         </View>
                       </TouchableOpacity>
                     </View>
@@ -1536,13 +1601,17 @@ const AddEmployee = () => {
                     <TouchableOpacity
                       onPress={() => handleTakePhotoMarksheet10()}>
                       <View>
-                        <Ionicons name="camera" size={50} />
+                        <Ionicons
+                          name="camera"
+                          size={50}
+                          color={Colors.black}
+                        />
                       </View>
                     </TouchableOpacity>
                     <TouchableOpacity
                       onPress={() => handleChoosePhotoMarksheet10()}>
                       <View>
-                        <Ionicons name="image" size={50} />
+                        <Ionicons name="image" size={50} color={Colors.black} />
                       </View>
                     </TouchableOpacity>
                   </View>
@@ -1550,7 +1619,14 @@ const AddEmployee = () => {
               )}
             </View>
 
-            <Text style={{fontSize: 20, marginBottom: 10, marginTop: 8}}>
+            <Text
+              style={{
+                fontSize: 20,
+                marginBottom: 10,
+                marginTop: 8,
+                fontWeight: 'bold',
+                color: Colors.black,
+              }}>
               12Th Marksheet
             </Text>
 
@@ -1568,13 +1644,21 @@ const AddEmployee = () => {
                       <TouchableOpacity
                         onPress={() => handleTakePhotoMarksheet12()}>
                         <View>
-                          <Ionicons name="camera" size={50} />
+                          <Ionicons
+                            name="camera"
+                            size={50}
+                            color={Colors.black}
+                          />
                         </View>
                       </TouchableOpacity>
                       <TouchableOpacity
                         onPress={() => handleChoosePhotoMarksheet12()}>
                         <View>
-                          <Ionicons name="image" size={50} />
+                          <Ionicons
+                            name="image"
+                            size={50}
+                            color={Colors.black}
+                          />
                         </View>
                       </TouchableOpacity>
                     </View>
@@ -1590,13 +1674,17 @@ const AddEmployee = () => {
                     <TouchableOpacity
                       onPress={() => handleTakePhotoMarksheet12()}>
                       <View>
-                        <Ionicons name="camera" size={50} />
+                        <Ionicons
+                          name="camera"
+                          size={50}
+                          color={Colors.black}
+                        />
                       </View>
                     </TouchableOpacity>
                     <TouchableOpacity
                       onPress={() => handleChoosePhotoMarksheet12()}>
                       <View>
-                        <Ionicons name="image" size={50} />
+                        <Ionicons name="image" size={50} color={Colors.black} />
                       </View>
                     </TouchableOpacity>
                   </View>
@@ -1604,7 +1692,14 @@ const AddEmployee = () => {
               )}
             </View>
 
-            <Text style={{fontSize: 20, marginBottom: 10, marginTop: 8}}>
+            <Text
+              style={{
+                fontSize: 20,
+                marginBottom: 10,
+                marginTop: 8,
+                fontWeight: 'bold',
+                color: Colors.black,
+              }}>
               Graduation Final Year
             </Text>
 
@@ -1622,13 +1717,21 @@ const AddEmployee = () => {
                       <TouchableOpacity
                         onPress={() => handleTakePhotoGraduation()}>
                         <View>
-                          <Ionicons name="camera" size={50} />
+                          <Ionicons
+                            name="camera"
+                            size={50}
+                            color={Colors.black}
+                          />
                         </View>
                       </TouchableOpacity>
                       <TouchableOpacity
                         onPress={() => handleChoosePhotoGraduation()}>
                         <View>
-                          <Ionicons name="image" size={50} />
+                          <Ionicons
+                            name="image"
+                            size={50}
+                            color={Colors.black}
+                          />
                         </View>
                       </TouchableOpacity>
                     </View>
@@ -1644,20 +1747,31 @@ const AddEmployee = () => {
                     <TouchableOpacity
                       onPress={() => handleTakePhotoGraduation()}>
                       <View>
-                        <Ionicons name="camera" size={50} />
+                        <Ionicons
+                          name="camera"
+                          size={50}
+                          color={Colors.black}
+                        />
                       </View>
                     </TouchableOpacity>
                     <TouchableOpacity
                       onPress={() => handleChoosePhotoGraduation()}>
                       <View>
-                        <Ionicons name="image" size={50} />
+                        <Ionicons name="image" size={50} color={Colors.black} />
                       </View>
                     </TouchableOpacity>
                   </View>
                 </>
               )}
             </View>
-            <Text style={{fontSize: 20, marginBottom: 10, marginTop: 8}}>
+            <Text
+              style={{
+                fontSize: 20,
+                marginBottom: 10,
+                marginTop: 8,
+                fontWeight: 'bold',
+                color: Colors.black,
+              }}>
               Post Graduation Final Year
             </Text>
 
@@ -1675,13 +1789,21 @@ const AddEmployee = () => {
                       <TouchableOpacity
                         onPress={() => handleTakePhotoPostGraduation()}>
                         <View>
-                          <Ionicons name="camera" size={50} />
+                          <Ionicons
+                            name="camera"
+                            size={50}
+                            color={Colors.black}
+                          />
                         </View>
                       </TouchableOpacity>
                       <TouchableOpacity
                         onPress={() => handleChoosePhotoPostGraduation()}>
                         <View>
-                          <Ionicons name="image" size={50} />
+                          <Ionicons
+                            name="image"
+                            size={50}
+                            color={Colors.black}
+                          />
                         </View>
                       </TouchableOpacity>
                     </View>
@@ -1697,20 +1819,31 @@ const AddEmployee = () => {
                     <TouchableOpacity
                       onPress={() => handleTakePhotoPostGraduation()}>
                       <View>
-                        <Ionicons name="camera" size={50} />
+                        <Ionicons
+                          name="camera"
+                          size={50}
+                          color={Colors.black}
+                        />
                       </View>
                     </TouchableOpacity>
                     <TouchableOpacity
                       onPress={() => handleChoosePhotoPostGraduation()}>
                       <View>
-                        <Ionicons name="image" size={50} />
+                        <Ionicons name="image" size={50} color={Colors.black} />
                       </View>
                     </TouchableOpacity>
                   </View>
                 </>
               )}
             </View>
-            <Text style={{fontSize: 20, marginBottom: 10, marginTop: 8}}>
+            <Text
+              style={{
+                fontSize: 20,
+                marginBottom: 10,
+                marginTop: 8,
+                fontWeight: 'bold',
+                color: Colors.black,
+              }}>
               Cartificate 1
             </Text>
 
@@ -1729,13 +1862,21 @@ const AddEmployee = () => {
                       <TouchableOpacity
                         onPress={() => handleTakePhotoBirthCert1()}>
                         <View>
-                          <Ionicons name="camera" size={50} />
+                          <Ionicons
+                            name="camera"
+                            size={50}
+                            color={Colors.black}
+                          />
                         </View>
                       </TouchableOpacity>
                       <TouchableOpacity
                         onPress={() => handleChoosePhotoBirthCert1()}>
                         <View>
-                          <Ionicons name="image" size={50} />
+                          <Ionicons
+                            name="image"
+                            size={50}
+                            color={Colors.black}
+                          />
                         </View>
                       </TouchableOpacity>
                     </View>
@@ -1751,13 +1892,17 @@ const AddEmployee = () => {
                     <TouchableOpacity
                       onPress={() => handleTakePhotoBirthCert1()}>
                       <View>
-                        <Ionicons name="camera" size={50} />
+                        <Ionicons
+                          name="camera"
+                          size={50}
+                          color={Colors.black}
+                        />
                       </View>
                     </TouchableOpacity>
                     <TouchableOpacity
                       onPress={() => handleChoosePhotoBirthCert1()}>
                       <View>
-                        <Ionicons name="image" size={50} />
+                        <Ionicons name="image" size={50} color={Colors.black} />
                       </View>
                     </TouchableOpacity>
                   </View>
@@ -1780,13 +1925,21 @@ const AddEmployee = () => {
                       <TouchableOpacity
                         onPress={() => handleTakePhotoBirthCert2()}>
                         <View>
-                          <Ionicons name="camera" size={50} />
+                          <Ionicons
+                            name="camera"
+                            size={50}
+                            color={Colors.black}
+                          />
                         </View>
                       </TouchableOpacity>
                       <TouchableOpacity
                         onPress={() => handleChoosePhotoBirthCert2()}>
                         <View>
-                          <Ionicons name="image" size={50} />
+                          <Ionicons
+                            name="image"
+                            size={50}
+                            color={Colors.black}
+                          />
                         </View>
                       </TouchableOpacity>
                     </View>
@@ -1802,13 +1955,17 @@ const AddEmployee = () => {
                     <TouchableOpacity
                       onPress={() => handleTakePhotoBirthCert2()}>
                       <View>
-                        <Ionicons name="camera" size={50} />
+                        <Ionicons
+                          name="camera"
+                          size={50}
+                          color={Colors.black}
+                        />
                       </View>
                     </TouchableOpacity>
                     <TouchableOpacity
                       onPress={() => handleChoosePhotoBirthCert2()}>
                       <View>
-                        <Ionicons name="image" size={50} />
+                        <Ionicons name="image" size={50} color={Colors.black} />
                       </View>
                     </TouchableOpacity>
                   </View>
@@ -1831,13 +1988,21 @@ const AddEmployee = () => {
                       <TouchableOpacity
                         onPress={() => handleTakePhotoBirthCert3()}>
                         <View>
-                          <Ionicons name="camera" size={50} />
+                          <Ionicons
+                            name="camera"
+                            size={50}
+                            color={Colors.black}
+                          />
                         </View>
                       </TouchableOpacity>
                       <TouchableOpacity
                         onPress={() => handleChoosePhotoBirthCert3()}>
                         <View>
-                          <Ionicons name="image" size={50} />
+                          <Ionicons
+                            name="image"
+                            size={50}
+                            color={Colors.black}
+                          />
                         </View>
                       </TouchableOpacity>
                     </View>
@@ -1853,13 +2018,17 @@ const AddEmployee = () => {
                     <TouchableOpacity
                       onPress={() => handleTakePhotoBirthCert3()}>
                       <View>
-                        <Ionicons name="camera" size={50} />
+                        <Ionicons
+                          name="camera"
+                          size={50}
+                          color={Colors.black}
+                        />
                       </View>
                     </TouchableOpacity>
                     <TouchableOpacity
                       onPress={() => handleChoosePhotoBirthCert3()}>
                       <View>
-                        <Ionicons name="image" size={50} />
+                        <Ionicons name="image" size={50} color={Colors.black} />
                       </View>
                     </TouchableOpacity>
                   </View>
@@ -1997,8 +2166,8 @@ const styles = StyleSheet.create({
   },
   imgpreview: {
     height: 200,
-    borderWidth: 1.5,
-    borderColor: primary,
+    borderWidth: 2,
+    borderColor: Colors.black,
     backgroundColor: Colors.white,
     borderStyle: 'dotted',
     borderRadius: 20,
