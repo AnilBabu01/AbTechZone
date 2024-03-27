@@ -1055,7 +1055,7 @@ const AddStudent = () => {
                 {address.length} / 500
               </Text>
               <RNInputField
-                style={{ paddingTop: 10}}
+                style={{paddingTop: 10}}
                 label="address"
                 value={address}
                 onChangeText={data => setaddress(data)}
@@ -1104,7 +1104,9 @@ const AddStudent = () => {
                 marginHorizontal: deviceWidth * 0.04,
                 marginTop: 10,
               }}>
-              <Text>Previous School Details</Text>
+              <Text style={{color: Colors.black, fontWeight: 'bold'}}>
+                Previous School Details
+              </Text>
             </View>
 
             <FlexRowWrapper>
@@ -1141,7 +1143,7 @@ const AddStudent = () => {
                 {address.length} / 500
               </Text>
               <RNInputField
-                style={{ paddingTop: 10}}
+                style={{paddingTop: 10}}
                 label="Previous School Address"
                 value={PreviousSchoolAddress}
                 onChangeText={data => setPreviousSchoolAddress(data)}
@@ -1264,7 +1266,7 @@ const AddStudent = () => {
                   }}>
                   <RNInputField
                     disabled
-                    style={{backgroundColor: Colors.fadeGray}}
+                    style={{backgroundColor: Colors.white}}
                     label="Registration Fee"
                     value={Registractionfee}
                     onChangeText={data => setamount(data)}
@@ -1279,7 +1281,7 @@ const AddStudent = () => {
                   }}>
                   <RNInputField
                     disabled
-                    style={{backgroundColor: Colors.fadeGray}}
+                    style={{backgroundColor: Colors.white}}
                     label="Annual Fee"
                     value={AnnualFee}
                     onChangeText={data => setannualfee(data)}
@@ -1294,7 +1296,7 @@ const AddStudent = () => {
                   }}>
                   <RNInputField
                     disabled
-                    style={{backgroundColor: Colors.fadeGray}}
+                    style={{backgroundColor: Colors.white}}
                     label="Admission Fee"
                     value={adminssionfee}
                     onChangeText={data => setAdmissionFee(data)}
@@ -1308,7 +1310,7 @@ const AddStudent = () => {
                   }}>
                   <RNInputField
                     disabled
-                    style={{backgroundColor: Colors.fadeGray}}
+                    style={{backgroundColor: Colors.white}}
                     label="Monthly Fee"
                     value={feepermonth}
                     onChangeText={data => setamount(data)}
@@ -1346,7 +1348,7 @@ const AddStudent = () => {
                     position: 'relative',
                   }}>
                   <RNInputField
-                    style={{backgroundColor: Colors.fadeGray}}
+                    style={{backgroundColor: Colors.white}}
                     label="Registration Fee"
                     value={amount}
                     onChangeText={data => setamount(data)}
@@ -1360,7 +1362,7 @@ const AddStudent = () => {
                     position: 'relative',
                   }}>
                   <RNInputField
-                    style={{backgroundColor: Colors.fadeGray}}
+                    style={{backgroundColor: Colors.white}}
                     label="Annual Fee"
                     value={annualmanualfee}
                     onChangeText={data => setannualmanualfee(data)}
@@ -1374,7 +1376,7 @@ const AddStudent = () => {
                     position: 'relative',
                   }}>
                   <RNInputField
-                    style={{backgroundColor: Colors.fadeGray}}
+                    style={{backgroundColor: Colors.white}}
                     label="Admission Fee"
                     value={AdmissionFeeManual}
                     onChangeText={data => setAdmissionFeeManual(data)}
@@ -1387,7 +1389,7 @@ const AddStudent = () => {
                     position: 'relative',
                   }}>
                   <RNInputField
-                    style={{backgroundColor: Colors.fadeGray}}
+                    style={{backgroundColor: Colors.white}}
                     label="Monthly Fee"
                     value={monthlyfee}
                     onChangeText={data => setmonthlyfee(data)}
@@ -1584,7 +1586,7 @@ const AddStudent = () => {
                       position: 'relative',
                     }}>
                     <RNInputField
-                      style={{backgroundColor: Colors.fadeGray}}
+                      style={{backgroundColor: Colors.white}}
                       label="Per Month Fee"
                       value={onlyHostelFee}
                       onChangeText={data => setonlyHostelFee(data)}
@@ -1741,7 +1743,7 @@ const AddStudent = () => {
                       position: 'relative',
                     }}>
                     <RNInputField
-                      style={{backgroundColor: Colors.fadeGray}}
+                      style={{backgroundColor: Colors.white}}
                       label="Per Month Fee"
                       value={onlyTransport}
                       onChangeText={data => setonlyTransport(data)}
@@ -1775,7 +1777,13 @@ const AddStudent = () => {
           )}
 
           <View style={{paddingHorizontal: 10}}>
-            <Text style={{fontSize: 20, marginBottom: 10, marginTop: 8}}>
+            <Text
+              style={{
+                fontSize: 20,
+                marginBottom: 10,
+                marginTop: 8,
+                color: Colors.black,
+              }}>
               Passport Size Photo
             </Text>
             <View>
@@ -1827,7 +1835,13 @@ const AddStudent = () => {
                 </>
               )}
             </View>
-            <Text style={{fontSize: 20, marginBottom: 10, marginTop: 8}}>
+            <Text
+              style={{
+                fontSize: 20,
+                marginBottom: 10,
+                marginTop: 8,
+                color: Colors.black,
+              }}>
               Adhar Card
             </Text>
             <View>
@@ -1873,7 +1887,13 @@ const AddStudent = () => {
                 </>
               )}
             </View>
-            <Text style={{fontSize: 20, marginBottom: 10, marginTop: 8}}>
+            <Text
+              style={{
+                fontSize: 20,
+                marginBottom: 10,
+                marginTop: 8,
+                color: Colors.black,
+              }}>
               Previous MarkSheet
             </Text>
             <View
@@ -1884,7 +1904,7 @@ const AddStudent = () => {
               <View style={{width: '100%'}}>
                 <View style={{marginHorizontal: deviceWidth * 0.01}}>
                   <RNInputField
-                    style={{backgroundColor: Colors.fadeGray}}
+                    style={{backgroundColor: Colors.white}}
                     label="MarkSheet Class"
                     value={marksheetName}
                     onChangeText={data => setmarksheetName(data)}
@@ -1939,7 +1959,13 @@ const AddStudent = () => {
               )}
             </View>
 
-            <Text style={{fontSize: 20, marginBottom: 10, marginTop: 8}}>
+            <Text
+              style={{
+                fontSize: 20,
+                marginBottom: 10,
+                marginTop: 8,
+                color: Colors.black,
+              }}>
               Birth Certificate
             </Text>
 
@@ -1993,7 +2019,13 @@ const AddStudent = () => {
               )}
             </View>
 
-            <Text style={{fontSize: 20, marginBottom: 10, marginTop: 8}}>
+            <Text
+              style={{
+                fontSize: 20,
+                marginBottom: 10,
+                marginTop: 8,
+                color: Colors.black,
+              }}>
               Others
             </Text>
             <View
@@ -2004,7 +2036,7 @@ const AddStudent = () => {
               <View style={{width: '100%'}}>
                 <View style={{marginHorizontal: deviceWidth * 0.01}}>
                   <RNInputField
-                    style={{backgroundColor: Colors.fadeGray}}
+                    style={{backgroundColor: Colors.white}}
                     label="Other Doc Name"
                     value={othersname}
                     onChangeText={data => setothersname(data)}
@@ -2191,7 +2223,7 @@ const styles = StyleSheet.create({
     height: 200,
     borderWidth: 1.5,
     borderColor: primary,
-    backgroundColor: Colors.fadeGray,
+    backgroundColor: Colors.white,
     borderStyle: 'dotted',
     borderRadius: 20,
     display: 'flex',
@@ -2286,7 +2318,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: Width(20),
     fontSize: Height(16),
     marginTop: Height(10),
-    backgroundColor: Colors.fadeGray,
+    backgroundColor: Colors.white,
     color: 'white',
   },
   dropstyleStream: {
@@ -2298,22 +2330,24 @@ const styles = StyleSheet.create({
     paddingHorizontal: Width(20),
     fontSize: Height(16),
     marginTop: Height(10),
-    backgroundColor: Colors.fadeGray,
+    backgroundColor: Colors.white,
     color: 'white',
   },
   totalamountstyle: {
     width: '100%',
-    height: Height(52),
+    height: Height(55),
     fontFamily: 'Gilroy-SemiBold',
-    borderRadius: Width(15),
     fontSize: Height(16),
     marginTop: Height(10),
-    backgroundColor: Colors.fadeGray,
-    color: 'white',
+    backgroundColor: Colors.white,
+    color: Colors.black,
     paddingTop: deviceHeight * 0.01,
+    borderWidth: 1,
+    borderColor: Colors.primary,
   },
   inputLabel: {
     fontSize: 16,
-    color: Colors.textGrey,
+    color: Colors.black,
+    fontWeight: 'bold',
   },
 });

@@ -210,8 +210,8 @@ const UpdateAdmission = () => {
       formData.append('Gender', gender);
       formData.append('BloodGroup', BloodGroup);
       formData.append('address', address);
-      formData.append("city", cityname);
-      formData.append("state", statename);
+      formData.append('city', cityname);
+      formData.append('state', statename);
       formData.append('PreviousTcNo', PreviousTcNo);
       formData.append('PreviousSchoolName', PreviousSchool);
       formData.append('PreviousSchoolAddress', PreviousSchoolAddress);
@@ -835,21 +835,6 @@ const UpdateAdmission = () => {
     }
   };
 
-  const filterData = () => {
-    let FilteredData;
-    if (state) {
-      FilteredData = indiaStatesData?.states
-        ?.find(item => item?.id === Number(state))
-        ?.districts?.map(item => ({
-          label: item?.name,
-          value: item?.id,
-        }));
-    } else {
-      FilteredData = [{label: '', value: 'Please Select'}];
-    }
-
-    return FilteredData;
-  };
   return (
     <View>
       <Modal animationType={'fade'} transparent={true} visible={openModel}>
@@ -1084,28 +1069,19 @@ const UpdateAdmission = () => {
             </FlexRowWrapper>
             <FlexRowWrapper>
               <View style={{width: '45%'}}>
-                <RNBDropDown
+                <RNInputField
                   label="State"
+                  placeholder="Enter Pin Code"
                   value={state}
-                  OptionsList={indiaStatesData?.states?.map(item => ({
-                    label: item?.state,
-                    value: item?.id,
-                  }))}
-                  onChange={data => {
-                    setstate(data.value);
-                    setstatename(data.label);
-                  }}
+                  onChangeText={data => setstate(data)}
                 />
               </View>
               <View style={{width: '45%'}}>
-                <RNBDropDown
+                <RNInputField
                   label="District"
+                  placeholder="Enter District"
                   value={city}
-                  OptionsList={filterData()}
-                  onChange={data => {
-                    setcity(data.value);
-                    setcityname(data.label);
-                  }}
+                  onChangeText={data => setcity(data)}
                 />
               </View>
             </FlexRowWrapper>
@@ -1121,10 +1097,10 @@ const UpdateAdmission = () => {
                   position: 'absolute',
                   right: deviceWidth * 0.05,
                 }}>
-                {address.length} / 500
+                {address?.length} / 500
               </Text>
               <RNInputField
-                style={{ paddingTop: 10}}
+                style={{paddingTop: 10}}
                 label="address"
                 value={address}
                 onChangeText={data => setaddress(data)}
@@ -1173,7 +1149,9 @@ const UpdateAdmission = () => {
                 marginHorizontal: deviceWidth * 0.04,
                 marginTop: 10,
               }}>
-              <Text>Previous School Details</Text>
+              <Text style={{color: Colors.black, fontWeight: 'bold'}}>
+                Previous School Details
+              </Text>
             </View>
 
             <FlexRowWrapper>
@@ -1207,10 +1185,10 @@ const UpdateAdmission = () => {
                   position: 'absolute',
                   right: deviceWidth * 0.05,
                 }}>
-                {address.length} / 500
+                {address?.length} / 500
               </Text>
               <RNInputField
-                style={{backgroundColor: Colors.fadeGray, paddingTop: 10}}
+                style={{paddingTop: 10}}
                 label="Previous School Address"
                 value={PreviousSchoolAddress}
                 onChangeText={data => setPreviousSchoolAddress(data)}
@@ -1333,7 +1311,7 @@ const UpdateAdmission = () => {
                   }}>
                   <RNInputField
                     disabled
-                    style={{backgroundColor: Colors.fadeGray}}
+                    // style={{backgroundColor: Colors.white}}
                     label="Registration Fee"
                     value={Registractionfee}
                     onChangeText={data => setamount(data)}
@@ -1348,7 +1326,7 @@ const UpdateAdmission = () => {
                   }}>
                   <RNInputField
                     disabled
-                    style={{backgroundColor: Colors.fadeGray}}
+                    // style={{backgroundColor: Colors.white}}
                     label="Annual Fee"
                     value={AnnualFee}
                     onChangeText={data => setannualfee(data)}
@@ -1363,7 +1341,7 @@ const UpdateAdmission = () => {
                   }}>
                   <RNInputField
                     disabled
-                    style={{backgroundColor: Colors.fadeGray}}
+                    // style={{backgroundColor: Colors.white}}
                     label="Admission Fee"
                     value={adminssionfee}
                     onChangeText={data => setAdmissionFee(data)}
@@ -1377,7 +1355,7 @@ const UpdateAdmission = () => {
                   }}>
                   <RNInputField
                     disabled
-                    style={{backgroundColor: Colors.fadeGray}}
+                    // style={{backgroundColor: Colors.white}}
                     label="Monthly Fee"
                     value={feepermonth}
                     onChangeText={data => setamount(data)}
@@ -1415,7 +1393,7 @@ const UpdateAdmission = () => {
                     position: 'relative',
                   }}>
                   <RNInputField
-                    style={{backgroundColor: Colors.fadeGray}}
+                    // style={{backgroundColor: Colors.white}}
                     label="Registration Fee"
                     value={amount}
                     onChangeText={data => setamount(data)}
@@ -1429,7 +1407,7 @@ const UpdateAdmission = () => {
                     position: 'relative',
                   }}>
                   <RNInputField
-                    style={{backgroundColor: Colors.fadeGray}}
+                    // style={{backgroundColor: Colors.white}}
                     label="Annual Fee"
                     value={annualmanualfee}
                     onChangeText={data => setannualmanualfee(data)}
@@ -1443,7 +1421,7 @@ const UpdateAdmission = () => {
                     position: 'relative',
                   }}>
                   <RNInputField
-                    style={{backgroundColor: Colors.fadeGray}}
+                    // style={{backgroundColor: Colors.white}}
                     label="Admission Fee"
                     value={AdmissionFeeManual}
                     onChangeText={data => setAdmissionFeeManual(data)}
@@ -1456,7 +1434,7 @@ const UpdateAdmission = () => {
                     position: 'relative',
                   }}>
                   <RNInputField
-                    style={{backgroundColor: Colors.fadeGray}}
+                    // style={{backgroundColor: Colors.white}}
                     label="Monthly Fee"
                     value={monthlyfee}
                     onChangeText={data => setmonthlyfee(data)}
@@ -1653,7 +1631,7 @@ const UpdateAdmission = () => {
                       position: 'relative',
                     }}>
                     <RNInputField
-                      style={{backgroundColor: Colors.fadeGray}}
+                      // style={{backgroundColor: Colors.white}}
                       label="Per Month Fee"
                       value={onlyHostelFee}
                       onChangeText={data => setonlyHostelFee(data)}
@@ -1810,7 +1788,7 @@ const UpdateAdmission = () => {
                       position: 'relative',
                     }}>
                     <RNInputField
-                      style={{backgroundColor: Colors.fadeGray}}
+                      // style={{backgroundColor: Colors.white}}
                       label="Per Month Fee"
                       value={onlyTransport}
                       onChangeText={data => setonlyTransport(data)}
@@ -1953,7 +1931,7 @@ const UpdateAdmission = () => {
               <View style={{width: '100%'}}>
                 <View style={{marginHorizontal: deviceWidth * 0.01}}>
                   <RNInputField
-                    style={{backgroundColor: Colors.fadeGray}}
+                    // style={{backgroundColor: Colors.white}}
                     label="MarkSheet Class"
                     value={marksheetName}
                     onChangeText={data => setmarksheetName(data)}
@@ -2073,7 +2051,7 @@ const UpdateAdmission = () => {
               <View style={{width: '100%'}}>
                 <View style={{marginHorizontal: deviceWidth * 0.01}}>
                   <RNInputField
-                    style={{backgroundColor: Colors.fadeGray}}
+                    // style={{backgroundColor: Colors.white}}
                     label="Other Doc Name"
                     value={othersname}
                     onChangeText={data => setothersname(data)}
@@ -2260,7 +2238,7 @@ const styles = StyleSheet.create({
     height: 200,
     borderWidth: 1.5,
     borderColor: primary,
-    backgroundColor: Colors.fadeGray,
+    backgroundColor: Colors.white,
     borderStyle: 'dotted',
     borderRadius: 20,
     display: 'flex',
@@ -2355,7 +2333,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: Width(20),
     fontSize: Height(16),
     marginTop: Height(10),
-    backgroundColor: Colors.fadeGray,
+    backgroundColor: Colors.white,
     color: 'white',
   },
   dropstyleStream: {
@@ -2367,22 +2345,24 @@ const styles = StyleSheet.create({
     paddingHorizontal: Width(20),
     fontSize: Height(16),
     marginTop: Height(10),
-    backgroundColor: Colors.fadeGray,
+    backgroundColor: Colors.white,
     color: 'white',
   },
   totalamountstyle: {
     width: '100%',
-    height: Height(52),
+    height: Height(55),
     fontFamily: 'Gilroy-SemiBold',
-    borderRadius: Width(15),
     fontSize: Height(16),
     marginTop: Height(10),
-    backgroundColor: Colors.fadeGray,
-    color: 'white',
+    backgroundColor: Colors.white,
+    color: Colors.black,
     paddingTop: deviceHeight * 0.01,
+    borderWidth: 1,
+    borderColor: Colors.primary,
   },
   inputLabel: {
     fontSize: 16,
-    color: Colors.textGrey,
+    color: Colors.black,
+    fontWeight: 'bold',
   },
 });

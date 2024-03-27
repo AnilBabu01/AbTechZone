@@ -1266,7 +1266,13 @@ const UpdateEmployee = () => {
 
             <FlexRowWrapper>
               <View style={{width: '45%'}}>
-                <RNBDropDown
+                <RNInputField
+                  label="State"
+                  placeholder="Enter State"
+                  value={state}
+                  onChangeText={data => setstate(data)}
+                />
+                {/* <RNBDropDown
                   label="State"
                   value={state}
                   OptionsList={indiaStatesData?.states?.map(item => ({
@@ -1277,10 +1283,16 @@ const UpdateEmployee = () => {
                     setstate(data.value);
                     setstatename(data.label);
                   }}
-                />
+                /> */}
               </View>
               <View style={{width: '45%'}}>
-                <RNBDropDown
+                <RNInputField
+                  label="District"
+                  placeholder="Enter District"
+                  value={city}
+                  onChangeText={data => setcity(data)}
+                />
+                {/* <RNBDropDown
                   label="District"
                   value={city}
                   OptionsList={filterData()}
@@ -1288,7 +1300,7 @@ const UpdateEmployee = () => {
                     setcity(data.value);
                     setcityname(data.label);
                   }}
-                />
+                /> */}
               </View>
             </FlexRowWrapper>
             <View

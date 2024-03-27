@@ -297,7 +297,7 @@ const TakeAdmission = () => {
 
       setsms('Adding...');
 
-      dispatch(Addstudent(formData,setopenModel));
+      dispatch(Addstudent(formData, setopenModel));
     } catch (error) {
       console.log(error);
     }
@@ -775,7 +775,7 @@ const TakeAdmission = () => {
 
     return FilteredData;
   };
-  
+
   return (
     <View>
       <BackHeader title={'Take Admission'} icon={'person'} />
@@ -1100,7 +1100,9 @@ const TakeAdmission = () => {
                 marginHorizontal: deviceWidth * 0.04,
                 marginTop: 10,
               }}>
-              <Text>Previous School Details</Text>
+              <Text style={{color: Colors.black,fontWeight:"bold"}}>
+                Previous School Details
+              </Text>
             </View>
 
             <FlexRowWrapper>
@@ -1137,7 +1139,7 @@ const TakeAdmission = () => {
                 {address.length} / 500
               </Text>
               <RNInputField
-                style={{ paddingTop: 10}}
+                style={{paddingTop: 10}}
                 label="Previous School Address"
                 value={PreviousSchoolAddress}
                 onChangeText={data => setPreviousSchoolAddress(data)}
@@ -1260,7 +1262,7 @@ const TakeAdmission = () => {
                   }}>
                   <RNInputField
                     disabled
-                    style={{backgroundColor: Colors.fadeGray}}
+                    style={{backgroundColor: Colors.white}}
                     label="Registration Fee"
                     value={Registractionfee}
                     onChangeText={data => setamount(data)}
@@ -1275,7 +1277,7 @@ const TakeAdmission = () => {
                   }}>
                   <RNInputField
                     disabled
-                    style={{backgroundColor: Colors.fadeGray}}
+                    style={{backgroundColor: Colors.white}}
                     label="Annual Fee"
                     value={AnnualFee}
                     onChangeText={data => setannualfee(data)}
@@ -1290,7 +1292,7 @@ const TakeAdmission = () => {
                   }}>
                   <RNInputField
                     disabled
-                    style={{backgroundColor: Colors.fadeGray}}
+                    style={{backgroundColor: Colors.white}}
                     label="Admission Fee"
                     value={adminssionfee}
                     onChangeText={data => setAdmissionFee(data)}
@@ -1304,7 +1306,7 @@ const TakeAdmission = () => {
                   }}>
                   <RNInputField
                     disabled
-                    style={{backgroundColor: Colors.fadeGray}}
+                    style={{backgroundColor: Colors.white}}
                     label="Monthly Fee"
                     value={feepermonth}
                     onChangeText={data => setamount(data)}
@@ -1342,7 +1344,7 @@ const TakeAdmission = () => {
                     position: 'relative',
                   }}>
                   <RNInputField
-                    style={{backgroundColor: Colors.fadeGray}}
+                    style={{backgroundColor: Colors.white}}
                     label="Registration Fee"
                     value={amount}
                     onChangeText={data => setamount(data)}
@@ -1356,7 +1358,7 @@ const TakeAdmission = () => {
                     position: 'relative',
                   }}>
                   <RNInputField
-                    style={{backgroundColor: Colors.fadeGray}}
+                    style={{backgroundColor: Colors.white}}
                     label="Annual Fee"
                     value={annualmanualfee}
                     onChangeText={data => setannualmanualfee(data)}
@@ -1370,7 +1372,7 @@ const TakeAdmission = () => {
                     position: 'relative',
                   }}>
                   <RNInputField
-                    style={{backgroundColor: Colors.fadeGray}}
+                    style={{backgroundColor: Colors.white}}
                     label="Admission Fee"
                     value={AdmissionFeeManual}
                     onChangeText={data => setAdmissionFeeManual(data)}
@@ -1383,7 +1385,7 @@ const TakeAdmission = () => {
                     position: 'relative',
                   }}>
                   <RNInputField
-                    style={{backgroundColor: Colors.fadeGray}}
+                    style={{backgroundColor: Colors.white}}
                     label="Monthly Fee"
                     value={monthlyfee}
                     onChangeText={data => setmonthlyfee(data)}
@@ -1580,7 +1582,7 @@ const TakeAdmission = () => {
                       position: 'relative',
                     }}>
                     <RNInputField
-                      style={{backgroundColor: Colors.fadeGray}}
+                      style={{backgroundColor: Colors.white}}
                       label="Per Month Fee"
                       value={onlyHostelFee}
                       onChangeText={data => setonlyHostelFee(data)}
@@ -1737,7 +1739,7 @@ const TakeAdmission = () => {
                       position: 'relative',
                     }}>
                     <RNInputField
-                      style={{backgroundColor: Colors.fadeGray}}
+                      style={{backgroundColor: Colors.white}}
                       label="Per Month Fee"
                       value={onlyTransport}
                       onChangeText={data => setonlyTransport(data)}
@@ -1880,7 +1882,7 @@ const TakeAdmission = () => {
               <View style={{width: '100%'}}>
                 <View style={{marginHorizontal: deviceWidth * 0.01}}>
                   <RNInputField
-                    style={{backgroundColor: Colors.fadeGray}}
+                    style={{backgroundColor: Colors.white}}
                     label="MarkSheet Class"
                     value={marksheetName}
                     onChangeText={data => setmarksheetName(data)}
@@ -2000,7 +2002,7 @@ const TakeAdmission = () => {
               <View style={{width: '100%'}}>
                 <View style={{marginHorizontal: deviceWidth * 0.01}}>
                   <RNInputField
-                    style={{backgroundColor: Colors.fadeGray}}
+                    style={{backgroundColor: Colors.white}}
                     label="Other Doc Name"
                     value={othersname}
                     onChangeText={data => setothersname(data)}
@@ -2187,7 +2189,7 @@ const styles = StyleSheet.create({
     height: 200,
     borderWidth: 1.5,
     borderColor: primary,
-    backgroundColor: Colors.fadeGray,
+    backgroundColor: Colors.white,
     borderStyle: 'dotted',
     borderRadius: 20,
     display: 'flex',
@@ -2282,7 +2284,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: Width(20),
     fontSize: Height(16),
     marginTop: Height(10),
-    backgroundColor: Colors.fadeGray,
+    backgroundColor: Colors.white,
     color: 'white',
   },
   dropstyleStream: {
@@ -2294,22 +2296,24 @@ const styles = StyleSheet.create({
     paddingHorizontal: Width(20),
     fontSize: Height(16),
     marginTop: Height(10),
-    backgroundColor: Colors.fadeGray,
+    backgroundColor: Colors.white,
     color: 'white',
   },
   totalamountstyle: {
     width: '100%',
-    height: Height(52),
+    height: Height(55),
     fontFamily: 'Gilroy-SemiBold',
-    borderRadius: Width(15),
     fontSize: Height(16),
     marginTop: Height(10),
-    backgroundColor: Colors.fadeGray,
-    color: 'white',
+    backgroundColor: Colors.white,
+    color: Colors.black,
     paddingTop: deviceHeight * 0.01,
+    borderWidth: 1,
+    borderColor: Colors.primary,
   },
   inputLabel: {
     fontSize: 16,
-    color: Colors.textGrey,
+    color: Colors.black,
+    fontWeight: 'bold',
   },
 });
