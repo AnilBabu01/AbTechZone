@@ -144,8 +144,6 @@ const MonthNolistForExpenses = {
 
 const Dashboard = () => {
   const dispatch = useDispatch();
-  const [searching, setsearching] = useState(false);
-  let currmonth = new Date().getMonth();
 
   const currentDate = new Date();
   const currentMonthName = currentDate.toLocaleString('default', {
@@ -154,7 +152,6 @@ const Dashboard = () => {
   const currentMonthNumber = MonthNolist[currentMonthName];
   const [searchMon, setsearchMon] = useState(monthnamelist[currentMonthNumber]);
 
-  const [monthExpenses, setmonthExpenses] = useState(currmonth + 1);
   const [searchoptiond, setsearchoptiond] = useState('Month');
   const [searchsession, setsearchsession] = useState('');
 
@@ -162,7 +159,6 @@ const Dashboard = () => {
   const [loadingpaidfee, setloadingpaidfee] = useState(false);
   const [loadingexpenses, setloadingexpenses] = useState(false);
   const [expanded, setExpanded] = React.useState(true);
-  const handlePress = () => setExpanded(!expanded);
   const [alltotaldata, setalltotaldata] = useState('');
   const [sessionList, setsessionList] = useState([]);
   const [LineChartSession, setLineChartSession] = useState('Short by Session');

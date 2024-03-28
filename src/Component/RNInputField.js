@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, Text, View,} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import {TextInput} from 'react-native-paper';
 import {Colors} from '../utils/Colors';
 
@@ -35,15 +35,12 @@ const RNInputField = props => {
         placeholder={placeholder}
         mode="outlined"
         activeOutlineColor={Colors.black}
-        // outlineStyle={{borderRadius: 15, borderWidth: 0}}
+        placeholderTextColor="black"
+        textColor="black"
         onChangeText={onChange}
         value={value}
-        style={{
-          backgroundColor: Colors.white,
-          color: Colors.black,
-          borderColor: Colors.black,
-        }}
         secureTextEntry={passwordShow}
+        style={{backgroundColor: Colors.white, color: Colors.black}}
         right={
           ispassword ? (
             <TextInput.Icon

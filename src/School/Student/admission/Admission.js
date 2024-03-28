@@ -86,7 +86,12 @@ const Admission = ({navigation}) => {
       width: 0.33,
       align: 'center',
     },
-
+    {
+      title: 'Class',
+      items: [],
+      width: 0.33,
+      align: 'center',
+    },
     {
       title: 'Section',
       items: [],
@@ -120,18 +125,29 @@ const Admission = ({navigation}) => {
     {
       title: 'Adminssion_Date',
       items: [],
-      width: 0.40,
+      width: 0.4,
       align: 'center',
     },
-
     {
-      title: 'Class',
+      title: 'Category',
       items: [],
       width: 0.33,
       align: 'center',
     },
     {
-      title: 'Category',
+      title: 'Father"s" Name',
+      items: [],
+      width: 0.4,
+      align: 'center',
+    },
+    {
+      title: 'Mother"s" Name',
+      items: [],
+      width: 0.4,
+      align: 'center',
+    },
+    {
+      title: 'Gender',
       items: [],
       width: 0.33,
       align: 'center',
@@ -164,41 +180,54 @@ const Admission = ({navigation}) => {
             });
             StudentTableList[4].items.push({
               id: index,
-              value: item.Section,
+              value: item.courseorclass,
             });
             StudentTableList[5].items.push({
               id: index,
-              value: item.Stream,
+              value: item.Section,
             });
             StudentTableList[6].items.push({
               id: index,
-              value: item.name,
+              value: item.Stream,
             });
             StudentTableList[7].items.push({
               id: index,
-              value: item.email,
+              value: item.name,
             });
             StudentTableList[8].items.push({
               id: index,
-              value: item.phoneno1,
+              value: item.email,
             });
             StudentTableList[9].items.push({
               id: index,
-              value:  moment(item.admissionDate).format('DD/MM/YYYY'),
+              value: item.phoneno1,
             });
             StudentTableList[10].items.push({
               id: index,
-              value: item.courseorclass,
+              value: moment(item.admissionDate).format('DD/MM/YYYY'),
             });
+
             StudentTableList[11].items.push({
               id: index,
               value: item.StudentCategory,
             });
             StudentTableList[12].items.push({
               id: index,
-              value: item.StudentStatus,
+              value: item.fathersName,
             });
             StudentTableList[13].items.push({
+              id: index,
+              value: item.MathersName,
+            });
+            StudentTableList[14].items.push({
+              id: index,
+              value: item.Gender,
+            });
+            StudentTableList[15].items.push({
+              id: index,
+              value: item.StudentStatus,
+            });
+            StudentTableList[16].items.push({
               id: index,
               value: (
                 <Ionicons

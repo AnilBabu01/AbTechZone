@@ -194,11 +194,12 @@ const UpdateEnquiry = () => {
                   fontWeight: '800',
                   position: 'absolute',
                   right: deviceWidth * 0.05,
+                  color: Colors.black,
                 }}>
                 {address.length} / 500
               </Text>
               <RNInputField
-                style={{backgroundColor: Colors.fadeGray, paddingTop: 10}}
+                style={{paddingTop: 10}}
                 label="address"
                 value={address}
                 onChangeText={data => setaddress(data)}
@@ -219,11 +220,12 @@ const UpdateEnquiry = () => {
                   fontWeight: '800',
                   position: 'absolute',
                   right: deviceWidth * 0.05,
+                  color: Colors.black,
                 }}>
                 {comment.length} / 500
               </Text>
               <RNInputField
-                style={{backgroundColor: Colors.fadeGray, paddingTop: 10}}
+                style={{paddingTop: 10}}
                 label="Comment"
                 value={comment}
                 onChangeText={data => setcomment(data)}

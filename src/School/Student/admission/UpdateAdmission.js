@@ -52,18 +52,21 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {DownloadFile} from '../../../Funtion/DownloadFile';
 import {ProgressBar, MD3Colors} from 'react-native-paper';
+import Loader from '../../../Component/Loader/Loader';
 let formData = new FormData();
 const UpdateAdmission = () => {
   const newroute = useRoute();
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const [sms, setsms] = useState('');
+  const [working, setworking] = useState(false);
   const [progress, setProgress] = useState(0);
   const [loader, setloader] = useState(false);
   const [index, setIndex] = useState(0);
   const [updatedata, setupdatedata] = useState('');
   const [openModel, setopenModel] = useState(false);
   const [whatsaapnumber, setwhatsaapnumber] = useState('');
+  const [motherswhatsapp, setmotherswhatsapp] = useState('');
   const [stream, setstream] = useState('NONE');
   const [noofMonth, setnoofMonth] = useState('');
 
@@ -226,10 +229,11 @@ const UpdateAdmission = () => {
       formData.append('PreviousSchoolName', PreviousSchool);
       formData.append('PreviousSchoolAddress', PreviousSchoolAddress);
 
-      formData.append('whatsappNo', fathersphone);
+      formData.append('whatsappNo', whatsaapnumber);
       formData.append('MathersName', mothersname);
       formData.append('MathersPhoneNo', mothersPhoneNo);
-      formData.append('MatherswhatsappNo', mothersPhoneNo);
+      formData.append('MatherswhatsappNo', motherswhatsapp);
+
       formData.append('markSheetname', marksheetName);
       formData.append('othersdocName', othersname);
 
@@ -876,6 +880,8 @@ const UpdateAdmission = () => {
   };
 
   const ClickOpendelete = (url, deletedfile) => {
+    setworking(true);
+    setsms('Deleting...');
     serverInstance('student/DeleteStudentFiles', 'post', {
       url: url,
       id: updatedata?.id,
@@ -888,6 +894,9 @@ const UpdateAdmission = () => {
           text2: res?.msg,
         });
         dispatch(getstudent());
+        navigation.goBack();
+        setworking(false);
+        setsms('');
       }
 
       if (res?.status === false) {
@@ -897,6 +906,9 @@ const UpdateAdmission = () => {
           text2: res?.msg,
         });
         dispatch(getstudent());
+        navigation.goBack();
+        setworking(false);
+        setsms('');
       }
     });
   };
@@ -924,8 +936,9 @@ const UpdateAdmission = () => {
 
   return (
     <View>
+      <Loader loader={working} sms={sms} />
       <BackHeader title={'Update Admission'} />
-      <ProgressBar progress={progress} color={MD3Colors.error50} />
+      {/* <ProgressBar progress={progress} color={MD3Colors.error50} /> */}
 
       <ScrollView>
         <View style={styles.enquirymainview}>
@@ -987,7 +1000,7 @@ const UpdateAdmission = () => {
             <FlexRowWrapper>
               <View style={{width: '45%'}}>
                 <RNBDropDown
-                  label="Caste"
+                  label="Caste Category"
                   value={categoryname}
                   OptionsList={CasteList}
                   onChange={data => setcategoryname(data.value)}
@@ -1063,31 +1076,35 @@ const UpdateAdmission = () => {
             <FlexRowWrapper>
               <View style={{width: '45%'}}>
                 <RNInputField
-                  label="Father's Mobile No"
-                  placeholder="Enter Mobile No"
-                  value={fathersphone}
-                  onChangeText={data => setfathersphone(data)}
-                />
-              </View>
-              <View style={{width: '45%'}}>
-                <RNInputField
                   label="Father's Name"
                   placeholder="Enter Father's Name"
                   value={fathersname}
                   onChangeText={data => setfathersname(data)}
                 />
               </View>
-            </FlexRowWrapper>
-
-            <FlexRowWrapper>
               <View style={{width: '45%'}}>
                 <RNInputField
-                  label="Mother's Mobile No"
+                  label="Father's Mobile No"
                   placeholder="Enter Mobile No"
-                  value={mothersPhoneNo}
-                  onChangeText={data => setmothersPhoneNo(data)}
+                  value={fathersphone}
+                  onChangeText={data => setfathersphone(data)}
                 />
               </View>
+            </FlexRowWrapper>
+            <View
+              style={{
+                marginHorizontal: deviceWidth * 0.04,
+                position: 'relative',
+              }}>
+              <RNInputField
+                label="Father's Whatsapp No"
+                placeholder="Enter Whatsapp No"
+                value={whatsaapnumber}
+                onChangeText={data => setwhatsaapnumber(data)}
+              />
+            </View>
+
+            <FlexRowWrapper>
               <View style={{width: '45%'}}>
                 <RNInputField
                   label="Mother's Name"
@@ -1096,8 +1113,27 @@ const UpdateAdmission = () => {
                   onChangeText={data => setmothersname(data)}
                 />
               </View>
+              <View style={{width: '45%'}}>
+                <RNInputField
+                  label="Mother's Mobile No"
+                  placeholder="Enter Mobile No"
+                  value={mothersPhoneNo}
+                  onChangeText={data => setmothersPhoneNo(data)}
+                />
+              </View>
             </FlexRowWrapper>
-
+            <View
+              style={{
+                marginHorizontal: deviceWidth * 0.04,
+                position: 'relative',
+              }}>
+              <RNInputField
+                label="Monther's Whatsapp No"
+                placeholder="Enter Whatsapp No"
+                value={motherswhatsapp}
+                onChangeText={data => setmotherswhatsapp(data)}
+              />
+            </View>
             <FlexRowWrapper>
               <View style={{width: '45%'}}>
                 <RNInputField
@@ -1109,7 +1145,7 @@ const UpdateAdmission = () => {
               </View>
               <View style={{width: '45%'}}>
                 <RNInputField
-                  label="Permanent Education No"
+                  label="PEN"
                   placeholder="Enter PEN"
                   value={pano}
                   onChangeText={data => setpano(data)}
@@ -1916,7 +1952,7 @@ const UpdateAdmission = () => {
                   <>
                     <TouchableOpacity
                       onPress={() =>
-                        DownloadFile(updatedata?.profileurl, setProgress)
+                        DownloadFile(updatedata?.profileurl, setworking, setsms)
                       }>
                       <FontAwesome6
                         name="download"
@@ -2018,7 +2054,7 @@ const UpdateAdmission = () => {
                   <>
                     <TouchableOpacity
                       onPress={() =>
-                        DownloadFile(updatedata?.adharcard, setProgress)
+                        DownloadFile(updatedata?.adharcard, setworking, setsms)
                       }>
                       <FontAwesome6
                         name="download"
@@ -2114,7 +2150,7 @@ const UpdateAdmission = () => {
                   <>
                     <TouchableOpacity
                       onPress={() =>
-                        DownloadFile(updatedata?.markSheet, setProgress)
+                        DownloadFile(updatedata?.markSheet, setworking, setsms)
                       }>
                       <FontAwesome6
                         name="download"
@@ -2231,7 +2267,11 @@ const UpdateAdmission = () => {
                   <>
                     <TouchableOpacity
                       onPress={() =>
-                        DownloadFile(updatedata?.BirthDocument, setProgress)
+                        DownloadFile(
+                          updatedata?.BirthDocument,
+                          setworking,
+                          setsms,
+                        )
                       }>
                       <FontAwesome6
                         name="download"
@@ -2335,7 +2375,7 @@ const UpdateAdmission = () => {
                   <>
                     <TouchableOpacity
                       onPress={() =>
-                        DownloadFile(updatedata?.othersdoc, setProgress)
+                        DownloadFile(updatedata?.othersdoc, setworking, setsms)
                       }>
                       <FontAwesome6
                         name="download"
@@ -2445,7 +2485,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'flex-end',
+    alignItems: 'center',
     marginHorizontal: deviceWidth * 0.04,
   },
   inputview: {

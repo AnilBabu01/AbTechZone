@@ -34,7 +34,6 @@ const monthlist = [
     id: 4,
     name: 'April',
   },
-  ,
   {
     id: 5,
     name: 'May',

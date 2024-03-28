@@ -3,7 +3,9 @@ import React, {useEffect} from 'react';
 import RNFS from 'react-native-fs';
 import FileViewer from 'react-native-file-viewer';
 
-export const DownloadFile = (url, setProgress) => {
+export const DownloadFile = (url, setworking, setsms) => {
+  setworking(true);
+  setsms('Downloading...');
   const parts = url.split('/');
   const lastPart = parts[parts.length - 1];
   const filename = lastPart.split('?')[0];
@@ -18,8 +20,6 @@ export const DownloadFile = (url, setProgress) => {
     progress: res => {
       const progress = (res.bytesWritten / res.contentLength) * 100;
       console.log(`Progress: ${progress.toFixed(2)}%`);
-
-      setProgress(progress);
     },
   })
     .promise.then(response => {
@@ -32,9 +32,12 @@ export const DownloadFile = (url, setProgress) => {
           return true;
         });
 
-      setProgress(0);
+      setworking(false);
+      setsms('');
     })
     .catch(err => {
       console.log('Download error:', err);
+      setworking(false);
+      setsms('');
     });
 };

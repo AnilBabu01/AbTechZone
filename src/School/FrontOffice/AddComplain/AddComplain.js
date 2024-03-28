@@ -28,9 +28,10 @@ const AddComplain = () => {
   const submit = () => {
     if (enquirydate) {
       setloader(true);
-
+      var momentDate = moment(enquirydate, 'DD/MM/YYYY');
+      var newenquirydate = momentDate.format('YYYY-MM-DD');
       const data = {
-        ComplainDate: moment(enquirydate, 'YYYY-MM-DD'),
+        ComplainDate: newenquirydate,
         ComplainerName: studentname,
         ComplainerMobile: studentPhone,
         Comment: comment,
@@ -111,6 +112,7 @@ const AddComplain = () => {
                   fontWeight: '800',
                   position: 'absolute',
                   right: deviceWidth * 0.05,
+                  color:Colors.black
                 }}>
                 {comment.length} / 500
               </Text>

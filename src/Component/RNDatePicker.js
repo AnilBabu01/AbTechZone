@@ -1,7 +1,7 @@
 import {StyleSheet, Text, View, Pressable} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {Colors} from '../utils/Colors';
-import {deviceWidth} from '../utils/constant';
+import {deviceWidth,deviceHeight} from '../utils/constant';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import DatePicker, {DatePickerProps} from 'react-native-date-picker';
 
@@ -52,7 +52,7 @@ export default RNDatePicker;
 const styles = StyleSheet.create({
   container: {
     backgroundColor: Colors.white,
-    padding:'8%',
+    padding:deviceHeight*0.02,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',

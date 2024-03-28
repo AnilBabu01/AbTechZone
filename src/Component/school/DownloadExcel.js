@@ -23,6 +23,12 @@ const DownloadExcel = ({visible, hideModal, filename, enquiry}) => {
 
       const downloadPath = RNFS.DownloadDirectoryPath + `/${filename}.xlsx`;
 
+      const folderExists = await RNFS.exists(downloadPath);
+
+      if (!folderExists) {
+        await RNFS.mkdir(downloadPath);
+      }
+
       RNFS.writeFile(downloadPath, excelData, 'base64')
         .then(response => {
           hideModal(false);

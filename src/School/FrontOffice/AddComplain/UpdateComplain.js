@@ -2,7 +2,7 @@ import {StyleSheet, View, ScrollView, TextInput, Text} from 'react-native';
 import React, {useState, useEffect} from 'react';
 import {Height, Width} from '../../../utils/responsive';
 import {Dropdown} from 'react-native-element-dropdown';
-import {getenquiries} from '../../../redux/action/coachingAction';
+import {getFILTComplain} from '../../../redux/action/commanAction';
 import {getcourse} from '../../../redux/action/commanAction';
 import {useDispatch, useSelector} from 'react-redux';
 import {serverInstance} from '../../../API/ServerInstance';
@@ -43,12 +43,12 @@ const UpdateComplain = () => {
   const [loader, setloader] = useState(false);
   const [status, setstatus] = useState('Resolved');
   const [enquirydate, setenquirydate] = useState(getTodaysDate());
-  const [courselist, setcourselist] = useState([{label: null, value: ''}]);
   const [studentname, setstudentname] = useState('');
   const [studentPhone, setstudentPhone] = useState('');
   const [comment, setcomment] = useState('');
-  const {enquiry, error, loading} = useSelector(state => state.updatenequiry);
-  const {course} = useSelector(state => state.getcourse);
+ 
+  console.log("status",status);
+
 
   console.log(' Status: status,', status);
 
@@ -66,7 +66,7 @@ const UpdateComplain = () => {
         Comment: comment,
         Status: status,
       };
-      serverInstance('coaching/enquiry', 'put', data).then(res => {
+      serverInstance('comman/complain', 'put', data).then(res => {
         if (res?.status) {
           setloader(false);
           setsms('');
@@ -75,7 +75,7 @@ const UpdateComplain = () => {
             text1: 'Success',
             text2: res?.msg,
           });
-          dispatch(getenquiries());
+          dispatch(getFILTComplain('', '', ''));
           navigation.goBack();
         }
 
@@ -87,7 +87,7 @@ const UpdateComplain = () => {
             text1: 'Error',
             text2: res?.msg,
           });
-          dispatch(getenquiries());
+          dispatch(getFILTComplain('', '', ''));
         }
       });
     } else {
@@ -95,30 +95,6 @@ const UpdateComplain = () => {
       setloader(false);
     }
   };
-
-  useEffect(() => {
-    if (enquiry) {
-      dispatch(getenquiries());
-      setsms('');
-      setloader(false);
-    }
-  }, [enquiry]);
-  useEffect(() => {
-    dispatch(getcourse());
-  }, []);
-
-  useEffect(() => {
-    if (course) {
-      setcourselist(course);
-    }
-  }, [course]);
-
-  useEffect(() => {
-    if (error) {
-      setloader(false);
-      setsms('');
-    }
-  }, [error]);
 
   useEffect(() => {
     if (route.params?.data) {

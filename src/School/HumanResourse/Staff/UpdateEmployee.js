@@ -48,7 +48,7 @@ import {
 import {DownloadFile} from '../../../Funtion/DownloadFile';
 import {serverInstance} from '../../../API/ServerInstance';
 import {ProgressBar, MD3Colors} from 'react-native-paper';
-
+import Loader from '../../../Component/Loader/Loader';
 let formData = new FormData();
 const UpdateEmployee = () => {
   const newroute = useRoute();
@@ -60,7 +60,8 @@ const UpdateEmployee = () => {
   const [Nationality, setNationality] = useState('Indian');
   const [gender, setgender] = useState('Male');
   const [BloodGroup, setBloodGroup] = useState('');
-
+  const [sms, setsms] = useState('');
+  const [working, setworking] = useState(false);
   const [loading, setloading] = useState(false);
   const [openModel, setopenModel] = useState(false);
   const [isdata, setisData] = useState([]);
@@ -1110,6 +1111,8 @@ const UpdateEmployee = () => {
   };
 
   const ClickOpendelete = (url, deletedfile) => {
+    setworking(true);
+    setsms('Deleting...');
     serverInstance('comman/DeleteStudentFiles', 'post', {
       url: url,
       id: updatedata?.id,
@@ -1124,6 +1127,9 @@ const UpdateEmployee = () => {
           text2: res?.msg,
         });
         dispatch(getEmployee());
+        setworking(false);
+        setsms('');
+        navigation.goBack();
       }
 
       if (res?.status === false) {
@@ -1133,6 +1139,9 @@ const UpdateEmployee = () => {
           text2: res?.msg,
         });
         dispatch(getEmployee());
+        setworking(false);
+        setsms('');
+        navigation.goBack();
       }
     });
   };
@@ -1160,8 +1169,9 @@ const UpdateEmployee = () => {
 
   return (
     <View>
+      <Loader loader={working} sms={sms} />
       <BackHeader title={'Update Employee'} icon={'person'} />
-      <ProgressBar progress={progress} color={MD3Colors.error50} />
+      {/* <ProgressBar progress={progress} color={MD3Colors.error50} /> */}
       <ScrollView>
         <View style={styles.enquirymainview}>
           <View style={styles.dateview}>
@@ -1642,7 +1652,7 @@ const UpdateEmployee = () => {
                   <>
                     <TouchableOpacity
                       onPress={() =>
-                        DownloadFile(updatedata?.profileurl, setProgress)
+                        DownloadFile(updatedata?.profileurl, setworking, setsms)
                       }>
                       <FontAwesome6
                         name="download"
@@ -1741,7 +1751,7 @@ const UpdateEmployee = () => {
                   <>
                     <TouchableOpacity
                       onPress={() =>
-                        DownloadFile(updatedata?.Aadharurl, setProgress)
+                        DownloadFile(updatedata?.Aadharurl, setworking, setsms)
                       }>
                       <FontAwesome6
                         name="download"
@@ -1838,7 +1848,7 @@ const UpdateEmployee = () => {
                   <>
                     <TouchableOpacity
                       onPress={() =>
-                        DownloadFile(updatedata?.Drivingurl, setProgress)
+                        DownloadFile(updatedata?.Drivingurl, setworking, setsms)
                       }>
                       <FontAwesome6
                         name="download"
@@ -1937,7 +1947,7 @@ const UpdateEmployee = () => {
                   <>
                     <TouchableOpacity
                       onPress={() =>
-                        DownloadFile(updatedata?.tenurl, setProgress)
+                        DownloadFile(updatedata?.tenurl, setworking, setsms)
                       }>
                       <FontAwesome6
                         name="download"
@@ -2037,7 +2047,7 @@ const UpdateEmployee = () => {
                   <>
                     <TouchableOpacity
                       onPress={() =>
-                        DownloadFile(updatedata?.twelturl, setProgress)
+                        DownloadFile(updatedata?.twelturl, setworking, setsms)
                       }>
                       <FontAwesome6
                         name="download"
@@ -2137,7 +2147,11 @@ const UpdateEmployee = () => {
                   <>
                     <TouchableOpacity
                       onPress={() =>
-                        DownloadFile(updatedata?.Graduationurl, setProgress)
+                        DownloadFile(
+                          updatedata?.Graduationurl,
+                          setworking,
+                          setsms,
+                        )
                       }>
                       <FontAwesome6
                         name="download"
@@ -2230,18 +2244,23 @@ const UpdateEmployee = () => {
               </Text>
               <View
                 style={{
+                  
                   marginLeft: 10,
                   display: 'flex',
                   flexDirection: 'row',
                   alignItems: 'center',
-                  width: '15%',
+                  width: '35%',
                   justifyContent: 'space-between',
                 }}>
                 {updatedata?.PostGraduationurl && (
                   <>
                     <TouchableOpacity
                       onPress={() =>
-                        DownloadFile(updatedata?.PostGraduationurl, setProgress)
+                        DownloadFile(
+                          updatedata?.PostGraduationurl,
+                          setworking,
+                          setsms,
+                        )
                       }>
                       <FontAwesome6
                         name="download"
@@ -2348,7 +2367,11 @@ const UpdateEmployee = () => {
                   <>
                     <TouchableOpacity
                       onPress={() =>
-                        DownloadFile(updatedata?.Certificate1url, setProgress)
+                        DownloadFile(
+                          updatedata?.Certificate1url,
+                          setworking,
+                          setsms,
+                        )
                       }>
                       <FontAwesome6
                         name="download"
@@ -2455,7 +2478,11 @@ const UpdateEmployee = () => {
                   <>
                     <TouchableOpacity
                       onPress={() =>
-                        DownloadFile(updatedata?.Certificate2url, setProgress)
+                        DownloadFile(
+                          updatedata?.Certificate2url,
+                          setworking,
+                          setsms,
+                        )
                       }>
                       <FontAwesome6
                         name="download"

@@ -20,62 +20,93 @@ import {MonthlyStudentAttendance} from '../../redux/action/attendanceActions';
 import moment from 'moment';
 import RNBDropDown from '../RNBDropDown';
 
+const studentStatus = [
+  {label: 'Active', value: 'Active'},
+  {label: 'On Leave', value: 'On Leave'},
+  {label: 'Left In Middle', value: 'Left In Middle'},
+  {label: 'Completed', value: 'Completed'},
+  {label: 'Unknown', value: 'Unknown'},
+];
+
 const monthlist = [
   {
     id: 1,
-    name: 'January',
+    name: 'April',
   },
   {
     id: 2,
-    name: 'February',
-  },
-  {
-    id: 3,
-    name: 'March',
-  },
-  {
-    id: 4,
-    name: 'April',
-  },
-  ,
-  {
-    id: 5,
     name: 'May',
   },
   {
-    id: 6,
+    id: 3,
     name: 'Jun',
   },
   {
-    id: 7,
+    id: 4,
     name: 'July',
   },
   {
-    id: 8,
+    id: 5,
     name: 'August',
   },
   {
-    id: 8,
+    id: 6,
     name: 'September',
   },
   {
-    id: 10,
+    id: 7,
     name: 'October',
   },
   {
-    id: 11,
+    id: 8,
     name: 'November',
   },
   {
-    id: 12,
+    id: 9,
     name: 'December',
+  },
+  {
+    id: 10,
+    name: 'January',
+  },
+  {
+    id: 11,
+    name: 'February',
+  },
+  {
+    id: 12,
+    name: 'March',
   },
 ];
 
+const MonthNolist = {
+  April: 1,
+  May: 2,
+  June: 3,
+  July: 4,
+  August: 5,
+  September: 6,
+  October: 7,
+  November: 8,
+  December: 9,
+  January: 10,
+  February: 11,
+  March: 12,
+};
+
 const FilterAttendanceAnalasis = ({showModal, setShowModal}) => {
   const dispatch = useDispatch();
-  let currmonth = new Date().getMonth();
-  const [month, setmonth] = useState(currmonth + 1);
+  let currentDate = new Date();
+  const currentMonthName = currentDate.toLocaleString('default', {
+    month: 'long',
+  });
+  const currentMonthNumber = MonthNolist[currentMonthName];
+
+  const [month, setmonth] = useState(Number(currentMonthNumber));
+
+  console.log('monthnamelist[currentMonthNumber]', currentMonthNumber);
+
+  const [status, setstatus] = useState('Active');
   const [courseorclass, setcourseorclass] = useState('');
   const [sectionname, setsectionname] = useState('NONE');
   const [courselist, setcourselist] = useState([]);
@@ -95,14 +126,21 @@ const FilterAttendanceAnalasis = ({showModal, setShowModal}) => {
         Number(month),
         '',
         '',
-        '',
-        '',
+        status,
+        courseorclass,
         sectionname,
         sessionname,
       ),
     );
 
-    console.log('', month, '', '', '', '', sectionname, sessionname);
+    // sbatch,
+    // month,
+    // "",
+    // "",
+    // status,
+    // classname,
+    // sectionname,
+    // sessionname
   };
 
   useEffect(() => {
@@ -136,12 +174,13 @@ const FilterAttendanceAnalasis = ({showModal, setShowModal}) => {
             style={{
               position: 'relative',
               backgroundColor: Colors.white,
+              paddingTop: 10,
             }}>
             <ScrollView
               style={{height: deviceHeight * 0.4}}
               showsVerticalScrollIndicator={false}>
               <View style={styles.rowwrapper}>
-                <View style={{width: '49.3%'}}>
+                <View style={{width: '45%'}}>
                   <RNBDropDown
                     label="Month"
                     value={month}
@@ -155,7 +194,7 @@ const FilterAttendanceAnalasis = ({showModal, setShowModal}) => {
                     onChange={data => setmonth(data.value)}
                   />
                 </View>
-                <View style={{width: '49.3%'}}>
+                <View style={{width: '45%'}}>
                   <RNBDropDown
                     label="Class"
                     value={courseorclass}
@@ -170,8 +209,9 @@ const FilterAttendanceAnalasis = ({showModal, setShowModal}) => {
                   />
                 </View>
               </View>
+
               <View style={styles.rowwrapper}>
-                <View style={{width: '100%'}}>
+                <View style={{width: '45%'}}>
                   <RNBDropDown
                     label="Section"
                     value={sectionname}
@@ -184,6 +224,14 @@ const FilterAttendanceAnalasis = ({showModal, setShowModal}) => {
                     }
                     onChange={data => setsectionname(data.value)}
                     placeholder="NONE"
+                  />
+                </View>
+                <View style={{width: '45%'}}>
+                  <RNBDropDown
+                    label="Status"
+                    value={status}
+                    OptionsList={studentStatus}
+                    onChange={data => setstatus(data.value)}
                   />
                 </View>
               </View>

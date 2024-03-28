@@ -24,6 +24,7 @@ import DownloadStudentAttendance from '../../../Component/school/DownloadExcel';
 import FilterAttendanceAnalasis from '../../../Component/school/FilterAttendanceAnalasis';
 import RNTable from '../../../Component/RNTable';
 import DashboardPlaceholderLoader from '../../../Component/DashboardPlaceholderLoader';
+
 const Analysis = () => {
   const dispatch = useDispatch();
   const [Tabledata, setTabledata] = useState([]);
@@ -71,7 +72,12 @@ const Analysis = () => {
       width: 0.33,
       align: 'center',
     },
-
+    {
+      title: 'Class',
+      items: [],
+      width: 0.33,
+      align: 'center',
+    },
     {
       title: 'Section',
       items: [],
@@ -115,15 +121,19 @@ const Analysis = () => {
           });
           AttendanceTableList[4].items.push({
             id: index,
-            value: item?.student?.Section,
+            value: item?.student?.courseorclass,
           });
           AttendanceTableList[5].items.push({
+            id: index,
+            value: item?.student?.Section,
+          });
+          AttendanceTableList[6].items.push({
             id: index,
             value: item?.student?.name,
           });
 
           item?.attendance?.map((data, index) => {
-            return AttendanceTableList[index + 6].items.push({
+            return AttendanceTableList[index + 7].items.push({
               id: index,
               value: data?.attendaceStatusIntext,
             });
@@ -140,7 +150,6 @@ const Analysis = () => {
       setShowModal(false);
 
       convertdata();
-      console.log('mark data is', monthlyattendance);
     }
   }, [monthlyattendance]);
 
@@ -151,6 +160,8 @@ const Analysis = () => {
     dispatch(GetSection());
     dispatch(getcurrentsession());
   }, []);
+
+  console.log('monthlyattendance', monthlyattendance);
 
   return (
     <View style={{flex: 1}}>

@@ -21,7 +21,6 @@ import RNBDropDown from '../../../Component/RNBDropDown';
 const AddEnquiry = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
-  const [sms, setsms] = useState('');
   const [loader, setloader] = useState(false);
   const [enquirydate, setenquirydate] = useState(getTodaysDate());
   const [coursename, setcoursename] = useState('');
@@ -37,9 +36,11 @@ const AddEnquiry = () => {
   const submit = () => {
     if (enquirydate) {
       setloader(true);
-      setsms('Adding...');
+
+      var momentDate = moment(enquirydate, 'DD/MM/YYYY');
+      var newenquirydate = momentDate.format('YYYY-MM-DD');
       const data = {
-        EnquiryDate: moment(enquirydate, 'YYYY-MM-DD'),
+        EnquiryDate: newenquirydate,
         StudentName: studentname,
         StudentNumber: studentPhone,
         StudentEmail: email,
@@ -50,7 +51,7 @@ const AddEnquiry = () => {
       serverInstance('coaching/enquiry', 'post', data).then(res => {
         if (res?.status) {
           setloader(false);
-          setsms('');
+
           Toast.show({
             type: 'success',
             text1: 'Success',
@@ -62,7 +63,7 @@ const AddEnquiry = () => {
 
         if (res?.status === false) {
           setloader(false);
-          setsms('');
+
           Toast.show({
             type: 'error',
             text1: 'Error',
@@ -72,7 +73,6 @@ const AddEnquiry = () => {
         }
       });
     } else {
-      setsms('');
       setloader(false);
     }
   };
@@ -80,7 +80,7 @@ const AddEnquiry = () => {
   useEffect(() => {
     if (enquiry) {
       dispatch(getenquiries());
-      setsms('');
+
       setloader(false);
     }
   }, [enquiry]);
@@ -97,7 +97,6 @@ const AddEnquiry = () => {
   useEffect(() => {
     if (error) {
       setloader(false);
-      setsms('');
     }
   }, [error]);
 
@@ -173,11 +172,12 @@ const AddEnquiry = () => {
                   fontWeight: '800',
                   position: 'absolute',
                   right: deviceWidth * 0.05,
+                  color:Colors.black
                 }}>
                 {address.length} / 500
               </Text>
               <RNInputField
-                style={{backgroundColor: Colors.fadeGray, paddingTop: 10}}
+                style={{paddingTop: 10}}
                 label="address"
                 value={address}
                 onChangeText={data => setaddress(data)}
@@ -199,11 +199,12 @@ const AddEnquiry = () => {
                   fontWeight: '800',
                   position: 'absolute',
                   right: deviceWidth * 0.05,
+                  color:Colors.black
                 }}>
                 {comment.length} / 500
               </Text>
               <RNInputField
-                style={{backgroundColor: Colors.fadeGray, paddingTop: 10}}
+                style={{paddingTop: 10}}
                 label="Comment"
                 value={comment}
                 onChangeText={data => setcomment(data)}
@@ -217,7 +218,7 @@ const AddEnquiry = () => {
 
           <View style={{marginBottom: deviceHeight * 0.08}}>
             <RNButton
-              loading={loading}
+              loading={loader}
               onPress={submit}
               style={{marginHorizontal: 20, marginTop: 20}}>
               Save & Next

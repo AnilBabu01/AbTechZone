@@ -156,7 +156,7 @@ const AdOtherFee = () => {
                   marginTop: 10,
                 }}>
                 <RNDatePicker
-                  title="Select Date"
+                  title="Select Dues Date"
                   value={duesDate}
                   onDateChange={date => setduesDate(handleDate(date))}
                 />

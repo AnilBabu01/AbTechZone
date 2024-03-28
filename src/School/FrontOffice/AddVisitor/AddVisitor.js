@@ -38,8 +38,11 @@ const AddVisitor = () => {
     if (enquirydate) {
       setloader(true);
 
+      var momentDate = moment(enquirydate, 'DD/MM/YYYY');
+      var newenquirydate = momentDate.format('YYYY-MM-DD');
+
       const data = {
-        VisitDate: moment(enquirydate, 'YYYY-MM-DD'),
+        VisitDate:newenquirydate,
         VisitorName: studentname,
         VisitorMobile: studentPhone,
         VisitTime: visitTime,

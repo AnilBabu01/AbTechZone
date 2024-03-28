@@ -54,6 +54,7 @@ const AddStudent = () => {
   const [index, setIndex] = useState(0);
   const [openModel, setopenModel] = useState(false);
   const [whatsaapnumber, setwhatsaapnumber] = useState('');
+  const [motherswhatsapp, setmotherswhatsapp] = useState('');
 
   const [Religion, setReligion] = useState('');
   const [Nationality, setNationality] = useState('Indian');
@@ -181,6 +182,33 @@ const AddStudent = () => {
 
   const submit = async () => {
     try {
+      if (!coursename) {
+        Toast.show({
+          type: 'error',
+          text1: 'Error',
+          text2: 'Class is Required',
+        });
+        return 0;
+      }
+
+      if (!fathersname) {
+        Toast.show({
+          type: 'error',
+          text1: 'Error',
+          text2: 'Father"s" Name is Required',
+        });
+        return 0;
+      }
+
+      if (!fathersphone) {
+        Toast.show({
+          type: 'error',
+          text1: 'Error',
+          text2: 'Father"s" Phone No is Required',
+        });
+        return 0;
+      }
+
       var momentDate = moment(adminssiondate, 'DD/MM/YYYY');
       var newadminssiondate = momentDate.format('YYYY-MM-DD');
       var momentDateOfBirth = moment(DateOfBirth, 'DD/MM/YYYY');
@@ -200,10 +228,10 @@ const AddStudent = () => {
       formData.append('PreviousSchoolName', PreviousSchool);
       formData.append('PreviousSchoolAddress', PreviousSchoolAddress);
 
-      formData.append('whatsappNo', fathersphone);
+      formData.append('whatsappNo', whatsaapnumber);
       formData.append('MathersName', mothersname);
       formData.append('MathersPhoneNo', mothersPhoneNo);
-      formData.append('MatherswhatsappNo', mothersPhoneNo);
+      formData.append('MatherswhatsappNo', motherswhatsapp);
 
       formData.append('othersdoc', '');
       formData.append('BirthDocument', '');
@@ -876,9 +904,9 @@ const AddStudent = () => {
 
             <FlexRowWrapper>
               <View style={{width: '45%'}}>
-              <View>
+                <View>
                   <RNBDropDown
-                    label="Caste"
+                    label="Caste Category"
                     value={categoryname}
                     OptionsList={CasteList}
                     onChange={data => setcategoryname(data.value)}
@@ -896,7 +924,7 @@ const AddStudent = () => {
 
             <FlexRowWrapper>
               <View style={{width: '45%'}}>
-              <View>
+                <View>
                   <RNBDropDown
                     label="Gender"
                     value={gender}
@@ -906,7 +934,7 @@ const AddStudent = () => {
                 </View>
               </View>
               <View style={{width: '45%', marginBottom: deviceHeight * 0.02}}>
-              <View>
+                <View>
                   <RNBDropDown
                     label="Blood Group"
                     value={BloodGroup}
@@ -918,7 +946,7 @@ const AddStudent = () => {
             </FlexRowWrapper>
             <FlexRowWrapper>
               <View style={{width: '45%'}}>
-              <View>
+                <View>
                   <RNBDropDown
                     label="Religion"
                     value={Religion}
@@ -960,31 +988,34 @@ const AddStudent = () => {
             <FlexRowWrapper>
               <View style={{width: '45%'}}>
                 <RNInputField
-                  label="Father's Mobile No"
-                  placeholder="Enter Mobile No"
-                  value={fathersphone}
-                  onChangeText={data => setfathersphone(data)}
-                />
-              </View>
-              <View style={{width: '45%'}}>
-                <RNInputField
                   label="Father's Name"
                   placeholder="Enter Father's Name"
                   value={fathersname}
                   onChangeText={data => setfathersname(data)}
                 />
               </View>
-            </FlexRowWrapper>
-
-            <FlexRowWrapper>
               <View style={{width: '45%'}}>
                 <RNInputField
-                  label="Mother's Mobile No"
+                  label="Father's Mobile No"
                   placeholder="Enter Mobile No"
-                  value={mothersPhoneNo}
-                  onChangeText={data => setmothersPhoneNo(data)}
+                  value={fathersphone}
+                  onChangeText={data => setfathersphone(data)}
                 />
               </View>
+            </FlexRowWrapper>
+            <View
+              style={{
+                marginHorizontal: deviceWidth * 0.04,
+                position: 'relative',
+              }}>
+              <RNInputField
+                label="Father's Whatsapp No"
+                placeholder="Enter Whatsapp No"
+                value={whatsaapnumber}
+                onChangeText={data => setwhatsaapnumber(data)}
+              />
+            </View>
+            <FlexRowWrapper>
               <View style={{width: '45%'}}>
                 <RNInputField
                   label="Mother's Name"
@@ -993,8 +1024,27 @@ const AddStudent = () => {
                   onChangeText={data => setmothersname(data)}
                 />
               </View>
+              <View style={{width: '45%'}}>
+                <RNInputField
+                  label="Mother's Mobile No"
+                  placeholder="Enter Mobile No"
+                  value={mothersPhoneNo}
+                  onChangeText={data => setmothersPhoneNo(data)}
+                />
+              </View>
             </FlexRowWrapper>
-
+            <View
+              style={{
+                marginHorizontal: deviceWidth * 0.04,
+                position: 'relative',
+              }}>
+              <RNInputField
+                label="Monther's Whatsapp No"
+                placeholder="Enter Whatsapp No"
+                value={motherswhatsapp}
+                onChangeText={data => setmotherswhatsapp(data)}
+              />
+            </View>
             <FlexRowWrapper>
               <View style={{width: '45%'}}>
                 <RNInputField
@@ -1006,7 +1056,7 @@ const AddStudent = () => {
               </View>
               <View style={{width: '45%'}}>
                 <RNInputField
-                  label="Permanent Education No"
+                  label="PEN"
                   placeholder="Enter PEN"
                   value={pano}
                   onChangeText={data => setpano(data)}
@@ -1158,7 +1208,7 @@ const AddStudent = () => {
             </View>
             <FlexRowWrapper>
               <View style={{width: '45%'}}>
-              <View>
+                <View>
                   <RNBDropDown
                     label="Class"
                     value={stream}
@@ -1202,7 +1252,7 @@ const AddStudent = () => {
                 </View>
               </View>
               <View style={{width: '45%', marginBottom: deviceHeight * 0.02}}>
-              <View>
+                <View>
                   <RNBDropDown
                     label="Status"
                     value={studentstatus}
@@ -1454,7 +1504,7 @@ const AddStudent = () => {
             <>
               <FlexRowWrapper>
                 <View style={{width: '45%'}}>
-                <View>
+                  <View>
                     <RNBDropDown
                       label="Hostel Name"
                       value={hostelname}
@@ -1470,7 +1520,7 @@ const AddStudent = () => {
                   </View>
                 </View>
                 <View style={{width: '45%', marginBottom: deviceHeight * 0.02}}>
-                <View>
+                  <View>
                     <RNBDropDown
                       label="Category"
                       value={hostelcategoryname}
@@ -1622,7 +1672,7 @@ const AddStudent = () => {
             <>
               <FlexRowWrapper>
                 <View style={{width: '45%'}}>
-                <View>
+                  <View>
                     <RNBDropDown
                       label="From Route"
                       value={fromroute}
@@ -1638,7 +1688,7 @@ const AddStudent = () => {
                   </View>
                 </View>
                 <View style={{width: '45%', marginBottom: deviceHeight * 0.02}}>
-                <View>
+                  <View>
                     <RNBDropDown
                       label="To Route"
                       value={toroute}
@@ -1928,7 +1978,7 @@ const AddStudent = () => {
                 position: 'relative',
               }}>
               <View style={{width: '100%'}}>
-              <View>
+                <View>
                   <RNInputField
                     style={{backgroundColor: Colors.white}}
                     label="MarkSheet Class"
@@ -2086,7 +2136,7 @@ const AddStudent = () => {
                 position: 'relative',
               }}>
               <View style={{width: '100%'}}>
-              <View>
+                <View>
                   <RNInputField
                     style={{backgroundColor: Colors.white}}
                     label="Other Doc Name"
@@ -2309,7 +2359,8 @@ const styles = StyleSheet.create({
   radioLabel: {
     marginLeft: 8,
     fontSize: 16,
-    color: '#333',
+    color: Colors.black,
+    fontWeight: 'bold',
   },
 
   modal: {

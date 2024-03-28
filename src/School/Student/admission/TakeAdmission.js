@@ -56,7 +56,7 @@ const TakeAdmission = () => {
   const [index, setIndex] = useState(0);
   const [openModel, setopenModel] = useState(false);
   const [whatsaapnumber, setwhatsaapnumber] = useState('');
-
+  const [motherswhatsapp, setmotherswhatsapp] = useState('');
   const [Religion, setReligion] = useState('');
   const [Nationality, setNationality] = useState('Indian');
   const [address, setaddress] = useState('');
@@ -180,6 +180,34 @@ const TakeAdmission = () => {
 
   const submit = async () => {
     try {
+
+      if (!coursename) {
+        Toast.show({
+          type: 'error',
+          text1: 'Error',
+          text2: 'Class is Required',
+        });
+        return 0;
+      }
+
+      if (!fathersname) {
+        Toast.show({
+          type: 'error',
+          text1: 'Error',
+          text2: 'Father"s" Name is Required',
+        });
+        return 0;
+      }
+      
+      if (!fathersphone) {
+        Toast.show({
+          type: 'error',
+          text1: 'Error',
+          text2: 'Father"s" Phone No is Required',
+        });
+        return 0;
+      }
+
       let token = await AsyncStorage.getItem('erptoken');
       var momentDate = moment(adminssiondate, 'DD/MM/YYYY');
       var newadminssiondate = momentDate.format('YYYY-MM-DD');
@@ -198,10 +226,10 @@ const TakeAdmission = () => {
       formData.append('PreviousSchoolName', PreviousSchool);
       formData.append('PreviousSchoolAddress', PreviousSchoolAddress);
 
-      formData.append('whatsappNo', fathersphone);
+      formData.append('whatsappNo', whatsaapnumber);
       formData.append('MathersName', mothersname);
       formData.append('MathersPhoneNo', mothersPhoneNo);
-      formData.append('MatherswhatsappNo', mothersPhoneNo);
+      formData.append('MatherswhatsappNo', motherswhatsapp);
 
       formData.append('othersdoc', '');
       formData.append('BirthDocument', '');
@@ -324,6 +352,11 @@ const TakeAdmission = () => {
         navigation.goBack();
       }
       if (data?.status === false) {
+        Toast.show({
+          type: 'error',
+          text1: 'Error',
+          text2: data?.msg,
+        });
       }
     } catch (error) {
       console.log(error);
@@ -453,8 +486,6 @@ const TakeAdmission = () => {
 
         if (file != null) {
           formData.append('profileurl', file);
-
-          
         }
       }
     });
@@ -902,7 +933,7 @@ const TakeAdmission = () => {
               <View style={{width: '45%'}}>
                 <View>
                   <RNBDropDown
-                    label="Caste"
+                    label="Caste Category"
                     value={categoryname}
                     OptionsList={CasteList}
                     onChange={data => setcategoryname(data.value)}
@@ -984,31 +1015,35 @@ const TakeAdmission = () => {
             <FlexRowWrapper>
               <View style={{width: '45%'}}>
                 <RNInputField
-                  label="Father's Mobile No"
-                  placeholder="Enter Mobile No"
-                  value={fathersphone}
-                  onChangeText={data => setfathersphone(data)}
-                />
-              </View>
-              <View style={{width: '45%'}}>
-                <RNInputField
                   label="Father's Name"
                   placeholder="Enter Father's Name"
                   value={fathersname}
                   onChangeText={data => setfathersname(data)}
                 />
               </View>
-            </FlexRowWrapper>
-
-            <FlexRowWrapper>
               <View style={{width: '45%'}}>
                 <RNInputField
-                  label="Mother's Mobile No"
+                  label="Father's Mobile No"
                   placeholder="Enter Mobile No"
-                  value={mothersPhoneNo}
-                  onChangeText={data => setmothersPhoneNo(data)}
+                  value={fathersphone}
+                  onChangeText={data => setfathersphone(data)}
                 />
               </View>
+            </FlexRowWrapper>
+            <View
+              style={{
+                marginHorizontal: deviceWidth * 0.04,
+                position: 'relative',
+              }}>
+              <RNInputField
+                label="Father's Whatsapp No"
+                placeholder="Enter Whatsapp No"
+                value={whatsaapnumber}
+                onChangeText={data => setwhatsaapnumber(data)}
+              />
+            </View>
+
+            <FlexRowWrapper>
               <View style={{width: '45%'}}>
                 <RNInputField
                   label="Mother's Name"
@@ -1017,8 +1052,27 @@ const TakeAdmission = () => {
                   onChangeText={data => setmothersname(data)}
                 />
               </View>
+              <View style={{width: '45%'}}>
+                <RNInputField
+                  label="Mother's Mobile No"
+                  placeholder="Enter Mobile No"
+                  value={mothersPhoneNo}
+                  onChangeText={data => setmothersPhoneNo(data)}
+                />
+              </View>
             </FlexRowWrapper>
-
+            <View
+              style={{
+                marginHorizontal: deviceWidth * 0.04,
+                position: 'relative',
+              }}>
+              <RNInputField
+                label="Monther's Whatsapp No"
+                placeholder="Enter Whatsapp No"
+                value={motherswhatsapp}
+                onChangeText={data => setmotherswhatsapp(data)}
+              />
+            </View>
             <FlexRowWrapper>
               <View style={{width: '45%'}}>
                 <RNInputField
@@ -1030,7 +1084,7 @@ const TakeAdmission = () => {
               </View>
               <View style={{width: '45%'}}>
                 <RNInputField
-                  label="Permanent Education No"
+                  label="PEN"
                   placeholder="Enter PEN"
                   value={pano}
                   onChangeText={data => setpano(data)}
